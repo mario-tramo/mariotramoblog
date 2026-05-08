@@ -1,0 +1,397 @@
+@import 'tailwindcss';
+@import './fonts.css';
+
+@theme {
+	--color-canvas: #fff;
+	--color-ink: #000;
+	--color-accent: #000;
+
+	--max-height-fold: calc(100svh - var(--header-height));
+}
+
+@custom-variant hover (&:hover);
+
+@variant header-open (body:has(#header-toggle:checked) &);
+@variant header-closed (body:has(#header-toggle:not(:checked)) &);
+
+@variant headings (& :is(h1, h2, h3, h4, h5, h6));
+
+@layer base {
+	* {
+		min-width: 0;
+	}
+
+	[hidden] {
+		display: none !important;
+	}
+
+	@supports (interpolate-size: allow-keywords) {
+		:root {
+			interpolate-size: allow-keywords;
+		}
+
+		:open::details-content {
+			height: auto;
+		}
+	}
+
+	:target {
+		scroll-margin-top: var(--header-height);
+
+		&:is(h1, h2, h3, h4, h5, h6) {
+			animation: target 2s ease-in-out forwards;
+		}
+	}
+
+	@keyframes target {
+		0%,
+		50% {
+			background-color: color-mix(
+				in oklab,
+				var(--color-amber-400) 50%,
+				transparent
+			);
+		}
+	}
+
+	html {
+		accent-color: var(--color-accent);
+		caret-color: var(--color-accent);
+		scroll-behavior: smooth;
+	}
+
+	body:has(dialog[open]) {
+		overflow: hidden;
+	}
+
+	label,
+	input[type='submit'],
+	select,
+	button,
+	summary {
+		cursor: pointer;
+	}
+
+	input {
+		background-color: transparent;
+	}
+
+	details {
+		&::details-content {
+			overflow: clip;
+			transition-duration: var(--default-transition-duration);
+			transition-property: content-visibility, block-size;
+			transition-behavior: allow-discrete;
+		}
+
+		&:not(:open)::details-content {
+			block-size: 0;
+		}
+	}
+
+	::-webkit-details-marker {
+		display: none;
+	}
+
+	hr {
+		@apply border-ink/10;
+	}
+}
+
+/* animations */
+
+@utility anim-fade {
+	--x: 0;
+	--y: 0;
+	animation: anim-fade-to var(--tw-duration, var(--default-transition-duration))
+		ease-in-out forwards;
+}
+@utility anim-fade-to-l {
+	@apply anim-fade;
+	--x: 1rem;
+}
+@utility anim-fade-to-r {
+	@apply anim-fade;
+	--x: -1rem;
+}
+@utility anim-fade-to-t {
+	@apply anim-fade;
+	--y: 1rem;
+}
+@utility anim-fade-to-b {
+	@apply anim-fade;
+	--y: -1rem;
+}
+
+@keyframes anim-fade-to {
+	from {
+		opacity: 0;
+		translate: var(--x, 0) var(--y, 0);
+	}
+	to {
+		opacity: 1;
+		translate: 0 0;
+	}
+}
+
+/* typography */
+
+@utility h-base {
+	font-weight: bold;
+}
+
+@utility h1 {
+	@apply h-base text-4xl;
+}
+@utility h2 {
+	@apply h-base text-3xl;
+}
+@utility h3 {
+	@apply h-base text-2xl;
+}
+@utility h4 {
+	@apply h-base text-xl;
+}
+@utility h5 {
+	@apply h-base text-lg;
+}
+@utility h6 {
+	@apply h-base;
+}
+
+@utility technical {
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	font-weight: bold;
+}
+
+@utility text-shadow {
+	text-shadow: 0 0 0.2em rgb(0 0 0 / 0.25);
+}
+
+@utility text-gradient {
+	@apply from-accent/3 to-accent bg-linear-to-br bg-clip-text text-transparent;
+}
+
+/* ctas, links */
+
+@utility action-base {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0.5em 1em;
+	text-align: center;
+	text-shadow: none;
+	color: var(--color-ink);
+}
+
+@utility action {
+	@apply action-base bg-accent rounded border border-transparent text-balance text-white;
+}
+
+@utility action-outline {
+	@apply action-base border-accent/10 bg-canvas/50 rounded border text-balance;
+}
+
+@utility ghost {
+	@apply action-base frosted-glass hover:bg-accent/3 rounded;
+}
+
+@utility link {
+	@apply underline hover:decoration-2;
+}
+
+@utility input {
+	@apply border-ink/10 rounded border p-[.25em] text-start;
+}
+
+/* utilities */
+
+@utility sticky-below-header {
+	position: sticky;
+	top: calc(var(--header-height) + var(--offset, 0px));
+}
+
+@utility frosted-glass {
+	--tw-bg-opacity: 0.9;
+	@apply backdrop-blur-lg backdrop-saturate-200;
+}
+
+@utility full-bleed {
+	width: 100vw;
+	margin-inline: calc(50% - 50vw);
+}
+
+@utility no-scrollbar {
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
+}
+
+@utility overflow-fade {
+	--offset: 4rem;
+	mask: linear-gradient(
+		to right,
+		transparent,
+		black var(--offset),
+		black calc(100% - var(--offset)),
+		transparent
+	);
+}
+
+@utility overflow-fade-r {
+	--offset: 4rem;
+	mask: linear-gradient(
+		to right,
+		black 50%,
+		black calc(100% - var(--offset)),
+		transparent
+	);
+}
+
+/* layout */
+
+@utility section {
+	@apply mx-auto max-w-screen-xl p-8 max-md:px-4 md:py-12;
+}
+
+/* richtext */
+
+@utility richtext {
+	@apply space-y-2 leading-relaxed;
+
+	& :is(h1, h2, h3, h4, h5, h6) strong {
+		@apply text-gradient;
+	}
+
+	& h1 {
+		@apply h1;
+	}
+
+	& h2 {
+		@apply h2;
+	}
+
+	& h3 {
+		@apply h3;
+	}
+
+	& h4 {
+		@apply h4;
+	}
+
+	& h5 {
+		@apply h5;
+	}
+
+	& h6 {
+		@apply h6;
+	}
+
+	& :is(ul, ol) {
+		list-style: revert;
+		padding-left: 1.5em;
+
+		& > li > ol {
+			list-style: lower-alpha;
+		}
+	}
+
+	& a:not(:is(.action, .action-outline, .ghost)) {
+		@apply link;
+	}
+
+	& :not(pre) > code {
+		@apply bg-ink/10 rounded px-1;
+	}
+
+	& pre {
+		tab-size: 2;
+		@apply overflow-x-auto rounded bg-transparent p-3 text-xs/relaxed;
+	}
+
+	& blockquote {
+		@apply border-accent/10 border-s-2 ps-4;
+	}
+
+	& table {
+		display: block;
+		overflow-x: auto;
+		text-wrap: balance;
+		line-height: initial;
+
+		@apply max-md:full-bleed min-w-full;
+
+		& th,
+		td {
+			@apply p-3 text-center;
+		}
+
+		& tbody {
+			& tr:nth-child(odd) {
+				@apply bg-accent/3;
+			}
+
+			& tr th:first-child {
+				text-align: left;
+			}
+		}
+	}
+
+	& video {
+		width: 100%;
+	}
+}
+
+/* skeleton */
+
+@utility skeleton {
+	@apply bg-ink/3 h-[1lh];
+}
+@utility skeleton-2 {
+	@apply bg-ink/3 h-[2lh];
+}
+@utility skeleton-3 {
+	@apply bg-ink/3 h-[3lh];
+}
+
+/* components */
+
+@utility accordion {
+	& summary {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 1em;
+
+		&::after {
+			content: '+';
+			display: inline-block;
+			font-family: monospace;
+			font-size: 1.5em;
+		}
+	}
+
+	& ::-webkit-details-marker {
+		display: none;
+	}
+
+	&:open summary::after {
+		content: '-';
+	}
+}
+
+@utility carousel {
+	display: grid;
+	grid-auto-flow: column;
+	grid-auto-columns: min(var(--size, 300px), 80vw);
+	overflow-x: auto;
+	scroll-snap-type: x mandatory;
+
+	& > * {
+		scroll-snap-align: center;
+	}
+}
