@@ -5,38 +5,46 @@ import { count } from '@/lib/utils'
 
 export default defineType({
 	name: 'card-list',
-	title: 'Card list',
+	title: 'Lista card',
 	icon: TfiLayoutMediaLeftAlt,
 	type: 'object',
-	groups: [{ name: 'content', default: true }, { name: 'options' }],
+	groups: [{ name: 'content', title: 'Contenuto', default: true }, { name: 'options', title: 'Opzioni' }],
 	fields: [
 		defineField({
 			name: 'options',
-			title: 'Module options',
+			title: 'Opzioni modulo',
 			type: 'module-options',
+			description: 'Impostazioni generali del modulo (visibilita, ancoraggio)',
 			group: 'options',
 		}),
 		defineField({
 			name: 'pretitle',
+			title: 'Sopratitolo',
 			type: 'string',
+			description: 'Testo breve mostrato sopra il titolo della sezione',
 			group: 'content',
 		}),
 		defineField({
 			name: 'intro',
+			title: 'Introduzione',
 			type: 'array',
+			description: 'Testo introduttivo mostrato sopra le card',
 			of: [{ type: 'block' }],
 			group: 'content',
 		}),
 		defineField({
 			name: 'ctas',
-			title: 'Call-to-actions',
+			title: 'Call-to-action',
 			type: 'array',
+			description: 'Pulsanti di azione della sezione',
 			of: [{ type: 'cta' }],
 			group: 'content',
 		}),
 		defineField({
 			name: 'cards',
+			title: 'Card',
 			type: 'array',
+			description: 'Lista di card con immagine, testo e pulsanti',
 			of: [
 				defineArrayMember({
 					type: 'object',
@@ -44,20 +52,25 @@ export default defineType({
 					fields: [
 						defineField({
 							name: 'image',
+							title: 'Immagine',
 							type: 'image',
+							description: 'Immagine della card',
 							options: {
 								hotspot: true,
 							},
 						}),
 						defineField({
 							name: 'content',
+							title: 'Contenuto',
 							type: 'array',
+							description: 'Testo della card',
 							of: [{ type: 'block' }],
 						}),
 						defineField({
 							name: 'ctas',
-							title: 'Call-to-actions',
+							title: 'Call-to-action',
 							type: 'array',
+							description: 'Pulsanti della card',
 							of: [{ type: 'cta' }],
 						}),
 					],
@@ -77,9 +90,14 @@ export default defineType({
 		}),
 		defineField({
 			name: 'layout',
+			title: 'Layout',
 			type: 'string',
+			description: 'Disposizione visiva delle card',
 			options: {
-				list: ['grid', 'carousel'],
+				list: [
+					{ title: 'Griglia', value: 'grid' },
+					{ title: 'Carosello', value: 'carousel' },
+				],
 				layout: 'radio',
 			},
 			group: 'options',
@@ -87,14 +105,17 @@ export default defineType({
 		}),
 		defineField({
 			name: 'columns',
+			title: 'Colonne',
 			type: 'number',
-			description: 'Set a fixed number of columns (Tablet and desktop only)',
+			description: 'Numero fisso di colonne (solo tablet e desktop)',
 			validation: (Rule) => Rule.min(1).max(12),
 			group: 'options',
 		}),
 		defineField({
 			name: 'visualSeparation',
+			title: 'Separazione visiva',
 			type: 'boolean',
+			description: 'Aggiungi bordi o ombreggiature per separare visivamente le card',
 			initialValue: true,
 			group: 'options',
 		}),
@@ -106,7 +127,7 @@ export default defineType({
 		},
 		prepare: ({ intro, cards }) => ({
 			title: getBlockText(intro) || count(cards, 'card'),
-			subtitle: 'Card list',
+			subtitle: 'Lista card',
 		}),
 	},
 })

@@ -12,9 +12,9 @@ import { BLOG_DIR } from '@/lib/env'
 
 export default defineType({
 	name: 'page',
-	title: 'Page',
+	title: 'Pagina',
 	type: 'document',
-	groups: [{ name: 'content', default: true }, { name: 'metadata' }],
+	groups: [{ name: 'content', title: 'Contenuto', default: true }, { name: 'metadata', title: 'Metadati' }],
 	fields: [
 		defineField({
 			name: 'title',

@@ -1,7 +1,6 @@
 import { PortableText } from 'next-sanity'
 import CTAList from '@/ui/CTAList'
 import Code from './RichtextModule/Code'
-import Reputation from '@/ui/Reputation'
 
 export default function Callout({
 	content,
@@ -23,12 +22,6 @@ export default function Callout({
 										value={value}
 										className="mx-auto max-w-max"
 										theme="snazzy-light"
-									/>
-								),
-								'reputation-block': ({ value }) => (
-									<Reputation
-										className="!mt-4 justify-center"
-										reputation={value.reputation}
 									/>
 								),
 							},

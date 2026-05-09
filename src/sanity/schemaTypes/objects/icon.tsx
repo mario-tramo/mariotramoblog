@@ -18,7 +18,7 @@ const sizePresets = ['2.5rem', '80px', '1.5lh']
 
 export default defineType({
 	name: 'icon',
-	title: 'Icon',
+	title: 'Icona',
 	icon: VscSymbolMisc,
 	type: 'object',
 	options: {
@@ -27,7 +27,9 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'image',
+			title: 'Immagine',
 			type: 'image',
+			description: 'Immagine personalizzata da usare come icona',
 			options: {
 				hotspot: true,
 			},
@@ -58,7 +60,9 @@ export default defineType({
 		}),
 		defineField({
 			name: 'size',
+			title: 'Dimensione',
 			type: 'string',
+			description: "Dimensione dell'icona (es. 2.5rem, 80px)",
 			placeholder: `e.g. ${sizePresets.map((p) => getPreset(p)).join(', ')}`,
 			initialValue: sizePresets[0],
 			components: {

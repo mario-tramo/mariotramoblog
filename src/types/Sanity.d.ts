@@ -9,7 +9,7 @@ declare global {
 			// branding
 			title: string
 			blurb?: any
-			logo?: Logo
+			logo?: Image
 			// info
 			announcements?: Announcement[]
 			copyright?: any
@@ -80,49 +80,9 @@ declare global {
 			end?: string
 		}
 
-		interface Logo extends SanityDocument {
-			name: string
-			image?: Partial<{
-				default: Image
-				light: Image
-				dark: Image
-			}>
-		}
-
 		interface Person extends SanityDocument {
 			name: string
 			image?: Image
-		}
-
-		interface Pricing extends SanityDocument {
-			title: string
-			highlight?: string
-			price: {
-				base?: number
-				strikethrough?: number
-				suffix?: string
-			}
-			ctas?: CTA[]
-			content?: any
-		}
-
-		interface Reputation extends SanityDocument {
-			title?: string
-			subtitle?: string
-			repo?: string
-			showForks?: boolean
-			limit?: number
-			avatars?: Image[]
-		}
-
-		interface Testimonial extends SanityDocument {
-			content: any
-			source?: string
-			author?: {
-				name: string
-				title?: string
-				image?: Image
-			}
 		}
 
 		// objects

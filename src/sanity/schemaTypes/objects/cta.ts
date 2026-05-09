@@ -10,15 +10,19 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'link',
+			title: 'Link',
 			type: 'link',
+			description: 'Link del pulsante',
 		}),
 		defineField({
 			name: 'style',
+			title: 'Stile',
 			type: 'string',
+			description: 'Stile visivo del pulsante',
 			options: {
 				list: [
 					'action',
-					{ title: 'Outline', value: 'action-outline' },
+					{ title: 'Contorno', value: 'action-outline' },
 					'ghost',
 					'link',
 				],

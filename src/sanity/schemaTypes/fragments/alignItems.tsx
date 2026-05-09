@@ -9,7 +9,7 @@ import {
 
 export default defineField({
 	name: 'alignItems',
-	title: 'Vertical alignment',
+	title: 'Allineamento verticale',
 	type: 'string',
 	components: {
 		input: (props) => (

@@ -1,6 +1,5 @@
 import { defineField, defineType } from 'sanity'
 import { TfiLayoutCtaCenter } from 'react-icons/tfi'
-import { reputationBlock } from '../misc/reputation'
 import { alignItems, textAlign } from '../fragments'
 import { getBlockText } from '@/lib/utils'
 
@@ -10,9 +9,9 @@ export default defineType({
 	icon: TfiLayoutCtaCenter,
 	type: 'object',
 	groups: [
-		{ name: 'content', default: true },
-		{ name: 'asset' },
-		{ name: 'options' },
+		{ name: 'content', title: 'Contenuto', default: true },
+		{ name: 'asset', title: 'Risorsa' },
+		{ name: 'options', title: 'Opzioni' },
 	],
 	fieldsets: [
 		{ name: 'alignment', options: { columns: 2 } },
@@ -21,32 +20,39 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'options',
-			title: 'Module options',
+			title: 'Opzioni modulo',
 			type: 'module-options',
+			description: 'Impostazioni generali del modulo (visibilita, ancoraggio)',
 			group: 'options',
 		}),
 		defineField({
 			name: 'pretitle',
+			title: 'Sopratitolo',
 			type: 'string',
+			description: 'Testo breve mostrato sopra il titolo principale',
 			group: 'content',
 		}),
 		defineField({
 			name: 'content',
+			title: 'Contenuto',
 			type: 'array',
-			of: [{ type: 'block' }, { type: 'custom-html' }, reputationBlock],
+			description: 'Testo principale della sezione hero',
+			of: [{ type: 'block' }, { type: 'custom-html' }],
 			group: 'content',
 		}),
 		defineField({
 			name: 'ctas',
-			title: 'Call-to-actions',
+			title: 'Call-to-action',
 			type: 'array',
+			description: 'Pulsanti di azione mostrati sotto il contenuto',
 			of: [{ type: 'cta' }],
 			group: 'content',
 		}),
 		defineField({
 			name: 'assets',
-			title: 'Assets',
+			title: 'Risorse',
 			type: 'array',
+			description: 'Immagine o risorsa visiva della sezione hero (max 1)',
 			of: [{ type: 'img' }],
 			validation: (Rule) => Rule.max(1),
 			group: 'asset',

@@ -3,7 +3,6 @@ import Pretitle from '@/ui/Pretitle'
 import CTAList from '@/ui/CTAList'
 import Asset from './Asset'
 import CustomHTML from './CustomHTML'
-import Reputation from '@/ui/Reputation'
 import { cn } from '@/lib/utils'
 
 export default function HeroSplit({
@@ -42,9 +41,6 @@ export default function HeroSplit({
 					components={{
 						types: {
 							'custom-html': ({ value }) => <CustomHTML {...value} />,
-							'reputation-block': ({ value }) => (
-								<Reputation className="!mt-4" reputation={value.reputation} />
-							),
 						},
 					}}
 				/>

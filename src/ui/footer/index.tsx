@@ -9,18 +9,16 @@ import { Img } from '@/ui/Img'
 export default async function Footer() {
 	const { title, blurb, logo, copyright } = await getSite()
 
-	const logoImage = logo?.image?.light || logo?.image?.default
-
 	return (
 		<footer className="bg-ink text-canvas" role="contentinfo">
 			<div className="section flex flex-wrap justify-between gap-x-12 gap-y-8 max-sm:flex-col">
 				<div className="flex flex-col gap-3 self-stretch">
 					<Link className="h3 md:h2 max-w-max" href="/">
-						{logoImage ? (
+						{logo ? (
 							<Img
 								className="max-h-[1.5em] w-auto"
-								image={logoImage}
-								alt={logo?.name || title}
+								image={logo}
+								alt={title}
 							/>
 						) : (
 							title

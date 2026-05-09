@@ -9,7 +9,7 @@ import {
 
 export default defineField({
 	name: 'textAlign',
-	title: 'Text alignment',
+	title: 'Allineamento testo',
 	type: 'string',
 	components: {
 		input: (props) => (

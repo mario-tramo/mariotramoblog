@@ -4,7 +4,6 @@ import { PortableText, stegaClean } from 'next-sanity'
 import CTAList from '@/ui/CTAList'
 import Pretitle from '@/ui/Pretitle'
 import CustomHTML from './CustomHTML'
-import Reputation from '@/ui/Reputation'
 import { cn } from '@/lib/utils'
 
 export default function Hero({
@@ -73,22 +72,6 @@ export default function Hero({
 							components={{
 								types: {
 									'custom-html': ({ value }) => <CustomHTML {...value} />,
-									'reputation-block': ({ value }) => (
-										<Reputation
-											className={cn(
-												'!mt-4',
-												hasImage && '[&_strong]:text-amber-400',
-												{
-													'justify-start': ['left', 'start'].includes(
-														textAlign,
-													),
-													'justify-center': textAlign === 'center',
-													'justify-end': ['right', 'end'].includes(textAlign),
-												},
-											)}
-											reputation={value.reputation}
-										/>
-									),
 								},
 							}}
 						/>

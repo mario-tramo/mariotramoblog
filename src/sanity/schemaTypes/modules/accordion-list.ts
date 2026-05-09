@@ -5,31 +5,38 @@ import { imageBlock } from '../fragments'
 
 export default defineType({
 	name: 'accordion-list',
-	title: 'Accordion list',
+	title: 'Lista accordion',
 	type: 'object',
 	icon: TfiLayoutAccordionMerged,
-	groups: [{ name: 'content', default: true }, { name: 'options' }],
+	groups: [{ name: 'content', title: 'Contenuto', default: true }, { name: 'options', title: 'Opzioni' }],
 	fields: [
 		defineField({
 			name: 'options',
-			title: 'Module options',
+			title: 'Opzioni modulo',
 			type: 'module-options',
+			description: 'Impostazioni generali del modulo (visibilita, ancoraggio)',
 			group: 'options',
 		}),
 		defineField({
 			name: 'pretitle',
+			title: 'Sopratitolo',
 			type: 'string',
+			description: 'Testo breve mostrato sopra il titolo della sezione',
 			group: 'content',
 		}),
 		defineField({
 			name: 'intro',
+			title: 'Introduzione',
 			type: 'array',
+			description: 'Testo introduttivo mostrato sopra gli accordion',
 			of: [{ type: 'block' }],
 			group: 'content',
 		}),
 		defineField({
 			name: 'items',
+			title: 'Elementi',
 			type: 'array',
+			description: 'Lista di pannelli espandibili (domanda/risposta, FAQ, ecc.)',
 			of: [
 				defineArrayMember({
 					type: 'object',
@@ -38,16 +45,20 @@ export default defineType({
 					fields: [
 						defineField({
 							name: 'summary',
+							title: 'Riepilogo',
 							type: 'string',
+							description: 'Titolo visibile del pannello (cliccabile per espandere)',
 						}),
 						defineField({
 							name: 'content',
+							title: 'Contenuto',
 							type: 'array',
+							description: 'Contenuto mostrato quando il pannello e aperto',
 							of: [
 								{ type: 'block' },
 								imageBlock,
 								defineArrayMember({
-									title: 'Code block',
+									title: 'Blocco di codice',
 									type: 'code',
 									options: {
 										withFilename: true,
@@ -58,7 +69,9 @@ export default defineType({
 						}),
 						defineField({
 							name: 'open',
+							title: 'Aperto',
 							type: 'boolean',
+							description: 'Se attivo, il pannello sara aperto per impostazione predefinita',
 							initialValue: false,
 						}),
 					],
@@ -78,27 +91,32 @@ export default defineType({
 		}),
 		defineField({
 			name: 'layout',
+			title: 'Layout',
 			type: 'string',
+			description: 'Disposizione degli accordion nella pagina',
 			options: {
 				layout: 'radio',
-				list: ['vertical', 'horizontal'],
+				list: [
+					{ title: 'Verticale', value: 'vertical' },
+					{ title: 'Orizzontale', value: 'horizontal' },
+				],
 			},
 			initialValue: 'vertical',
 			group: 'options',
 		}),
 		defineField({
 			name: 'connect',
-			title: 'Connect accordions',
-			description: 'Allows only one accordion to be expanded at a time',
+			title: 'Collega accordion',
+			description: 'Permetti un solo elemento aperto alla volta',
 			type: 'boolean',
 			initialValue: false,
 			group: 'options',
 		}),
 		defineField({
 			name: 'generateSchema',
-			title: 'Generate schema.org schema',
+			title: 'Genera markup Schema.org',
 			type: 'boolean',
-			description: 'Recommended for FAQ content',
+			description: 'Genera markup Schema.org per la SEO',
 			initialValue: false,
 			group: 'options',
 		}),

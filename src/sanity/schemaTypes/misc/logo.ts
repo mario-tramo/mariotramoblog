@@ -9,10 +9,12 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'name',
+			title: 'Nome',
 			type: 'string',
 		}),
 		defineField({
 			name: 'image',
+			title: 'Immagine',
 			type: 'object',
 			options: {
 				columns: 3,
@@ -20,6 +22,7 @@ export default defineType({
 			fields: [
 				defineField({
 					name: 'default',
+					title: 'Predefinito',
 					type: 'image',
 					options: {
 						hotspot: true,
@@ -27,7 +30,7 @@ export default defineType({
 				}),
 				defineField({
 					name: 'light',
-					description: 'On dark backgrounds',
+					description: 'Per sfondi scuri',
 					type: 'image',
 					options: {
 						hotspot: true,
@@ -35,7 +38,7 @@ export default defineType({
 				}),
 				defineField({
 					name: 'dark',
-					description: 'On light backgrounds',
+					description: 'Per sfondi chiari',
 					type: 'image',
 					options: {
 						hotspot: true,

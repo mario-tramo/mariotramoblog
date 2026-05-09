@@ -6,21 +6,10 @@ import Breadcrumbs from './Breadcrumbs'
 import Callout from './Callout'
 import CardList from './CardList'
 import CustomHTML from './CustomHTML'
-import FlagList from './FlagList'
 import Hero from './Hero'
 import HeroSplit from './HeroSplit'
-import HeroSaaS from './HeroSaaS'
-import LogoList from './LogoList'
 import RichtextModule from './RichtextModule'
-import ScheduleModule from './ScheduleModule'
 import SearchModule from './SearchModule'
-import StatList from './StatList'
-import StepList from './StepList'
-import TabbedContent from './TabbedContent'
-import TestimonialList from './TestimonialList'
-import TestimonialFeatured from './TestimonialFeatured'
-
-import dynamic from 'next/dynamic'
 import { createDataAttribute } from 'next-sanity'
 
 const MODULE_MAP = {
@@ -31,23 +20,11 @@ const MODULE_MAP = {
 	breadcrumbs: Breadcrumbs,
 	callout: Callout,
 	'card-list': CardList,
-	'creative-module': dynamic(() => import('./CreativeModule')),
 	'custom-html': CustomHTML,
-	'flag-list': FlagList,
 	hero: Hero,
 	'hero.split': HeroSplit,
-	'hero.saas': HeroSaaS,
-	'logo-list': LogoList,
-	'person-list': dynamic(() => import('./PersonList')),
-	'pricing-list': dynamic(() => import('./PricingList')),
 	'richtext-module': RichtextModule,
-	'schedule-module': ScheduleModule,
 	'search-module': SearchModule,
-	'stat-list': StatList,
-	'step-list': StepList,
-	'tabbed-content': TabbedContent,
-	'testimonial-list': TestimonialList,
-	'testimonial.featured': TestimonialFeatured,
 } as const
 
 export default function Modules({

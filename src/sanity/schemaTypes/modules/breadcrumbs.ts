@@ -4,20 +4,22 @@ import { count } from '@/lib/utils'
 
 export default defineType({
 	name: 'breadcrumbs',
-	title: 'Breadcrumbs',
+	title: 'Breadcrumb',
 	icon: BsBarChartSteps,
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'crumbs',
+			title: 'Percorso',
 			type: 'array',
 			of: [{ type: 'link', initialValue: { type: 'internal' } }],
-			description: 'Current page is automatically included',
+			description: 'La pagina corrente viene inclusa automaticamente',
 		}),
 		defineField({
 			name: 'hideCurrent',
-			title: 'Hide current page',
+			title: 'Nascondi pagina corrente',
 			type: 'boolean',
+			description: 'Non mostrare la pagina corrente nel percorso',
 			initialValue: false,
 		}),
 	],

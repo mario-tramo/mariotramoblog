@@ -23,7 +23,7 @@ import resolveUrl from '@/lib/resolveUrl'
 const singletonTypes = ['site']
 
 export default defineConfig({
-	title: 'SanityPress',
+	title: 'Mario Tramo Blog',
 	icon,
 	projectId,
 	dataset,

@@ -5,18 +5,22 @@ import { count } from '@/lib/utils'
 
 export default defineType({
 	name: 'navigation',
-	title: 'Navigation',
+	title: 'Navigazione',
 	icon: VscMap,
 	type: 'document',
 	fields: [
 		defineField({
 			name: 'title',
+			title: 'Nome',
 			type: 'string',
+			description: 'Nome identificativo del menu (es. "Menu principale", "Menu footer")',
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'items',
+			title: 'Voci del menu',
 			type: 'array',
+			description: 'Link e gruppi di link che compongono questo menu',
 			of: [{ type: 'link' }, { type: 'link.list' }],
 		}),
 	],

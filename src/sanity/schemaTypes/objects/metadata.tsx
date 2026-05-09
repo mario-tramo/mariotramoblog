@@ -4,14 +4,15 @@ import PreviewOG from '@/sanity/ui/PreviewOG'
 
 export default defineType({
 	name: 'metadata',
-	title: 'Metadata',
-	description: 'For search engines',
+	title: 'Metadati SEO',
+	description: 'Informazioni per i motori di ricerca e le anteprime social',
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'slug',
+			title: 'Percorso URL',
 			type: 'slug',
-			description: 'URL path or permalink',
+			description: 'Percorso URL della pagina (es. /chi-siamo). Generato automaticamente dal titolo.',
 			options: {
 				source: (doc: any) => doc.title || doc.metadata.title,
 			},
@@ -19,7 +20,9 @@ export default defineType({
 		}),
 		defineField({
 			name: 'title',
+			title: 'Titolo SEO',
 			type: 'string',
+			description: 'Titolo mostrato nei risultati di ricerca (max 60 caratteri consigliati)',
 			validation: (Rule) => Rule.max(60).warning(),
 			components: {
 				input: (props) => (
@@ -31,7 +34,9 @@ export default defineType({
 		}),
 		defineField({
 			name: 'description',
+			title: 'Descrizione',
 			type: 'text',
+			description: 'Breve descrizione mostrata nei risultati di ricerca (max 160 caratteri consigliati)',
 			validation: (Rule) => Rule.max(160).warning(),
 			components: {
 				input: (props) => (
@@ -41,7 +46,8 @@ export default defineType({
 		}),
 		defineField({
 			name: 'image',
-			description: 'Used for social sharing previews',
+			title: 'Immagine',
+			description: 'Utilizzata per le anteprime di condivisione social',
 			type: 'image',
 			options: {
 				hotspot: true,
@@ -50,7 +56,8 @@ export default defineType({
 		}),
 		defineField({
 			name: 'noIndex',
-			description: 'Prevent search engines from indexing this page',
+			title: 'Non indicizzare',
+			description: 'Impedisci ai motori di ricerca di indicizzare questa pagina',
 			type: 'boolean',
 			initialValue: false,
 		}),

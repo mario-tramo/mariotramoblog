@@ -3,14 +3,15 @@ import { VscEdit } from 'react-icons/vsc'
 
 export default defineType({
 	name: 'blog-post-content',
-	title: 'Blog post content',
+	title: 'Contenuto articolo',
 	icon: VscEdit,
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'options',
-			title: 'Module options',
+			title: 'Opzioni modulo',
 			type: 'module-options',
+			description: 'Impostazioni generali del modulo (visibilita, ancoraggio)',
 		}),
 	],
 	preview: {
@@ -18,7 +19,7 @@ export default defineType({
 			uid: 'options.uid',
 		},
 		prepare: ({ uid }) => ({
-			title: 'Blog post content',
+			title: 'Contenuto articolo',
 			subtitle: uid && `#${uid}`,
 		}),
 	},

@@ -7,23 +7,24 @@ import { VscCheck, VscCopy } from 'react-icons/vsc'
 
 export default defineType({
 	name: 'module-options',
-	title: 'Module options',
+	title: 'Opzioni modulo',
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'hidden',
+			title: 'Nascosto',
 			type: 'boolean',
-			description: 'Hide the module from the page',
+			description: 'Nascondi il modulo dalla pagina',
 			initialValue: false,
 		}),
 		defineField({
 			name: 'uid',
-			title: 'Unique identifier',
-			description: 'Used for anchor/jump links (HTML `id` attribute).',
+			title: 'Identificativo univoco',
+			description: 'Utilizzato per link di ancoraggio (attributo HTML `id`).',
 			type: 'string',
 			validation: (Rule) =>
 				Rule.regex(/^[a-zA-Z0-9-]+$/g).error(
-					'Must not contain spaces or special characters',
+					'Non deve contenere spazi o caratteri speciali',
 				),
 			components: {
 				input: ({ elementProps, path }) => {
@@ -36,11 +37,11 @@ export default defineType({
 							<Text muted>#</Text>
 
 							<Box flex={1}>
-								<TextInput {...elementProps} placeholder={moduleKey} />
+								<TextInput {...elementProps as any} placeholder={moduleKey} />
 							</Box>
 
 							<Button
-								title="Click to copy"
+								title="Clicca per copiare"
 								mode="ghost"
 								icon={checked ? VscCheck : VscCopy}
 								disabled={checked}

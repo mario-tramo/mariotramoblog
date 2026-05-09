@@ -5,29 +5,32 @@ import { getBlockText } from '@/lib/utils'
 
 export default defineType({
 	name: 'richtext-module',
-	title: 'Richtext module',
+	title: 'Testo ricco',
 	icon: VscSymbolKeyword,
 	type: 'object',
 	groups: [
-		{ name: 'content', title: 'Content', default: true },
-		{ name: 'options', title: 'Options' },
+		{ name: 'content', title: 'Contenuto', default: true },
+		{ name: 'options', title: 'Opzioni' },
 	],
 	fields: [
 		defineField({
 			name: 'options',
-			title: 'Module options',
+			title: 'Opzioni modulo',
 			type: 'module-options',
+			description: 'Impostazioni generali del modulo (visibilita, ancoraggio)',
 			group: 'options',
 		}),
 		defineField({
 			name: 'content',
+			title: 'Contenuto',
 			type: 'array',
+			description: 'Testo ricco con supporto per immagini, avvisi, codice e HTML',
 			of: [
 				{ type: 'block' },
 				imageBlock,
 				admonition,
 				defineArrayMember({
-					title: 'Code block',
+					title: 'Blocco di codice',
 					type: 'code',
 					options: {
 						withFilename: true,
@@ -39,15 +42,22 @@ export default defineType({
 		}),
 		defineField({
 			name: 'tableOfContents',
+			title: 'Indice dei contenuti',
 			type: 'boolean',
+			description: 'Mostra un indice dei contenuti basato sui titoli',
 			initialValue: false,
 			group: 'options',
 		}),
 		defineField({
 			name: 'tocPosition',
+			title: 'Posizione indice',
 			type: 'string',
+			description: "Posizione dell'indice dei contenuti",
 			options: {
-				list: ['left', 'right'],
+				list: [
+					{ title: 'Sinistra', value: 'left' },
+					{ title: 'Destra', value: 'right' },
+				],
 				layout: 'radio',
 			},
 			hidden: ({ parent }) => !parent.tableOfContents,
@@ -56,7 +66,9 @@ export default defineType({
 		}),
 		defineField({
 			name: 'stretch',
+			title: 'Larghezza piena',
 			type: 'boolean',
+			description: 'Espandi il contenuto a tutta la larghezza disponibile',
 			initialValue: false,
 			hidden: ({ parent }) => parent.tableOfContents,
 			group: 'options',
@@ -68,7 +80,7 @@ export default defineType({
 		},
 		prepare: ({ content }) => ({
 			title: getBlockText(content),
-			subtitle: 'Richtext module',
+			subtitle: 'Testo ricco',
 		}),
 	},
 })

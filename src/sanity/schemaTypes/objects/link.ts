@@ -13,29 +13,37 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'label',
+			title: 'Etichetta',
 			type: 'string',
+			description: 'Testo mostrato per il link',
 		}),
 		defineField({
 			name: 'type',
+			title: 'Tipo',
 			type: 'string',
+			description: 'Tipo di link',
 			options: {
 				layout: 'radio',
 				list: [
-					{ title: 'internal', value: 'internal' },
-					{ title: 'external', value: 'external' },
+					{ title: 'Interno', value: 'internal' },
+					{ title: 'Esterno', value: 'external' },
 				],
 			},
 		}),
 		defineField({
 			name: 'internal',
+			title: 'Interno',
 			type: 'reference',
+			description: 'Seleziona una pagina o articolo del sito',
 			to: [{ type: 'page' }, { type: 'blog.post' }],
 			hidden: ({ parent }) => parent?.type !== 'internal',
 		}),
 		defineField({
 			name: 'external',
+			title: 'Esterno',
 			placeholder: 'https://example.com',
 			type: 'url',
+			description: 'URL esterno (es. https://...)',
 			validation: (Rule) =>
 				Rule.uri({
 					scheme: ['http', 'https', 'mailto', 'tel'],
@@ -45,9 +53,10 @@ export default defineType({
 		}),
 		defineField({
 			name: 'params',
-			title: 'URL parameters',
-			placeholder: 'e.g. #jump-link or ?foo=bar',
+			title: 'Parametri URL',
+			placeholder: 'es. #jump-link o ?foo=bar',
 			type: 'string',
+			description: 'Parametri aggiuntivi URL (es. #sezione o ?filtro=valore)',
 			hidden: ({ parent }) => parent?.type !== 'internal',
 		}),
 	],

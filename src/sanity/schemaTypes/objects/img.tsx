@@ -8,22 +8,23 @@ import {
 import { count } from '@/lib/utils'
 
 const presets: Preset[] = [
-	{ title: 'Tablet and below', value: '(width < 48rem)' },
-	{ title: 'Mobile only', value: '(width < 24rem)' },
-	{ title: 'Dark mode', value: '(prefers-color-scheme: dark)' },
+	{ title: 'Tablet e inferiori', value: '(width < 48rem)' },
+	{ title: 'Solo mobile', value: '(width < 24rem)' },
+	{ title: 'Modalita scura', value: '(prefers-color-scheme: dark)' },
 ]
 
 export default defineType({
 	name: 'img',
-	title: 'Image',
+	title: 'Immagine',
 	type: 'object',
 	icon: VscFileMedia,
-	fieldsets: [{ name: 'options', options: { columns: 2 } }],
+	fieldsets: [{ name: 'options', title: 'Opzioni', options: { columns: 2 } }],
 	fields: [
 		defineField({
 			name: 'image',
-			title: 'Default image',
+			title: 'Immagine predefinita',
 			type: 'image',
+			description: 'Immagine principale mostrata di default',
 			options: {
 				hotspot: true,
 				metadata: ['lqip'],
@@ -31,8 +32,9 @@ export default defineType({
 		}),
 		defineField({
 			name: 'responsive',
-			title: 'Responsive images',
+			title: 'Immagini responsive',
 			type: 'array',
+			description: 'Immagini alternative per diverse dimensioni di schermo',
 			of: [
 				defineArrayMember({
 					type: 'object',
@@ -48,7 +50,7 @@ export default defineType({
 						}),
 						defineField({
 							name: 'media',
-							title: 'Media query',
+							title: 'Media query (condizione)',
 							type: 'string',
 							placeholder: `e.g. ${presets.map((p) => getPreset(p)).join(', ')}`,
 							validation: (Rule) => Rule.required(),
@@ -75,12 +77,16 @@ export default defineType({
 		}),
 		defineField({
 			name: 'alt',
+			title: 'Testo alternativo',
 			type: 'string',
+			description: "Descrizione dell'immagine per accessibilita e SEO",
 			fieldset: 'options',
 		}),
 		defineField({
 			name: 'loading',
+			title: 'Caricamento',
 			type: 'string',
+			description: 'lazy = carica quando visibile, eager = carica subito',
 			options: {
 				list: ['lazy', 'eager'],
 				layout: 'radio',

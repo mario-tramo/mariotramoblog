@@ -1,6 +1,5 @@
 import { defineField, defineType } from 'sanity'
 import { VscInspect } from 'react-icons/vsc'
-import { reputationBlock } from '../misc/reputation'
 import { getBlockText } from '@/lib/utils'
 
 export default defineType({
@@ -11,13 +10,16 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'content',
+			title: 'Contenuto',
 			type: 'array',
-			of: [{ type: 'block' }, { type: 'code' }, reputationBlock],
+			description: 'Testo e contenuto del callout',
+			of: [{ type: 'block' }, { type: 'code' }],
 		}),
 		defineField({
 			name: 'ctas',
-			title: 'Call-to-actions',
+			title: 'Call-to-action',
 			type: 'array',
+			description: 'Pulsanti di azione nel callout',
 			of: [{ type: 'cta' }],
 		}),
 	],

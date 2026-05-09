@@ -3,31 +3,35 @@ import { ImNewspaper } from 'react-icons/im'
 
 export default defineType({
 	name: 'blog-frontpage',
-	title: 'Blog frontpage',
+	title: 'Homepage blog',
 	icon: ImNewspaper,
 	type: 'object',
 	fields: [
 		defineField({
 			name: 'mainPost',
-			description: 'Choose which post to display as the main post',
+			title: 'Articolo principale',
+			description: 'Scegli quale articolo mostrare in evidenza nella parte superiore',
 			type: 'string',
 			options: {
 				list: [
-					{ title: 'Most recent post', value: 'recent' },
-					{ title: 'Featured post', value: 'featured' },
+					{ title: 'Articolo piu recente', value: 'recent' },
+					{ title: 'Articolo in evidenza', value: 'featured' },
 				],
 				layout: 'radio',
 			},
 		}),
 		defineField({
 			name: 'showFeaturedPostsFirst',
-			description: 'In the list below the main post',
+			title: 'Mostra prima gli articoli in evidenza',
+			description: "Nella lista sotto l'articolo principale",
 			type: 'boolean',
 			initialValue: true,
 		}),
 		defineField({
 			name: 'itemsPerPage',
+			title: 'Elementi per pagina',
 			type: 'number',
+			description: 'Numero di articoli mostrati per ogni pagina',
 			initialValue: 6,
 			validation: (Rule) => Rule.required().min(1),
 		}),

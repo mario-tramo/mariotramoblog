@@ -1,6 +1,5 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { TfiLayoutMediaLeft } from 'react-icons/tfi'
-import { reputationBlock } from '../misc/reputation'
 import { getBlockText } from '@/lib/utils'
 
 export default defineType({
@@ -8,34 +7,40 @@ export default defineType({
 	title: 'Hero (split)',
 	icon: TfiLayoutMediaLeft,
 	type: 'object',
-	groups: [{ name: 'content', default: true }, { name: 'asset' }],
+	groups: [{ name: 'content', title: 'Contenuto', default: true }, { name: 'asset', title: 'Risorsa' }],
 	fields: [
 		defineField({
 			name: 'pretitle',
+			title: 'Sopratitolo',
 			type: 'string',
+			description: 'Testo breve mostrato sopra il titolo principale',
 			group: 'content',
 		}),
 		defineField({
 			name: 'content',
+			title: 'Contenuto',
 			type: 'array',
-			of: [{ type: 'block' }, { type: 'custom-html' }, reputationBlock],
+			description: 'Testo principale della sezione hero',
+			of: [{ type: 'block' }, { type: 'custom-html' }],
 			group: 'content',
 		}),
 		defineField({
 			name: 'ctas',
-			title: 'Call-to-actions',
+			title: 'Call-to-action',
 			type: 'array',
+			description: 'Pulsanti di azione mostrati sotto il contenuto',
 			of: [{ type: 'cta' }],
 			group: 'content',
 		}),
 		defineField({
 			name: 'assets',
-			title: 'Assets',
+			title: 'Risorse',
 			type: 'array',
+			description: 'Immagine, codice o HTML mostrato accanto al contenuto (max 1)',
 			of: [
 				{ type: 'img' },
 				defineArrayMember({
-					title: 'Code block',
+					title: 'Blocco di codice',
 					type: 'code',
 					options: {
 						withFilename: true,
@@ -48,15 +53,17 @@ export default defineType({
 		}),
 		defineField({
 			name: 'assetOnRight',
+			title: 'Risorsa a destra',
 			type: 'boolean',
-			description: 'Display the asset to the right of the content on desktop',
+			description: 'Mostra la risorsa a destra del contenuto su desktop',
 			initialValue: false,
 			group: 'asset',
 		}),
 		defineField({
 			name: 'assetBelowContent',
+			title: 'Risorsa sotto il contenuto',
 			type: 'boolean',
-			description: 'Display the asset below the content on mobile',
+			description: 'Mostra la risorsa sotto il contenuto su mobile',
 			initialValue: false,
 			group: 'asset',
 		}),

@@ -5,35 +5,31 @@ import { VscFiles, VscServerProcess } from 'react-icons/vsc'
 export const structure = structureTool({
 	structure: (S) =>
 		S.list()
-			.title('Content')
+			.title('Contenuti')
 			.items([
-				singleton(S, 'site', 'Site settings').icon(VscServerProcess),
+				singleton(S, 'site', 'Impostazioni sito').icon(VscServerProcess),
 				S.divider(),
 
-				S.documentTypeListItem('page').title('All pages').icon(VscFiles),
-				// customize page directories
-				group(S, 'Directories', [
-					directory(S, 'docs', { maxLevel: 1 }).title('Docs'),
-					directory(S, 'docs/modules').title('Docs › Modules'),
+				S.documentTypeListItem('page').title('Tutte le pagine').icon(VscFiles),
+				// personalizza le directory delle pagine
+				group(S, 'Directory', [
+					directory(S, 'docs', { maxLevel: 1 }).title('Documentazione'),
+					directory(S, 'docs/modules').title('Documentazione › Moduli'),
 				]),
 
-				S.documentTypeListItem('global-module').title('Global modules'),
+				S.documentTypeListItem('global-module').title('Moduli globali'),
 				S.divider(),
 
-				S.documentTypeListItem('blog.post').title('Blog posts'),
-				S.documentTypeListItem('blog.category').title('Blog categories'),
+				S.documentTypeListItem('blog.post').title('Articoli blog'),
+				S.documentTypeListItem('blog.category').title('Categorie blog'),
 				S.divider(),
 
-				S.documentTypeListItem('navigation'),
-				S.documentTypeListItem('redirect').title('Redirects'),
+				S.documentTypeListItem('navigation').title('Navigazione'),
+				S.documentTypeListItem('redirect').title('Redirect'),
 
-				group(S, 'Miscellaneous', [
-					S.documentTypeListItem('announcement').title('Announcements'),
-					S.documentTypeListItem('logo').title('Logos'),
-					S.documentTypeListItem('person').title('People'),
-					S.documentTypeListItem('pricing').title('Pricing tiers'),
-					S.documentTypeListItem('reputation'),
-					S.documentTypeListItem('testimonial').title('Testimonials'),
+				group(S, 'Varie', [
+					S.documentTypeListItem('announcement').title('Annunci'),
+					S.documentTypeListItem('person').title('Persone'),
 				]),
 			]),
 })

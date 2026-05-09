@@ -4,34 +4,46 @@ import { getBlockText } from '@/lib/utils'
 
 export default defineType({
 	name: 'search-module',
-	title: 'Search module',
+	title: 'Ricerca',
 	icon: VscSearch,
 	type: 'object',
-	groups: [{ name: 'content', default: true }, { name: 'options' }],
+	groups: [{ name: 'content', title: 'Contenuto', default: true }, { name: 'options', title: 'Opzioni' }],
 	fields: [
 		defineField({
 			name: 'pretitle',
+			title: 'Sopratitolo',
 			type: 'string',
+			description: 'Testo breve mostrato sopra il titolo della sezione',
 			group: 'content',
 		}),
 		defineField({
 			name: 'intro',
+			title: 'Introduzione',
 			type: 'array',
+			description: 'Testo introduttivo mostrato sopra la barra di ricerca',
 			of: [{ type: 'block' }],
 			group: 'content',
 		}),
 		defineField({
 			name: 'ctas',
-			title: 'Call-to-actions',
+			title: 'Call-to-action',
 			type: 'array',
+			description: 'Pulsanti di azione della sezione',
 			of: [{ type: 'cta' }],
 			group: 'content',
 		}),
 		defineField({
 			name: 'scope',
+			title: 'Ambito di ricerca',
 			type: 'string',
+			description: 'Limita i risultati della ricerca a un tipo di contenuto specifico',
 			options: {
-				list: ['all', 'pages', 'path', 'blog posts'],
+				list: [
+					{ title: 'Tutto', value: 'all' },
+					{ title: 'Pagine', value: 'pages' },
+					{ title: 'Percorso specifico', value: 'path' },
+					{ title: 'Articoli blog', value: 'blog posts' },
+				],
 				layout: 'radio',
 			},
 			initialValue: 'all',
@@ -39,11 +51,12 @@ export default defineType({
 		}),
 		defineField({
 			name: 'path',
+			title: 'Percorso',
 			type: 'string',
-			description: 'Filter results to a specific path',
-			placeholder: 'e.g. docs/*',
+			description: 'Filtra i risultati a un percorso specifico',
+			placeholder: 'es. docs/*',
 			hidden: ({ parent }) => parent?.scope !== 'path',
-			validation: (Rule) => Rule.regex(/\*$/).error('Must end with a *'),
+			validation: (Rule) => Rule.regex(/\*$/).error('Deve terminare con *'),
 			group: 'options',
 		}),
 	],
@@ -54,7 +67,7 @@ export default defineType({
 		},
 		prepare: ({ intro, scope }) => ({
 			title: getBlockText(intro) || (scope && `Search ${scope}`),
-			subtitle: 'Search module',
+			subtitle: 'Ricerca',
 		}),
 	},
 })

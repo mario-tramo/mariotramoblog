@@ -5,27 +5,29 @@ import { count } from '@/lib/utils'
 
 export default defineType({
 	name: 'global-module',
-	title: 'Global module',
+	title: 'Modulo globale',
 	type: 'document',
 	icon: VscSymbolField,
 	fields: [
 		defineField({
 			name: 'path',
+			title: 'Percorso',
 			type: 'string',
 			description:
-				'URL path to add modules. Set to "*" for all pages. A trailing slash "/" excludes the parent path.',
-			placeholder: 'e.g. *, blog/, foo/bar/, etc.',
+				'Percorso URL per aggiungere moduli. Impostare "*" per tutte le pagine. Una barra finale "/" esclude il percorso principale.',
+			placeholder: 'es. *, blog/, foo/bar/, ecc.',
 			validation: (Rule) => Rule.regex(/^(\*|[a-z0-9-_/]+\/?)$/),
 		}),
 		defineField({
 			name: 'excludePaths',
+			title: 'Percorsi esclusi',
 			type: 'array',
 			description:
-				'URL paths to exclude modules from being added. A trailing slash "/" excludes the parent path.',
+				'Percorsi URL da escludere dall\'aggiunta dei moduli. Una barra finale "/" esclude il percorso principale.',
 			of: [
 				defineArrayMember({
 					type: 'string',
-					placeholder: 'e.g. blog/, foo/bar/, etc.',
+					placeholder: 'es. blog/, foo/bar/, ecc.',
 					validation: (Rule) => Rule.required(),
 				}),
 			],
@@ -33,12 +35,14 @@ export default defineType({
 		defineField({
 			...modules,
 			name: 'before',
-			description: 'Modules to add before the page content',
+			title: 'Prima',
+			description: 'Moduli da aggiungere prima del contenuto della pagina',
 		}),
 		defineField({
 			...modules,
 			name: 'after',
-			description: 'Modules to add after the page content',
+			title: 'Dopo',
+			description: 'Moduli da aggiungere dopo il contenuto della pagina',
 		}),
 	],
 	preview: {
@@ -49,7 +53,7 @@ export default defineType({
 		},
 		prepare: ({ path, before, after }) => ({
 			title: count([...(before ?? []), ...(after ?? [])], 'module'),
-			subtitle: path === '*' ? '* (All pages)' : path,
+			subtitle: path === '*' ? '* (Tutte le pagine)' : path,
 			media: path === '*' ? VscSymbolVariable : VscSymbolField,
 		}),
 	},

@@ -12,35 +12,38 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'source',
-			description: 'Redirect from',
-			placeholder: 'e.g. /old-path, /old-blog/:slug',
+			title: 'Origine',
+			description: 'Reindirizza da',
+			placeholder: 'es. /vecchio-percorso, /vecchio-blog/:slug',
 			type: 'string',
 			validation: (Rule) => Rule.required().regex(regex),
 		}),
 		defineField({
 			name: 'destination',
-			description: 'Redirect to',
+			title: 'Destinazione',
+			description: 'Reindirizza a',
 			type: 'link',
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'permanent',
+			title: 'Permanente',
 			type: 'boolean',
 			initialValue: true,
 			description: (
 				<>
 					<p>
-						If <code>true</code> will use the 308 status code which instructs
-						clients/search engines to cache the redirect forever, if{' '}
-						<code>false</code> will use the 307 status code which is temporary
-						and is not cached.
+						Se <code>true</code> utilizzerà il codice di stato 308 che indica
+						ai client/motori di ricerca di memorizzare il redirect per sempre, se{' '}
+						<code>false</code> utilizzerà il codice di stato 307 che è temporaneo
+						e non viene memorizzato nella cache.
 					</p>
 					<p>
 						<a
 							href="https://nextjs.org/docs/app/api-reference/next-config-js/redirects"
 							target="_blank"
 						>
-							Next.js redirects documentation
+							Documentazione redirect Next.js
 						</a>
 					</p>
 				</>
