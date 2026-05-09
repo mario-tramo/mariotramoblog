@@ -1,8 +1,75 @@
 import { structureTool } from 'sanity/structure'
-import { singleton, group, directory } from './lib/builders'
-import { VscFiles, VscServerProcess } from 'react-icons/vsc'
+import type { StructureBuilder, ListItemBuilder } from 'sanity/structure'
+import { Iframe } from 'sanity-plugin-iframe-pane'
+import { singleton } from './lib/builders'
+import { BLOG_DIR } from '@/lib/env'
+import { VscFiles, VscServerProcess, VscInfo } from 'react-icons/vsc'
+import { VscSymbolField } from 'react-icons/vsc'
+import { VscPin } from 'react-icons/vsc'
+import { PiFlowArrow } from 'react-icons/pi'
+import InfoBanner from './ui/InfoBanner'
+
+function documentTypeWithInfo(
+	S: StructureBuilder,
+	schemaType: string,
+	title: string,
+	icon: React.ComponentType,
+	info: { description: string; example: string },
+): ListItemBuilder {
+	return S.listItem()
+		.title(title)
+		.icon(icon)
+		.child(
+			S.list()
+				.title(title)
+				.items([
+					S.listItem()
+						.id(`${schemaType}-info`)
+						.title('Cos\u2019\u00e8?')
+						.icon(VscInfo)
+						.child(
+							S.component(InfoBanner)
+								.options({
+									title,
+									...info,
+								})
+								.title(title)
+								.id(`${schemaType}-info-view`),
+						),
+					S.documentTypeListItem(schemaType).title('Gestisci'),
+				]),
+		)
+}
+
+function resolvePreviewUrl(doc: Record<string, unknown>): string {
+	const slug = (doc?.metadata as Record<string, unknown>)?.slug as
+		| Record<string, unknown>
+		| undefined
+	const current = slug?.current as string | undefined
+	const type = doc?._type as string | undefined
+
+	if (type === 'blog.post' && current) return `/${BLOG_DIR}/${current}`
+	if (current === 'index') return '/'
+	if (current) return `/${current}`
+	return '/'
+}
 
 export const structure = structureTool({
+	defaultDocumentNode: (S, { schemaType }) => {
+		if (['page', 'blog.post'].includes(schemaType)) {
+			return S.document().views([
+				S.view.form(),
+				S.view
+					.component(Iframe)
+					.options({
+						url: (doc: Record<string, unknown>) => resolvePreviewUrl(doc),
+						reload: { button: true },
+					})
+					.title('Anteprima'),
+			])
+		}
+		return S.document()
+	},
 	structure: (S) =>
 		S.list()
 			.title('Contenuti')
@@ -10,26 +77,50 @@ export const structure = structureTool({
 				singleton(S, 'site', 'Impostazioni sito').icon(VscServerProcess),
 				S.divider(),
 
-				S.documentTypeListItem('page').title('Tutte le pagine').icon(VscFiles),
-				// personalizza le directory delle pagine
-				group(S, 'Directory', [
-					directory(S, 'docs', { maxLevel: 1 }).title('Documentazione'),
-					directory(S, 'docs/modules').title('Documentazione › Moduli'),
-				]),
-
-				S.documentTypeListItem('global-module').title('Moduli globali'),
+				S.documentTypeListItem('page').title('Pagine').icon(VscFiles),
+				S.documentTypeListItem('blog.post').title('Articoli'),
+				S.documentTypeListItem('blog.category').title('Categorie'),
 				S.divider(),
 
-				S.documentTypeListItem('blog.post').title('Articoli blog'),
-				S.documentTypeListItem('blog.category').title('Categorie blog'),
-				S.divider(),
+				documentTypeWithInfo(
+					S,
+					'redirect',
+					'Redirect',
+					PiFlowArrow,
+					{
+						description:
+							'I redirect permettono di reindirizzare automaticamente un vecchio URL verso uno nuovo. Utile quando cambi lo slug di una pagina o un articolo e non vuoi perdere il traffico dal vecchio link.',
+						example:
+							'/vecchio-articolo → /blog/nuovo-articolo — chi visita il vecchio URL viene portato automaticamente a quello nuovo, senza errori 404.',
+					},
+				),
 
-				S.documentTypeListItem('navigation').title('Navigazione'),
-				S.documentTypeListItem('redirect').title('Redirect'),
+				documentTypeWithInfo(
+					S,
+					'global-module',
+					'Moduli globali',
+					VscSymbolField,
+					{
+						description:
+							'I moduli globali iniettano contenuti (hero, breadcrumb, banner, ecc.) prima o dopo il contenuto di tutte le pagine che corrispondono a un certo percorso. Così non devi aggiungere lo stesso modulo manualmente a ogni pagina.',
+						example:
+							'Percorso "blog/" con un modulo Breadcrumb nel campo "Prima" → tutte le pagine sotto /blog/ mostreranno automaticamente il breadcrumb sopra al contenuto.',
+					},
+				),
 
-				group(S, 'Varie', [
-					S.documentTypeListItem('announcement').title('Annunci'),
-					S.documentTypeListItem('person').title('Persone'),
-				]),
+				documentTypeWithInfo(
+					S,
+					'announcement',
+					'Annunci',
+					VscPin,
+					{
+						description:
+							'Gli annunci sono banner che compaiono in cima al sito. Puoi programmarli con data di inizio e fine, e aggiungere un link. Perfetti per promozioni, avvisi importanti o novità temporanee.',
+						example:
+							'"Nuovo articolo: Guida tattica al 4-3-3" con link all\'articolo, visibile dal 10 maggio al 20 maggio.',
+					},
+				),
+
+				S.documentTypeListItem('person').title('Autori'),
 			]),
 })

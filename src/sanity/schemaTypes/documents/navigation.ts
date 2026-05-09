@@ -5,22 +5,24 @@ import { count } from '@/lib/utils'
 
 export default defineType({
 	name: 'navigation',
-	title: 'Navigazione',
+	title: 'Menu',
 	icon: VscMap,
 	type: 'document',
 	fields: [
 		defineField({
 			name: 'title',
-			title: 'Nome',
+			title: 'Nome del menu',
 			type: 'string',
-			description: 'Nome identificativo del menu (es. "Menu principale", "Menu footer")',
+			description:
+				'Nome identificativo (es. "Menu Header", "Menu Footer", "Social")',
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'items',
 			title: 'Voci del menu',
 			type: 'array',
-			description: 'Link e gruppi di link che compongono questo menu',
+			description:
+				'Link singoli o gruppi di link. Per il footer, usa "Gruppo di link" per creare le colonne (es. Esplora, Competizioni, ecc.)',
 			of: [{ type: 'link' }, { type: 'link.list' }],
 		}),
 	],
@@ -30,11 +32,11 @@ export default defineType({
 			items: 'items',
 		},
 		prepare: ({ title, items }) => {
-			const t = title.toLowerCase()
+			const t = title?.toLowerCase() || ''
 
 			return {
 				title,
-				subtitle: count(items),
+				subtitle: count(items, 'voce', 'voci'),
 				media: t.includes('social')
 					? IoShareSocialOutline
 					: t.includes('header')

@@ -1,7 +1,6 @@
 import { getSite } from '@/sanity/lib/queries'
 import Navigation from './Navigation'
 import Social from '@/ui/Social'
-import LanguageSwitcher from '@/ui/LanguageSwitcher'
 import { PortableText } from 'next-sanity'
 import Link from 'next/link'
 import { Img } from '@/ui/Img'
@@ -10,9 +9,10 @@ export default async function Footer() {
 	const { title, blurb, logo, copyright } = await getSite()
 
 	return (
-		<footer className="bg-ink text-canvas" role="contentinfo">
-			<div className="section flex flex-wrap justify-between gap-x-12 gap-y-8 max-sm:flex-col">
-				<div className="flex flex-col gap-3 self-stretch">
+		<footer className="bg-surface text-ink" role="contentinfo">
+			<div className="section flex flex-wrap gap-x-12 gap-y-8 max-lg:flex-col">
+				{/* Left column: Logo + blurb + social */}
+				<div className="flex flex-col gap-3">
 					<Link className="h3 md:h2 max-w-max" href="/">
 						{logo ? (
 							<Img
@@ -21,26 +21,27 @@ export default async function Footer() {
 								alt={title}
 							/>
 						) : (
-							title
+							<span className="text-gradient font-extrabold tracking-tight">
+								{title}
+							</span>
 						)}
 					</Link>
 
 					{blurb && (
-						<div className="max-w-sm text-sm text-balance">
+						<div className="max-w-sm text-sm text-muted">
 							<PortableText value={blurb} />
 						</div>
 					)}
 
-					<Social className="mb-auto -ml-2" />
-
-					<LanguageSwitcher className="mt-4 max-w-max" />
+					<Social className="-ml-2" />
 				</div>
 
+				{/* Navigation columns */}
 				<Navigation />
 			</div>
 
 			{copyright && (
-				<div className="border-canvas/20 mx-auto flex max-w-screen-xl flex-wrap justify-center gap-x-6 gap-y-2 border-t p-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-sm [&_a:hover]:underline">
+				<div className="border-ink/10 mx-auto flex max-w-screen-xl flex-wrap justify-center gap-x-6 gap-y-2 border-t p-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-sm text-muted [&_a:hover]:underline">
 					<PortableText value={copyright} />
 				</div>
 			)}

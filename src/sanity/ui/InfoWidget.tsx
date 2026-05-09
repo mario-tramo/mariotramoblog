@@ -25,7 +25,7 @@ export function InfoWidget({
 								gap={4}
 							>
 								<Flex align="center" gap={2}>
-									🖤 SanityPress
+									SanityPress
 									{version && <Code size={1}>{`v${version}`}</Code>}
 								</Flex>
 

@@ -6,24 +6,19 @@ declare global {
 		// documents
 
 		interface Site extends SanityDocument {
-			// branding
 			title: string
-			blurb?: any
 			logo?: Image
-			// info
-			announcements?: Announcement[]
+			blurb?: any
 			copyright?: any
 			ogimage?: string
-			// navigation
+			// header
+			headerLinks?: (Link | LinkList)[]
 			ctas?: CTA[]
-			headerMenu?: Navigation
-			footerMenu?: Navigation
-			social?: Navigation
-		}
-
-		interface Navigation extends SanityDocument {
-			title: string
-			items?: (Link | LinkList)[]
+			// footer
+			footerLinks?: LinkList[]
+			socialLinks?: Link[]
+			// misc
+			announcements?: Announcement[]
 		}
 
 		// pages

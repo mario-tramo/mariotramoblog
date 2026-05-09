@@ -2,9 +2,13 @@
 @import './fonts.css';
 
 @theme {
-	--color-canvas: #fff;
-	--color-ink: #000;
-	--color-accent: #000;
+	--color-canvas: #0a0f1a;
+	--color-ink: #ffffff;
+	--color-accent: #00d4ff;
+
+	--color-surface: #111827;
+	--color-surface-light: #1a2332;
+	--color-muted: #8899aa;
 
 	--max-height-fold: calc(100svh - var(--header-height));
 }
@@ -170,7 +174,7 @@
 }
 
 @utility text-gradient {
-	@apply from-accent/3 to-accent bg-linear-to-br bg-clip-text text-transparent;
+	@apply from-accent to-accent/70 bg-linear-to-br bg-clip-text text-transparent;
 }
 
 /* ctas, links */
@@ -186,15 +190,15 @@
 }
 
 @utility action {
-	@apply action-base bg-accent rounded border border-transparent text-balance text-white;
+	@apply action-base bg-accent rounded border border-transparent text-balance text-canvas;
 }
 
 @utility action-outline {
-	@apply action-base border-accent/10 bg-canvas/50 rounded border text-balance;
+	@apply action-base border-accent/40 rounded border text-balance text-accent hover:bg-accent/10;
 }
 
 @utility ghost {
-	@apply action-base frosted-glass hover:bg-accent/3 rounded;
+	@apply action-base rounded text-white/60 hover:text-white hover:bg-white/5;
 }
 
 @utility link {

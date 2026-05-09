@@ -12,15 +12,6 @@ export const LINK_QUERY = groq`
 	}
 `
 
-const NAVIGATION_QUERY = groq`
-	title,
-	items[]{
-		${LINK_QUERY},
-		link{ ${LINK_QUERY} },
-		links[]{ ${LINK_QUERY} }
-	}
-`
-
 export const IMAGE_QUERY = groq`
 	...,
 	'lqip': @.asset->metadata.lqip
@@ -94,12 +85,19 @@ export const TRANSLATIONS_QUERY = groq`
 export async function getSite() {
 	const site = await fetchSanityLive<Sanity.Site>({
 		query: groq`
-			*[_type == 'site'][0]{
+			*[_id == 'site'][0]{
 				...,
+				headerLinks[]{
+					${LINK_QUERY},
+					link{ ${LINK_QUERY} },
+					links[]{ ${LINK_QUERY} }
+				},
 				ctas[]{ ${CTA_QUERY} },
-				headerMenu->{ ${NAVIGATION_QUERY} },
-				footerMenu->{ ${NAVIGATION_QUERY} },
-				social->{ ${NAVIGATION_QUERY} },
+				footerLinks[]{
+					link{ ${LINK_QUERY} },
+					links[]{ ${LINK_QUERY} }
+				},
+				socialLinks[]{ ${LINK_QUERY} },
 				'ogimage': ogimage.asset->url
 			}
 		`,

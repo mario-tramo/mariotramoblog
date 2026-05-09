@@ -4,24 +4,23 @@ import LinkList from './LinkList'
 import { cn } from '@/lib/utils'
 
 export default async function Menu() {
-	const { headerMenu } = await getSite()
+	const { headerLinks } = await getSite()
 
-	const parentClassName = cn('md:px-3 md:text-center md:leading-tight')
+	const linkClassName = cn(
+		'text-[13px] font-medium text-white/60 hover:text-white transition-colors',
+	)
 
 	return (
 		<nav
-			className="max-md:anim-fade-to-r max-md:header-closed:hidden flex gap-y-2 [grid-area:nav] max-md:my-4 max-md:flex-col md:justify-center"
+			className="max-md:anim-fade-to-r max-md:header-closed:hidden flex items-center gap-1 [grid-area:nav] max-md:my-4 max-md:flex-col max-md:items-start md:justify-center"
 			role="navigation"
 		>
-			{headerMenu?.items?.map((item, key) => {
+			{headerLinks?.map((item, key) => {
 				switch (item._type) {
 					case 'link':
 						return (
 							<CTA
-								className={cn(
-									parentClassName,
-									'hover:link md:grid md:place-content-center',
-								)}
+								className={cn(linkClassName, 'px-3 py-2')}
 								link={item}
 								key={key}
 							/>
@@ -30,7 +29,7 @@ export default async function Menu() {
 					case 'link.list':
 						return (
 							<LinkList
-								summaryClassName={parentClassName}
+								summaryClassName={cn(linkClassName, 'px-3 py-2')}
 								{...item}
 								key={key}
 							/>

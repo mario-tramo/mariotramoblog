@@ -1,17 +1,11 @@
 'use client'
 
-import pkg from './package.json'
 import { defineConfig } from 'sanity'
 import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
 import { structure } from './src/sanity/structure'
 import { presentation } from './src/sanity/presentation'
 import { icon } from '@/sanity/ui/Icon'
-import { InfoWidget } from '@/sanity/ui/InfoWidget'
-import {
-	dashboardTool,
-	projectInfoWidget,
-	projectUsersWidget,
-} from '@sanity/dashboard'
+import { dashboardTool } from '@sanity/dashboard'
 import { vercelWidget } from 'sanity-plugin-dashboard-widget-vercel'
 import { visionTool } from '@sanity/vision'
 import { codeInput } from '@sanity/code-input'
@@ -36,15 +30,6 @@ export default defineConfig({
 			name: 'deployment',
 			title: 'Deployment',
 			widgets: [vercelWidget()],
-		}),
-		dashboardTool({
-			name: 'info',
-			title: 'Info',
-			widgets: [
-				projectInfoWidget(),
-				projectUsersWidget(),
-				InfoWidget({ version: pkg.version }),
-			],
 		}),
 		visionTool({ defaultApiVersion: apiVersion }),
 		codeInput(),

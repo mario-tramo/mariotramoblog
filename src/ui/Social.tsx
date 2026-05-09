@@ -15,29 +15,21 @@ import { IoIosLink } from 'react-icons/io'
 import type { ComponentProps } from 'react'
 
 export default async function Social({ className }: ComponentProps<'div'>) {
-	const { social } = await getSite()
+	const { socialLinks } = await getSite()
 
-	if (!social?.items?.length) return null
+	if (!socialLinks?.length) return null
 
 	return (
 		<nav className={cn('group flex flex-wrap items-center', className)}>
-			{social.items.map((item, key) => {
-				switch (item._type) {
-					case 'link':
-						return (
-							<CTA
-								className="px-2 py-1 group-has-[a:hover]:opacity-50 hover:!opacity-100"
-								link={item}
-								key={key}
-							>
-								<Icon url={item.external} aria-label={item.label} />
-							</CTA>
-						)
-
-					default:
-						return null
-				}
-			})}
+			{socialLinks.map((item, key) => (
+				<CTA
+					className="px-2 py-1 group-has-[a:hover]:opacity-50 hover:!opacity-100"
+					link={item}
+					key={key}
+				>
+					<Icon url={item.external} aria-label={item.label} />
+				</CTA>
+			))}
 		</nav>
 	)
 }
