@@ -23,7 +23,7 @@ export default function Category({
 		<Link
 			href={{
 				pathname: `/${BLOG_DIR}`,
-				query: { category: value?.slug.current },
+				query: { category: value?.slug?.current },
 			}}
 			{...props}
 		/>

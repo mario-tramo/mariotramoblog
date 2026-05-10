@@ -102,7 +102,7 @@ async function getPost(params: Params) {
 				+ *[_type == 'global-module' && path == '${BLOG_DIR}/'].after[]{ ${MODULES_QUERY} }
 				// global modules (after)
 				+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
-			),
+			)[defined(_type)],
 			${TRANSLATIONS_QUERY},
 		}`,
 		params: { slug },

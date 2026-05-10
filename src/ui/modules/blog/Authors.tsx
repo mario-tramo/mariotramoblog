@@ -64,7 +64,7 @@ function Author({
 				<Link
 					href={{
 						pathname: `/${BLOG_DIR}`,
-						query: { author: author?.slug.current },
+						query: { author: author?.slug?.current },
 					}}
 					{...props}
 				/>
