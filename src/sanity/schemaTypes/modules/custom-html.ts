@@ -23,14 +23,14 @@ export default defineType({
 			name: 'className',
 			title: 'Classe CSS',
 			type: 'string',
-			description: 'Classe CSS personalizzata da applicare al contenitore',
+			description: 'Classe CSS personalizzata da applicare al contenitore (solo per sviluppatori)',
 			group: 'options',
 		}),
 		defineField({
 			name: 'html',
-			title: 'HTML',
+			title: 'Codice HTML',
 			type: 'code',
-			description: 'Codice HTML personalizzato',
+			description: '⚠️ Attenzione: inserisci solo codice HTML di cui sei sicuro. Codice errato potrebbe rompere la pagina.',
 			options: {
 				language: 'html',
 				languageAlternatives: [{ title: 'HTML', value: 'html' }],
@@ -39,9 +39,9 @@ export default defineType({
 		}),
 		defineField({
 			name: 'css',
-			title: 'CSS',
+			title: 'Stili CSS',
 			type: 'code',
-			description: 'Stili CSS personalizzati',
+			description: 'Stili CSS personalizzati applicati solo a questo blocco',
 			options: {
 				language: 'css',
 				languageAlternatives: [{ title: 'CSS', value: 'css' }],

@@ -24,13 +24,15 @@ export default defineType({
 				admonition,
 				{ type: 'custom-html' },
 			],
+			validation: (Rule) => Rule.required().min(1).error('Il contenuto è obbligatorio'),
 			group: 'content',
 		}),
 		defineField({
 			name: 'lastUpdated',
 			title: 'Ultimo aggiornamento',
-			description: 'Data dell\'ultimo aggiornamento di questa pagina',
+			description: 'Data dell\'ultimo aggiornamento di questa pagina (mostrata in fondo al testo)',
 			type: 'date',
+			validation: (Rule) => Rule.required().error('Inserisci la data di aggiornamento'),
 			group: 'content',
 		}),
 		defineField({

@@ -12,15 +12,15 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'hidden',
-			title: 'Nascosto',
+			title: 'Nascondi modulo',
 			type: 'boolean',
-			description: 'Nascondi il modulo dalla pagina',
+			description: 'Se attivo, questo modulo non sarà visibile sul sito (utile per nasconderlo temporaneamente)',
 			initialValue: false,
 		}),
 		defineField({
 			name: 'uid',
-			title: 'Identificativo univoco',
-			description: 'Utilizzato per link di ancoraggio (attributo HTML `id`).',
+			title: 'Identificativo sezione',
+			description: 'Permette di creare link diretti a questa sezione (es. /pagina#identificativo). Solo lettere, numeri e trattini.',
 			type: 'string',
 			validation: (Rule) =>
 				Rule.regex(/^[a-zA-Z0-9-]+$/g).error(

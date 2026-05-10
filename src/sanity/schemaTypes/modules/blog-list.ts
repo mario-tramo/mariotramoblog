@@ -52,7 +52,8 @@ export default defineType({
 		}),
 		defineField({
 			name: 'showFeaturedPostsFirst',
-			title: 'Mostra prima i post in evidenza',
+			title: 'Articoli in evidenza prima',
+			description: 'Mostra gli articoli marcati "In evidenza" in cima alla lista',
 			type: 'boolean',
 			initialValue: true,
 			group: 'filtering',
@@ -89,8 +90,8 @@ export default defineType({
 			intro: 'intro',
 		},
 		prepare: ({ intro }) => ({
-			title: getBlockText(intro),
-			subtitle: 'Blog list',
+			title: getBlockText(intro) || 'Lista articoli',
+			subtitle: 'Lista articoli blog',
 		}),
 	},
 })

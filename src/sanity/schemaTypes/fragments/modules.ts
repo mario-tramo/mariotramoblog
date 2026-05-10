@@ -2,6 +2,7 @@ import { defineField } from 'sanity'
 
 export default defineField({
 	name: 'modules',
+	title: 'Sezioni della pagina',
 	description: 'Contenuto della pagina',
 	type: 'array',
 	of: [

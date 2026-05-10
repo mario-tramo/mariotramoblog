@@ -53,10 +53,10 @@ export default defineType({
 		}),
 		defineField({
 			name: 'params',
-			title: 'Parametri URL',
-			placeholder: 'es. #jump-link o ?foo=bar',
+			title: 'Ancora o parametri',
+			placeholder: 'es. #sezione o ?filtro=valore',
 			type: 'string',
-			description: 'Parametri aggiuntivi URL (es. #sezione o ?filtro=valore)',
+			description: 'Opzionale. Aggiunge un\'ancora (#sezione) o parametri (?chiave=valore) all\'URL',
 			hidden: ({ parent }) => parent?.type !== 'internal',
 		}),
 	],

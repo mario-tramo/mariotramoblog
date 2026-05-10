@@ -12,14 +12,15 @@ export default defineType({
 			name: 'link',
 			title: 'Link principale',
 			type: 'link',
-			description: 'Link principale del gruppo (usato come intestazione)',
+			description: 'Intestazione del gruppo, cliccabile come link (facoltativo)',
 		}),
 		defineField({
 			name: 'links',
 			title: 'Sotto-link',
 			type: 'array',
-			description: 'Lista di link secondari sotto il link principale',
+			description: 'Voci del gruppo mostrate sotto l\'intestazione',
 			of: [{ type: 'link' }],
+			validation: (Rule) => Rule.required().min(1).error('Aggiungi almeno un link al gruppo'),
 		}),
 	],
 	preview: {

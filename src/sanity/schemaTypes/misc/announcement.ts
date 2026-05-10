@@ -11,34 +11,35 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'content',
-			title: 'Contenuto',
+			title: 'Testo dell\'annuncio',
 			type: 'array',
-			description: "Testo dell'annuncio mostrato in cima al sito",
+			description: "Testo mostrato nella barra in cima al sito",
 			of: [
 				{
 					type: 'block',
 					styles: [{ title: 'Normale', value: 'normal' }],
 				},
 			],
+			validation: (Rule) => Rule.required().error('Il testo dell\'annuncio è obbligatorio'),
 		}),
 		defineField({
 			name: 'cta',
-			title: 'Call-to-action',
+			title: 'Pulsante',
 			type: 'link',
-			description: "Link o pulsante collegato all'annuncio",
+			description: "Link o pulsante collegato all'annuncio (facoltativo)",
 		}),
 		defineField({
 			name: 'start',
-			title: 'Inizio',
+			title: 'Mostra dal',
 			type: 'datetime',
-			description: 'Data e ora di inizio visualizzazione',
+			description: 'Data e ora da cui iniziare a mostrare l\'annuncio (lascia vuoto per mostrarlo subito)',
 			fieldset: 'schedule',
 		}),
 		defineField({
 			name: 'end',
-			title: 'Fine',
+			title: 'Nascondi dal',
 			type: 'datetime',
-			description: 'Data e ora di fine visualizzazione',
+			description: 'Data e ora dopo cui nascondere l\'annuncio (lascia vuoto per non scadere mai)',
 			fieldset: 'schedule',
 		}),
 	],

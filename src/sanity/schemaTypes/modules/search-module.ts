@@ -36,13 +36,13 @@ export default defineType({
 			name: 'scope',
 			title: 'Ambito di ricerca',
 			type: 'string',
-			description: 'Limita i risultati della ricerca a un tipo di contenuto specifico',
+			description: 'Scegli su quali contenuti del sito deve funzionare la ricerca',
 			options: {
 				list: [
-					{ title: 'Tutto', value: 'all' },
-					{ title: 'Pagine', value: 'pages' },
+					{ title: 'Tutto il sito', value: 'all' },
+					{ title: 'Solo pagine', value: 'pages' },
 					{ title: 'Percorso specifico', value: 'path' },
-					{ title: 'Articoli blog', value: 'blog posts' },
+					{ title: 'Solo articoli blog', value: 'blog posts' },
 				],
 				layout: 'radio',
 			},
@@ -51,12 +51,12 @@ export default defineType({
 		}),
 		defineField({
 			name: 'path',
-			title: 'Percorso',
+			title: 'Percorso da cercare',
 			type: 'string',
-			description: 'Filtra i risultati a un percorso specifico',
+			description: 'Limita la ricerca a un percorso specifico (es. docs/* cerca solo nella sezione docs)',
 			placeholder: 'es. docs/*',
 			hidden: ({ parent }) => parent?.scope !== 'path',
-			validation: (Rule) => Rule.regex(/\*$/).error('Deve terminare con *'),
+			validation: (Rule) => Rule.regex(/\*$/).error('Deve terminare con * (es. docs/*)'),
 			group: 'options',
 		}),
 	],
@@ -65,9 +65,17 @@ export default defineType({
 			intro: 'intro',
 			scope: 'scope',
 		},
-		prepare: ({ intro, scope }) => ({
-			title: getBlockText(intro) || (scope && `Search ${scope}`),
-			subtitle: 'Ricerca',
-		}),
+		prepare: ({ intro, scope }) => {
+			const scopeLabels: Record<string, string> = {
+				all: 'tutto il sito',
+				pages: 'solo pagine',
+				path: 'percorso specifico',
+				'blog posts': 'solo articoli blog',
+			}
+			return {
+				title: getBlockText(intro) || 'Ricerca',
+				subtitle: scope ? `Cerca in: ${scopeLabels[scope] ?? scope}` : 'Ricerca',
+			}
+		},
 	},
 })

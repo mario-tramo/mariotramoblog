@@ -16,15 +16,15 @@ export default defineType({
 		}),
 		defineField({
 			name: 'style',
-			title: 'Stile',
+			title: 'Stile del pulsante',
 			type: 'string',
-			description: 'Stile visivo del pulsante',
+			description: 'Aspetto visivo del pulsante',
 			options: {
 				list: [
-					'action',
+					{ title: 'Pieno (principale)', value: 'action' },
 					{ title: 'Contorno', value: 'action-outline' },
-					'ghost',
-					'link',
+					{ title: 'Fantasma', value: 'ghost' },
+					{ title: 'Solo testo', value: 'link' },
 				],
 			},
 		}),

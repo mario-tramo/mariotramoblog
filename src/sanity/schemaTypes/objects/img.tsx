@@ -13,6 +13,8 @@ const presets: Preset[] = [
 	{ title: 'Modalita scura', value: '(prefers-color-scheme: dark)' },
 ]
 
+const sizePresets = presets.map((p) => getPreset(p)).join(', ')
+
 export default defineType({
 	name: 'img',
 	title: 'Immagine',
@@ -29,12 +31,13 @@ export default defineType({
 				hotspot: true,
 				metadata: ['lqip'],
 			},
+			validation: (Rule) => Rule.required().error("L'immagine predefinita è obbligatoria"),
 		}),
 		defineField({
 			name: 'responsive',
 			title: 'Immagini responsive',
 			type: 'array',
-			description: 'Immagini alternative per diverse dimensioni di schermo',
+			description: 'Immagini alternative per schermi piccoli o modalità scura (facoltativo)',
 			of: [
 				defineArrayMember({
 					type: 'object',
@@ -42,7 +45,9 @@ export default defineType({
 					fields: [
 						defineField({
 							name: 'image',
+							title: 'Immagine alternativa',
 							type: 'image',
+							description: "Immagine da mostrare quando la condizione è soddisfatta",
 							options: {
 								hotspot: true,
 							},
@@ -50,9 +55,10 @@ export default defineType({
 						}),
 						defineField({
 							name: 'media',
-							title: 'Media query (condizione)',
+							title: 'Condizione di visualizzazione',
 							type: 'string',
-							placeholder: `e.g. ${presets.map((p) => getPreset(p)).join(', ')}`,
+							description: 'Quando usare questa immagine (es. su mobile, in modalità scura)',
+							placeholder: `es. ${sizePresets}`,
 							validation: (Rule) => Rule.required(),
 							initialValue: getPreset(presets[0]),
 							components: {
@@ -79,16 +85,19 @@ export default defineType({
 			name: 'alt',
 			title: 'Testo alternativo',
 			type: 'string',
-			description: "Descrizione dell'immagine per accessibilita e SEO",
+			description: "Descrizione dell'immagine per accessibilità e SEO (es. \"Foto di Mario Rossi\")",
 			fieldset: 'options',
 		}),
 		defineField({
 			name: 'loading',
 			title: 'Caricamento',
 			type: 'string',
-			description: 'lazy = carica quando visibile, eager = carica subito',
+			description: 'Lazy: carica solo quando visibile (consigliato). Eager: carica subito.',
 			options: {
-				list: ['lazy', 'eager'],
+				list: [
+					{ title: 'Lazy (consigliato)', value: 'lazy' },
+					{ title: 'Eager (carica subito)', value: 'eager' },
+				],
 				layout: 'radio',
 			},
 			initialValue: 'lazy',
@@ -103,13 +112,13 @@ export default defineType({
 			loading: 'loading',
 		},
 		prepare: ({ image, responsive, alt, loading = 'lazy' }) => ({
-			title: alt,
+			title: alt || 'Immagine',
 			subtitle: [
-				responsive && count(responsive, 'responsive image'),
-				loading && `loading="${loading}"`,
+				responsive && count(responsive, 'variante responsive', 'varianti responsive'),
+				loading && `caricamento: ${loading}`,
 			]
 				.filter(Boolean)
-				.join(', '),
+				.join(' · '),
 			media: image,
 		}),
 	},

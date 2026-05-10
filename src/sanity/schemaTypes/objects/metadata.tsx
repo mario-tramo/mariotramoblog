@@ -13,7 +13,7 @@ export default defineType({
 			name: 'slug',
 			title: 'Percorso URL',
 			type: 'slug',
-			description: 'Percorso URL della pagina (es. /chi-siamo). Generato automaticamente dal titolo.',
+			description: 'Indirizzo della pagina sul sito (es. /chi-siamo). Clicca "Genera" per crearlo automaticamente dal titolo.',
 			options: {
 				source: (doc: any) => doc.title || doc.metadata.title,
 			},
@@ -47,8 +47,8 @@ export default defineType({
 		}),
 		defineField({
 			name: 'image',
-			title: 'Immagine',
-			description: 'Utilizzata per le anteprime di condivisione social',
+			title: 'Immagine di condivisione',
+			description: 'Immagine mostrata quando condividi il link su WhatsApp, Facebook, Twitter ecc. Dimensione consigliata: 1200x630px.',
 			type: 'image',
 			options: {
 				hotspot: true,
@@ -57,8 +57,8 @@ export default defineType({
 		}),
 		defineField({
 			name: 'noIndex',
-			title: 'Non indicizzare',
-			description: 'Impedisci ai motori di ricerca di indicizzare questa pagina',
+			title: 'Nascondi dai motori di ricerca',
+			description: 'Se attivo, Google e altri motori di ricerca non indicizzeranno questa pagina. Usalo per pagine private o in costruzione.',
 			type: 'boolean',
 			initialValue: false,
 		}),

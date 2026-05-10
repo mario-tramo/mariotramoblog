@@ -18,12 +18,15 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'title',
+			title: 'Titolo pagina',
+			description: 'Nome interno della pagina (non visibile sul sito, usato per identificarla nel CMS)',
 			type: 'string',
 			group: 'content',
 			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			...modules,
+			description: 'Sezioni che compongono la pagina. Aggiungile, riordinale o nascondile.',
 			group: 'content',
 		}),
 		defineField({

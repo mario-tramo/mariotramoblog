@@ -13,15 +13,15 @@ export default defineType({
 		defineField({
 			name: 'source',
 			title: 'Origine',
-			description: 'Reindirizza da',
+			description: 'Percorso da cui reindirizzare (es. /vecchio-percorso). Deve iniziare con / oppure http',
 			placeholder: 'es. /vecchio-percorso, /vecchio-blog/:slug',
 			type: 'string',
-			validation: (Rule) => Rule.required().regex(regex),
+			validation: (Rule) => Rule.required().regex(regex).error('Deve iniziare con / oppure http'),
 		}),
 		defineField({
 			name: 'destination',
 			title: 'Destinazione',
-			description: 'Reindirizza a',
+			description: 'Pagina o URL verso cui reindirizzare',
 			type: 'link',
 			validation: (Rule) => Rule.required(),
 		}),
@@ -33,18 +33,12 @@ export default defineType({
 			description: (
 				<>
 					<p>
-						Se <code>true</code> utilizzerà il codice di stato 308 che indica
-						ai client/motori di ricerca di memorizzare il redirect per sempre, se{' '}
-						<code>false</code> utilizzerà il codice di stato 307 che è temporaneo
-						e non viene memorizzato nella cache.
+						<strong>Attivo (consigliato)</strong>: redirect permanente (308). I motori di ricerca
+						aggiornano i loro indici e i browser lo memorizzano.
 					</p>
 					<p>
-						<a
-							href="https://nextjs.org/docs/app/api-reference/next-config-js/redirects"
-							target="_blank"
-						>
-							Documentazione redirect Next.js
-						</a>
+						<strong>Disattivo</strong>: redirect temporaneo (307). Non viene memorizzato.
+						Usalo solo se il vecchio URL tornerà attivo in futuro.
 					</p>
 				</>
 			),

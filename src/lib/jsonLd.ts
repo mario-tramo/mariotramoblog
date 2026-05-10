@@ -7,6 +7,14 @@ export function websiteJsonLd(siteTitle: string, description?: string) {
 		name: siteTitle,
 		url: BASE_URL,
 		...(description && { description }),
+		potentialAction: {
+			'@type': 'SearchAction',
+			target: {
+				'@type': 'EntryPoint',
+				urlTemplate: `${BASE_URL}/blog?q={search_term_string}`,
+			},
+			'query-input': 'required name=search_term_string',
+		},
 	}
 }
 
@@ -22,7 +30,7 @@ export function blogPostingJsonLd(
 		description: post.metadata.description,
 		url,
 		datePublished: post.publishDate,
-		...(post.publishDate && { dateModified: post.publishDate }),
+		dateModified: post._updatedAt || post.publishDate,
 		...(post.metadata.image && {
 			image: post.ogimage || post.metadata.image,
 		}),

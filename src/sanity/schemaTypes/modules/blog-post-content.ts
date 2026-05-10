@@ -11,7 +11,7 @@ export default defineType({
 			name: 'options',
 			title: 'Opzioni modulo',
 			type: 'module-options',
-			description: 'Impostazioni generali del modulo (visibilita, ancoraggio)',
+			description: 'Impostazioni generali del modulo (visibilità, ancoraggio)',
 		}),
 	],
 	preview: {
@@ -20,7 +20,7 @@ export default defineType({
 		},
 		prepare: ({ uid }) => ({
 			title: 'Contenuto articolo',
-			subtitle: uid && `#${uid}`,
+			subtitle: uid ? `#${uid}` : 'Mostra il corpo dell\'articolo blog',
 		}),
 	},
 })

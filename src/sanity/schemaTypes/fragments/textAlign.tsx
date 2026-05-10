@@ -10,6 +10,7 @@ import {
 export default defineField({
 	name: 'textAlign',
 	title: 'Allineamento testo',
+	description: 'Come allineare il testo nella sezione',
 	type: 'string',
 	components: {
 		input: (props) => (

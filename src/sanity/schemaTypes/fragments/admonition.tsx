@@ -10,9 +10,9 @@ export default defineArrayMember({
 	fields: [
 		defineField({
 			name: 'tone',
-			title: 'Tono',
+			title: 'Tipo di avviso',
 			type: 'string',
-			description: 'Tipo di avviso da mostrare',
+			description: 'Colore e icona dell\'avviso',
 			options: {
 				list: [
 					{ title: '🔵 Nota', value: 'note' },
@@ -28,14 +28,15 @@ export default defineArrayMember({
 			name: 'title',
 			title: 'Titolo',
 			type: 'string',
-			description: "Titolo dell'avviso",
+			description: "Titolo dell'avviso (facoltativo)",
 		}),
 		defineField({
 			name: 'content',
-			title: 'Contenuto',
+			title: 'Testo',
 			type: 'array',
-			description: "Testo del corpo dell'avviso",
+			description: "Contenuto dell'avviso",
 			of: [{ type: 'block' }],
+			validation: (Rule) => Rule.required().error('Il testo dell\'avviso è obbligatorio'),
 		}),
 	],
 	preview: {

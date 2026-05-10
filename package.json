@@ -54,6 +54,7 @@
     "build": "next build --webpack",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed:legal": "node scripts/seed-legal.mjs"
   }
 }

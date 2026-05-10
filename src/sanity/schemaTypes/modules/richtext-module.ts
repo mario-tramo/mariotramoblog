@@ -42,9 +42,9 @@ export default defineType({
 		}),
 		defineField({
 			name: 'tableOfContents',
-			title: 'Indice dei contenuti',
+			title: 'Mostra indice dei contenuti',
 			type: 'boolean',
-			description: 'Mostra un indice dei contenuti basato sui titoli',
+			description: 'Genera automaticamente un indice laterale basato sui titoli del testo',
 			initialValue: false,
 			group: 'options',
 		}),
@@ -52,7 +52,7 @@ export default defineType({
 			name: 'tocPosition',
 			title: 'Posizione indice',
 			type: 'string',
-			description: "Posizione dell'indice dei contenuti",
+			description: "Lato in cui appare l'indice dei contenuti",
 			options: {
 				list: [
 					{ title: 'Sinistra', value: 'left' },
@@ -68,7 +68,7 @@ export default defineType({
 			name: 'stretch',
 			title: 'Larghezza piena',
 			type: 'boolean',
-			description: 'Espandi il contenuto a tutta la larghezza disponibile',
+			description: 'Espandi il testo a tutta la larghezza della pagina (disattiva i margini laterali)',
 			initialValue: false,
 			hidden: ({ parent }) => parent.tableOfContents,
 			group: 'options',

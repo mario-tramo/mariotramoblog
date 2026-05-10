@@ -18,16 +18,17 @@ export default defineType({
 			name: 'slug',
 			title: 'Slug',
 			type: 'slug',
-			description: 'Percorso URL generato dal nome',
+			description: 'Percorso URL generato dal nome (es. /autori/mario-rossi)',
 			options: {
 				source: 'name',
 			},
+			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'image',
-			title: 'Immagine',
+			title: 'Foto profilo',
 			type: 'image',
-			description: 'Foto profilo',
+			description: 'Foto dell\'autore mostrata negli articoli e nella pagina profilo',
 			options: {
 				hotspot: true,
 			},

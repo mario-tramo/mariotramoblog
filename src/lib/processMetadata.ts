@@ -31,6 +31,8 @@ export default async function processMetadata(
 			title,
 			description,
 			images: image,
+			siteName: 'Mario Tramo',
+			locale: 'it_IT',
 			...(isBlogPost && {
 				publishedTime: page.publishDate,
 				authors: page.authors?.map((a) => a.name),

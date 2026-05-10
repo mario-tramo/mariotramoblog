@@ -14,6 +14,7 @@ export default defineType({
 		defineField({
 			name: 'title',
 			title: 'Nome del sito',
+			description: 'Nome del sito web (es. "Mario Tramo Blog")',
 			type: 'string',
 			validation: (Rule) => Rule.required(),
 			group: 'generale',
@@ -21,6 +22,7 @@ export default defineType({
 		defineField({
 			name: 'logo',
 			title: 'Logo',
+			description: 'Logo del sito mostrato nell\'header. Formato consigliato: SVG o PNG trasparente.',
 			type: 'image',
 			options: { hotspot: true },
 			group: 'generale',

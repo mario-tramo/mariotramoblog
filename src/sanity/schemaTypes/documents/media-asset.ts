@@ -28,7 +28,8 @@ export default defineType({
 			name: 'alt',
 			title: 'Testo alternativo',
 			type: 'string',
-			description: 'Descrizione dell\'immagine per accessibilità e SEO',
+			description: "Descrizione dell'immagine per accessibilità e SEO (es. \"Foto di Mario Rossi\")",
+			validation: (Rule) => Rule.required().warning('Aggiungi sempre un testo alternativo per accessibilità e SEO'),
 		}),
 		defineField({
 			name: 'category',

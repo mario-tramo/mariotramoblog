@@ -36,17 +36,16 @@ export default defineType({
 		}),
 		defineField({
 			name: 'ic0n',
-			title: 'ic0n',
+			title: 'Icona da libreria',
 			description: (
 				<span>
-					Courtesy of{' '}
-					<a href="https://react-icons.github.io/react-icons/" target="_blank">
-						react-icons
-					</a>
+					Codice icona dalla libreria{' '}
+					<a href="https://react-icons.github.io/react-icons/" target="_blank">react-icons</a>.
+					{' '}Formato: <code>libreria/NomeIcona</code> (es. <code>fa6/FaFacebook</code>)
 				</span>
 			),
 			type: 'string',
-			placeholder: 'e.g. fa6/FaFacebook, etc.',
+			placeholder: 'es. fa6/FaFacebook, vsc/VscHome',
 			validation: (Rule) => Rule.regex(/[a-z0-9]{2,3}\/([a-zA-Z0-9]+)/),
 			components: {
 				input: (props) => (
@@ -62,8 +61,8 @@ export default defineType({
 			name: 'size',
 			title: 'Dimensione',
 			type: 'string',
-			description: "Dimensione dell'icona (es. 2.5rem, 80px)",
-			placeholder: `e.g. ${sizePresets.map((p) => getPreset(p)).join(', ')}`,
+			description: "Dimensione dell'icona in CSS (es. 2.5rem = ~40px, 80px)",
+			placeholder: `es. ${sizePresets.map((p) => getPreset(p)).join(', ')}`,
 			initialValue: sizePresets[0],
 			components: {
 				input: (props) => (

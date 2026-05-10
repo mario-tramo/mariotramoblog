@@ -10,16 +10,16 @@ export default defineType({
 	fields: [
 		defineField({
 			name: 'crumbs',
-			title: 'Percorso',
+			title: 'Voci del percorso',
 			type: 'array',
 			of: [{ type: 'link', initialValue: { type: 'internal' } }],
-			description: 'La pagina corrente viene inclusa automaticamente',
+			description: 'Pagine da mostrare nel percorso di navigazione (es. Home > Blog > Articolo). La pagina corrente viene aggiunta automaticamente.',
 		}),
 		defineField({
 			name: 'hideCurrent',
 			title: 'Nascondi pagina corrente',
 			type: 'boolean',
-			description: 'Non mostrare la pagina corrente nel percorso',
+			description: 'Se attivo, non mostra la pagina corrente come ultima voce del percorso',
 			initialValue: false,
 		}),
 	],

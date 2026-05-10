@@ -45,15 +45,16 @@ export default defineType({
 					fields: [
 						defineField({
 							name: 'summary',
-							title: 'Riepilogo',
+							title: 'Titolo del pannello',
 							type: 'string',
-							description: 'Titolo visibile del pannello (cliccabile per espandere)',
+							description: 'Testo sempre visibile, cliccabile per aprire/chiudere (es. "Come mi iscrivo?")',
+							validation: (Rule) => Rule.required().error('Il titolo del pannello è obbligatorio'),
 						}),
 						defineField({
 							name: 'content',
 							title: 'Contenuto',
 							type: 'array',
-							description: 'Contenuto mostrato quando il pannello e aperto',
+							description: 'Testo e contenuti mostrati quando il pannello è aperto',
 							of: [
 								{ type: 'block' },
 								imageBlock,
@@ -69,9 +70,9 @@ export default defineType({
 						}),
 						defineField({
 							name: 'open',
-							title: 'Aperto',
+							title: 'Aperto di default',
 							type: 'boolean',
-							description: 'Se attivo, il pannello sara aperto per impostazione predefinita',
+							description: 'Se attivo, questo pannello sarà già aperto quando la pagina viene caricata',
 							initialValue: false,
 						}),
 					],
@@ -106,17 +107,17 @@ export default defineType({
 		}),
 		defineField({
 			name: 'connect',
-			title: 'Collega accordion',
-			description: 'Permetti un solo elemento aperto alla volta',
+			title: 'Un solo pannello aperto alla volta',
+			description: 'Se attivo, aprire un pannello chiude automaticamente quello precedente',
 			type: 'boolean',
 			initialValue: false,
 			group: 'options',
 		}),
 		defineField({
 			name: 'generateSchema',
-			title: 'Genera markup Schema.org',
+			title: 'Genera markup Schema.org (FAQ)',
 			type: 'boolean',
-			description: 'Genera markup Schema.org per la SEO',
+			description: 'Attiva se questo accordion contiene domande e risposte (FAQ). Migliora la visibilità nei risultati di Google.',
 			initialValue: false,
 			group: 'options',
 		}),
@@ -126,8 +127,8 @@ export default defineType({
 			intro: 'intro',
 		},
 		prepare: ({ intro }) => ({
-			title: getBlockText(intro),
-			subtitle: 'Accordion list',
+			title: getBlockText(intro) || 'Lista accordion',
+			subtitle: 'Pannelli espandibili',
 		}),
 	},
 })

@@ -5,6 +5,12 @@ import { PortableText } from 'next-sanity'
 import Link from 'next/link'
 import { Img } from '@/ui/Img'
 
+const legalLinks = [
+	{ href: '/legal/privacy-policy', label: 'Privacy Policy' },
+	{ href: '/legal/cookie-policy', label: 'Cookie Policy' },
+	{ href: '/legal/termini-di-servizio', label: 'Termini di servizio' },
+]
+
 export default async function Footer() {
 	const { title, blurb, logo, copyright } = await getSite()
 
@@ -40,11 +46,16 @@ export default async function Footer() {
 				<Navigation />
 			</div>
 
-			{copyright && (
-				<div className="border-ink/10 mx-auto flex max-w-screen-xl flex-wrap justify-center gap-x-6 gap-y-2 border-t p-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-sm text-muted [&_a:hover]:underline">
-					<PortableText value={copyright} />
-				</div>
-			)}
+			<div className="border-ink/10 mx-auto flex max-w-screen-xl flex-wrap justify-center gap-x-6 gap-y-2 border-t p-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-sm text-muted [&_a:hover]:underline">
+				{copyright && <PortableText value={copyright} />}
+				<nav aria-label="Link legali" className="flex flex-wrap gap-x-4 gap-y-1">
+					{legalLinks.map(({ href, label }) => (
+						<Link key={href} href={href} className="hover:underline">
+							{label}
+						</Link>
+					))}
+				</nav>
+			</div>
 		</footer>
 	)
 }

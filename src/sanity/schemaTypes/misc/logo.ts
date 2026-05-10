@@ -10,11 +10,14 @@ export default defineType({
 		defineField({
 			name: 'name',
 			title: 'Nome',
+			description: 'Nome identificativo del logo (es. "Logo principale", "Logo bianco")',
 			type: 'string',
+			validation: (Rule) => Rule.required(),
 		}),
 		defineField({
 			name: 'image',
-			title: 'Immagine',
+			title: 'Varianti immagine',
+			description: 'Carica le varianti del logo per diversi contesti',
 			type: 'object',
 			options: {
 				columns: 3,
@@ -23,6 +26,7 @@ export default defineType({
 				defineField({
 					name: 'default',
 					title: 'Predefinito',
+					description: 'Versione standard del logo',
 					type: 'image',
 					options: {
 						hotspot: true,
@@ -30,7 +34,8 @@ export default defineType({
 				}),
 				defineField({
 					name: 'light',
-					description: 'Per sfondi scuri',
+					title: 'Chiaro',
+					description: 'Versione chiara (per sfondi scuri)',
 					type: 'image',
 					options: {
 						hotspot: true,
@@ -38,7 +43,8 @@ export default defineType({
 				}),
 				defineField({
 					name: 'dark',
-					description: 'Per sfondi chiari',
+					title: 'Scuro',
+					description: 'Versione scura (per sfondi chiari)',
 					type: 'image',
 					options: {
 						hotspot: true,
