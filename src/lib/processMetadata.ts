@@ -9,22 +9,39 @@ export default async function processMetadata(
 			slug: string
 			language?: string
 		}[]
+		publishDate?: string
+		authors?: Sanity.Person[]
+		categories?: Sanity.BlogCategory[]
 	},
 ): Promise<Metadata> {
 	const url = resolveUrl(page)
 	const { title, description, ogimage, noIndex } = page.metadata
+	const isBlogPost = page._type === 'blog.post'
+
+	const image =
+		ogimage || `${BASE_URL}/api/og?title=${encodeURIComponent(title)}`
 
 	return {
 		metadataBase: new URL(BASE_URL),
 		title,
 		description,
 		openGraph: {
-			type: 'website',
+			type: isBlogPost ? 'article' : 'website',
 			url,
 			title,
 			description,
-			images:
-				ogimage || `${BASE_URL}/api/og?title=${encodeURIComponent(title)}`,
+			images: image,
+			...(isBlogPost && {
+				publishedTime: page.publishDate,
+				authors: page.authors?.map((a) => a.name),
+				section: page.categories?.[0]?.title,
+			}),
+		},
+		twitter: {
+			card: 'summary_large_image',
+			title,
+			description,
+			images: image,
 		},
 		robots: {
 			index: noIndex || vercelPreview ? false : undefined,

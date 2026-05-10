@@ -47,16 +47,11 @@ export default defineType({
 			group: 'content',
 		}),
 		defineField({
-			name: 'authors',
-			title: 'Autori',
+			name: 'author',
+			title: 'Autore',
 			description: 'Chi ha scritto questo articolo',
-			type: 'array',
-			of: [
-				{
-					type: 'reference',
-					to: [{ type: 'person' }],
-				},
-			],
+			type: 'reference',
+			to: [{ type: 'person' }],
 			group: 'content',
 		}),
 		defineField({

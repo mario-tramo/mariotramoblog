@@ -49,6 +49,12 @@ declare global {
 			modules?: Module[]
 		}
 
+		interface LegalPage extends PageBase {
+			readonly _type: 'legal'
+			body: any
+			lastUpdated?: string
+		}
+
 		interface BlogPost extends PageBase {
 			readonly _type: 'blog.post'
 			body: any
@@ -111,6 +117,17 @@ declare global {
 			size?: string
 		}
 
+		interface HeroSlide {
+			_key: string
+			title: string
+			description?: string
+			author?: Person
+			cta: CTA
+			image: Image
+			imageUrl: string
+			lqip?: string
+		}
+
 		interface Img {
 			readonly _type: 'img'
 			image: Image
@@ -131,7 +148,7 @@ declare global {
 			readonly _type: 'link'
 			label: string
 			type: 'internal' | 'external'
-			internal?: Page | BlogPost
+			internal?: Page | BlogPost | LegalPage
 			external?: string
 			params?: string
 		}

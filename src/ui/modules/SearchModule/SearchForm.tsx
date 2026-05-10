@@ -27,12 +27,17 @@ export default function SearchForm({
 	return (
 		<search className={cn(css.root, 'relative', className)} {...props}>
 			<label className="input focus-within:border-ink/50 relative z-[2] flex items-center gap-2">
-				<VscSearch />
+				<VscSearch aria-hidden="true" />
 
 				<input
 					className="grow outline-none"
 					name="query"
 					type="search"
+					aria-label={
+						scope !== 'all'
+							? `Search ${scope === 'path' ? 'pages' : scope}`
+							: 'Search'
+					}
 					placeholder={
 						scope !== 'all'
 							? `Search ${scope === 'path' ? 'pages' : scope}`

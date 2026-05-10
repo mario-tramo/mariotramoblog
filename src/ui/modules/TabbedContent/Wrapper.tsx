@@ -8,5 +8,13 @@ export default function Wrapper({
 }: { index: number } & React.ComponentProps<'article'>) {
 	const { active } = tabbedContentStore()
 
-	return <article {...props} hidden={index !== active} />
+	return (
+		<article
+			{...props}
+			hidden={index !== active}
+			role="tabpanel"
+			id={`tabpanel-${index}`}
+			aria-labelledby={`tab-${index}`}
+		/>
+	)
 }

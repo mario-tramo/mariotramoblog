@@ -14,7 +14,6 @@ export default defineField({
 		{ type: 'card-list' },
 		{ type: 'custom-html' },
 		{ type: 'hero' },
-		{ type: 'hero.split' },
 		{ type: 'richtext-module' },
 		{ type: 'search-module' },
 	],
@@ -34,7 +33,7 @@ export default defineField({
 					title: 'Blog',
 					of: ['blog-frontpage', 'blog-list', 'blog-post-content'],
 				},
-				{ name: 'hero', title: 'Hero', of: ['hero', 'hero.split'] },
+				{ name: 'hero', title: 'Hero', of: ['hero'] },
 				{
 					name: 'liste',
 					title: 'Liste',

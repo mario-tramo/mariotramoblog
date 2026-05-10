@@ -20,7 +20,7 @@ export default async function Social({ className }: ComponentProps<'div'>) {
 	if (!socialLinks?.length) return null
 
 	return (
-		<nav className={cn('group flex flex-wrap items-center', className)}>
+		<nav className={cn('group flex flex-wrap items-center', className)} aria-label="Social media">
 			{socialLinks.map((item, key) => (
 				<CTA
 					className="px-2 py-1 group-has-[a:hover]:opacity-50 hover:!opacity-100"

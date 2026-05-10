@@ -6,7 +6,9 @@ import page from './documents/page'
 import globalModule from './documents/global-module'
 import blogPost from './documents/blog.post'
 import blogCategory from './documents/blog.category'
+import legal from './documents/legal'
 import redirect from './documents/redirect'
+import mediaAsset from './documents/media-asset'
 
 // miscellaneous
 import announcement from './misc/announcement'
@@ -19,6 +21,7 @@ import img from './objects/img'
 import link from './objects/link'
 import linkList from './objects/link.list'
 import metadata from './objects/metadata'
+import heroSlide from './objects/hero-slide'
 import moduleOptions from './objects/module-options'
 
 // modules
@@ -31,7 +34,6 @@ import callout from './modules/callout'
 import cardList from './modules/card-list'
 import customHtml from './modules/custom-html'
 import hero from './modules/hero'
-import heroSplit from './modules/hero.split'
 import richtextModule from './modules/richtext-module'
 import searchModule from './modules/search-module'
 
@@ -42,6 +44,9 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	globalModule,
 	blogPost,
 	blogCategory,
+	legal,
+
+	mediaAsset,
 
 	// miscellaneous
 	announcement,
@@ -54,6 +59,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	img,
 	link,
 	linkList,
+	heroSlide,
 	metadata,
 	moduleOptions,
 
@@ -67,7 +73,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	cardList,
 	customHtml,
 	hero,
-	heroSplit,
 	richtextModule,
 	searchModule,
 ]

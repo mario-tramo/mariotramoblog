@@ -1,6 +1,7 @@
 import { defineField, defineType } from 'sanity'
 import { CharacterCount } from '@/sanity/ui/CharacterCount'
 import PreviewOG from '@/sanity/ui/PreviewOG'
+import SocialPreview from '@/sanity/ui/SocialPreview'
 
 export default defineType({
 	name: 'metadata',
@@ -60,6 +61,14 @@ export default defineType({
 			description: 'Impedisci ai motori di ricerca di indicizzare questa pagina',
 			type: 'boolean',
 			initialValue: false,
+		}),
+		defineField({
+			name: 'socialPreview',
+			title: 'Anteprima social',
+			type: 'string',
+			components: {
+				field: () => <SocialPreview />,
+			},
 		}),
 	],
 })

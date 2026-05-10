@@ -7,7 +7,6 @@ import Callout from './Callout'
 import CardList from './CardList'
 import CustomHTML from './CustomHTML'
 import Hero from './Hero'
-import HeroSplit from './HeroSplit'
 import RichtextModule from './RichtextModule'
 import SearchModule from './SearchModule'
 import { createDataAttribute } from 'next-sanity'
@@ -22,7 +21,6 @@ const MODULE_MAP = {
 	'card-list': CardList,
 	'custom-html': CustomHTML,
 	hero: Hero,
-	'hero.split': HeroSplit,
 	'richtext-module': RichtextModule,
 	'search-module': SearchModule,
 } as const

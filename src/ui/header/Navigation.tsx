@@ -13,7 +13,7 @@ export default async function Menu() {
 	return (
 		<nav
 			className="max-md:anim-fade-to-r max-md:header-closed:hidden flex items-center gap-1 [grid-area:nav] max-md:my-4 max-md:flex-col max-md:items-start md:justify-center"
-			role="navigation"
+			aria-label="Menu principale"
 		>
 			{headerLinks?.map((item, key) => {
 				switch (item._type) {

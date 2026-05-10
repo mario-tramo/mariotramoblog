@@ -28,6 +28,7 @@ export default function ClickToCopy({
 				setTimeout(() => setCopied(false), 1000)
 			}}
 			title="Click to copy"
+			aria-label="Copia negli appunti"
 			{...props}
 		>
 			{copied ? childrenWhenCopied : children}

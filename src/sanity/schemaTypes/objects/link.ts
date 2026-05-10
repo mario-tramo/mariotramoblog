@@ -35,7 +35,7 @@ export default defineType({
 			title: 'Interno',
 			type: 'reference',
 			description: 'Seleziona una pagina o articolo del sito',
-			to: [{ type: 'page' }, { type: 'blog.post' }],
+			to: [{ type: 'page' }, { type: 'blog.post' }, { type: 'legal' }],
 			hidden: ({ parent }) => parent?.type !== 'internal',
 		}),
 		defineField({

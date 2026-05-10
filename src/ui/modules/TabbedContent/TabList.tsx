@@ -10,7 +10,7 @@ export default function TabList({
 	const { active, setActive } = tabbedContentStore()
 
 	return (
-		<nav className="max-md:full-bleed no-scrollbar flex overflow-x-auto">
+		<div className="max-md:full-bleed no-scrollbar flex overflow-x-auto" role="tablist">
 			{tabs?.map((tab, key) => (
 				<button
 					className={cn(
@@ -21,10 +21,14 @@ export default function TabList({
 					)}
 					onClick={() => setActive(key)}
 					key={key}
+					role="tab"
+					aria-selected={key === active}
+					aria-controls={`tabpanel-${key}`}
+					id={`tab-${key}`}
 				>
 					{tab.label}
 				</button>
 			))}
-		</nav>
+		</div>
 	)
 }

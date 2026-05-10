@@ -25,6 +25,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 					metadata.slug.current == 'index' => 1,
 					0.5
 				),
+				'changeFrequency': select(
+					metadata.slug.current == 'index' => 'daily',
+					'weekly'
+				),
 			},
 			'blog': *[_type == 'blog.post' && metadata.noIndex != true]|order(name){
 				'url': (
@@ -34,7 +38,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 					+ metadata.slug.current
 				),
 				'lastModified': _updatedAt,
-				'priority': 0.4
+				'priority': 0.4,
+				'changeFrequency': 'monthly'
+			},
+			'legal': *[_type == 'legal' && metadata.noIndex != true]|order(metadata.slug.current){
+				'url': (
+					$baseUrl
+					+ select(defined(language) && language != $defaultLang => language + '/', '')
+					+ 'legal/'
+					+ metadata.slug.current
+				),
+				'lastModified': _updatedAt,
+				'priority': 0.3,
+				'changeFrequency': 'yearly'
 			}
 		}`,
 		params: {

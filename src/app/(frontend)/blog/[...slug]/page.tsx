@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation'
 import Modules from '@/ui/modules'
 import processMetadata from '@/lib/processMetadata'
+import { blogPostingJsonLd, breadcrumbJsonLd } from '@/lib/jsonLd'
 import { client } from '@/sanity/lib/client'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
-import { BLOG_DIR } from '@/lib/env'
+import { BASE_URL, BLOG_DIR } from '@/lib/env'
 import {
 	IMAGE_QUERY,
 	MODULES_QUERY,
@@ -16,7 +17,32 @@ import errors from '@/lib/errors'
 export default async function Page({ params }: Props) {
 	const post = await getPost(await params)
 	if (!post) notFound()
-	return <Modules modules={post.modules} post={post} />
+	return (
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify(blogPostingJsonLd(post)),
+				}}
+			/>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify(
+						breadcrumbJsonLd([
+							{ name: 'Home', url: BASE_URL },
+							{ name: 'Blog', url: `${BASE_URL}/${BLOG_DIR}` },
+							{
+								name: post.metadata.title,
+								url: `${BASE_URL}/${BLOG_DIR}/${post.metadata.slug.current}`,
+							},
+						]),
+					),
+				}}
+			/>
+			<Modules modules={post.modules} post={post} />
+		</>
+	)
 }
 
 export async function generateMetadata({ params }: Props) {

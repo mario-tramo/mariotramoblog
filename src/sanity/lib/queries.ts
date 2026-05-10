@@ -17,11 +17,6 @@ export const IMAGE_QUERY = groq`
 	'lqip': @.asset->metadata.lqip
 `
 
-const ASSET_IMG_QUERY = groq`
-	...,
-	image { ${IMAGE_QUERY} }
-`
-
 export const CTA_QUERY = groq`
 	...,
 	link{ ${LINK_QUERY} }
@@ -42,15 +37,12 @@ export const MODULES_QUERY = groq`
 		}
 	},
 	_type == 'hero' => {
-		assets[]{
+		slides[]{
 			...,
-			_type == 'img' => { ${ASSET_IMG_QUERY} }
-		}
-	},
-	_type == 'hero.split' => {
-		assets[]{
-			...,
-			_type == 'img' => { ${ASSET_IMG_QUERY} }
+			author->,
+			cta{ ${CTA_QUERY} },
+			'imageUrl': image.asset->url,
+			'lqip': image.asset->metadata.lqip,
 		}
 	},
 	_type == 'richtext-module' => {

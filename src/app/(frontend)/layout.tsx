@@ -1,5 +1,7 @@
 // import { GoogleTagManager } from '@next/third-parties/google'
 import Root from '@/ui/Root'
+import { getSite } from '@/sanity/lib/queries'
+import { websiteJsonLd } from '@/lib/jsonLd'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import SkipToContent from '@/ui/SkipToContent'
 import Announcement from '@/ui/Announcement'
@@ -15,10 +17,18 @@ export default async function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
+	const { title } = await getSite()
+
 	return (
 		<Root>
 			{/* <GoogleTagManager gtmId="" /> */}
 			<body className="bg-canvas text-ink antialiased">
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{
+						__html: JSON.stringify(websiteJsonLd(title)),
+					}}
+				/>
 				<NuqsAdapter>
 					<SkipToContent />
 					<Announcement />

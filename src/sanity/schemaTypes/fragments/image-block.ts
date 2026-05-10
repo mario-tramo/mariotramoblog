@@ -14,6 +14,14 @@ export default defineArrayMember({
 	],
 	fields: [
 		defineField({
+			name: 'mediaRef',
+			title: 'Da libreria Media',
+			type: 'reference',
+			to: [{ type: 'media.asset' }],
+			description: 'Seleziona un asset dalla libreria Media (alternativo al caricamento diretto sopra)',
+			fieldset: 'attributes',
+		}),
+		defineField({
 			name: 'alt',
 			title: 'Testo alternativo',
 			type: 'string',

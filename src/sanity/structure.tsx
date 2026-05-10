@@ -3,7 +3,7 @@ import type { StructureBuilder, ListItemBuilder } from 'sanity/structure'
 import { Iframe } from 'sanity-plugin-iframe-pane'
 import { singleton } from './lib/builders'
 import { BLOG_DIR } from '@/lib/env'
-import { VscFiles, VscServerProcess, VscInfo } from 'react-icons/vsc'
+import { VscFiles, VscServerProcess, VscInfo, VscFileMedia, VscLaw } from 'react-icons/vsc'
 import { VscSymbolField } from 'react-icons/vsc'
 import { VscPin } from 'react-icons/vsc'
 import { PiFlowArrow } from 'react-icons/pi'
@@ -49,6 +49,7 @@ function resolvePreviewUrl(doc: Record<string, unknown>): string {
 	const type = doc?._type as string | undefined
 
 	if (type === 'blog.post' && current) return `/${BLOG_DIR}/${current}`
+	if (type === 'legal' && current) return `/legal/${current}`
 	if (current === 'index') return '/'
 	if (current) return `/${current}`
 	return '/'
@@ -56,7 +57,7 @@ function resolvePreviewUrl(doc: Record<string, unknown>): string {
 
 export const structure = structureTool({
 	defaultDocumentNode: (S, { schemaType }) => {
-		if (['page', 'blog.post'].includes(schemaType)) {
+		if (['page', 'blog.post', 'legal'].includes(schemaType)) {
 			return S.document().views([
 				S.view.form(),
 				S.view
@@ -80,6 +81,7 @@ export const structure = structureTool({
 				S.documentTypeListItem('page').title('Pagine').icon(VscFiles),
 				S.documentTypeListItem('blog.post').title('Articoli'),
 				S.documentTypeListItem('blog.category').title('Categorie'),
+				S.documentTypeListItem('legal').title('Pagine legali').icon(VscLaw),
 				S.divider(),
 
 				documentTypeWithInfo(
@@ -122,5 +124,10 @@ export const structure = structureTool({
 				),
 
 				S.documentTypeListItem('person').title('Autori'),
+				S.divider(),
+
+				S.documentTypeListItem('media.asset')
+					.title('Media')
+					.icon(VscFileMedia),
 			]),
 })

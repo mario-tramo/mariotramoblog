@@ -13,17 +13,17 @@ export default function Authors({
 	authors?: Sanity.Person[]
 	skeleton?: boolean
 	linked?: boolean
-} & React.ComponentProps<'dl'>) {
+} & React.ComponentProps<'ul'>) {
 	if (!authors?.length && !skeleton) return null
 
 	return (
-		<dl {...props}>
+		<ul {...props}>
 			{authors?.map((author) => (
 				<Author author={author} key={author._id} linked={linked} />
 			))}
 
 			{skeleton && <Author />}
-		</dl>
+		</ul>
 	)
 }
 
@@ -41,7 +41,7 @@ function Author({
 		),
 		children: (
 			<>
-				<dd className="bg-accent/3 grid aspect-square w-[1.7em] shrink-0 place-content-center overflow-hidden rounded-full">
+				<span className="bg-accent/3 grid aspect-square w-[1.7em] shrink-0 place-content-center overflow-hidden rounded-full">
 					{author?.image ? (
 						<Img
 							className="aspect-square"
@@ -50,23 +50,27 @@ function Author({
 							alt={author.name}
 						/>
 					) : (
-						<GoPerson className="text-accent/20 text-xl" />
+						<GoPerson className="text-accent/20 text-xl" aria-hidden="true" />
 					)}
-				</dd>
+				</span>
 
-				<dt>{author?.name}</dt>
+				<span>{author?.name}</span>
 			</>
 		),
 	}
-	return linked ? (
-		<Link
-			href={{
-				pathname: `/${BLOG_DIR}`,
-				query: { author: author?.slug.current },
-			}}
-			{...props}
-		/>
-	) : (
-		<div {...props} />
+	return (
+		<li>
+			{linked ? (
+				<Link
+					href={{
+						pathname: `/${BLOG_DIR}`,
+						query: { author: author?.slug.current },
+					}}
+					{...props}
+				/>
+			) : (
+				<div {...props} />
+			)}
+		</li>
 	)
 }
