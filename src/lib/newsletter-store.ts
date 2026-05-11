@@ -1,0 +1,46 @@
+type Subscriber = {
+	email: string
+	subscribedAt: string
+}
+
+declare global {
+	var newsletterSubscribers: Map<string, Subscriber> | undefined
+}
+
+const subscribers =
+	globalThis.newsletterSubscribers ?? new Map<string, Subscriber>()
+
+if (!globalThis.newsletterSubscribers) {
+	globalThis.newsletterSubscribers = subscribers
+}
+
+export function addSubscriber(email: string) {
+	const normalized = email.trim().toLowerCase()
+
+	if (subscribers.has(normalized)) {
+		return {
+			alreadyExists: true,
+			subscriber: subscribers.get(normalized)!,
+		}
+	}
+
+	const subscriber = {
+		email: normalized,
+		subscribedAt: new Date().toISOString(),
+	}
+
+	subscribers.set(normalized, subscriber)
+
+	return {
+		alreadyExists: false,
+		subscriber,
+	}
+}
+
+export function getAllSubscribers() {
+	return Array.from(subscribers.values())
+}
+
+export function getSubscriberCount() {
+	return subscribers.size
+}
