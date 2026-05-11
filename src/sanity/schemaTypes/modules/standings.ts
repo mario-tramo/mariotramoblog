@@ -20,6 +20,40 @@ export default defineType({
 			group: 'options',
 		}),
 		defineField({
+			name: 'mobileRows',
+			title: 'Righe su mobile',
+			type: 'string',
+			description: 'Quante squadre mostrare su mobile',
+			options: {
+				list: [
+					{ title: 'Top 5', value: '5' },
+					{ title: 'Top 10', value: '10' },
+					{ title: 'Intera', value: 'all' },
+				],
+				layout: 'radio',
+				direction: 'horizontal',
+			},
+			initialValue: '5',
+			group: 'content',
+		}),
+		defineField({
+			name: 'desktopRows',
+			title: 'Righe su desktop',
+			type: 'string',
+			description: 'Quante squadre mostrare su desktop',
+			options: {
+				list: [
+					{ title: 'Top 5', value: '5' },
+					{ title: 'Top 10', value: '10' },
+					{ title: 'Intera', value: 'all' },
+				],
+				layout: 'radio',
+				direction: 'horizontal',
+			},
+			initialValue: 'all',
+			group: 'content',
+		}),
+		defineField({
 			name: 'competition',
 			title: 'Campionato',
 			type: 'string',

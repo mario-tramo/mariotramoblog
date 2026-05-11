@@ -5,10 +5,31 @@ import {
 	type Standing,
 } from '@/lib/football-data'
 
+function getRowVisibilityClass(
+	index: number,
+	mobileRows: string,
+	desktopRows: string,
+) {
+	const mobileLimit = mobileRows === 'all' ? Infinity : Number(mobileRows)
+	const desktopLimit = desktopRows === 'all' ? Infinity : Number(desktopRows)
+
+	const hiddenMobile = index >= mobileLimit
+	const hiddenDesktop = index >= desktopLimit
+
+	if (hiddenMobile && hiddenDesktop) return 'hidden'
+	if (hiddenMobile) return 'hidden md:table-row'
+	if (hiddenDesktop) return 'md:hidden'
+	return ''
+}
+
 export default async function Standings({
 	competition = 'SA',
+	mobileRows = '5',
+	desktopRows = 'all',
 }: Partial<{
 	competition: CompetitionCode
+	mobileRows: '5' | '10' | 'all'
+	desktopRows: '5' | '10' | 'all'
 }>) {
 	let standings: Standing[] = []
 	let competitionName: string = COMPETITIONS[competition]
@@ -86,10 +107,10 @@ export default async function Standings({
 							</tr>
 						</thead>
 						<tbody>
-							{standings.map((row) => (
+							{standings.map((row, i) => (
 								<tr
 									key={row.team.id}
-									className="border-b border-white/5 transition-colors hover:bg-white/5"
+									className={`border-b border-white/5 transition-colors hover:bg-white/5 ${getRowVisibilityClass(i, mobileRows, desktopRows)}`}
 								>
 									<td className="px-3 py-2.5 text-center font-medium">
 										{row.position}

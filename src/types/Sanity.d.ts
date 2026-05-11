@@ -111,6 +111,8 @@ declare global {
 
 		interface Standings extends Module<'standings'> {
 			competition?: 'SA' | 'PL' | 'PD' | 'BL1' | 'FL1' | 'CL'
+			mobileRows?: '5' | '10' | 'all'
+			desktopRows?: '5' | '10' | 'all'
 		}
 
 		interface CustomHTML extends Module<'custom-html'> {
