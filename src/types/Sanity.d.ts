@@ -103,6 +103,12 @@ declare global {
 			style?: string
 		}
 
+		interface NewsletterBlock extends Module {
+			variant?: 'inline' | 'hero' | 'compact'
+			title?: string
+			description?: string
+		}
+
 		interface Standings extends Module<'standings'> {
 			competition?: 'SA' | 'PL' | 'PD' | 'BL1' | 'FL1' | 'CL'
 		}

@@ -15,6 +15,7 @@ export default defineField({
 		{ type: 'card-list' },
 		{ type: 'custom-html' },
 		{ type: 'hero' },
+		{ type: 'newsletter-block' },
 		{ type: 'richtext-module' },
 		{ type: 'search-module' },
 		{ type: 'standings' },

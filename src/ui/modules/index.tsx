@@ -7,6 +7,7 @@ import Callout from './Callout'
 import CardList from './CardList'
 import CustomHTML from './CustomHTML'
 import Hero from './Hero'
+import NewsletterBlock from './NewsletterBlock'
 import RichtextModule from './RichtextModule'
 import SearchModule from './SearchModule'
 import Standings from './Standings'
@@ -22,6 +23,7 @@ const MODULE_MAP = {
 	'card-list': CardList,
 	'custom-html': CustomHTML,
 	hero: Hero,
+	'newsletter-block': NewsletterBlock,
 	'richtext-module': RichtextModule,
 	'search-module': SearchModule,
 	standings: Standings,

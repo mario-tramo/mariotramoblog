@@ -36,6 +36,7 @@ import customHtml from './modules/custom-html'
 import hero from './modules/hero'
 import richtextModule from './modules/richtext-module'
 import searchModule from './modules/search-module'
+import newsletterBlock from './modules/newsletter-block'
 import standings from './modules/standings'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
@@ -76,5 +77,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	hero,
 	richtextModule,
 	searchModule,
+	newsletterBlock,
 	standings,
 ]
