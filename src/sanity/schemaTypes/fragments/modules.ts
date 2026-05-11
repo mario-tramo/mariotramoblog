@@ -17,6 +17,7 @@ export default defineField({
 		{ type: 'hero' },
 		{ type: 'richtext-module' },
 		{ type: 'search-module' },
+		{ type: 'standings' },
 	],
 	options: {
 		insertMenu: {

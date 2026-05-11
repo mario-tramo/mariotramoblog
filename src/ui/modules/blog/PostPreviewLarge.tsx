@@ -44,8 +44,9 @@ export default function PostPreviewLarge({ post }: { post: Sanity.BlogPost }) {
 				<div className="flex flex-wrap gap-x-4">
 					<Date value={post.publishDate} />
 					<Categories
-						className="flex flex-wrap gap-x-2"
+						className="relative z-10 flex flex-wrap gap-x-2"
 						categories={post.categories}
+						linked
 					/>
 				</div>
 

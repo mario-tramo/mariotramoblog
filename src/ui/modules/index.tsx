@@ -9,6 +9,7 @@ import CustomHTML from './CustomHTML'
 import Hero from './Hero'
 import RichtextModule from './RichtextModule'
 import SearchModule from './SearchModule'
+import Standings from './Standings'
 import { createDataAttribute } from 'next-sanity'
 
 const MODULE_MAP = {
@@ -23,6 +24,7 @@ const MODULE_MAP = {
 	hero: Hero,
 	'richtext-module': RichtextModule,
 	'search-module': SearchModule,
+	standings: Standings,
 } as const
 
 export default function Modules({

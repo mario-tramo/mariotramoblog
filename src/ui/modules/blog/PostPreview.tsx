@@ -61,8 +61,9 @@ export default function PostPreview({
 			<div className="empty:skeleton flex flex-wrap gap-x-4 text-sm">
 				<Date value={post?.publishDate} />
 				<Categories
-					className="flex flex-wrap gap-x-2"
+					className="relative z-10 flex flex-wrap gap-x-2"
 					categories={post?.categories}
+					linked
 				/>
 			</div>
 		</div>

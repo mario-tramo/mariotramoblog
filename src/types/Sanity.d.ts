@@ -103,6 +103,10 @@ declare global {
 			style?: string
 		}
 
+		interface Standings extends Module<'standings'> {
+			competition?: 'SA' | 'PL' | 'PD' | 'BL1' | 'FL1' | 'CL'
+		}
+
 		interface CustomHTML extends Module<'custom-html'> {
 			className?: string
 			html?: {

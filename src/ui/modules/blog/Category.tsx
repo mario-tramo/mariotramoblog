@@ -14,6 +14,7 @@ export default function Category({
 	const props = {
 		className: cn(
 			"before:text-current/50 before:content-['#'] hover:*:underline",
+			linked && 'relative z-10',
 			!linked && 'pointer-events-none',
 		),
 		children: <span>{label || value?.title}</span>,
@@ -23,7 +24,7 @@ export default function Category({
 		<Link
 			href={{
 				pathname: `/${BLOG_DIR}`,
-				query: { category: value?.slug?.current },
+				query: { categoria: value?.slug?.current },
 			}}
 			{...props}
 		/>
