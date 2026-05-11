@@ -1,4 +1,5 @@
 // import { GoogleTagManager } from '@next/third-parties/google'
+import type { Metadata } from 'next'
 import Root from '@/ui/Root'
 import { getSite } from '@/sanity/lib/queries'
 import { websiteJsonLd } from '@/lib/jsonLd'
@@ -12,6 +13,30 @@ import VisualEditingControls from '@/ui/VisualEditingControls'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import '@/styles/app.css'
+
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!
+
+export const metadata: Metadata = {
+	metadataBase: new URL(BASE_URL),
+	title: {
+		template: '%s | Mario Tramo',
+		default: 'Mario Tramo',
+	},
+	description: 'Blog di sport, calcio, tattiche e molto altro.',
+	openGraph: {
+		siteName: 'Mario Tramo',
+		locale: 'it_IT',
+		type: 'website',
+	},
+	twitter: { card: 'summary_large_image' },
+	icons: {
+		icon: '/favicon.ico',
+		apple: '/apple-touch-icon.png',
+	},
+	verification: {
+		google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+	},
+}
 
 export default async function RootLayout({
 	children,

@@ -12,10 +12,11 @@ import {
 import { languages } from '@/lib/i18n'
 import errors from '@/lib/errors'
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params, searchParams }: Props) {
 	const page = await getPage(await params)
 	if (!page) notFound()
-	return <Modules modules={page.modules} page={page} />
+	const resolvedSearchParams = await searchParams
+	return <Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
 }
 
 export async function generateMetadata({ params }: Props) {
@@ -78,6 +79,7 @@ type Params = { slug?: string[] }
 
 type Props = {
 	params: Promise<Params>
+	searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
 function processSlug(params: Params) {

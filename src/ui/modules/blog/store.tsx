@@ -1,7 +1,7 @@
 import { useQueryState } from 'nuqs'
 
 export const useBlogFilters = () => {
-	const [category, setCategory] = useQueryState('category', {
+	const [category, setCategory] = useQueryState('categoria', {
 		defaultValue: 'All',
 	})
 

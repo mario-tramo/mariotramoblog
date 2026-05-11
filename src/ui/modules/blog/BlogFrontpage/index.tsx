@@ -15,10 +15,12 @@ export default async function BlogFrontpage({
 	mainPost,
 	showFeaturedPostsFirst,
 	itemsPerPage,
+	categoria,
 }: Partial<{
 	mainPost: 'recent' | 'featured'
 	showFeaturedPostsFirst: boolean
 	itemsPerPage: number
+	categoria: string
 }>) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
 
@@ -27,6 +29,7 @@ export default async function BlogFrontpage({
 			*[
 				_type == 'blog.post'
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
+				${categoria ? `&& $categoria in categories[]->.slug.current` : ''}
 			]|order(publishDate desc){
 				_type,
 				_id,
@@ -41,6 +44,7 @@ export default async function BlogFrontpage({
 				},
 			}
 		`,
+		params: { categoria: categoria ?? '' },
 	})
 
 	const [firstPost, ...otherPosts] =

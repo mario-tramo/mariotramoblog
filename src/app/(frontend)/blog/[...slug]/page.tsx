@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Modules from '@/ui/modules'
 import processMetadata from '@/lib/processMetadata'
-import { blogPostingJsonLd, breadcrumbJsonLd } from '@/lib/jsonLd'
+import { blogPostingJsonLd, breadcrumbJsonLd, personJsonLd } from '@/lib/jsonLd'
 import { client } from '@/sanity/lib/client'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
@@ -40,6 +40,13 @@ export default async function Page({ params }: Props) {
 					),
 				}}
 			/>
+			{post.authors?.map((author) => (
+				<script
+					key={author._id}
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd(author)) }}
+				/>
+			))}
 			<Modules modules={post.modules} post={post} />
 		</>
 	)

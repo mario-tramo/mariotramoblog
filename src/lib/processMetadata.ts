@@ -3,13 +3,13 @@ import { BASE_URL, BLOG_DIR, vercelPreview } from './env'
 import type { Metadata } from 'next'
 import { DEFAULT_LANG } from './i18n'
 
+const SITE_NAME = 'Mario Tramo'
+
 export default async function processMetadata(
 	page: Sanity.PageBase & {
-		translations?: {
-			slug: string
-			language?: string
-		}[]
+		translations?: { slug: string; language?: string }[]
 		publishDate?: string
+		_updatedAt?: string
 		authors?: Sanity.Person[]
 		categories?: Sanity.BlogCategory[]
 	},
@@ -18,36 +18,47 @@ export default async function processMetadata(
 	const { title, description, ogimage, noIndex } = page.metadata
 	const isBlogPost = page._type === 'blog.post'
 
-	const image =
-		ogimage || `${BASE_URL}/api/og?title=${encodeURIComponent(title)}`
+	const ogParams = new URLSearchParams({ title })
+	if (isBlogPost && page.categories?.[0]) ogParams.set('category', page.categories[0].title)
+	if (isBlogPost && page.publishDate) ogParams.set('date', page.publishDate)
+	if (isBlogPost && !ogimage && page.metadata.image) {
+		const imgUrl = (page.metadata.image as any)?.asset?.url
+		if (imgUrl) ogParams.set('image', imgUrl + '?w=420&h=630&fit=crop')
+	}
+	const image = ogimage || `${BASE_URL}/api/og?${ogParams.toString()}`
+	const keywords = page.categories?.map((c) => c.title)
 
 	return {
 		metadataBase: new URL(BASE_URL),
 		title,
 		description,
+		keywords,
+		authors: page.authors?.map((a) => ({ name: a.name })),
 		openGraph: {
 			type: isBlogPost ? 'article' : 'website',
 			url,
 			title,
 			description,
-			images: image,
-			siteName: 'Mario Tramo',
+			images: [{ url: image, width: 1200, height: 630, alt: title }],
+			siteName: SITE_NAME,
 			locale: 'it_IT',
 			...(isBlogPost && {
 				publishedTime: page.publishDate,
+				modifiedTime: page._updatedAt,
 				authors: page.authors?.map((a) => a.name),
 				section: page.categories?.[0]?.title,
+				tags: keywords,
 			}),
 		},
 		twitter: {
 			card: 'summary_large_image',
 			title,
 			description,
-			images: image,
+			images: [image],
 		},
-		robots: {
-			index: noIndex || vercelPreview ? false : undefined,
-		},
+		robots: noIndex || vercelPreview
+			? { index: false, follow: false }
+			: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
 		alternates: {
 			canonical: url,
 			languages: Object.fromEntries(

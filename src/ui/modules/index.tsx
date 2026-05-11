@@ -29,13 +29,17 @@ export default function Modules({
 	modules,
 	page,
 	post,
+	searchParams,
 }: {
 	modules?: Sanity.Module[]
 	page?: Sanity.Page
 	post?: Sanity.BlogPost
+	searchParams?: Record<string, string | string[] | undefined>
 }) {
 	const getAdditionalProps = (module: Sanity.Module) => {
 		switch (module._type) {
+			case 'blog-frontpage':
+				return { categoria: searchParams?.categoria as string | undefined }
 			case 'blog-post-content':
 				return { post }
 			case 'breadcrumbs':

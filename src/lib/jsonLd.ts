@@ -1,5 +1,15 @@
 import { BASE_URL, BLOG_DIR } from './env'
 
+const PUBLISHER = {
+	'@type': 'Organization',
+	name: 'Mario Tramo',
+	url: BASE_URL,
+	logo: {
+		'@type': 'ImageObject',
+		url: `${BASE_URL}/favicon.ico`,
+	},
+} as const
+
 export function websiteJsonLd(siteTitle: string, description?: string) {
 	return {
 		'@context': 'https://schema.org',
@@ -18,10 +28,21 @@ export function websiteJsonLd(siteTitle: string, description?: string) {
 	}
 }
 
-export function blogPostingJsonLd(
-	post: Sanity.BlogPost & { ogimage?: string },
-) {
+export function webPageJsonLd(page: Sanity.PageBase) {
+	const url = `${BASE_URL}/${page.metadata.slug.current === 'index' ? '' : page.metadata.slug.current}`
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		name: page.metadata.title,
+		description: page.metadata.description,
+		url,
+		publisher: PUBLISHER,
+	}
+}
+
+export function blogPostingJsonLd(post: Sanity.BlogPost) {
 	const url = `${BASE_URL}/${BLOG_DIR}/${post.metadata.slug.current}`
+	const image = post.metadata.ogimage || post.metadata.image
 
 	return {
 		'@context': 'https://schema.org',
@@ -31,24 +52,32 @@ export function blogPostingJsonLd(
 		url,
 		datePublished: post.publishDate,
 		dateModified: post._updatedAt || post.publishDate,
-		...(post.metadata.image && {
-			image: post.ogimage || post.metadata.image,
+		...(image && {
+			image: {
+				'@type': 'ImageObject',
+				url: typeof image === 'string' ? image : `${BASE_URL}/api/og?title=${encodeURIComponent(post.metadata.title)}`,
+				width: 1200,
+				height: 630,
+			},
 		}),
 		author: post.authors?.map((author) => ({
 			'@type': 'Person',
 			name: author.name,
+			url: `${BASE_URL}/blog?author=${author._id}`,
 		})),
-		publisher: {
-			'@type': 'Organization',
-			name: 'Mario Tramo',
-			url: BASE_URL,
+		publisher: PUBLISHER,
+		mainEntityOfPage: {
+			'@type': 'WebPage',
+			'@id': url,
 		},
+		...(post.categories?.length && {
+			articleSection: post.categories[0].title,
+			keywords: post.categories.map((c) => c.title).join(', '),
+		}),
 	}
 }
 
-export function breadcrumbJsonLd(
-	items: { name: string; url: string }[],
-) {
+export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'BreadcrumbList',
@@ -58,5 +87,14 @@ export function breadcrumbJsonLd(
 			name: item.name,
 			item: item.url,
 		})),
+	}
+}
+
+export function personJsonLd(author: Sanity.Person & { slug?: { current: string } }) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Person',
+		name: author.name,
+		url: `${BASE_URL}/blog?author=${author._id}`,
 	}
 }
