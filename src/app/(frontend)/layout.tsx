@@ -48,7 +48,7 @@ export default async function RootLayout({
 	return (
 		<Root>
 			{/* <GoogleTagManager gtmId="" /> */}
-			<body className="bg-canvas text-ink antialiased">
+			<body className="flex min-h-svh flex-col bg-canvas text-ink antialiased">
 				<script
 					type="application/ld+json"
 					dangerouslySetInnerHTML={{
@@ -59,7 +59,7 @@ export default async function RootLayout({
 					<SkipToContent />
 					<Announcement />
 					<Header />
-					<main id="main-content" role="main" tabIndex={-1}>
+					<main id="main-content" role="main" tabIndex={-1} className="flex-1">
 						{children}
 					</main>
 					<Footer />

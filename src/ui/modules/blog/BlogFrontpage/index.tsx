@@ -10,6 +10,8 @@ import PostPreviewLarge from '../PostPreviewLarge'
 import FilterList from '../BlogList/FilterList'
 import PostPreview from '../PostPreview'
 import Paginated from './Paginated'
+import NewsletterSubscribe from '@/ui/NewsletterSubscribe'
+import Standings from '@/ui/modules/Standings'
 
 export default async function BlogFrontpage({
 	mainPost,
@@ -58,22 +60,32 @@ export default async function BlogFrontpage({
 
 			<FilterList />
 
-			<Suspense
-				fallback={
-					<ul className="grid gap-x-8 gap-y-12 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
-						{Array.from({ length: itemsPerPage ?? 6 }).map((_, i) => (
-							<li key={i}>
-								<PostPreview skeleton />
-							</li>
-						))}
-					</ul>
-				}
-			>
-				<Paginated
-					posts={sortFeaturedPosts(otherPosts, showFeaturedPostsFirst)}
-					itemsPerPage={itemsPerPage}
-				/>
-			</Suspense>
+			<div className="grid gap-8 lg:grid-cols-[1fr_300px]">
+				<Suspense
+					fallback={
+						<ul className="grid gap-x-8 gap-y-12 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
+							{Array.from({ length: itemsPerPage ?? 6 }).map((_, i) => (
+								<li key={i}>
+									<PostPreview skeleton />
+								</li>
+							))}
+						</ul>
+					}
+				>
+					<Paginated
+						posts={sortFeaturedPosts(otherPosts, showFeaturedPostsFirst)}
+						itemsPerPage={itemsPerPage}
+					/>
+				</Suspense>
+
+				<aside className="hidden lg:block">
+					<div className="sticky-below-header space-y-6">
+						<NewsletterSubscribe variant="compact" />
+					</div>
+				</aside>
+			</div>
+
+			<Standings competition="SA" mobileRows="5" desktopRows="10" inline />
 		</section>
 	)
 }
