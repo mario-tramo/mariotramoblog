@@ -44,8 +44,7 @@
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3",
-    "vite-tsconfig-paths": "^6.1.1"
+    "typescript": "^5.9.3"
   },
   "author": "nuotsu <mitchell@nuotsu.dev> (https://nuotsu.dev)",
   "description": "An impressive Sanity.io starter template with Next.js 16 and Tailwind 4",

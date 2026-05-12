@@ -18,6 +18,7 @@ export default defineField({
 		{ type: 'newsletter-block' },
 		{ type: 'richtext-module' },
 		{ type: 'search-module' },
+		{ type: 'section-layout' },
 		{ type: 'standings' },
 	],
 	options: {
@@ -37,6 +38,11 @@ export default defineField({
 					of: ['blog-frontpage', 'blog-list', 'blog-post-content'],
 				},
 				{ name: 'hero', title: 'Hero', of: ['hero'] },
+				{
+					name: 'layout',
+					title: 'Layout',
+					of: ['section-layout'],
+				},
 				{
 					name: 'liste',
 					title: 'Liste',

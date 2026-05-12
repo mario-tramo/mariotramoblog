@@ -45,6 +45,51 @@ export const MODULES_QUERY = groq`
 			'lqip': image.asset->metadata.lqip,
 		}
 	},
+	_type == 'section-layout' => {
+		...,
+		column1[]{
+			...,
+			ctas[]{ ..., link{ ${LINK_QUERY} } },
+			_type == 'blog-list' => { filteredCategory-> },
+			_type == 'card-list' => { cards[]{ ..., ctas[]{ ${CTA_QUERY} } } },
+			_type == 'richtext-module' => {
+				content[]{ ..., _type == 'image' => { ${IMAGE_QUERY} } },
+				'headings': select(
+					tableOfContents => content[style in ['h2', 'h3', 'h4', 'h5', 'h6']]{
+						style, 'text': pt::text(@)
+					}
+				),
+			},
+		},
+		column2[]{
+			...,
+			ctas[]{ ..., link{ ${LINK_QUERY} } },
+			_type == 'blog-list' => { filteredCategory-> },
+			_type == 'card-list' => { cards[]{ ..., ctas[]{ ${CTA_QUERY} } } },
+			_type == 'richtext-module' => {
+				content[]{ ..., _type == 'image' => { ${IMAGE_QUERY} } },
+				'headings': select(
+					tableOfContents => content[style in ['h2', 'h3', 'h4', 'h5', 'h6']]{
+						style, 'text': pt::text(@)
+					}
+				),
+			},
+		},
+		column3[]{
+			...,
+			ctas[]{ ..., link{ ${LINK_QUERY} } },
+			_type == 'blog-list' => { filteredCategory-> },
+			_type == 'card-list' => { cards[]{ ..., ctas[]{ ${CTA_QUERY} } } },
+			_type == 'richtext-module' => {
+				content[]{ ..., _type == 'image' => { ${IMAGE_QUERY} } },
+				'headings': select(
+					tableOfContents => content[style in ['h2', 'h3', 'h4', 'h5', 'h6']]{
+						style, 'text': pt::text(@)
+					}
+				),
+			},
+		},
+	},
 	_type == 'richtext-module' => {
 		content[]{
 			...,
