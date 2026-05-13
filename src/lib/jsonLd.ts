@@ -16,6 +16,7 @@ export function websiteJsonLd(siteTitle: string, description?: string) {
 		'@type': 'WebSite',
 		name: siteTitle,
 		url: BASE_URL,
+		inLanguage: 'it',
 		...(description && { description }),
 		potentialAction: {
 			'@type': 'SearchAction',
@@ -43,6 +44,9 @@ export function webPageJsonLd(page: Sanity.PageBase) {
 export function blogPostingJsonLd(post: Sanity.BlogPost) {
 	const url = `${BASE_URL}/${BLOG_DIR}/${post.metadata.slug.current}`
 	const image = post.metadata.ogimage || post.metadata.image
+	const keywords = post.metadata.keywords?.length
+		? post.metadata.keywords
+		: post.categories?.map((c) => c.title)
 
 	return {
 		'@context': 'https://schema.org',
@@ -50,8 +54,12 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 		headline: post.metadata.title,
 		description: post.metadata.description,
 		url,
+		inLanguage: post.language || 'it',
 		datePublished: post.publishDate,
 		dateModified: post._updatedAt || post.publishDate,
+		...(post.readTime && {
+			wordCount: Math.round(post.readTime * 200),
+		}),
 		...(image && {
 			image: {
 				'@type': 'ImageObject',
@@ -72,7 +80,9 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 		},
 		...(post.categories?.length && {
 			articleSection: post.categories[0].title,
-			keywords: post.categories.map((c) => c.title).join(', '),
+		}),
+		...(keywords?.length && {
+			keywords: keywords.join(', '),
 		}),
 	}
 }

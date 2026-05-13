@@ -15,40 +15,32 @@ export default async function processMetadata(
 	},
 ): Promise<Metadata> {
 	const url = resolveUrl(page)
-	const { title, description, ogimage, noIndex } = page.metadata
-	const seo = page.seo
+	const { title, description, ogimage, noIndex, keywords, canonicalUrl } = page.metadata
 	const isBlogPost = page._type === 'blog.post'
 
-	// SEO advanced fields override base metadata when available
-	const seoTitle = seo?.metaTitle || title
-	const seoDescription = seo?.metaDescription || description
-	const seoKeywords = seo?.seoKeywords ?? page.categories?.map((c) => c.title)
-	const seoNoIndex = seo?.noIndex ?? noIndex
+	const seoKeywords = keywords ?? page.categories?.map((c) => c.title)
 
-	const ogParams = new URLSearchParams({ title: seoTitle })
+	const ogParams = new URLSearchParams({ title })
 	if (isBlogPost && page.categories?.[0]) ogParams.set('category', page.categories[0].title)
 	if (isBlogPost && page.publishDate) ogParams.set('date', page.publishDate)
 	if (isBlogPost && !ogimage && page.metadata.image) {
 		const imgUrl = (page.metadata.image as any)?.asset?.url
 		if (imgUrl) ogParams.set('image', imgUrl + '?w=420&h=630&fit=crop')
 	}
-	const seoOgImage = seo?.ogImage
-		? (seo.ogImage as any)?.asset?.url
-		: undefined
-	const image = seoOgImage || ogimage || `${BASE_URL}/api/og?${ogParams.toString()}`
+	const image = ogimage || `${BASE_URL}/api/og?${ogParams.toString()}`
 
 	return {
 		metadataBase: new URL(BASE_URL),
-		title: seoTitle,
-		description: seoDescription,
+		title,
+		description,
 		keywords: seoKeywords,
 		authors: page.authors?.map((a) => ({ name: a.name })),
 		openGraph: {
 			type: isBlogPost ? 'article' : 'website',
 			url,
-			title: seo?.ogTitle || seoTitle,
-			description: seo?.ogDescription || seoDescription,
-			images: [{ url: image, width: 1200, height: 630, alt: seoTitle }],
+			title,
+			description,
+			images: [{ url: image, width: 1200, height: 630, alt: title }],
 			siteName: SITE_NAME,
 			locale: 'it_IT',
 			...(isBlogPost && {
@@ -60,18 +52,16 @@ export default async function processMetadata(
 			}),
 		},
 		twitter: {
-			card: seo?.twitterCardType || 'summary_large_image',
-			title: seoTitle,
-			description: seoDescription,
+			card: 'summary_large_image',
+			title,
+			description,
 			images: [image],
-			...(seo?.twitterSite && { site: seo.twitterSite }),
-			...(seo?.twitterCreator && { creator: seo.twitterCreator }),
 		},
-		robots: seoNoIndex || vercelPreview
+		robots: noIndex || vercelPreview
 			? { index: false, follow: false }
 			: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
 		alternates: {
-			canonical: seo?.canonicalUrl || url,
+			canonical: canonicalUrl || url,
 			languages: Object.fromEntries(
 				page.translations
 					?.filter((t) => !!t?.language && !!t?.slug)

@@ -21,7 +21,6 @@ import img from './objects/img'
 import link from './objects/link'
 import linkList from './objects/link.list'
 import metadata from './objects/metadata'
-import seo from './objects/seo'
 import heroSlide from './objects/hero-slide'
 import moduleOptions from './objects/module-options'
 
@@ -65,7 +64,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	linkList,
 	heroSlide,
 	metadata,
-	seo,
 	moduleOptions,
 
 	// modules

@@ -25,8 +25,8 @@ export default function SeoTitleFeedback(props: StringInputProps) {
 	const { value, renderDefault, path } = props
 
 	const parentPath = path.slice(0, -1)
-	const parent = useFormValue(parentPath) as { seoKeywords?: string[] } | undefined
-	const keywords = parent?.seoKeywords || []
+	const parent = useFormValue(parentPath) as { keywords?: string[] } | undefined
+	const keywords = parent?.keywords || []
 
 	const feedback: { text: string; color: string }[] = []
 

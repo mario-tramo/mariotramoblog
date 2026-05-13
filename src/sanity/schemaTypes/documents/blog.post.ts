@@ -11,7 +11,6 @@ export default defineType({
 		{ name: 'content', title: 'Contenuto', default: true },
 		{ name: 'options', title: 'Opzioni' },
 		{ name: 'metadata', title: 'SEO e Metadati' },
-		{ name: 'seo', title: 'SEO Avanzato' },
 	],
 	fields: [
 		defineField({
@@ -86,12 +85,6 @@ export default defineType({
 			name: 'metadata',
 			type: 'metadata',
 			group: 'metadata',
-		}),
-		defineField({
-			name: 'seo',
-			title: 'SEO Avanzato',
-			type: 'seoFields',
-			group: 'seo',
 		}),
 		defineField({
 			name: 'language',

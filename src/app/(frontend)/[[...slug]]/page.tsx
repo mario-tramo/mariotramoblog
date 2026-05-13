@@ -65,7 +65,6 @@ async function getPage(params: Params) {
 				...,
 				'ogimage': image.asset->url + '?w=1200'
 			},
-			seo,
 			${TRANSLATIONS_QUERY},
 		}`,
 		params: { slug },
