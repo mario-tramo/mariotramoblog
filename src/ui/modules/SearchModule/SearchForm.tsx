@@ -2,8 +2,8 @@
 
 import { useQuery, searchStore, handleSearch, type SearchScope } from './store'
 import { cn, debounce, count } from '@/lib/utils'
-import { VscSearch } from 'react-icons/vsc'
-import Loading from '@/ui/Loading'
+import { Search } from 'lucide-react'
+import Loading from '@/ui/primitives/Loading'
 import resolveUrl from '@/lib/resolveUrl'
 import SearchGoogle from './SearchGoogle'
 import css from './SearchForm.module.css'
@@ -27,7 +27,7 @@ export default function SearchForm({
 	return (
 		<search className={cn(css.root, 'relative', className)} {...props}>
 			<label className="input focus-within:border-ink/50 relative z-[2] flex items-center gap-2">
-				<VscSearch aria-hidden="true" />
+				<Search className="size-4" aria-hidden="true" />
 
 				<input
 					className="grow outline-none"

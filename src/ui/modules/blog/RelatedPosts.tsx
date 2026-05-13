@@ -1,9 +1,11 @@
 import Link from 'next/link'
-import { Img } from '@/ui/Img'
+import { Img } from '@/ui/primitives/Img'
 import resolveUrl from '@/lib/resolveUrl'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
+import ReadTime from './ReadTime'
+import SectionTitle from '@/ui/primitives/SectionTitle'
 
 export default async function RelatedPosts({
 	post,
@@ -38,9 +40,7 @@ export default async function RelatedPosts({
 
 	return (
 		<section className="mx-auto mt-14 max-w-[820px] px-4 pb-10 sm:px-6">
-			<h2 className="mb-4 text-xs font-bold tracking-widest text-brand">
-				ARTICOLI CORRELATI
-			</h2>
+			<SectionTitle className="mb-4">ARTICOLI CORRELATI</SectionTitle>
 
 			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
 				{related.map((r) => (
@@ -61,24 +61,10 @@ export default async function RelatedPosts({
 							<h3 className="line-clamp-2 text-sm font-semibold leading-snug transition group-hover:text-brand">
 								{r.metadata.title}
 							</h3>
-							{r.readTime > 0 && (
-								<p className="mt-2 inline-flex items-center gap-1 text-[11px] text-muted">
-									{r.readTime} min di lettura
-									<svg
-										className="size-3"
-										fill="none"
-										viewBox="0 0 24 24"
-										stroke="currentColor"
-										strokeWidth={2}
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											d="M9 5l7 7-7 7"
-										/>
-									</svg>
-								</p>
-							)}
+							<ReadTime
+								value={r.readTime}
+								className="mt-2 text-[11px] text-muted"
+							/>
 						</div>
 					</Link>
 				))}

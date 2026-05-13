@@ -4,7 +4,7 @@ import CTAsSubModule, { type CTAsSubModuleType } from './CTAsSubModule'
 import CustomHTMLSubmodule, {
 	type CustomHTMLSubmoduleType,
 } from './CustomHTMLSubmodule'
-import Icon, { getPixels } from '@/ui/Icon'
+import Icon, { getPixels } from '@/ui/icons/Icon'
 import ImageSubModule, { type ImageSubModuleType } from './ImageSubModule'
 import RichtextSubModule, {
 	type RichtextSubModuleType,

@@ -1,8 +1,8 @@
-import Pretitle from '@/ui/Pretitle'
+import Pretitle from '@/ui/primitives/Pretitle'
 import { PortableText } from 'next-sanity'
 import TabList from './TabList'
 import Wrapper from './Wrapper'
-import CTAList from '@/ui/CTAList'
+import CTAList from '@/ui/primitives/CTAList'
 import Asset from '@/ui/modules/Asset'
 import { cn } from '@/lib/utils'
 

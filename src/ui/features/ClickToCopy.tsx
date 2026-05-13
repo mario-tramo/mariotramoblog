@@ -1,14 +1,14 @@
 'use client'
 
 import { useState, type ComponentProps } from 'react'
-import { VscCheck, VscCopy } from 'react-icons/vsc'
+import { Check, Copy } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export default function ClickToCopy({
 	value,
 	className,
-	children = <VscCopy />,
-	childrenWhenCopied = <VscCheck />,
+	children = <Copy className="size-4" />,
+	childrenWhenCopied = <Check className="size-4" />,
 	...props
 }: {
 	value?: string

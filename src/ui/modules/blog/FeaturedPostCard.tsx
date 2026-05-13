@@ -1,17 +1,9 @@
 import Link from 'next/link'
-import { Img } from '@/ui/Img'
-import SectionCard from '@/ui/SectionCard'
+import { Img } from '@/ui/primitives/Img'
+import SectionCard from '@/ui/primitives/SectionCard'
+import SectionTitle from '@/ui/primitives/SectionTitle'
 import resolveUrl from '@/lib/resolveUrl'
-
-function getInitials(name?: string) {
-	if (!name) return '??'
-	return name
-		.split(' ')
-		.map((w) => w[0])
-		.join('')
-		.toUpperCase()
-		.slice(0, 2)
-}
+import { getInitials } from '@/lib/utils'
 
 interface FeaturedPostCardProps {
 	post?: Sanity.BlogPost
@@ -33,9 +25,7 @@ export default function FeaturedPostCard({
 	return (
 		<SectionCard className="overflow-hidden">
 			<div className="p-4 pb-3 sm:p-5 sm:pb-3">
-				<h3 className="text-xs font-bold tracking-widest text-brand">
-					{title}
-				</h3>
+				<SectionTitle>{title}</SectionTitle>
 			</div>
 
 			<Link

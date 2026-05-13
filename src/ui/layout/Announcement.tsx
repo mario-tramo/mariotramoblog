@@ -3,7 +3,7 @@ import { groq } from 'next-sanity'
 import { LINK_QUERY } from '@/sanity/lib/queries'
 import Scheduler from './Scheduler'
 import { PortableText } from 'next-sanity'
-import CTA from '@/ui/CTA'
+import CTA from '@/ui/primitives/CTA'
 
 export default async function Announcement() {
 	const announcements = await fetchSanityLive<

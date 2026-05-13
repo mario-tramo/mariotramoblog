@@ -1,6 +1,6 @@
 'use client'
 
-import ClickToCopy from '@/ui/ClickToCopy'
+import ClickToCopy from '@/ui/features/ClickToCopy'
 import { FaXTwitter, FaFacebookF } from 'react-icons/fa6'
 import { VscLink } from 'react-icons/vsc'
 

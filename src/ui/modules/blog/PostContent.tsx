@@ -1,25 +1,16 @@
 import moduleProps from '@/lib/moduleProps'
 import Link from 'next/link'
-import { Img } from '@/ui/Img'
-import Date from '@/ui/Date'
+import { Img } from '@/ui/primitives/Img'
+import Date from '@/ui/primitives/Date'
 import Categories from './Categories'
 import ReadTime from './ReadTime'
 import ShareBar from './ShareBar'
 import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
 import Content from '@/ui/modules/RichtextModule/Content'
 import RelatedPosts from './RelatedPosts'
-import { cn } from '@/lib/utils'
+import ChevronIcon from '@/ui/icons/ChevronIcon'
+import { cn, getInitials } from '@/lib/utils'
 import css from './PostContent.module.css'
-
-function getInitials(name?: string) {
-	if (!name) return '??'
-	return name
-		.split(' ')
-		.map((w) => w[0])
-		.join('')
-		.toUpperCase()
-		.slice(0, 2)
-}
 
 export default function PostContent({
 	post,
@@ -43,7 +34,7 @@ export default function PostContent({
 					/>
 				)}
 
-				<h1 className="text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+				<h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-6xl">
 					{post.metadata.title}
 				</h1>
 
@@ -71,7 +62,7 @@ export default function PostContent({
 							</span>
 							<div className="leading-tight">
 								<p className="text-sm font-semibold text-ink">
-									{firstAuthor.name}
+									By {firstAuthor.name}
 								</p>
 								<p className="text-xs">
 									<Date value={post.publishDate} />
@@ -128,19 +119,7 @@ export default function PostContent({
 						href={`/blog?categoria=${post.categories[0].slug.current}`}
 						className="inline-flex items-center gap-2 text-sm text-brand hover:underline"
 					>
-						<svg
-							className="size-4"
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							strokeWidth={2}
-						>
-							<path
-								strokeLinecap="round"
-								strokeLinejoin="round"
-								d="M15 19l-7-7 7-7"
-							/>
-						</svg>
+						<ChevronIcon direction="left" />
 						{post.categories[0].title}
 					</Link>
 				)}

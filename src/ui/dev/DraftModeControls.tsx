@@ -2,7 +2,7 @@
 
 // import { useDraftModeEnvironment } from 'next-sanity/hooks'
 import { usePathname } from 'next/navigation'
-import { VscSymbolField, VscBeakerStop } from 'react-icons/vsc'
+import { LayoutGrid, FlaskConicalOff } from 'lucide-react'
 import { createDataAttribute, stegaClean } from 'next-sanity'
 
 export default function DraftModeControls({
@@ -45,7 +45,7 @@ export default function DraftModeControls({
 								className="inline-flex items-center gap-1 py-0.5"
 								data-sanity={attr().toString()}
 							>
-								<VscSymbolField className="shrink-0" />
+								<LayoutGrid className="size-3.5 shrink-0" />
 								Global modules (<code>{path}</code>)
 							</button>
 						</li>
@@ -59,7 +59,7 @@ export default function DraftModeControls({
 						className="inline-flex items-center gap-1 py-0.5 hover:underline"
 						href="/api/draft-mode/disable"
 					>
-						<VscBeakerStop className="shrink-0" />
+						<FlaskConicalOff className="size-3.5 shrink-0" />
 						Disable Draft Mode
 					</a>
 				</li>

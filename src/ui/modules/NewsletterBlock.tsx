@@ -1,4 +1,4 @@
-import NewsletterSubscribe from '@/ui/NewsletterSubscribe'
+import NewsletterSubscribe from '@/ui/features/newsletter'
 
 const VARIANT_MAP = {
 	hero: 'extended',

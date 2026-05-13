@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 import { PortableText } from 'next-sanity'
-import { VscInfo, VscLightbulb, VscReport, VscWarning } from 'react-icons/vsc'
+import { Info, Lightbulb, AlertCircle, AlertTriangle } from 'lucide-react'
 
 export default function Admonition({
 	value,
@@ -27,11 +27,11 @@ export default function Admonition({
 
 	const Icon = tone
 		? {
-				note: VscInfo,
-				important: VscReport,
-				tip: VscLightbulb,
-				warning: VscWarning,
-				caution: VscWarning,
+				note: Info,
+				important: AlertCircle,
+				tip: Lightbulb,
+				warning: AlertTriangle,
+				caution: AlertTriangle,
 			}[tone]
 		: null
 

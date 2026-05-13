@@ -1,5 +1,5 @@
 import { PortableText } from 'next-sanity'
-import CTAList from '@/ui/CTAList'
+import CTAList from '@/ui/primitives/CTAList'
 import Code from './RichtextModule/Code'
 
 export default function Callout({

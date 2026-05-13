@@ -1,6 +1,3 @@
-// Document types
-export { sport } from "../sport";
-
 // Custom block types for portable text
 export { matchResult } from "./match-result";
 export { playerStats } from "./player-stats";

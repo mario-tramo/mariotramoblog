@@ -1,4 +1,4 @@
-import Pretitle from '@/ui/Pretitle'
+import Pretitle from '@/ui/primitives/Pretitle'
 import { PortableText } from 'next-sanity'
 
 export type RichtextSubModuleType = Sanity.Module<'richtext'> &

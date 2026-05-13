@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { Img } from '@/ui/Img'
-import { GoPerson } from 'react-icons/go'
+import { Img } from '@/ui/primitives/Img'
+import { User } from 'lucide-react'
 import { BLOG_DIR } from '@/lib/env'
 import { cn } from '@/lib/utils'
 
@@ -50,7 +50,7 @@ function Author({
 							alt={author.name}
 						/>
 					) : (
-						<GoPerson className="text-accent/20 text-xl" aria-hidden="true" />
+						<User className="text-accent/20 size-5" aria-hidden="true" />
 					)}
 				</span>
 

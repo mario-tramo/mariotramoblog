@@ -1,12 +1,14 @@
 export default function ReadTime({
 	value,
 	...props
-}: { value: number } & React.ComponentProps<'span'>) {
+}: { value?: number } & React.ComponentProps<'span'>) {
+	if (!value || value <= 0) return null
+
 	const minutes = Math.ceil(value)
 
 	return (
 		<span {...props}>
-			Read time: {minutes} {minutes === 1 ? 'minute' : 'minutes'}
+			{minutes} min di lettura
 		</span>
 	)
 }

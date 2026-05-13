@@ -1,4 +1,4 @@
-import CTAList from '@/ui/CTAList'
+import CTAList from '@/ui/primitives/CTAList'
 
 export type CTAsSubModuleType = Sanity.Module<'ctas'> &
 	Partial<{

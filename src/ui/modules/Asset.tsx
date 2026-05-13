@@ -1,4 +1,4 @@
-import { ResponsiveImg } from '@/ui/Img'
+import { ResponsiveImg } from '@/ui/primitives/Img'
 import Code from './RichtextModule/Code'
 import CustomHTML from './CustomHTML'
 

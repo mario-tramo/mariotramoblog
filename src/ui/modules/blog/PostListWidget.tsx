@@ -1,7 +1,10 @@
 import Link from 'next/link'
-import { Img } from '@/ui/Img'
-import SectionCard from '@/ui/SectionCard'
+import { Img } from '@/ui/primitives/Img'
+import SectionCard from '@/ui/primitives/SectionCard'
+import SectionTitle from '@/ui/primitives/SectionTitle'
+import ChevronIcon from '@/ui/icons/ChevronIcon'
 import resolveUrl from '@/lib/resolveUrl'
+import ReadTime from './ReadTime'
 
 export type PostListVariant =
 	| 'sidebar-thumbs'
@@ -33,15 +36,6 @@ function timeAgo(dateStr: string) {
 	if (diffH < 24) return `${diffH}h fa`
 	if (diffD < 7) return `${diffD}g fa`
 	return date.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })
-}
-
-function ReadTime({ post }: { post: Sanity.BlogPost }) {
-	if (!post.readTime) return null
-	return (
-		<span className="text-[11px] text-muted">
-			{post.readTime} min di lettura
-		</span>
-	)
 }
 
 /** sidebar-thumbs: small thumbnail + time ago + title */
@@ -106,7 +100,7 @@ function SidebarNumbered({
 							<p className="text-[13px] font-medium leading-snug group-hover:underline">
 								{post.metadata.title}
 							</p>
-							<ReadTime post={post} />
+							<ReadTime value={post.readTime} className="text-[11px] text-muted" />
 						</div>
 					</Link>
 				</li>
@@ -151,7 +145,7 @@ function Grid({
 						</Link>
 					</h3>
 
-					<ReadTime post={post} />
+					<ReadTime value={post.readTime} className="text-[11px] text-muted" />
 				</article>
 			))}
 		</div>
@@ -185,7 +179,7 @@ function List({
 								{post.metadata.title}
 							</Link>
 						</h3>
-						<ReadTime post={post} />
+						<ReadTime value={post.readTime} className="text-[11px] text-muted" />
 					</div>
 				</article>
 			))}
@@ -234,14 +228,7 @@ export default function PostListWidget({
 		<SectionCard className="p-4 sm:p-5">
 			{/* Header */}
 			<div className="mb-4 flex items-center justify-between">
-				<div className="flex items-center gap-2">
-					{showDot && (
-						<span className="size-2 rounded-full bg-brand" />
-					)}
-					<h3 className="text-xs font-bold tracking-widest text-brand">
-						{title}
-					</h3>
-				</div>
+				<SectionTitle showDot={showDot}>{title}</SectionTitle>
 
 				{viewAllHref && effectiveCtaStyle === 'link' && (
 					<Link
@@ -263,19 +250,7 @@ export default function PostListWidget({
 					className="mt-5 flex w-full items-center justify-between border-t border-border pt-4 text-xs font-semibold text-muted transition hover:text-ink"
 				>
 					{viewAllLabel}
-					<svg
-						className="size-3.5"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-						strokeWidth={2}
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							d="M9 5l7 7-7 7"
-						/>
-					</svg>
+					<ChevronIcon className="size-3.5" />
 				</Link>
 			)}
 

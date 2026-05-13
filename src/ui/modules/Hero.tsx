@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import moduleProps from '@/lib/moduleProps'
-import CTAList from '@/ui/CTAList'
+import CTAList from '@/ui/primitives/CTAList'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 function getInitials(name?: string) {
@@ -184,34 +185,14 @@ export default function Hero({
 									className="grid size-9 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20"
 									aria-label="Slide precedente"
 								>
-									<svg
-										className="size-4"
-										viewBox="0 0 20 20"
-										fill="currentColor"
-									>
-										<path
-											fillRule="evenodd"
-											d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-											clipRule="evenodd"
-										/>
-									</svg>
+									<ChevronLeft className="size-4" />
 								</button>
 								<button
 									onClick={next}
 									className="grid size-9 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20"
 									aria-label="Slide successiva"
 								>
-									<svg
-										className="size-4"
-										viewBox="0 0 20 20"
-										fill="currentColor"
-									>
-										<path
-											fillRule="evenodd"
-											d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-											clipRule="evenodd"
-										/>
-									</svg>
+									<ChevronRight className="size-4" />
 								</button>
 							</div>
 						)}

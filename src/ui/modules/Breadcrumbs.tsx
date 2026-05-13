@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import CTA from '@/ui/CTA'
+import CTA from '@/ui/primitives/CTA'
 import { stegaClean } from 'next-sanity'
 
 export default async function Breadcrumbs({
@@ -12,7 +12,7 @@ export default async function Breadcrumbs({
 	currentPage: Sanity.Page | Sanity.BlogPost
 }>) {
 	return (
-		<nav className="section py-4 text-sm">
+		<nav className="section py-4 text-sm text-muted">
 			<ol
 				className="flex flex-wrap items-center gap-x-2 gap-y-1"
 				itemScope
@@ -30,7 +30,7 @@ export default async function Breadcrumbs({
 					</Fragment>
 				))}
 
-				<Crumb position={(crumbs?.length || 0) + 2} hidden={hideCurrent}>
+				<Crumb position={(crumbs?.length || 0) + 2} hidden={hideCurrent} isCurrent>
 					{currentPage?.title || currentPage?.metadata.title}
 				</Crumb>
 			</ol>
@@ -43,10 +43,12 @@ function Crumb({
 	position,
 	children,
 	hidden,
+	isCurrent,
 }: {
 	link?: Omit<Sanity.Link, '_type'>
 	position: number
 	hide?: boolean
+	isCurrent?: boolean
 } & React.ComponentProps<'li'>) {
 	const content = (
 		<>
@@ -61,7 +63,7 @@ function Crumb({
 
 	return (
 		<li
-			className="line-clamp-1"
+			className={`line-clamp-1 ${isCurrent ? 'font-semibold text-ink' : ''}`}
 			itemProp="itemListElement"
 			itemScope
 			itemType="https://schema.org/ListItem"

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { FiSearch, FiMenu, FiX, FiChevronDown } from 'react-icons/fi'
+import { Search, Menu, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 
 export interface NavItem {
@@ -51,7 +51,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 				aria-expanded={open}
 			>
 				{item.label}
-				<FiChevronDown
+				<ChevronDown
 					size={14}
 					className={`transition-transform ${open ? 'rotate-180' : ''}`}
 				/>
@@ -131,7 +131,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 							className="grid size-9 place-items-center rounded-full transition hover:bg-surface"
 							aria-label="Cerca"
 						>
-							<FiSearch size={18} />
+							<Search size={18} />
 						</Link>
 
 						{ctas?.map((cta, i) => (
@@ -149,7 +149,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 							onClick={() => setMobileMenuOpen(true)}
 							aria-label="Menu"
 						>
-							<FiMenu size={20} />
+							<Menu size={20} />
 						</button>
 					</div>
 				</div>
@@ -176,7 +176,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 							onClick={() => setMobileMenuOpen(false)}
 							aria-label="Chiudi"
 						>
-							<FiX size={20} />
+							<X size={20} />
 						</button>
 					</div>
 
@@ -200,7 +200,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 											}
 										>
 											{item.label}
-											<FiChevronDown
+											<ChevronDown
 												size={16}
 												className={`text-muted transition-transform ${
 													mobileExpanded ===

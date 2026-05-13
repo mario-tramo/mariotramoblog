@@ -1,8 +1,8 @@
-import { Img } from '@/ui/Img'
+import { Img } from '@/ui/primitives/Img'
 import Link from 'next/link'
 import resolveUrl from '@/lib/resolveUrl'
 import Authors from './Authors'
-import Date from '@/ui/Date'
+import Date from '@/ui/primitives/Date'
 import Categories from './Categories'
 import { cn } from '@/lib/utils'
 

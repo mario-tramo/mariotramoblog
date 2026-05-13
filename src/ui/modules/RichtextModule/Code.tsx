@@ -1,5 +1,5 @@
 import { codeToHtml, splitLines, bundledThemes } from 'shiki'
-import ClickToCopy from '@/ui/ClickToCopy'
+import ClickToCopy from '@/ui/features/ClickToCopy'
 import css from './Code.module.css'
 import { cn } from '@/lib/utils'
 import { stegaClean } from 'next-sanity'

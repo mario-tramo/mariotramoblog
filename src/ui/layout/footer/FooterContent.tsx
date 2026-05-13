@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import CTA from '@/ui/CTA'
-import NewsletterSubscribe from '@/ui/NewsletterSubscribe'
+import CTA from '@/ui/primitives/CTA'
+import NewsletterSubscribe from '@/ui/features/newsletter'
 import { PortableText, stegaClean } from 'next-sanity'
 import {
 	FaFacebookF,

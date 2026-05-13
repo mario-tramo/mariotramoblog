@@ -13,8 +13,8 @@ export default function Category({
 }) {
 	const props = {
 		className: cn(
-			"before:text-current/50 before:content-['#'] hover:*:underline",
-			linked && 'relative z-10',
+			'inline-block rounded-full bg-brand px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-brand-foreground',
+			linked && 'relative z-10 hover:opacity-80 transition-opacity',
 			!linked && 'pointer-events-none',
 		),
 		children: <span>{label || value?.title}</span>,

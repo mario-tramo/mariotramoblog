@@ -9,7 +9,7 @@ import { Suspense } from 'react'
 import FilterList from '../BlogList/FilterList'
 import Paginated from './Paginated'
 import PostPreview from '../PostPreview'
-import NewsletterSubscribe from '@/ui/NewsletterSubscribe'
+import NewsletterSubscribe from '@/ui/features/newsletter'
 import PostListWidget from '../PostListWidget'
 import FeaturedPostCard from '../FeaturedPostCard'
 

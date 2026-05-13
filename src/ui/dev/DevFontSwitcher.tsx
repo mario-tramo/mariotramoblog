@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Type, X } from 'lucide-react'
 
 const GOOGLE_FONTS = [
 	// Sans-serif
@@ -115,9 +116,7 @@ export default function DevFontSwitcher() {
 					className="grid size-10 place-items-center rounded-full bg-brand text-brand-foreground shadow-lg transition hover:scale-110"
 					title="Font Switcher"
 				>
-					<svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-						<path d="M4 7V4h16v3M9 20h6M12 4v16" />
-					</svg>
+					<Type className="size-5" />
 				</button>
 			)}
 
@@ -134,9 +133,7 @@ export default function DevFontSwitcher() {
 							onClick={() => setOpen(false)}
 							className="text-muted transition hover:text-ink"
 						>
-							<svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-								<path d="M18 6L6 18M6 6l12 12" />
-							</svg>
+							<X className="size-4" />
 						</button>
 					</div>
 

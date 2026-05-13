@@ -31,17 +31,22 @@ export function debounce<T extends (...args: any[]) => void>(
 	}
 }
 
-export const { format: formatCurrency } = new Intl.NumberFormat('en-US', {
-	style: 'currency',
-	currency: 'USD',
-})
-
 export function slug(str: string) {
 	return str
 		.toLowerCase()
 		.replace(/[\s\W]+/g, '-')
 		.replace(/^-+/, '')
 		.replace(/-+$/, '')
+}
+
+export function getInitials(name?: string) {
+	if (!name) return '??'
+	return name
+		.split(' ')
+		.map((w) => w[0])
+		.join('')
+		.toUpperCase()
+		.slice(0, 2)
 }
 
 export function getBlockText(
