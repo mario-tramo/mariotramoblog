@@ -26,6 +26,7 @@ declare global {
 		interface PageBase extends SanityDocument {
 			title?: string
 			metadata: Metadata
+			seo?: SeoFields
 			readonly language?: string
 		}
 
@@ -178,6 +179,20 @@ declare global {
 			image?: Image
 			ogimage?: string
 			noIndex: boolean
+		}
+
+		interface SeoFields {
+			metaTitle?: string
+			metaDescription?: string
+			seoKeywords?: string[]
+			ogTitle?: string
+			ogDescription?: string
+			ogImage?: Image
+			twitterCardType?: 'summary_large_image' | 'summary'
+			twitterCreator?: string
+			twitterSite?: string
+			noIndex?: boolean
+			canonicalUrl?: string
 		}
 
 		interface Module<T = string> {

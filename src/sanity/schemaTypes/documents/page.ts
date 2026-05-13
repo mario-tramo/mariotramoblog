@@ -14,7 +14,7 @@ export default defineType({
 	name: 'page',
 	title: 'Pagina',
 	type: 'document',
-	groups: [{ name: 'content', title: 'Contenuto', default: true }, { name: 'metadata', title: 'Metadati' }],
+	groups: [{ name: 'content', title: 'Contenuto', default: true }, { name: 'metadata', title: 'Metadati' }, { name: 'seo', title: 'SEO Avanzato' }],
 	fields: [
 		defineField({
 			name: 'title',
@@ -33,6 +33,12 @@ export default defineType({
 			name: 'metadata',
 			type: 'metadata',
 			group: 'metadata',
+		}),
+		defineField({
+			name: 'seo',
+			title: 'SEO Avanzato',
+			type: 'seoFields',
+			group: 'seo',
 		}),
 		defineField({
 			name: 'language',

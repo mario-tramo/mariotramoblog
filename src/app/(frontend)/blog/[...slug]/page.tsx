@@ -100,6 +100,7 @@ async function getPost(params: Params) {
 				...,
 				'ogimage': image.asset->url + '?w=1200'
 			},
+			seo,
 			'modules': (
 				// global modules (before)
 				*[_type == 'global-module' && path == '*'].before[]{ ${MODULES_QUERY} }
