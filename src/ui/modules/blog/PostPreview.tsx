@@ -16,8 +16,8 @@ export default function PostPreview({
 	if (!post && !skeleton) return null
 
 	return (
-		<div className="group relative isolate flex h-full flex-col space-y-2">
-			<figure className="bg-ink/3 relative aspect-video overflow-hidden">
+		<div className="group relative isolate flex h-full flex-col space-y-2 rounded-2xl border border-border bg-surface p-3 transition hover:border-brand/30">
+			<figure className="relative aspect-video overflow-hidden rounded-lg bg-ink/3">
 				<Img
 					className="aspect-video w-full object-cover transition-all group-hover:scale-105 group-hover:brightness-110"
 					image={post?.metadata.image}
@@ -26,13 +26,19 @@ export default function PostPreview({
 				/>
 
 				{post?.featured && (
-					<span className="action absolute top-0 right-4 rounded-t-none py-1 text-xs shadow-md">
-						Featured
+					<span className="absolute top-2 right-2 rounded-full bg-brand px-2.5 py-0.5 text-[10px] font-bold text-brand-foreground shadow-md">
+						In evidenza
 					</span>
 				)}
 			</figure>
 
-			<div className={cn('h4', skeleton && 'skeleton-2')}>
+			{post?.categories?.[0] && (
+				<p className="text-[10px] font-bold tracking-widest text-brand">
+					{post.categories[0].title.toUpperCase()}
+				</p>
+			)}
+
+			<div className={cn('text-base font-bold leading-snug', skeleton && 'skeleton-2')}>
 				<Link
 					className="group-hover:underline"
 					href={resolveUrl(post, { base: false })}
@@ -43,7 +49,7 @@ export default function PostPreview({
 			</div>
 
 			<div className="grow">
-				<p className="line-clamp-3 text-sm empty:h-[3lh]">
+				<p className="line-clamp-2 text-sm text-muted empty:h-[2lh]">
 					{post?.metadata.description}
 				</p>
 			</div>
@@ -56,9 +62,7 @@ export default function PostPreview({
 				/>
 			)}
 
-			<hr />
-
-			<div className="empty:skeleton flex flex-wrap gap-x-4 text-sm">
+			<div className="flex flex-wrap gap-x-4 border-t border-border pt-2 text-sm empty:skeleton">
 				<Date value={post?.publishDate} />
 				<Categories
 					className="relative z-10 flex flex-wrap gap-x-2"

@@ -8,7 +8,11 @@
 
 	--color-surface: #111827;
 	--color-surface-light: #1a2332;
+	--color-surface-2: #1e293b;
 	--color-muted: #8899aa;
+	--color-border: rgba(255, 255, 255, 0.08);
+	--color-brand: #00d4ff;
+	--color-brand-foreground: #0a0f1a;
 
 	--max-height-fold: calc(100svh - var(--header-height));
 }

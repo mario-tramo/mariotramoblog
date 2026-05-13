@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import CTA from '@/ui/CTA'
+import NewsletterSubscribe from '@/ui/NewsletterSubscribe'
 import { PortableText, stegaClean } from 'next-sanity'
 import {
 	FaFacebookF,
@@ -22,17 +23,17 @@ function SocialIcon({ url, ...props }: { url?: string } & React.ComponentProps<'
 	if (!url) return null
 
 	if (url.includes('x.com') || url.includes('twitter.com'))
-		return <FaXTwitter className="w-5 h-5" {...props} />
+		return <FaXTwitter className="size-3.5" {...props} />
 	if (url.includes('instagram.com'))
-		return <FaInstagram className="w-5 h-5" {...props} />
+		return <FaInstagram className="size-3.5" {...props} />
 	if (url.includes('youtube.com'))
-		return <FaYoutube className="w-5 h-5" {...props} />
+		return <FaYoutube className="size-3.5" {...props} />
 	if (url.includes('tiktok.com'))
-		return <FaTiktok className="w-5 h-5" {...props} />
+		return <FaTiktok className="size-3.5" {...props} />
 	if (url.includes('facebook.com'))
-		return <FaFacebookF className="w-5 h-5" {...props} />
+		return <FaFacebookF className="size-3.5" {...props} />
 
-	return <IoIosLink className="w-5 h-5" {...props} />
+	return <IoIosLink className="size-3.5" {...props} />
 }
 
 export default function FooterContent({
@@ -45,92 +46,80 @@ export default function FooterContent({
 	const columnCount = (footerLinks?.length ?? 0) + 1 + (showNewsletter ? 1 : 0)
 
 	return (
-		<footer className="bg-[#0d1117] border-t border-[#21262d]">
-			<div className="max-w-[1400px] mx-auto px-4 md:px-6 py-10">
-				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(var(--footer-cols),minmax(0,1fr))] gap-8" style={{ '--footer-cols': columnCount } as React.CSSProperties}>
-					{/* Brand Section */}
-					<div className="lg:col-span-1">
-						<Link href="/" className="flex items-baseline gap-0.5 mb-3">
-							<span className="text-[#4fc3dc] text-xl font-bold italic">TM</span>
-							<span className="text-white text-xl font-light italic tracking-tight">
-								SPORT
-							</span>
-						</Link>
+		<footer className="mt-10 border-t border-border">
+			<div
+				className="mx-auto grid max-w-[1400px] grid-cols-2 gap-6 px-4 py-8 text-sm sm:grid-cols-3 sm:gap-8 sm:px-6 sm:py-10 lg:grid-cols-[repeat(var(--footer-cols),minmax(0,1fr))]"
+				style={{ '--footer-cols': columnCount } as React.CSSProperties}
+			>
+				{/* Brand Section */}
+				<div className="col-span-2 sm:col-span-3 lg:col-span-1">
+					<Link href="/" className="mb-3 flex items-baseline gap-0.5">
+						<span className="text-xl font-extrabold italic text-brand">
+							TM
+						</span>
+						<span className="text-xl font-light italic tracking-tight text-ink">
+							SPORT
+						</span>
+					</Link>
 
-						{blurb && (
-							<div className="text-[#8b949e] text-sm leading-relaxed mb-4">
-								<PortableText value={blurb} />
-							</div>
-						)}
-
-						{/* Social Icons */}
-						{socialLinks && socialLinks.length > 0 && (
-							<div className="flex items-center gap-3 mb-4">
-								{socialLinks.map((link, i) => (
-									<CTA
-										key={i}
-										link={link}
-										className="text-[#c9d1d9] hover:text-white transition-colors"
-									>
-										<SocialIcon url={link.external} aria-label={link.label} />
-									</CTA>
-								))}
-							</div>
-						)}
-
-						{copyright && (
-							<div className="text-[#8b949e] text-xs">
-								<PortableText value={copyright} />
-							</div>
-						)}
-					</div>
-
-					{/* Dynamic Link Columns from Sanity */}
-					{footerLinks?.map((group, i) => (
-						<div key={i}>
-							{group.link && (
-								<h3 className="text-[#8b949e] text-xs font-semibold uppercase tracking-wider mb-4">
-									{stegaClean(group.link.label) ||
-										group.link.internal?.title}
-								</h3>
-							)}
-							<ul className="space-y-2">
-								{group.links?.map((link, j) => (
-									<li key={j}>
-										<CTA
-											link={link}
-											className="text-[#c9d1d9] text-sm hover:text-white transition-colors"
-										/>
-									</li>
-								))}
-							</ul>
+					{blurb && (
+						<div className="mb-4 text-xs leading-relaxed text-muted">
+							<PortableText value={blurb} />
 						</div>
-					))}
+					)}
 
-					{/* Newsletter Section */}
-					{showNewsletter && (
-						<div>
-							<h3 className="text-[#8b949e] text-xs font-semibold uppercase tracking-wider mb-4">
-								Stay Updated
-							</h3>
-							<p className="text-[#8b949e] text-sm mb-4">
-								Subscribe to our newsletter
-								<br />
-								for daily football stories.
-							</p>
-							<div className="flex">
-								<input
-									type="email"
-									placeholder="Enter your email"
-									className="flex-1 min-w-0 bg-[#161b22] border border-[#30363d] rounded-l-md px-3 py-2 text-sm text-white placeholder-[#8b949e] focus:outline-none focus:border-[#4fc3dc]"
-								/>
-								<button className="bg-[#4fc3dc] hover:bg-[#3fb3cc] text-[#0d1117] font-medium text-sm px-4 py-2 rounded-r-md transition-colors whitespace-nowrap">
-									Subscribe
-								</button>
-							</div>
+					{socialLinks && socialLinks.length > 0 && (
+						<div className="mb-4 flex flex-wrap items-center gap-2">
+							{socialLinks.map((link, i) => (
+								<CTA
+									key={i}
+									link={link}
+									className="grid size-8 place-items-center rounded-full bg-surface text-muted transition hover:bg-surface-light hover:text-ink"
+								>
+									<SocialIcon
+										url={link.external}
+										aria-label={link.label}
+									/>
+								</CTA>
+							))}
+						</div>
+					)}
+
+					{copyright && (
+						<div className="text-[11px] text-muted">
+							<PortableText value={copyright} />
 						</div>
 					)}
 				</div>
+
+				{/* Dynamic Link Columns from Sanity */}
+				{footerLinks?.map((group, i) => (
+					<div key={i}>
+						{group.link && (
+							<h4 className="mb-3 text-[11px] font-bold uppercase tracking-widest text-ink">
+								{stegaClean(group.link.label) ||
+									group.link.internal?.title}
+							</h4>
+						)}
+						<ul className="space-y-2 text-xs text-muted">
+							{group.links?.map((link, j) => (
+								<li key={j}>
+									<CTA
+										link={link}
+										className="transition hover:text-ink"
+									/>
+								</li>
+							))}
+						</ul>
+					</div>
+				))}
+
+				{/* Newsletter Section */}
+				{showNewsletter && (
+					<div className="col-span-2 sm:col-span-3 lg:col-span-1">
+						<NewsletterSubscribe variant="inline" />
+					</div>
+				)}
 			</div>
 		</footer>
 	)

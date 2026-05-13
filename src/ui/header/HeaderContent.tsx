@@ -46,7 +46,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 			onMouseLeave={handleLeave}
 		>
 			<button
-				className="flex items-center gap-1 text-[#c9d1d9] hover:text-white text-[15px] font-normal py-2 transition-colors"
+				className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-ink"
 				onClick={() => setOpen((v) => !v)}
 				aria-expanded={open}
 			>
@@ -58,19 +58,25 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 			</button>
 
 			{open && (
-				<ul className="absolute top-full left-0 mt-1 min-w-[180px] bg-[#161b22] border border-[#30363d] rounded-md py-1 shadow-lg z-50">
-					{item.children?.map((child) => (
-						<li key={child.href}>
-							<Link
-								href={child.href}
-								className="block px-4 py-2 text-sm text-[#c9d1d9] hover:text-white hover:bg-[#1c2128] transition-colors"
-								onClick={() => setOpen(false)}
-							>
-								{child.label}
-							</Link>
-						</li>
-					))}
-				</ul>
+				<>
+					<ul className="absolute top-full left-0 z-50 mt-1 min-w-[180px] rounded-lg border border-border bg-surface py-1 shadow-lg backdrop-blur-md">
+						{item.children?.map((child) => (
+							<li key={child.href}>
+								<Link
+									href={child.href}
+									className="block px-4 py-2 text-sm text-muted transition-colors hover:bg-surface-light hover:text-ink"
+									onClick={() => setOpen(false)}
+								>
+									{child.label}
+								</Link>
+							</li>
+						))}
+					</ul>
+					<div
+						className="fixed inset-0 -z-10"
+						onClick={() => setOpen(false)}
+					/>
+				</>
 			)}
 		</div>
 	)
@@ -80,148 +86,170 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 	const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
 
+	useEffect(() => {
+		document.body.style.overflow = mobileMenuOpen ? 'hidden' : ''
+		return () => {
+			document.body.style.overflow = ''
+		}
+	}, [mobileMenuOpen])
+
 	return (
 		<>
-			<header className="bg-[#0d1117] border-b border-[#21262d]">
-				<div className="max-w-[1400px] mx-auto px-4 md:px-6">
-					<div className="flex items-center justify-between h-[60px]">
-						{/* Mobile Menu Button */}
-						<button
-							className="md:hidden text-white/90 hover:text-white p-2 -ml-2"
-							onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-							aria-label="Toggle menu"
-						>
-							{mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-						</button>
+			<header className="sticky top-0 z-40 border-b border-border bg-canvas/85 backdrop-blur-md">
+				<div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
+					{/* Logo */}
+					<Link href="/" className="flex items-center gap-0.5">
+						<span className="text-xl font-extrabold italic tracking-tight text-brand">
+							TM
+						</span>
+						<span className="text-xl font-light italic tracking-tight text-ink">
+							SPORT
+						</span>
+					</Link>
 
-						{/* Logo */}
-						<div className="flex items-center">
-							<Link href="/" className="flex items-center">
-								<span className="text-[#4fc3dc] font-bold text-2xl italic tracking-tight">
-									TM
-								</span>
-								<span className="text-white font-light text-2xl italic tracking-tight ml-0.5">
-									SPORT
-								</span>
-							</Link>
-						</div>
-
-						{/* Desktop Navigation */}
-						<nav className="hidden md:flex items-center justify-center flex-1 mx-16">
-							<div className="flex items-center gap-6">
-								{navItems.map((item) =>
-									item.children?.length ? (
-										<DesktopDropdown key={item.label} item={item} />
-									) : (
-										<Link
-											key={item.label}
-											href={item.href}
-											className="text-[#c9d1d9] hover:text-white text-[15px] font-normal py-2 transition-colors"
-										>
-											{item.label}
-										</Link>
-									),
-								)}
-							</div>
-						</nav>
-
-						{/* Right Actions */}
-						<div className="flex items-center gap-3">
-							<Link
-								href="/search"
-								className="text-[#c9d1d9] hover:text-white p-2.5 transition-colors"
-								aria-label="Search"
-							>
-								<FiSearch size={20} />
-							</Link>
-
-							{ctas?.map((cta, i) => (
-								<Link
-									key={i}
-									href={cta.href}
-									className="hidden md:block ml-4 text-[#4fc3dc] border border-[#4fc3dc] hover:bg-[#4fc3dc]/10 text-sm font-medium px-5 py-1.5 rounded transition-colors"
-								>
-									{cta.label}
-								</Link>
-							))}
-						</div>
-					</div>
-				</div>
-			</header>
-
-			{/* Mobile Menu Dropdown */}
-			{mobileMenuOpen && (
-				<div className="md:hidden bg-[#0d1117] border-b border-[#21262d]">
-					<nav className="flex flex-col px-4 py-3">
-						{navItems.map((item, index) =>
+					{/* Desktop Navigation */}
+					<nav className="hidden items-center gap-1 lg:flex">
+						{navItems.map((item) =>
 							item.children?.length ? (
-								<div
-									key={item.label}
-									className={
-										index < navItems.length - 1
-											? 'border-b border-[#1c2128]'
-											: ''
-									}
-								>
-									<button
-										className="flex items-center justify-between w-full text-[#c9d1d9] hover:text-white text-[15px] py-3 transition-colors"
-										onClick={() =>
-											setMobileExpanded(
-												mobileExpanded === item.label
-													? null
-													: item.label,
-											)
-										}
-									>
-										{item.label}
-										<FiChevronDown
-											size={14}
-											className={`transition-transform ${
-												mobileExpanded === item.label
-													? 'rotate-180'
-													: ''
-											}`}
-										/>
-									</button>
-									{mobileExpanded === item.label && (
-										<ul className="pl-4 pb-2 space-y-1">
-											{item.children.map((child) => (
-												<li key={child.href}>
-													<Link
-														href={child.href}
-														className="block text-sm text-[#8b949e] hover:text-white py-1.5 transition-colors"
-														onClick={() =>
-															setMobileMenuOpen(false)
-														}
-													>
-														{child.label}
-													</Link>
-												</li>
-											))}
-										</ul>
-									)}
-								</div>
+								<DesktopDropdown key={item.label} item={item} />
 							) : (
 								<Link
 									key={item.label}
 									href={item.href}
-									className={`text-[#c9d1d9] hover:text-white text-[15px] py-3 transition-colors ${
-										index < navItems.length - 1
-											? 'border-b border-[#1c2128]'
-											: ''
-									}`}
-									onClick={() => setMobileMenuOpen(false)}
+									className="rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-ink"
 								>
 									{item.label}
 								</Link>
 							),
 						)}
+					</nav>
+
+					{/* Right Actions */}
+					<div className="flex items-center gap-1 sm:gap-2">
+						<Link
+							href="/search"
+							className="grid size-9 place-items-center rounded-full transition hover:bg-surface"
+							aria-label="Cerca"
+						>
+							<FiSearch size={18} />
+						</Link>
 
 						{ctas?.map((cta, i) => (
 							<Link
 								key={i}
 								href={cta.href}
-								className="mt-4 mb-2 text-[#4fc3dc] border border-[#4fc3dc] hover:bg-[#4fc3dc]/10 text-sm font-medium px-5 py-2 rounded transition-colors w-full text-center"
+								className="hidden rounded-full border border-brand px-5 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand/10 md:block"
+							>
+								{cta.label}
+							</Link>
+						))}
+
+						<button
+							className="grid size-9 place-items-center rounded-full transition hover:bg-surface lg:hidden"
+							onClick={() => setMobileMenuOpen(true)}
+							aria-label="Menu"
+						>
+							<FiMenu size={20} />
+						</button>
+					</div>
+				</div>
+			</header>
+
+			{/* Mobile drawer */}
+			{mobileMenuOpen && (
+				<div className="fixed inset-0 z-50 flex animate-in fade-in flex-col bg-canvas duration-150 lg:hidden">
+					<div className="flex h-14 items-center justify-between border-b border-border px-4">
+						<Link
+							href="/"
+							className="flex items-center gap-0.5"
+							onClick={() => setMobileMenuOpen(false)}
+						>
+							<span className="text-xl font-extrabold italic tracking-tight text-brand">
+								TM
+							</span>
+							<span className="text-xl font-light italic tracking-tight text-ink">
+								SPORT
+							</span>
+						</Link>
+						<button
+							className="grid size-9 place-items-center rounded-full transition hover:bg-surface"
+							onClick={() => setMobileMenuOpen(false)}
+							aria-label="Chiudi"
+						>
+							<FiX size={20} />
+						</button>
+					</div>
+
+					<nav className="flex-1 overflow-y-auto px-2 py-3">
+						{navItems.map((item) => (
+							<div
+								key={item.label}
+								className="border-b border-border/60"
+							>
+								{item.children?.length ? (
+									<>
+										<button
+											className="flex w-full items-center justify-between px-3 py-4 text-base font-semibold"
+											onClick={() =>
+												setMobileExpanded(
+													mobileExpanded ===
+														item.label
+														? null
+														: item.label,
+												)
+											}
+										>
+											{item.label}
+											<FiChevronDown
+												size={16}
+												className={`text-muted transition-transform ${
+													mobileExpanded ===
+													item.label
+														? 'rotate-180'
+														: ''
+												}`}
+											/>
+										</button>
+										{mobileExpanded === item.label && (
+											<ul className="space-y-1 pb-3 pl-3">
+												{item.children.map((child) => (
+													<li key={child.href}>
+														<Link
+															href={child.href}
+															className="block rounded-md px-3 py-2 text-sm text-muted hover:bg-surface hover:text-ink"
+															onClick={() =>
+																setMobileMenuOpen(
+																	false,
+																)
+															}
+														>
+															{child.label}
+														</Link>
+													</li>
+												))}
+											</ul>
+										)}
+									</>
+								) : (
+									<Link
+										href={item.href}
+										className="block px-3 py-4 text-base font-semibold"
+										onClick={() =>
+											setMobileMenuOpen(false)
+										}
+									>
+										{item.label}
+									</Link>
+								)}
+							</div>
+						))}
+
+						{ctas?.map((cta, i) => (
+							<Link
+								key={i}
+								href={cta.href}
+								className="mt-4 mb-2 block w-full rounded-full border border-brand px-5 py-2 text-center text-sm font-medium text-brand transition-colors hover:bg-brand/10"
+								onClick={() => setMobileMenuOpen(false)}
 							>
 								{cta.label}
 							</Link>

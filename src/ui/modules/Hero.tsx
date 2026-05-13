@@ -1,9 +1,19 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import moduleProps from '@/lib/moduleProps'
 import CTAList from '@/ui/CTAList'
 import { cn } from '@/lib/utils'
+
+function getInitials(name?: string) {
+	if (!name) return '??'
+	return name
+		.split(' ')
+		.map((w) => w[0])
+		.join('')
+		.toUpperCase()
+		.slice(0, 2)
+}
 
 function Slide({
 	slide,
@@ -20,7 +30,6 @@ function Slide({
 			)}
 			aria-hidden={!active}
 		>
-			{/* Background image */}
 			{slide.imageUrl && (
 				<img
 					src={slide.imageUrl}
@@ -29,32 +38,6 @@ function Slide({
 					loading="eager"
 				/>
 			)}
-
-			{/* Overlay */}
-			<div className="absolute inset-0 bg-black/50" />
-
-			{/* Content */}
-			<div className="section relative z-10 flex h-full flex-col justify-end pb-12">
-				<div className="max-w-2xl space-y-4">
-					{slide.author && (
-						<p className="text-sm font-medium text-white/70">
-							{slide.author.name}
-						</p>
-					)}
-
-					<h2 className="text-3xl font-bold text-white md:text-5xl">
-						{slide.title}
-					</h2>
-
-					{slide.description && (
-						<p className="max-w-lg text-base text-white/80">
-							{slide.description}
-						</p>
-					)}
-
-					<CTAList ctas={[slide.cta]} />
-				</div>
-			</div>
 		</div>
 	)
 }
@@ -66,8 +49,11 @@ export default function Hero({
 	slides?: Sanity.HeroSlide[]
 } & Sanity.Module) {
 	const [current, setCurrent] = useState(0)
+	const [paused, setPaused] = useState(false)
 	const count = slides?.length ?? 0
 	const isCarousel = count > 1
+	const dragX = useRef<number | null>(null)
+	const dragDx = useRef(0)
 
 	const next = useCallback(() => {
 		setCurrent((prev) => (prev + 1) % count)
@@ -78,18 +64,65 @@ export default function Hero({
 	}, [count])
 
 	useEffect(() => {
-		if (!isCarousel) return
+		if (!isCarousel || paused) return
 		const interval = setInterval(next, 6000)
 		return () => clearInterval(interval)
-	}, [isCarousel, next])
+	}, [isCarousel, next, paused])
+
+	const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+		dragX.current = e.clientX
+		dragDx.current = 0
+		;(e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId)
+		setPaused(true)
+	}
+
+	const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+		if (dragX.current === null) return
+		dragDx.current = e.clientX - dragX.current
+	}
+
+	const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+		if (dragX.current === null) return
+		const dx = dragDx.current
+		dragX.current = null
+		dragDx.current = 0
+		try {
+			;(e.currentTarget as HTMLDivElement).releasePointerCapture(
+				e.pointerId,
+			)
+		} catch {}
+		setPaused(false)
+		if (Math.abs(dx) > 50) (dx < 0 ? next : prev)()
+	}
+
+	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		if (e.key === 'ArrowRight') {
+			e.preventDefault()
+			next()
+		} else if (e.key === 'ArrowLeft') {
+			e.preventDefault()
+			prev()
+		}
+	}
 
 	if (!slides?.length) return null
 
+	const s = slides[current]
+
 	return (
 		<section
-			className="relative min-h-[70vh] overflow-hidden bg-black"
+			className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-border outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[16/12] md:aspect-[16/11]"
 			aria-roledescription={isCarousel ? 'carousel' : undefined}
 			aria-label={isCarousel ? 'Hero slides' : undefined}
+			tabIndex={0}
+			onKeyDown={onKeyDown}
+			onPointerDown={isCarousel ? onPointerDown : undefined}
+			onPointerMove={isCarousel ? onPointerMove : undefined}
+			onPointerUp={isCarousel ? onPointerUp : undefined}
+			onPointerCancel={isCarousel ? onPointerUp : undefined}
+			onMouseEnter={() => setPaused(true)}
+			onMouseLeave={() => setPaused(false)}
+			style={{ touchAction: 'pan-y', userSelect: 'none' }}
 			{...moduleProps(props)}
 		>
 			<div aria-live="polite" aria-atomic="true" className="sr-only">
@@ -100,67 +133,117 @@ export default function Hero({
 				<Slide key={slide._key} slide={slide} active={i === current} />
 			))}
 
-			{/* Navigation dots */}
-			{isCarousel && (
-				<div className="absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-2" role="group" aria-label="Seleziona slide">
-					{slides.map((slide, i) => (
-						<button
-							key={slide._key}
-							onClick={() => setCurrent(i)}
-							className={cn(
-								'size-2.5 rounded-full transition-all',
-								i === current
-									? 'bg-white scale-110'
-									: 'bg-white/40 hover:bg-white/60',
-							)}
-							aria-label={`Vai alla slide ${i + 1} di ${count}`}
-							aria-current={i === current ? 'true' : undefined}
-						/>
-					))}
-				</div>
-			)}
+			{/* Gradient overlays */}
+			<div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/20" />
+			<div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
 
-			{/* Prev / Next arrows */}
-			{isCarousel && (
-				<>
-					<button
-						onClick={prev}
-						className="absolute left-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white/70 backdrop-blur-sm transition-colors hover:bg-black/50 hover:text-white"
-						aria-label="Slide precedente"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="size-5"
-							viewBox="0 0 20 20"
-							fill="currentColor"
+			{/* Content */}
+			<div className="relative flex h-full flex-col justify-between p-5 sm:p-7">
+				{/* Top tag */}
+				{s.cta?.link?.label && (
+					<span className="self-start rounded-full bg-brand px-3 py-1 text-[10px] font-bold tracking-widest text-brand-foreground">
+						{s.cta.link.label.toUpperCase()}
+					</span>
+				)}
+
+				{/* Bottom content */}
+				<div>
+					<h2 className="text-2xl font-extrabold leading-tight text-white drop-shadow sm:text-3xl md:text-4xl">
+						{s.title}
+					</h2>
+
+					{s.description && (
+						<p className="mt-3 max-w-xl text-sm text-white/85">
+							{s.description}
+						</p>
+					)}
+
+					{/* Author info */}
+					{s.author && (
+						<div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/75">
+							<div className="flex items-center gap-2">
+								<span className="grid size-7 place-items-center rounded-full bg-brand text-[10px] font-bold text-brand-foreground">
+									{getInitials(s.author.name)}
+								</span>
+								Di {s.author.name}
+							</div>
+						</div>
+					)}
+
+					{/* Actions + navigation */}
+					<div className="mt-5 flex items-center justify-between gap-3">
+						<CTAList
+							ctas={[s.cta]}
+							className="[&_a]:inline-flex [&_a]:items-center [&_a]:gap-2 [&_a]:rounded-full [&_a]:bg-brand [&_a]:px-4 [&_a]:py-2.5 [&_a]:text-sm [&_a]:font-semibold [&_a]:text-brand-foreground [&_a]:transition [&_a]:hover:opacity-90 sm:[&_a]:px-5"
+						/>
+
+						{isCarousel && (
+							<div className="flex items-center gap-2">
+								<button
+									onClick={prev}
+									className="grid size-9 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20"
+									aria-label="Slide precedente"
+								>
+									<svg
+										className="size-4"
+										viewBox="0 0 20 20"
+										fill="currentColor"
+									>
+										<path
+											fillRule="evenodd"
+											d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+											clipRule="evenodd"
+										/>
+									</svg>
+								</button>
+								<button
+									onClick={next}
+									className="grid size-9 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20"
+									aria-label="Slide successiva"
+								>
+									<svg
+										className="size-4"
+										viewBox="0 0 20 20"
+										fill="currentColor"
+									>
+										<path
+											fillRule="evenodd"
+											d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+											clipRule="evenodd"
+										/>
+									</svg>
+								</button>
+							</div>
+						)}
+					</div>
+
+					{/* Dots */}
+					{isCarousel && (
+						<div
+							className="mt-4 flex items-center gap-1.5"
+							role="group"
+							aria-label="Seleziona slide"
 						>
-							<path
-								fillRule="evenodd"
-								d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-								clipRule="evenodd"
-							/>
-						</svg>
-					</button>
-					<button
-						onClick={next}
-						className="absolute right-4 top-1/2 z-20 -translate-y-1/2 rounded-full bg-black/30 p-2 text-white/70 backdrop-blur-sm transition-colors hover:bg-black/50 hover:text-white"
-						aria-label="Slide successiva"
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							className="size-5"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-						>
-							<path
-								fillRule="evenodd"
-								d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-								clipRule="evenodd"
-							/>
-						</svg>
-					</button>
-				</>
-			)}
+							{slides.map((slide, i) => (
+								<button
+									key={slide._key}
+									onClick={() => setCurrent(i)}
+									className={cn(
+										'h-1.5 rounded-full transition-all',
+										i === current
+											? 'w-8 bg-brand'
+											: 'w-1.5 bg-white/40 hover:bg-white/70',
+									)}
+									aria-label={`Vai alla slide ${i + 1} di ${count}`}
+									aria-current={
+										i === current ? 'true' : undefined
+									}
+								/>
+							))}
+						</div>
+					)}
+				</div>
+			</div>
 		</section>
 	)
 }

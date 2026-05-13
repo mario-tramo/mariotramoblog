@@ -6,6 +6,7 @@ export default defineType({
 	title: 'Contenuto articolo',
 	icon: VscEdit,
 	type: 'object',
+	description: 'Layout dettaglio articolo con autore, condivisione, TOC e articoli correlati',
 	fields: [
 		defineField({
 			name: 'options',

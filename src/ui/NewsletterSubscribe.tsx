@@ -19,9 +19,9 @@ export default function NewsletterSubscribe({
 	const [isSuccess, setIsSuccess] = useState(false)
 	const [isFocused, setIsFocused] = useState(false)
 
-	const defaultTitle = 'Daily Football In Your Inbox'
+	const defaultTitle = 'Calcio Quotidiano Nella Tua Inbox'
 	const defaultDescription =
-		'Get the best football news, analysis and exclusives every morning.'
+		'Ricevi le migliori notizie, analisi ed esclusive ogni mattina.'
 	const displayTitle = title || defaultTitle
 	const displayDescription = description || defaultDescription
 
@@ -85,12 +85,12 @@ export default function NewsletterSubscribe({
 			animate={{ opacity: 1, scale: 1 }}
 			className={
 				variant === 'inline'
-					? 'flex items-center gap-2 text-[#4fc3dc] text-sm font-semibold'
-					: 'bg-[#161b22] border border-[#4fc3dc]/30 rounded p-4 text-center'
+					? 'flex items-center gap-2 text-sm font-semibold text-brand'
+					: 'rounded border border-brand/30 bg-surface p-4 text-center'
 			}
 		>
 			<motion.svg
-				className={variant === 'inline' ? 'w-5 h-5' : 'w-8 h-8 mx-auto mb-2'}
+				className={variant === 'inline' ? 'size-5' : 'mx-auto mb-2 size-8'}
 				viewBox="0 0 24 24"
 				fill="none"
 				stroke="currentColor"
@@ -101,7 +101,7 @@ export default function NewsletterSubscribe({
 						cx="12"
 						cy="12"
 						r="10"
-						className="text-[#4fc3dc]"
+						className="text-brand"
 						initial={{ pathLength: 0 }}
 						animate={{ pathLength: 1 }}
 						transition={{ duration: 0.4 }}
@@ -109,7 +109,7 @@ export default function NewsletterSubscribe({
 				)}
 				<motion.path
 					d={variant === 'inline' ? 'M5 12l5 5L20 7' : 'M8 12l3 3 5-6'}
-					className="text-[#4fc3dc]"
+					className="text-brand"
 					variants={checkmarkVariants}
 					initial="initial"
 					animate="animate"
@@ -117,15 +117,15 @@ export default function NewsletterSubscribe({
 			</motion.svg>
 			{variant !== 'inline' && (
 				<motion.p
-					className="text-[#4fc3dc] text-sm font-semibold"
+					className="text-sm font-semibold text-brand"
 					initial={{ opacity: 0, y: 5 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ delay: 0.3 }}
 				>
-					Welcome aboard!
+					Benvenuto a bordo!
 				</motion.p>
 			)}
-			{variant === 'inline' && 'Welcome aboard!'}
+			{variant === 'inline' && 'Benvenuto a bordo!'}
 		</motion.div>
 	)
 
@@ -133,7 +133,7 @@ export default function NewsletterSubscribe({
 		<motion.button
 			type="submit"
 			disabled={isSubmitting}
-			className={`bg-[#4fc3dc] hover:bg-[#3fb3cc] text-[#0d1117] font-semibold text-sm transition-colors relative overflow-hidden disabled:opacity-70 ${className}`}
+			className={`relative overflow-hidden bg-brand text-sm font-semibold text-brand-foreground transition-colors hover:opacity-90 disabled:opacity-70 ${className}`}
 			whileHover={{ scale: 1.02 }}
 			whileTap={{ scale: 0.98 }}
 		>
@@ -147,7 +147,7 @@ export default function NewsletterSubscribe({
 						className="flex items-center justify-center gap-2"
 					>
 						<motion.div
-							className="w-4 h-4 border-2 border-[#0d1117]/30 border-t-[#0d1117] rounded-full"
+							className="size-4 rounded-full border-2 border-brand-foreground/30 border-t-brand-foreground"
 							animate={{ rotate: 360 }}
 							transition={{
 								duration: 1,
@@ -155,7 +155,7 @@ export default function NewsletterSubscribe({
 								ease: 'linear',
 							}}
 						/>
-						{variant !== 'inline' && 'Subscribing...'}
+						{variant !== 'inline' && 'Iscrizione...'}
 					</motion.div>
 				) : (
 					<motion.span
@@ -164,7 +164,7 @@ export default function NewsletterSubscribe({
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 					>
-						Subscribe
+						Iscriviti
 					</motion.span>
 				)}
 			</AnimatePresence>
@@ -183,7 +183,7 @@ export default function NewsletterSubscribe({
 				{avatars.map((avatar, i) => (
 					<motion.div
 						key={i}
-						className={`rounded-full border-2`}
+						className="rounded-full border-2"
 						style={{
 							backgroundColor: avatar.bg,
 							borderColor,
@@ -199,29 +199,29 @@ export default function NewsletterSubscribe({
 					/>
 				))}
 			</div>
-			<span className="text-[#8b949e] text-xs">Join 12,000+ readers</span>
+			<span className="text-xs text-muted">Unisciti a 12.000+ lettori</span>
 		</div>
 	)
 
-	// ── Compact variant ──
+	// Compact variant
 	if (variant === 'compact') {
 		return (
 			<motion.div
-				className="bg-[#161b22] border border-[#30363d] p-5 rounded-lg relative overflow-hidden"
+				className="relative overflow-hidden rounded-2xl border border-border bg-surface p-4 sm:p-5"
 				initial={{ opacity: 0, y: 20 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-50px' }}
 				transition={{ duration: 0.5, ease: 'easeOut' }}
 			>
 				<motion.div
-					className="absolute inset-0 bg-gradient-to-br from-[#4fc3dc]/10 via-transparent to-[#4fc3dc]/5 pointer-events-none"
+					className="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand/10 via-transparent to-brand/5"
 					initial={{ opacity: 0 }}
 					animate={{ opacity: isFocused ? 1 : 0 }}
 					transition={{ duration: 0.3 }}
 				/>
 
 				<motion.h3
-					className="text-white text-base font-bold uppercase leading-tight mb-4 relative z-10"
+					className="relative z-10 mb-1 text-base font-extrabold uppercase leading-tight"
 					initial={{ opacity: 0, x: -10 }}
 					whileInView={{ opacity: 1, x: 0 }}
 					viewport={{ once: true }}
@@ -230,7 +230,7 @@ export default function NewsletterSubscribe({
 					{displayTitle}
 				</motion.h3>
 				<motion.p
-					className="text-[#8b949e] text-sm leading-relaxed mb-5 relative z-10"
+					className="relative z-10 mb-4 text-xs text-muted"
 					initial={{ opacity: 0 }}
 					whileInView={{ opacity: 1 }}
 					viewport={{ once: true }}
@@ -247,27 +247,16 @@ export default function NewsletterSubscribe({
 								initial={{ opacity: 1 }}
 								exit={{ opacity: 0, scale: 0.95 }}
 							>
-								<motion.div whileTap={{ scale: 0.995 }} className="relative">
-									<input
-										type="email"
-										placeholder="Enter your email"
-										value={email}
-										onChange={(e) => setEmail(e.target.value)}
-										onFocus={() => setIsFocused(true)}
-										onBlur={() => setIsFocused(false)}
-										className="w-full bg-[#161b22] border border-[#30363d] rounded px-3 py-2.5 text-sm text-white placeholder-[#6e7681] focus:outline-none focus:border-[#4fc3dc] mb-3 transition-colors"
-									/>
-									<motion.div
-										className="absolute inset-0 rounded pointer-events-none"
-										style={{
-											boxShadow: '0 0 0 2px rgba(79, 195, 220, 0.3)',
-										}}
-										initial={{ opacity: 0 }}
-										animate={{ opacity: isFocused ? 1 : 0 }}
-										transition={{ duration: 0.2 }}
-									/>
-								</motion.div>
-								<SubscribeButton className="w-full py-2.5 rounded" />
+								<input
+									type="email"
+									placeholder="La tua email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									onFocus={() => setIsFocused(true)}
+									onBlur={() => setIsFocused(false)}
+									className="mb-3 w-full rounded-lg border border-border bg-canvas px-3 py-2.5 text-sm text-ink placeholder:text-muted focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/40"
+								/>
+								<SubscribeButton className="w-full rounded-lg py-2.5" />
 							</motion.div>
 						) : (
 							<SuccessState />
@@ -276,45 +265,45 @@ export default function NewsletterSubscribe({
 				</form>
 
 				<motion.div
-					className="mt-4 relative z-10"
+					className="relative z-10 mt-3 text-center"
 					initial={{ opacity: 0 }}
 					whileInView={{ opacity: 1 }}
 					viewport={{ once: true }}
 					transition={{ delay: 0.4 }}
 				>
-					<AvatarRow borderColor="#161b22" />
+					<p className="text-[11px] text-muted">Unisciti a 12.000+ lettori</p>
 				</motion.div>
 			</motion.div>
 		)
 	}
 
-	// ── Extended variant ──
+	// Extended variant
 	if (variant === 'extended') {
 		return (
 			<motion.div
-				className="bg-[#161b22] border border-[#21262d] rounded-lg p-6 md:p-8 relative overflow-hidden"
+				className="relative overflow-hidden rounded-2xl border border-border bg-surface p-6 md:p-8"
 				initial={{ opacity: 0, y: 30 }}
 				whileInView={{ opacity: 1, y: 0 }}
 				viewport={{ once: true, margin: '-50px' }}
 				transition={{ duration: 0.6, ease: 'easeOut' }}
-				whileHover={{ borderColor: 'rgba(79, 195, 220, 0.3)' }}
+				whileHover={{ borderColor: 'rgba(0, 212, 255, 0.3)' }}
 			>
 				<motion.div
-					className="absolute top-0 left-0 w-20 h-20 bg-gradient-to-br from-[#4fc3dc]/20 to-transparent rounded-br-full"
+					className="absolute top-0 left-0 size-20 rounded-br-full bg-gradient-to-br from-brand/20 to-transparent"
 					initial={{ scale: 0, opacity: 0 }}
 					whileInView={{ scale: 1, opacity: 1 }}
 					viewport={{ once: true }}
 					transition={{ delay: 0.2, duration: 0.5 }}
 				/>
 				<motion.div
-					className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-[#4fc3dc]/10 to-transparent rounded-tl-full"
+					className="absolute right-0 bottom-0 size-32 rounded-tl-full bg-gradient-to-tl from-brand/10 to-transparent"
 					initial={{ scale: 0, opacity: 0 }}
 					whileInView={{ scale: 1, opacity: 1 }}
 					viewport={{ once: true }}
 					transition={{ delay: 0.3, duration: 0.5 }}
 				/>
 
-				<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 relative z-10">
+				<div className="relative z-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
 					<motion.div
 						className="flex-1"
 						initial={{ opacity: 0, x: -20 }}
@@ -322,17 +311,17 @@ export default function NewsletterSubscribe({
 						viewport={{ once: true }}
 						transition={{ delay: 0.1 }}
 					>
-						<h3 className="text-white text-xl md:text-2xl font-bold uppercase leading-tight mb-2">
+						<h3 className="mb-2 text-xl font-bold uppercase leading-tight md:text-2xl">
 							{displayTitle}
 						</h3>
-						<p className="text-[#8b949e] text-sm md:text-base">
+						<p className="text-sm text-muted md:text-base">
 							{displayDescription}
 						</p>
 					</motion.div>
 
 					<motion.form
 						onSubmit={handleSubmit}
-						className="flex flex-col sm:flex-row gap-3 md:w-auto w-full"
+						className="flex w-full flex-col gap-3 sm:flex-row md:w-auto"
 						initial={{ opacity: 0, x: 20 }}
 						whileInView={{ opacity: 1, x: 0 }}
 						viewport={{ once: true }}
@@ -342,23 +331,23 @@ export default function NewsletterSubscribe({
 							{!isSuccess ? (
 								<motion.div
 									key="form"
-									className="flex flex-col sm:flex-row gap-3"
+									className="flex flex-col gap-3 sm:flex-row"
 									initial={{ opacity: 1 }}
 									exit={{ opacity: 0, scale: 0.95 }}
 								>
 									<motion.input
 										type="email"
-										placeholder="Enter your email"
+										placeholder="La tua email"
 										value={email}
-										onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-											setEmail(e.target.value)
-										}
+										onChange={(
+											e: React.ChangeEvent<HTMLInputElement>,
+										) => setEmail(e.target.value)}
 										onFocus={() => setIsFocused(true)}
 										onBlur={() => setIsFocused(false)}
-										className="flex-1 min-w-0 sm:w-64 bg-[#0d1117] border border-[#30363d] rounded px-4 py-2.5 text-sm text-white placeholder-[#6e7681] focus:outline-none focus:border-[#4fc3dc] transition-colors"
+										className="min-w-0 flex-1 rounded-lg border border-border bg-canvas px-4 py-2.5 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none sm:w-64"
 										whileFocus={{ scale: 1.02 }}
 									/>
-									<SubscribeButton className="px-6 py-2.5 rounded whitespace-nowrap" />
+									<SubscribeButton className="whitespace-nowrap rounded-lg px-6 py-2.5" />
 								</motion.div>
 							) : (
 								<SuccessState />
@@ -368,49 +357,52 @@ export default function NewsletterSubscribe({
 				</div>
 
 				<motion.div
-					className="mt-5 relative z-10"
+					className="relative z-10 mt-5"
 					initial={{ opacity: 0, y: 10 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ delay: 0.4 }}
 				>
-					<AvatarRow borderColor="#161b22" />
+					<AvatarRow borderColor="var(--color-surface)" />
 				</motion.div>
 			</motion.div>
 		)
 	}
 
-	// ── Inline variant ──
+	// Inline variant
 	if (variant === 'inline') {
 		return (
 			<motion.div
-				className="bg-[#0d1117] py-6"
+				className="py-6"
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1 }}
 				viewport={{ once: true }}
 				transition={{ duration: 0.5 }}
 			>
-				<div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+				<div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 					<motion.div
 						initial={{ opacity: 0, x: -20 }}
 						whileInView={{ opacity: 1, x: 0 }}
 						viewport={{ once: true }}
 						transition={{ delay: 0.1 }}
 					>
-						<h3 className="text-white text-lg font-bold uppercase mb-1">
+						<h3 className="mb-1 text-lg font-bold uppercase">
 							{displayTitle}
 						</h3>
-						<p className="text-[#8b949e] text-sm">{displayDescription}</p>
+						<p className="text-sm text-muted">{displayDescription}</p>
 					</motion.div>
 
 					<motion.div
-						className="flex flex-col sm:flex-row items-start sm:items-center gap-3"
+						className="flex flex-col items-start gap-3 sm:flex-row sm:items-center"
 						initial={{ opacity: 0, x: 20 }}
 						whileInView={{ opacity: 1, x: 0 }}
 						viewport={{ once: true }}
 						transition={{ delay: 0.2 }}
 					>
-						<form onSubmit={handleSubmit} className="flex w-full sm:w-auto">
+						<form
+							onSubmit={handleSubmit}
+							className="flex w-full sm:w-auto"
+						>
 							<AnimatePresence mode="wait">
 								{!isSuccess ? (
 									<motion.div
@@ -421,12 +413,14 @@ export default function NewsletterSubscribe({
 									>
 										<input
 											type="email"
-											placeholder="Enter your email"
+											placeholder="La tua email"
 											value={email}
-											onChange={(e) => setEmail(e.target.value)}
-											className="flex-1 sm:w-56 bg-[#161b22] border border-[#30363d] rounded-l px-3 py-2 text-sm text-white placeholder-[#6e7681] focus:outline-none focus:border-[#4fc3dc] transition-colors"
+											onChange={(e) =>
+												setEmail(e.target.value)
+											}
+											className="min-w-0 flex-1 rounded-l-lg border border-border bg-surface px-3 py-2 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none sm:w-56"
 										/>
-										<SubscribeButton className="px-5 py-2 rounded-r whitespace-nowrap" />
+										<SubscribeButton className="whitespace-nowrap rounded-r-lg px-5 py-2" />
 									</motion.div>
 								) : (
 									<SuccessState />
@@ -434,7 +428,7 @@ export default function NewsletterSubscribe({
 							</AnimatePresence>
 						</form>
 
-						<AvatarRow borderColor="#0d1117" />
+						<AvatarRow borderColor="var(--color-canvas)" />
 					</motion.div>
 				</div>
 			</motion.div>

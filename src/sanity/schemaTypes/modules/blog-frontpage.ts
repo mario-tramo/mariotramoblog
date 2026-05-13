@@ -6,6 +6,7 @@ export default defineType({
 	title: 'Homepage blog',
 	icon: ImNewspaper,
 	type: 'object',
+	description: 'Layout a 3 colonne stile giornale con notizie, sidebar e trending',
 	fields: [
 		defineField({
 			name: 'mainPost',
