@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Search, Menu, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import SearchOverlay from './SearchOverlay'
 
 export interface NavItem {
@@ -19,6 +20,8 @@ export interface CTAItem {
 interface HeaderContentProps {
 	navItems: NavItem[]
 	ctas?: CTAItem[]
+	logoUrl?: string
+	siteTitle?: string
 }
 
 function DesktopDropdown({ item }: { item: NavItem }) {
@@ -83,7 +86,33 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 	)
 }
 
-export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
+function Logo({ logoUrl, siteTitle }: { logoUrl?: string; siteTitle?: string }) {
+	if (logoUrl) {
+		return (
+			<Image
+				src={logoUrl}
+				alt={siteTitle || 'Logo'}
+				width={140}
+				height={40}
+				className="h-8 w-auto sm:h-9"
+				priority
+			/>
+		)
+	}
+
+	return (
+		<>
+			<span className="text-xl font-extrabold italic tracking-tight text-brand">
+				TM
+			</span>
+			<span className="text-xl font-light italic tracking-tight text-ink">
+				SPORT
+			</span>
+		</>
+	)
+}
+
+export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: HeaderContentProps) {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 	const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
 	const [searchOpen, setSearchOpen] = useState(false)
@@ -107,16 +136,11 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 
 	return (
 		<>
-			<header className="sticky top-0 z-40 bg-canvas/90 backdrop-blur-xl">
+			<header className="sticky top-0 z-40 border-b border-white/5 bg-canvas/90 backdrop-blur-xl">
 				<div className="mx-auto flex h-14 max-w-screen-2xl items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
 					{/* Logo */}
 					<Link href="/" className="flex items-center gap-0.5">
-						<span className="text-xl font-extrabold italic tracking-tight text-brand">
-							TM
-						</span>
-						<span className="text-xl font-light italic tracking-tight text-ink">
-							SPORT
-						</span>
+						<Logo logoUrl={logoUrl} siteTitle={siteTitle} />
 					</Link>
 
 					{/* Desktop Navigation */}
@@ -179,12 +203,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 							className="flex items-center gap-0.5"
 							onClick={() => setMobileMenuOpen(false)}
 						>
-							<span className="text-xl font-extrabold italic tracking-tight text-brand">
-								TM
-							</span>
-							<span className="text-xl font-light italic tracking-tight text-ink">
-								SPORT
-							</span>
+							<Logo logoUrl={logoUrl} siteTitle={siteTitle} />
 						</Link>
 						<button
 							className="grid size-9 place-items-center rounded-full transition hover:bg-surface"

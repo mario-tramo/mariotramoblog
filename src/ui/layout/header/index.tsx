@@ -1,4 +1,5 @@
 import { getSite } from '@/sanity/lib/queries'
+import { urlFor } from '@/sanity/lib/image'
 import resolveUrl from '@/lib/resolveUrl'
 import { stegaClean } from 'next-sanity'
 import HeaderContent from './HeaderContent'
@@ -24,7 +25,9 @@ function resolveLink(link?: Sanity.Link): { label: string; href: string } | null
 }
 
 export default async function Header() {
-	const { headerLinks, ctas } = await getSite()
+	const { headerLinks, ctas, logo, title } = await getSite()
+
+	const logoUrl = logo?.asset ? urlFor(logo).height(128).url() : undefined
 
 	const navItems: NavItem[] = (headerLinks ?? []).flatMap((item) => {
 		if (item._type === 'link') {
@@ -56,5 +59,5 @@ export default async function Header() {
 		return resolved ? [resolved] : []
 	})
 
-	return <HeaderContent navItems={navItems} ctas={ctaItems} />
+	return <HeaderContent navItems={navItems} ctas={ctaItems} logoUrl={logoUrl} siteTitle={title} />
 }

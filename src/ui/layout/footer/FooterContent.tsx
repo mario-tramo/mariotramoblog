@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import CTA from '@/ui/primitives/CTA'
 import NewsletterSubscribe from '@/ui/features/newsletter'
 import { PortableText, stegaClean } from 'next-sanity'
@@ -18,6 +19,8 @@ interface FooterContentProps {
 	footerLinks?: Sanity.LinkList[]
 	socialLinks?: Sanity.Link[]
 	showNewsletter?: boolean
+	logoUrl?: string
+	siteTitle?: string
 }
 
 function SocialIcon({ url, ...props }: { url?: string } & React.ComponentProps<'svg'>) {
@@ -43,6 +46,8 @@ export default function FooterContent({
 	footerLinks,
 	socialLinks,
 	showNewsletter = true,
+	logoUrl,
+	siteTitle,
 }: FooterContentProps) {
 	const columnCount = (footerLinks?.length ?? 0) + 1 + (showNewsletter ? 1 : 0)
 
@@ -55,12 +60,24 @@ export default function FooterContent({
 				{/* Brand Section */}
 				<div className="col-span-2 sm:col-span-3 lg:col-span-1">
 					<Link href="/" className="mb-3 flex items-baseline gap-0.5">
-						<span className="text-xl font-extrabold italic text-brand">
-							TM
-						</span>
-						<span className="text-xl font-light italic tracking-tight text-ink">
-							SPORT
-						</span>
+						{logoUrl ? (
+							<Image
+								src={logoUrl}
+								alt={siteTitle || 'Logo'}
+								width={140}
+								height={40}
+								className="h-8 w-auto"
+							/>
+						) : (
+							<>
+								<span className="text-xl font-extrabold italic text-brand">
+									TM
+								</span>
+								<span className="text-xl font-light italic tracking-tight text-ink">
+									SPORT
+								</span>
+							</>
+						)}
 					</Link>
 
 					{blurb && (

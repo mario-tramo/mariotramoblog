@@ -28,7 +28,7 @@ export default defineType({
 			crumbs: 'crumbs',
 		},
 		prepare: ({ crumbs }) => ({
-			title: count(crumbs, 'crumb') + ' + Current page',
+			title: count(crumbs, 'voce', 'voci') + ' + Pagina corrente',
 			subtitle: 'Breadcrumbs',
 		}),
 	},
