@@ -1,9 +1,7 @@
 .body {
 	@media (width >= 48rem) {
-		grid-template-columns: [bleed-start] 1fr [content-start] min(
-				100%,
-				65ch
-			) [content-end] 1fr [bleed-end];
+		grid-template-columns: [bleed-start content-start] min(100%, 80ch)
+			[content-end] 1fr [bleed-end];
 
 		& > * {
 			grid-column: content;

@@ -108,7 +108,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 	return (
 		<>
 			<header className="sticky top-0 z-40 bg-canvas/90 backdrop-blur-xl">
-				<div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
+				<div className="mx-auto flex h-14 max-w-screen-2xl items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
 					{/* Logo */}
 					<Link href="/" className="flex items-center gap-0.5">
 						<span className="text-xl font-extrabold italic tracking-tight text-brand">
