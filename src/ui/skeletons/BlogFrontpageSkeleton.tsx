@@ -1,21 +1,21 @@
 export default function BlogFrontpageSkeleton() {
 	return (
-		<section className="section space-y-5">
+		<section className="section space-y-8">
 			{/* 3-column newspaper layout */}
-			<div className="grid grid-cols-12 gap-4 sm:gap-5">
+			<div className="grid grid-cols-12 gap-6 sm:gap-8">
 				{/* LEFT SIDEBAR */}
-				<aside className="order-2 col-span-12 space-y-4 sm:space-y-5 lg:order-1 lg:col-span-3">
+				<aside className="order-2 col-span-12 space-y-5 sm:space-y-6 lg:order-1 lg:col-span-3">
 					<WidgetSkeleton rows={5} />
 				</aside>
 
 				{/* CENTER CONTENT */}
-				<div className="order-1 col-span-12 space-y-4 sm:space-y-5 lg:order-2 lg:col-span-6">
+				<div className="order-1 col-span-12 space-y-5 sm:space-y-6 lg:order-2 lg:col-span-6">
 					<WidgetSkeleton rows={4} grid />
 					<WidgetSkeleton rows={4} />
 				</div>
 
 				{/* RIGHT SIDEBAR */}
-				<aside className="order-3 col-span-12 space-y-4 sm:space-y-5 lg:col-span-3">
+				<aside className="order-3 col-span-12 space-y-5 sm:space-y-6 lg:col-span-3">
 					<WidgetSkeleton rows={5} />
 					<div className="rounded-2xl bg-surface p-4">
 						<div className="skeleton mb-3 w-32" />
@@ -28,7 +28,7 @@ export default function BlogFrontpageSkeleton() {
 			<hr />
 
 			{/* Filter bar skeleton */}
-			<div className="flex flex-wrap gap-1 max-sm:justify-center">
+			<div className="flex flex-wrap gap-2 max-sm:justify-center">
 				{Array.from({ length: 6 }).map((_, i) => (
 					<div
 						key={i}
@@ -49,12 +49,12 @@ export default function BlogFrontpageSkeleton() {
 
 function WidgetSkeleton({ rows, grid }: { rows: number; grid?: boolean }) {
 	return (
-		<div className="rounded-2xl bg-surface p-4 sm:p-5">
-			<div className="skeleton mb-4 w-32" />
+		<div className="rounded-2xl bg-surface p-5 sm:p-6">
+			<div className="skeleton mb-5 w-32" />
 			{grid ? (
-				<div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+				<div className="grid grid-cols-2 gap-4 md:grid-cols-4">
 					{Array.from({ length: rows }).map((_, i) => (
-						<div key={i} className="space-y-2">
+						<div key={i} className="space-y-3">
 							<div className="aspect-[4/3] rounded-lg bg-ink/3" />
 							<div className="skeleton" />
 						</div>
@@ -79,7 +79,7 @@ function WidgetSkeleton({ rows, grid }: { rows: number; grid?: boolean }) {
 
 export function PostPreviewSkeleton() {
 	return (
-		<div className="flex h-full flex-col space-y-2 rounded-2xl bg-surface p-3">
+		<div className="flex h-full flex-col space-y-3 rounded-2xl bg-surface p-4">
 			<div className="aspect-video rounded-lg bg-ink/3" />
 			<div className="skeleton w-20" />
 			<div className="skeleton-2" />
@@ -90,7 +90,7 @@ export function PostPreviewSkeleton() {
 				<div className="size-6 rounded-full bg-ink/3" />
 				<div className="skeleton w-24" />
 			</div>
-			<div className="flex gap-4 border-t border-ink/5 pt-2">
+			<div className="flex gap-4 border-t border-ink/5 pt-3">
 				<div className="skeleton w-20" />
 				<div className="skeleton w-16" />
 			</div>

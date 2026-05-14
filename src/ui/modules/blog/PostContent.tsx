@@ -29,7 +29,7 @@ export default function PostContent({
 			{/* Breadcrumb */}
 			<nav
 				aria-label="Navigazione breadcrumb"
-				className="mx-auto max-w-screen-xl px-4 pt-4 sm:px-6"
+				className="mx-auto max-w-screen-2xl px-4 pt-4 sm:px-6"
 			>
 				<ol className="flex flex-wrap items-center gap-1 text-xs text-muted">
 					<li>
@@ -67,7 +67,7 @@ export default function PostContent({
 			</nav>
 
 			{/* 2-column layout */}
-			<div className="mx-auto grid max-w-screen-xl gap-10 px-4 pt-8 sm:px-6 lg:grid-cols-[1fr_320px]">
+			<div className="mx-auto grid max-w-screen-2xl gap-10 px-4 pt-8 sm:px-6 lg:grid-cols-[1fr_320px]">
 				{/* Main content */}
 				<div className="min-w-0">
 					{/* Header */}
