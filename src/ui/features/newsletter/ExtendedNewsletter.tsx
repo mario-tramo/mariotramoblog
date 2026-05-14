@@ -18,12 +18,11 @@ export default function ExtendedNewsletter({
 
 	return (
 		<motion.div
-			className="relative overflow-hidden rounded-2xl border border-border bg-surface p-6 md:p-8"
+			className="relative overflow-hidden rounded-2xl bg-surface-light p-8 md:p-10"
 			initial={{ opacity: 0, y: 30 }}
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true, margin: '-50px' }}
 			transition={{ duration: 0.6, ease: 'easeOut' }}
-			whileHover={{ borderColor: 'rgba(0, 212, 255, 0.3)' }}
 		>
 			<motion.div
 				className="absolute top-0 left-0 size-20 rounded-br-full bg-gradient-to-br from-brand/20 to-transparent"
@@ -81,7 +80,7 @@ export default function ExtendedNewsletter({
 									) => setEmail(e.target.value)}
 									onFocus={() => setIsFocused(true)}
 									onBlur={() => setIsFocused(false)}
-									className="min-w-0 flex-1 rounded-lg border border-border bg-canvas px-4 py-2.5 text-sm text-ink placeholder:text-muted focus:border-brand focus:outline-none sm:w-64"
+									className="min-w-0 flex-1 rounded-lg bg-canvas/60 px-4 py-2.5 text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand/30 sm:w-64"
 									whileFocus={{ scale: 1.02 }}
 								/>
 								<SubscribeButton

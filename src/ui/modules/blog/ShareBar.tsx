@@ -5,7 +5,7 @@ import { FaXTwitter, FaFacebookF } from 'react-icons/fa6'
 import { VscLink } from 'react-icons/vsc'
 
 const btnClass =
-	'grid size-9 place-items-center rounded-full border border-border bg-surface text-muted transition hover:text-brand'
+	'grid size-9 place-items-center rounded-full bg-surface-light text-muted transition hover:text-brand'
 
 export default function ShareBar({ title }: { title?: string }) {
 	const url = typeof window !== 'undefined' ? window.location.href : ''

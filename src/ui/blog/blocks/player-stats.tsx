@@ -33,7 +33,7 @@ function RatingBadge({ rating }: { rating: number }) {
 
 export function PlayerStats({ value }: PlayerStatsProps) {
   return (
-    <div className="my-6 rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+    <div className="my-6 rounded-xl bg-card shadow-sm overflow-hidden">
       <div className="p-5 flex items-start gap-4">
         <div className="flex-1">
           <div className="flex items-center gap-3">
@@ -49,7 +49,7 @@ export function PlayerStats({ value }: PlayerStatsProps) {
       </div>
 
       {value.stats && value.stats.length > 0 && (
-        <div className="border-t border-border grid grid-cols-3 sm:grid-cols-5 divide-x divide-border">
+        <div className="border-t border-ink/5 grid grid-cols-3 sm:grid-cols-5 divide-x divide-ink/5">
           {value.stats.map((stat, i) => (
             <div key={i} className="p-3 text-center">
               <div className="text-xl font-bold">{stat.value}</div>

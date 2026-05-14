@@ -26,7 +26,7 @@ export default function CookieBanner() {
 		<div
 			role="dialog"
 			aria-label="Consenso cookie"
-			className="fixed bottom-0 left-0 right-0 z-50 border-t border-ink/10 bg-surface p-4 shadow-lg"
+			className="fixed bottom-0 left-0 right-0 z-50 bg-surface-light p-4 shadow-2xl shadow-black/40"
 		>
 			<div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between gap-4">
 				<p className="text-sm text-muted">

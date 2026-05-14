@@ -2,7 +2,6 @@
 
 import { useBlogFilters } from '../store'
 import { usePageState } from '@/lib/usePagination'
-import Category from '../Category'
 import { cn } from '@/lib/utils'
 import css from './FilterList.module.css'
 
@@ -20,15 +19,17 @@ export default function Filter({
 		<button
 			className={cn(
 				css.filter,
-				'!py-1',
-				category === value ? 'action' : 'ghost border border-transparent',
+				'rounded-full px-4 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-colors',
+				category === value
+					? 'bg-ink/10 text-ink'
+					: 'text-muted hover:text-ink',
 			)}
 			onClick={() => {
 				setCategory(value)
 				setPage(1)
 			}}
 		>
-			<Category label={label} />
+			{label}
 		</button>
 	)
 }

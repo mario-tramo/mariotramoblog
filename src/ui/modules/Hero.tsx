@@ -104,7 +104,7 @@ export default function Hero({
 
 	return (
 		<section
-			className="relative aspect-[4/5] touch-pan-y select-none overflow-hidden rounded-2xl border border-border outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[16/12] md:aspect-[16/11]"
+			className="relative aspect-[4/5] touch-pan-y select-none overflow-hidden rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[16/10] md:aspect-[16/9]"
 			aria-roledescription={isCarousel ? 'carousel' : undefined}
 			aria-label={isCarousel ? 'Hero slides' : undefined}
 			tabIndex={0}

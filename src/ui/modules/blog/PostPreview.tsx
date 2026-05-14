@@ -16,7 +16,7 @@ export default function PostPreview({
 	if (!post && !skeleton) return null
 
 	return (
-		<div className="group relative isolate flex h-full flex-col space-y-2 rounded-2xl border border-border bg-surface p-3 transition hover:border-brand/30">
+		<div className="group relative isolate flex h-full flex-col space-y-2 rounded-2xl bg-surface p-3 transition">
 			<figure className="relative aspect-video overflow-hidden rounded-lg bg-ink/3">
 				<Img
 					className="aspect-video w-full object-cover transition-all group-hover:scale-105 group-hover:brightness-110"
@@ -26,7 +26,7 @@ export default function PostPreview({
 				/>
 
 				{post?.featured && (
-					<span className="absolute top-2 right-2 rounded bg-brand px-2.5 py-0.5 text-[10px] font-bold text-brand-foreground shadow-md">
+					<span className="absolute top-2 right-2 rounded-full bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
 						In evidenza
 					</span>
 				)}
@@ -54,15 +54,28 @@ export default function PostPreview({
 				</p>
 			</div>
 
-			{(post?.authors?.length || skeleton) && (
-				<Authors
-					className="flex flex-wrap items-center gap-4 text-sm"
-					authors={post?.authors}
-					skeleton={skeleton}
-				/>
-			)}
+			<div className="flex flex-wrap items-center gap-4 text-sm">
+				{post?.authors?.length ? (
+					<Authors
+						className="flex flex-wrap items-center gap-4"
+						authors={post.authors}
+					/>
+				) : skeleton ? (
+					<Authors
+						className="flex flex-wrap items-center gap-4"
+						skeleton
+					/>
+				) : (
+					<div className="flex items-center gap-[.5ch]">
+						<span className="bg-accent/3 grid aspect-square w-[1.7em] shrink-0 place-content-center overflow-hidden rounded-full text-[10px] font-bold text-accent/40">
+							TM
+						</span>
+						<span>Redazione</span>
+					</div>
+				)}
+			</div>
 
-			<div className="flex flex-wrap gap-x-4 border-t border-border pt-2 text-sm empty:skeleton">
+			<div className="flex flex-wrap gap-x-4 border-t border-ink/5 pt-2 text-sm empty:skeleton">
 				<Date value={post?.publishDate} />
 				<Categories
 					className="relative z-10 flex flex-wrap gap-x-2"

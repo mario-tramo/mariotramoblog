@@ -88,7 +88,7 @@ export default async function RelatedPosts({
 					<Link
 						key={r._id}
 						href={resolveUrl(r, { base: false })}
-						className="group overflow-hidden rounded-xl border border-border bg-surface transition hover:border-brand/50"
+						className="group overflow-hidden rounded-xl bg-surface transition hover:bg-surface-light"
 					>
 						<div className="aspect-[16/10] overflow-hidden">
 							<Img

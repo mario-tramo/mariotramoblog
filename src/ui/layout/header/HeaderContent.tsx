@@ -60,7 +60,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 
 			{open && (
 				<>
-					<ul className="absolute top-full left-0 z-50 mt-1 min-w-[180px] rounded-lg border border-border bg-surface py-1 shadow-lg backdrop-blur-md">
+					<ul className="absolute top-full left-0 z-50 mt-2 min-w-[180px] rounded-xl bg-surface-light py-2 shadow-2xl shadow-black/30 backdrop-blur-xl">
 						{item.children?.map((child) => (
 							<li key={child.href}>
 								<Link
@@ -107,7 +107,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 
 	return (
 		<>
-			<header className="sticky top-0 z-40 border-b border-border bg-canvas/85 backdrop-blur-md">
+			<header className="sticky top-0 z-40 bg-canvas/90 backdrop-blur-xl">
 				<div className="mx-auto flex h-14 max-w-[1400px] items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
 					{/* Logo */}
 					<Link href="/" className="flex items-center gap-0.5">
@@ -150,7 +150,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 							<Link
 								key={i}
 								href={cta.href}
-								className="hidden rounded border border-brand px-5 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand/10 md:block"
+								className="hidden rounded-lg bg-brand px-5 py-1.5 text-sm font-semibold text-brand-foreground transition-colors hover:bg-brand/90 md:block"
 							>
 								{cta.label}
 							</Link>
@@ -173,7 +173,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 			{/* Mobile drawer */}
 			{mobileMenuOpen && (
 				<div className="fixed inset-0 z-50 flex animate-in fade-in flex-col bg-canvas duration-150 lg:hidden">
-					<div className="flex h-14 items-center justify-between border-b border-border px-4">
+					<div className="flex h-14 items-center justify-between px-4">
 						<Link
 							href="/"
 							className="flex items-center gap-0.5"
@@ -199,7 +199,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 						{navItems.map((item) => (
 							<div
 								key={item.label}
-								className="border-b border-border/60"
+								className="border-b border-ink/5"
 							>
 								{item.children?.length ? (
 									<>
@@ -263,7 +263,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 							<Link
 								key={i}
 								href={cta.href}
-								className="mt-4 mb-2 block w-full rounded border border-brand px-5 py-2 text-center text-sm font-medium text-brand transition-colors hover:bg-brand/10"
+								className="mt-4 mb-2 block w-full rounded-lg bg-brand px-5 py-2 text-center text-sm font-semibold text-brand-foreground transition-colors hover:bg-brand/90"
 								onClick={() => setMobileMenuOpen(false)}
 							>
 								{cta.label}

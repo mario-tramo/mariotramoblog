@@ -86,9 +86,9 @@ export default async function BlogFrontpage({
 	return (
 		<section className="section space-y-5">
 			{/* 3-column newspaper layout */}
-			<div className="grid grid-cols-12 gap-4 sm:gap-5">
+			<div className="grid grid-cols-12 gap-5 sm:gap-6">
 				{/* LEFT SIDEBAR */}
-				<aside className="order-2 col-span-12 space-y-4 sm:space-y-5 lg:order-1 lg:col-span-3">
+				<aside className="order-2 col-span-12 space-y-6 lg:order-1 lg:col-span-3">
 					<PostListWidget
 						variant="sidebar-thumbs"
 						posts={latestPosts}
@@ -101,7 +101,7 @@ export default async function BlogFrontpage({
 				</aside>
 
 				{/* CENTER CONTENT */}
-				<div className="order-1 col-span-12 space-y-4 sm:space-y-5 lg:order-2 lg:col-span-6">
+				<div className="order-1 col-span-12 space-y-5 lg:order-2 lg:col-span-6">
 					{slides?.length ? (
 						<Hero slides={slides} _type="hero" _key="blog-frontpage-hero" />
 					) : (
@@ -123,7 +123,7 @@ export default async function BlogFrontpage({
 				</div>
 
 				{/* RIGHT SIDEBAR */}
-				<aside className="order-3 col-span-12 space-y-4 sm:space-y-5 lg:col-span-3">
+				<aside className="order-3 col-span-12 space-y-6 lg:col-span-3">
 					<PostListWidget
 						variant="sidebar-numbered"
 						posts={trendingPosts}

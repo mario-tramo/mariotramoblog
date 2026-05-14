@@ -18,7 +18,7 @@ export default function CompactNewsletter({
 
 	return (
 		<motion.div
-			className="relative overflow-hidden rounded-2xl border border-border bg-surface p-4 sm:p-5"
+			className="relative overflow-hidden rounded-2xl bg-surface-light p-5 sm:p-6"
 			initial={{ opacity: 0, y: 20 }}
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true, margin: '-50px' }}
@@ -65,7 +65,7 @@ export default function CompactNewsletter({
 								onChange={(e) => setEmail(e.target.value)}
 								onFocus={() => setIsFocused(true)}
 								onBlur={() => setIsFocused(false)}
-								className="mb-3 w-full rounded-lg border border-border bg-canvas px-3 py-2.5 text-sm text-ink placeholder:text-muted focus:border-brand/40 focus:outline-none focus:ring-2 focus:ring-brand/40"
+								className="mb-3 w-full rounded-lg bg-canvas/60 px-3 py-2.5 text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-2 focus:ring-brand/30"
 							/>
 							<SubscribeButton
 								className="w-full rounded-lg py-2.5"

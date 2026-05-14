@@ -19,7 +19,7 @@ export default function PageSkeleton() {
 				{Array.from({ length: 3 }).map((_, i) => (
 					<div
 						key={i}
-						className="rounded-2xl border border-border bg-surface p-4"
+						className="rounded-2xl bg-surface p-4"
 					>
 						<div className="aspect-video rounded-lg bg-ink/3" />
 						<div className="mt-3 space-y-2">

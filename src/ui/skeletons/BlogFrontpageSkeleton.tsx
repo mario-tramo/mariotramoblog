@@ -17,7 +17,7 @@ export default function BlogFrontpageSkeleton() {
 				{/* RIGHT SIDEBAR */}
 				<aside className="order-3 col-span-12 space-y-4 sm:space-y-5 lg:col-span-3">
 					<WidgetSkeleton rows={5} />
-					<div className="rounded-2xl border border-border bg-surface p-4">
+					<div className="rounded-2xl bg-surface p-4">
 						<div className="skeleton mb-3 w-32" />
 						<div className="aspect-[4/3] rounded-lg bg-ink/3" />
 						<div className="skeleton-2 mt-3" />
@@ -49,7 +49,7 @@ export default function BlogFrontpageSkeleton() {
 
 function WidgetSkeleton({ rows, grid }: { rows: number; grid?: boolean }) {
 	return (
-		<div className="rounded-2xl border border-border bg-surface p-4 sm:p-5">
+		<div className="rounded-2xl bg-surface p-4 sm:p-5">
 			<div className="skeleton mb-4 w-32" />
 			{grid ? (
 				<div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -79,7 +79,7 @@ function WidgetSkeleton({ rows, grid }: { rows: number; grid?: boolean }) {
 
 export function PostPreviewSkeleton() {
 	return (
-		<div className="flex h-full flex-col space-y-2 rounded-2xl border border-border bg-surface p-3">
+		<div className="flex h-full flex-col space-y-2 rounded-2xl bg-surface p-3">
 			<div className="aspect-video rounded-lg bg-ink/3" />
 			<div className="skeleton w-20" />
 			<div className="skeleton-2" />
@@ -90,7 +90,7 @@ export function PostPreviewSkeleton() {
 				<div className="size-6 rounded-full bg-ink/3" />
 				<div className="skeleton w-24" />
 			</div>
-			<div className="flex gap-4 border-t border-border pt-2">
+			<div className="flex gap-4 border-t border-ink/5 pt-2">
 				<div className="skeleton w-20" />
 				<div className="skeleton w-16" />
 			</div>

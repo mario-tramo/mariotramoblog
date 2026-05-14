@@ -92,7 +92,7 @@ export default function PostContent({
 						)}
 
 						{/* Author bar + share */}
-						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-border py-4 text-sm text-muted">
+						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-ink/5 py-4 text-sm text-muted">
 							{firstAuthor && (
 								<div className="flex items-center gap-2">
 									<span className="grid size-9 place-items-center rounded-full bg-brand text-xs font-bold text-brand-foreground">
@@ -126,7 +126,7 @@ export default function PostContent({
 
 					{/* Hero image */}
 					{post.metadata.image && (
-						<figure className="mt-6 overflow-hidden rounded-xl border border-border">
+						<figure className="mt-6 overflow-hidden rounded-xl bg-surface">
 							<Img
 								className="aspect-video w-full object-cover"
 								image={post.metadata.image}
@@ -160,7 +160,7 @@ export default function PostContent({
 
 					{/* Tags */}
 					{post.categories && post.categories.length > 0 && (
-						<div className="mt-8 flex flex-wrap items-center gap-2 border-t border-border pt-6">
+						<div className="mt-8 flex flex-wrap items-center gap-2 border-t border-ink/5 pt-6">
 							<span className="text-xs font-bold uppercase tracking-widest text-muted">
 								Etichette
 							</span>
@@ -173,7 +173,7 @@ export default function PostContent({
 					)}
 
 					{/* Footer nav */}
-					<div className="mt-8 flex items-center justify-between border-t border-border pt-6">
+					<div className="mt-8 flex items-center justify-between border-t border-ink/5 pt-6">
 						{post.categories?.[0] && (
 							<Link
 								href={`/blog?categoria=${post.categories[0].slug.current}`}

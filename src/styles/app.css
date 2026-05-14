@@ -6,11 +6,11 @@
 	--color-ink: #ffffff;
 	--color-accent: #00d4ff;
 
-	--color-surface: #111827;
-	--color-surface-light: #1a2332;
-	--color-surface-2: #1e293b;
-	--color-muted: #8899aa;
-	--color-border: rgba(255, 255, 255, 0.08);
+	--color-surface: #0f1520;
+	--color-surface-light: #151d2b;
+	--color-surface-2: #1a2435;
+	--color-muted: #6b7f94;
+	--color-border: rgba(255, 255, 255, 0.05);
 	--color-brand: #00d4ff;
 	--color-brand-foreground: #0a0f1a;
 
@@ -280,14 +280,12 @@
 }
 
 @utility action-outline {
-	@apply action-base border-accent/40 rounded border text-balance text-accent;
+	@apply action-base border-accent/25 rounded border text-balance text-accent;
 	transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
 	&:hover {
-		background-color: color-mix(in oklab, var(--color-accent) 10%, transparent);
-		border-color: var(--color-accent);
-		box-shadow: 0 0 16px color-mix(in oklab, var(--color-accent) 20%, transparent),
-			inset 0 0 8px color-mix(in oklab, var(--color-accent) 5%, transparent);
+		background-color: color-mix(in oklab, var(--color-accent) 8%, transparent);
+		border-color: color-mix(in oklab, var(--color-accent) 50%, transparent);
 	}
 
 	&:active {
@@ -382,14 +380,13 @@
 /* --- Card hover effects (PostPreview, SectionCard) --- */
 
 @layer base {
-	/* Cards with border-border class get premium hover */
+	/* Cards get subtle lift on hover */
 	.group:has(> figure) {
-		transition: border-color 300ms, box-shadow 300ms, transform 300ms;
+		transition: box-shadow 300ms, transform 300ms;
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
 		&:hover {
-			box-shadow: 0 8px 30px color-mix(in oklab, var(--color-accent) 8%, transparent),
-				0 0 0 1px color-mix(in oklab, var(--color-accent) 15%, transparent);
+			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 			transform: translateY(-2px);
 		}
 	}
@@ -408,28 +405,16 @@
 		transform: scale(1.05);
 		filter: brightness(1.1);
 	}
-
-	/* SectionCard border glow */
-	.rounded-2xl.border.border-border.bg-surface {
-		transition: border-color 300ms, box-shadow 300ms;
-
-		&:hover {
-			border-color: color-mix(in oklab, var(--color-accent) 20%, transparent);
-			box-shadow: 0 4px 20px color-mix(in oklab, var(--color-accent) 6%, transparent);
-		}
-	}
 }
 
 /* --- Social & share icon buttons --- */
 
 @layer base {
 	.grid.place-items-center.rounded-full {
-		transition: transform 200ms, background-color 200ms, color 200ms,
-			box-shadow 200ms;
+		transition: transform 200ms, background-color 200ms, color 200ms;
 
 		&:hover {
-			transform: scale(1.1);
-			box-shadow: 0 0 12px color-mix(in oklab, var(--color-accent) 20%, transparent);
+			transform: scale(1.08);
 		}
 
 		&:active {
@@ -524,7 +509,7 @@
 /* --- Cookie banner slide-up entrance --- */
 
 @layer base {
-	[role='dialog'][aria-label='Cookie consent'] {
+	[role='dialog'][aria-label='Consenso cookie'] {
 		animation: slide-up 400ms cubic-bezier(0.4, 0, 0.2, 1) both;
 	}
 
@@ -544,11 +529,10 @@
 
 @layer base {
 	.bg-brand.text-brand-foreground {
-		transition: box-shadow 200ms, transform 200ms;
+		transition: opacity 200ms;
 
 		&:hover {
-			box-shadow: 0 0 12px color-mix(in oklab, var(--color-brand) 40%, transparent);
-			transform: translateY(-1px);
+			opacity: 0.85;
 		}
 	}
 }
@@ -597,7 +581,7 @@
 /* --- Dropdown menu items --- */
 
 @layer base {
-	ul.rounded-lg.border.border-border.bg-surface li a {
+	ul.rounded-xl.bg-surface-light li a {
 		transition: padding-left 200ms, background-color 200ms, color 200ms;
 
 		&:hover {
@@ -630,21 +614,11 @@
 	}
 }
 
-/* --- "In evidenza" featured badge pulse --- */
+/* --- "In evidenza" featured badge --- */
 
 @layer base {
 	.bg-brand.shadow-md {
-		animation: badge-glow 2.5s ease-in-out infinite;
-	}
-
-	@keyframes badge-glow {
-		0%,
-		100% {
-			box-shadow: 0 2px 8px color-mix(in oklab, var(--color-brand) 30%, transparent);
-		}
-		50% {
-			box-shadow: 0 2px 16px color-mix(in oklab, var(--color-brand) 60%, transparent);
-		}
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 	}
 }
 
@@ -809,7 +783,7 @@
 /* layout */
 
 @utility section {
-	@apply mx-auto max-w-screen-xl p-8 max-md:px-4 md:py-12;
+	@apply mx-auto max-w-screen-xl p-8 max-md:px-4 md:py-16;
 }
 
 /* richtext */

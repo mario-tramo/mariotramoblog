@@ -74,7 +74,7 @@ export default function SearchOverlay({
 			<div className="relative mx-auto flex w-full max-w-2xl flex-col px-4 pt-[15vh] sm:pt-[20vh]">
 				{/* Search input area */}
 				<div className="animate-in fade-in slide-in-from-top-4 duration-200">
-					<div className="flex items-center gap-3 rounded-2xl border border-border bg-surface px-4 py-3 shadow-lg ring-1 ring-ink/5">
+					<div className="flex items-center gap-3 rounded-2xl bg-surface-light px-4 py-3 shadow-2xl shadow-black/30">
 						{loading ? (
 							<Loader2
 								size={20}
@@ -105,7 +105,7 @@ export default function SearchOverlay({
 
 					{/* Keyboard hint */}
 					<div className="mt-2 hidden justify-end px-2 sm:flex">
-						<kbd className="rounded border border-border bg-canvas px-1.5 py-0.5 text-[10px] font-medium text-muted">
+						<kbd className="rounded bg-surface px-1.5 py-0.5 text-[10px] font-medium text-muted">
 							ESC
 						</kbd>
 					</div>
@@ -113,14 +113,14 @@ export default function SearchOverlay({
 
 				{/* Results */}
 				{query.trim() && (
-					<div className="animate-in fade-in slide-in-from-top-2 mt-2 max-h-[50vh] overflow-y-auto overscroll-contain rounded-2xl border border-border bg-surface shadow-lg sm:max-h-[40vh]">
+					<div className="animate-in fade-in slide-in-from-top-2 mt-2 max-h-[50vh] overflow-y-auto overscroll-contain rounded-2xl bg-surface-light shadow-2xl shadow-black/30 sm:max-h-[40vh]">
 						{loading ? (
 							<div className="flex items-center justify-center gap-2 px-4 py-8 text-sm text-muted">
 								<Loader2 size={16} className="animate-spin" />
 								Ricerca in corso...
 							</div>
 						) : results.length > 0 ? (
-							<ul className="divide-y divide-border/60 py-1">
+							<ul className="divide-y divide-ink/5 py-1">
 								{results.map((result) => (
 									<li key={result._id}>
 										<Link

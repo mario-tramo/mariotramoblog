@@ -65,7 +65,7 @@ export default function CardList({
 					<article
 						className={cn(
 							'flex flex-col gap-2',
-							visualSeparation && 'border-ink/10 border p-4',
+							visualSeparation && 'rounded-xl bg-surface p-5',
 						)}
 						key={key}
 					>

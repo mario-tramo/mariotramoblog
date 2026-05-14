@@ -35,14 +35,14 @@ export function MatchTimeline({ value }: MatchTimelineProps) {
   if (!value.events?.length) return null;
 
   return (
-    <div className="my-6 rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+    <div className="my-6 rounded-xl bg-card shadow-sm overflow-hidden">
       {value.title && (
-        <div className="px-4 py-3 border-b border-border font-bold">
+        <div className="px-4 py-3 border-b border-ink/5 font-bold">
           {value.title}
         </div>
       )}
 
-      <div className="divide-y divide-border">
+      <div className="divide-y divide-ink/5">
         {value.events.map((event, i) => (
           <div
             key={i}

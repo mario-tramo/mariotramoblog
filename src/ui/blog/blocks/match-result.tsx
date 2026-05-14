@@ -34,7 +34,7 @@ export function MatchResult({ value }: MatchResultProps) {
   const isLive = value.status === "live" || value.status === "first_half" || value.status === "second_half";
 
   return (
-    <div className="my-6 rounded-xl border border-border bg-card overflow-hidden shadow-sm">
+    <div className="my-6 rounded-xl bg-card overflow-hidden shadow-sm">
       {/* Header */}
       <div className="bg-primary text-primary-foreground px-4 py-2 flex items-center justify-between text-sm">
         <span className="font-medium">{value.competition}</span>
@@ -75,7 +75,7 @@ export function MatchResult({ value }: MatchResultProps) {
       )}
 
       {/* Footer */}
-      <div className="border-t border-border px-4 py-2 flex items-center justify-between text-xs text-muted-foreground">
+      <div className="border-t border-ink/5 px-4 py-2 flex items-center justify-between text-xs text-muted-foreground">
         {value.stadium && <span>{value.stadium}</span>}
         {value.status && (
           <span className={`font-semibold ${isLive ? "text-destructive animate-pulse" : ""}`}>

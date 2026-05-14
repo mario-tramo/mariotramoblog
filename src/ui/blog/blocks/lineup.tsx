@@ -20,7 +20,7 @@ interface LineupProps {
 
 export function Lineup({ value }: LineupProps) {
   return (
-    <div className="my-6 rounded-xl border border-border bg-card shadow-sm overflow-hidden">
+    <div className="my-6 rounded-xl bg-card shadow-sm overflow-hidden">
       {/* Header */}
       <div className="bg-primary text-primary-foreground px-4 py-3 flex items-center justify-between">
         <span className="font-bold text-lg">{value.teamName}</span>
@@ -30,7 +30,7 @@ export function Lineup({ value }: LineupProps) {
       </div>
 
       {value.coach && (
-        <div className="px-4 py-2 border-b border-border text-sm text-muted-foreground">
+        <div className="px-4 py-2 border-b border-ink/5 text-sm text-muted-foreground">
           All. <strong className="text-foreground">{value.coach}</strong>
         </div>
       )}
@@ -66,7 +66,7 @@ export function Lineup({ value }: LineupProps) {
 
       {/* Substitutes */}
       {value.substitutes && value.substitutes.length > 0 && (
-        <div className="p-4 border-t border-border bg-muted">
+        <div className="p-4 border-t border-ink/5 bg-muted">
           <h5 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
             Panchina
           </h5>
