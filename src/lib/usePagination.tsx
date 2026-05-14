@@ -95,6 +95,6 @@ export function usePagination<T extends unknown>({
 }
 
 export function usePageState() {
-	const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1))
+	const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1).withOptions({ shallow: false }))
 	return { page, setPage }
 }

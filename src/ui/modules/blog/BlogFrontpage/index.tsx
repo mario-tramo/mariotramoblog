@@ -36,7 +36,7 @@ export default async function BlogFrontpage({
 			*[
 				_type == 'blog.post'
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
-				${categoria ? `&& $categoria in categories[]->.slug.current` : ''}
+				${categoria && categoria !== 'All' ? `&& $categoria in categories[]->.slug.current` : ''}
 			]|order(publishDate desc){
 				_type,
 				_id,
