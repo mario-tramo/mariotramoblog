@@ -47,18 +47,18 @@ function SidebarThumbs({
 	limit: number
 }) {
 	return (
-		<ul className="space-y-4">
+		<ul className="space-y-5">
 			{posts.slice(0, limit).map((post) => (
 				<li key={post._id} className="group relative">
 					<Link
 						href={resolveUrl(post, { base: false })}
 						className="flex gap-3"
 					>
-						<figure className="size-14 flex-shrink-0 overflow-hidden rounded-lg">
+						<figure className="size-16 flex-shrink-0 overflow-hidden rounded-lg">
 							<Img
 								className="size-full object-cover"
 								image={post.metadata.image}
-								width={112}
+								width={128}
 								alt={post.metadata.title}
 							/>
 						</figure>
@@ -66,7 +66,7 @@ function SidebarThumbs({
 							<p className="mb-1 text-[11px] font-medium text-brand">
 								{timeAgo(post.publishDate)}
 							</p>
-							<p className="line-clamp-2 text-[13px] font-medium leading-snug group-hover:underline">
+							<p className="line-clamp-2 text-sm font-medium leading-snug group-hover:underline">
 								{post.metadata.title}
 							</p>
 						</div>

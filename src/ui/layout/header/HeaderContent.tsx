@@ -50,7 +50,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 			onMouseLeave={handleLeave}
 		>
 			<button
-				className="flex items-center gap-1 rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-ink"
+				className="flex items-center gap-1 rounded-lg px-4 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-ink"
 				onClick={() => setOpen((v) => !v)}
 				aria-expanded={open}
 			>
@@ -144,7 +144,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 					</Link>
 
 					{/* Desktop Navigation */}
-					<nav className="hidden items-center gap-1 lg:flex">
+					<nav className="hidden items-center gap-2 lg:flex">
 						{navItems.map((item) =>
 							item.children?.length ? (
 								<DesktopDropdown key={item.label} item={item} />
@@ -152,7 +152,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 								<Link
 									key={item.label}
 									href={item.href}
-									className="rounded-lg px-3 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-ink"
+									className="rounded-lg px-4 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-ink"
 								>
 									{item.label}
 								</Link>

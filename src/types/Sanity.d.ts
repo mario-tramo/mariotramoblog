@@ -86,6 +86,7 @@ declare global {
 		interface Person extends SanityDocument {
 			name: string
 			image?: Image
+			bio?: string
 		}
 
 		// objects

@@ -34,6 +34,13 @@ export default defineType({
 			},
 			validation: (Rule) => Rule.required().warning('Aggiungi una foto profilo per una migliore presentazione'),
 		}),
+		defineField({
+			name: 'bio',
+			title: 'Bio',
+			type: 'text',
+			rows: 3,
+			description: 'Breve descrizione dell\'autore mostrata alla fine degli articoli',
+		}),
 	],
 	preview: {
 		select: {

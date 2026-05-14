@@ -38,7 +38,7 @@ export default function PostPreview({
 				</p>
 			)}
 
-			<div className={cn('text-base font-bold leading-snug', skeleton && 'skeleton-2')}>
+			<div className={cn('text-lg font-bold leading-snug', skeleton && 'skeleton-2')}>
 				<Link
 					className="group-hover:underline"
 					href={resolveUrl(post, { base: false })}

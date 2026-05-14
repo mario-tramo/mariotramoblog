@@ -176,17 +176,31 @@ export default function PostContent({
 						</Content>
 					</div>
 
-					{/* Tags */}
-					{post.categories && post.categories.length > 0 && (
-						<div className="mt-10 flex flex-wrap items-center gap-2 border-t border-ink/5 pt-6">
-							<span className="text-xs font-bold uppercase tracking-widest text-muted">
-								Etichette
+					{/* Author box */}
+					{firstAuthor && (
+						<div className={cn("mt-10 flex gap-4 rounded-xl border border-ink/5 bg-surface p-5", firstAuthor.bio ? "items-start" : "items-center")}>
+							<span className="grid size-14 shrink-0 place-items-center rounded-full bg-brand text-lg font-bold text-brand-foreground">
+								{firstAuthor.image ? (
+									<Img
+										className="size-full rounded-full object-cover"
+										image={firstAuthor.image}
+										width={112}
+										alt={firstAuthor.name}
+									/>
+								) : (
+									getInitials(firstAuthor.name)
+								)}
 							</span>
-							<Categories
-								className="flex flex-wrap gap-2"
-								categories={post.categories}
-								linked
-							/>
+							<div className="min-w-0">
+								<p className="text-sm font-bold text-ink">
+									{firstAuthor.name}
+								</p>
+								{firstAuthor.bio && (
+									<p className="mt-1 text-sm leading-relaxed text-muted">
+										{firstAuthor.bio}
+									</p>
+								)}
+							</div>
 						</div>
 					)}
 

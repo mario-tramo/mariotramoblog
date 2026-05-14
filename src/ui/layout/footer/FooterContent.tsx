@@ -52,7 +52,7 @@ export default function FooterContent({
 	const columnCount = (footerLinks?.length ?? 0) + 1 + (showNewsletter ? 1 : 0)
 
 	return (
-		<footer className="mt-20 bg-surface">
+		<footer className="mt-12 bg-surface">
 			<div
 				className="mx-auto grid max-w-screen-2xl grid-cols-2 gap-8 px-3 py-12 text-sm sm:grid-cols-3 sm:gap-10 sm:px-6 sm:py-14 lg:grid-cols-[repeat(var(--footer-cols),minmax(0,1fr))]"
 				style={{ '--footer-cols': columnCount } as React.CSSProperties}
