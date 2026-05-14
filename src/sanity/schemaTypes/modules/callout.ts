@@ -14,6 +14,7 @@ export default defineType({
 			type: 'array',
 			description: 'Testo e contenuto del callout',
 			of: [{ type: 'block' }, { type: 'code' }],
+			validation: (Rule) => Rule.required().min(1).error('Il contenuto del callout è obbligatorio'),
 		}),
 		defineField({
 			name: 'ctas',

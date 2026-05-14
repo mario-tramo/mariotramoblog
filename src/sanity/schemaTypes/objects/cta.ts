@@ -13,6 +13,7 @@ export default defineType({
 			title: 'Link',
 			type: 'link',
 			description: 'Link del pulsante',
+			validation: (Rule) => Rule.required().error('Il link è obbligatorio per un CTA'),
 		}),
 		defineField({
 			name: 'style',

@@ -16,12 +16,14 @@ export default defineType({
 			title: 'Etichetta',
 			type: 'string',
 			description: 'Testo mostrato per il link',
+			validation: (Rule) => Rule.required().error("L'etichetta del link è obbligatoria"),
 		}),
 		defineField({
 			name: 'type',
 			title: 'Tipo',
 			type: 'string',
 			description: 'Tipo di link',
+			validation: (Rule) => Rule.required().error('Seleziona il tipo di link'),
 			options: {
 				layout: 'radio',
 				list: [
@@ -37,6 +39,14 @@ export default defineType({
 			description: 'Seleziona una pagina o articolo del sito',
 			to: [{ type: 'page' }, { type: 'blog.post' }, { type: 'legal' }],
 			hidden: ({ parent }) => parent?.type !== 'internal',
+			validation: (Rule) =>
+				Rule.custom((value, context) => {
+					const parent = context.parent as { type?: string }
+					if (parent?.type === 'internal' && !value) {
+						return 'Seleziona una pagina o un articolo'
+					}
+					return true
+				}),
 		}),
 		defineField({
 			name: 'external',
@@ -44,11 +54,19 @@ export default defineType({
 			placeholder: 'https://example.com',
 			type: 'url',
 			description: 'URL esterno (es. https://...)',
-			validation: (Rule) =>
+			validation: (Rule) => [
 				Rule.uri({
 					scheme: ['http', 'https', 'mailto', 'tel'],
 					allowRelative: true,
 				}),
+				Rule.custom((value, context) => {
+					const parent = context.parent as { type?: string }
+					if (parent?.type === 'external' && !value) {
+						return "L'URL è obbligatorio per i link esterni"
+					}
+					return true
+				}),
+			],
 			hidden: ({ parent }) => parent?.type !== 'external',
 		}),
 		defineField({

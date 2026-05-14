@@ -38,6 +38,7 @@ export default defineType({
 				}),
 				{ type: 'custom-html' },
 			],
+			validation: (Rule) => Rule.required().min(1).error('Il contenuto è obbligatorio'),
 			group: 'content',
 		}),
 		defineField({

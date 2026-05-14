@@ -25,6 +25,7 @@ export default defineType({
 			description: 'Logo del sito mostrato nell\'header. Formato consigliato: SVG o PNG trasparente.',
 			type: 'image',
 			options: { hotspot: true },
+			validation: (Rule) => Rule.required().warning('Il logo è consigliato per l\'identità del sito'),
 			group: 'generale',
 		}),
 
@@ -35,6 +36,7 @@ export default defineType({
 			description: 'Voci del menu principale (es. News, Tattiche, Video)',
 			type: 'array',
 			of: [{ type: 'link' }, { type: 'link.list' }],
+			validation: (Rule) => Rule.required().min(1).warning('Aggiungi almeno un link di navigazione'),
 			group: 'header',
 		}),
 		defineField({
@@ -91,6 +93,7 @@ export default defineType({
 					lists: [],
 				},
 			],
+			validation: (Rule) => Rule.required().warning('Aggiungi un testo di copyright'),
 			group: 'footer',
 		}),
 		// ── Nascosti (sistema) ──

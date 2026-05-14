@@ -22,6 +22,14 @@ export default defineType({
 			options: {
 				columns: 3,
 			},
+			validation: (Rule) =>
+				Rule.custom((value) => {
+					const img = value as { default?: unknown; light?: unknown; dark?: unknown } | undefined
+					if (!img?.default && !img?.light && !img?.dark) {
+						return 'Carica almeno una variante del logo'
+					}
+					return true
+				}),
 			fields: [
 				defineField({
 					name: 'default',

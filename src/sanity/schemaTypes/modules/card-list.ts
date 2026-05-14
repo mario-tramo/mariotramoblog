@@ -86,6 +86,7 @@ export default defineType({
 					},
 				}),
 			],
+			validation: (Rule) => Rule.required().min(1).error('Aggiungi almeno una card'),
 			group: 'content',
 		}),
 		defineField({

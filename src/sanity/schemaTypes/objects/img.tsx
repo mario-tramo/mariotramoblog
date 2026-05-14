@@ -86,6 +86,7 @@ export default defineType({
 			title: 'Testo alternativo',
 			type: 'string',
 			description: "Descrizione dell'immagine per accessibilità e SEO (es. \"Foto di Mario Rossi\")",
+			validation: (Rule) => Rule.required().warning('Il testo alternativo è importante per accessibilità e SEO'),
 			fieldset: 'options',
 		}),
 		defineField({

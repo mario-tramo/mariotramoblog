@@ -88,6 +88,7 @@ export default defineType({
 					},
 				}),
 			],
+			validation: (Rule) => Rule.required().min(1).error('Aggiungi almeno un elemento'),
 			group: 'content',
 		}),
 		defineField({

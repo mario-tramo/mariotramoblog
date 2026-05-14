@@ -80,7 +80,7 @@ export const lineup = defineType({
           },
         }),
       ],
-      validation: (rule) => rule.max(11),
+      validation: (rule) => rule.required().min(1).max(11),
     }),
     defineField({
       name: "substitutes",

@@ -32,6 +32,7 @@ export default defineType({
 			options: {
 				hotspot: true,
 			},
+			validation: (Rule) => Rule.required().warning('Aggiungi una foto profilo per una migliore presentazione'),
 		}),
 	],
 	preview: {
