@@ -10,7 +10,7 @@ import {
 	FaTiktok,
 } from 'react-icons/fa6'
 import { IoIosLink } from 'react-icons/io'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 interface FooterContentProps {
 	blurb?: PortableTextBlock[]

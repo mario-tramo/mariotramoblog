@@ -4,7 +4,7 @@ import { PortableText, stegaClean } from 'next-sanity'
 import CTAList from '@/ui/primitives/CTAList'
 import { Img } from '@/ui/primitives/Img'
 import { cn } from '@/lib/utils'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 export default function CardList({
 	pretitle,

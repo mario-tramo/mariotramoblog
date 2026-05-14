@@ -1,6 +1,6 @@
 import Pretitle from '@/ui/primitives/Pretitle'
 import { PortableText } from 'next-sanity'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 export type RichtextSubModuleType = Sanity.Module<'richtext'> &
 	Partial<{

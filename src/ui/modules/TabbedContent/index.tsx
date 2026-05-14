@@ -5,7 +5,7 @@ import Wrapper from './Wrapper'
 import CTAList from '@/ui/primitives/CTAList'
 import Asset from '@/ui/modules/Asset'
 import { cn } from '@/lib/utils'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 export default function TabbedContent({
 	pretitle,

@@ -1,6 +1,6 @@
 import moduleProps from '@/lib/moduleProps'
 import { PortableText, stegaClean } from 'next-sanity'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 import CTAsSubModule, { type CTAsSubModuleType } from './CTAsSubModule'
 import CustomHTMLSubmodule, {
 	type CustomHTMLSubmoduleType,

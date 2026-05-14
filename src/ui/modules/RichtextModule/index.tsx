@@ -3,7 +3,7 @@ import TableOfContents from './TableOfContents'
 import Content from './Content'
 import { cn } from '@/lib/utils'
 import { stegaClean } from 'next-sanity'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 export default function RichtextModule({
 	content,

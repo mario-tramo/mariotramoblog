@@ -5,7 +5,7 @@ import Image from './RichtextModule/Image'
 import Code from './RichtextModule/Code'
 import CustomHTML from './CustomHTML'
 import { cn } from '@/lib/utils'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 export default function AccordionList({
 	pretitle,

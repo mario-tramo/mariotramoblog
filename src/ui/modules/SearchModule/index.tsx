@@ -5,7 +5,7 @@ import SearchForm from './SearchForm'
 import type { SearchScope } from './store'
 import CTAList from '@/ui/primitives/CTAList'
 import moduleProps from '@/lib/moduleProps'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 export default function SearchModule({
 	pretitle,

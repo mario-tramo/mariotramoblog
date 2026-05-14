@@ -1,7 +1,7 @@
 import { PortableText } from 'next-sanity'
 import CTAList from '@/ui/primitives/CTAList'
 import Code from './RichtextModule/Code'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 export default function Callout({
 	content,

@@ -11,7 +11,7 @@ import { Suspense } from 'react'
 import PostPreview from '../PostPreview'
 import List from './List'
 import { cn } from '@/lib/utils'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 export default async function BlogList({
 	pretitle,

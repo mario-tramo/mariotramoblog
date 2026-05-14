@@ -7,7 +7,7 @@ import Code from './Code'
 import Admonition from './Admonition'
 import CustomHTML from '@/ui/modules/CustomHTML'
 import { QuoteBlock } from '@/ui/blog/blocks/quote-block'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 export default function Content({
 	value,

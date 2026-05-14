@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils'
 import { PortableText } from 'next-sanity'
 import { Info, Lightbulb, AlertCircle, AlertTriangle } from 'lucide-react'
-import type { PortableTextBlock } from '@portabletext/types'
+import type { PortableTextBlock } from '@portabletext/react'
 
 export default function Admonition({
 	value,
