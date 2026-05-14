@@ -24,6 +24,9 @@ import metadata from './objects/metadata'
 import heroSlide from './objects/hero-slide'
 import moduleOptions from './objects/module-options'
 
+// blocks
+import { quoteBlock } from './blocks'
+
 // modules
 import accordionList from './modules/accordion-list'
 import blogFrontpage from './modules/blog-frontpage'
@@ -66,6 +69,9 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	heroSlide,
 	metadata,
 	moduleOptions,
+
+	// blocks
+	quoteBlock,
 
 	// modules
 	accordionList,

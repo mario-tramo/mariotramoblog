@@ -1,32 +1,28 @@
-"use client";
-
 interface QuoteBlockProps {
-  value: {
-    quote: string;
-    author: string;
-    role?: string;
-    image?: { asset?: { _ref: string } };
-    context?: string;
-  };
+	value: {
+		quote: string
+		author: string
+		role?: string
+		image?: { asset?: { _ref: string } }
+		context?: string
+	}
 }
 
 export function QuoteBlock({ value }: QuoteBlockProps) {
-  return (
-    <blockquote className="my-6 border-l-4 border-primary bg-muted rounded-r-xl p-5">
-      <p className="text-lg italic leading-relaxed text-foreground">
-        &ldquo;{value.quote}&rdquo;
-      </p>
-      <footer className="mt-3 flex items-center gap-3">
-        <div>
-          <cite className="not-italic font-bold text-sm">{value.author}</cite>
-          {value.role && (
-            <p className="text-xs text-muted-foreground">{value.role}</p>
-          )}
-          {value.context && (
-            <p className="text-xs text-muted-foreground/70 mt-0.5">{value.context}</p>
-          )}
-        </div>
-      </footer>
-    </blockquote>
-  );
+	return (
+		<blockquote className="my-8 border-l border-accent py-4 pl-6" style={{ borderLeftWidth: 'thick' }}>
+			<p className="text-xl font-bold italic leading-relaxed text-ink sm:text-2xl">
+				<span className="text-accent text-3xl font-serif leading-none select-none" aria-hidden="true">
+					{'\u201C\u201C'}
+				</span>
+				{' '}{'\u201C'}{value.quote}{'\u201D'}
+			</p>
+
+			<footer className="mt-3">
+				<cite className="not-italic text-sm text-muted">
+					— {value.author}
+				</cite>
+			</footer>
+		</blockquote>
+	)
 }

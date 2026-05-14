@@ -14,6 +14,7 @@ export default function ShareBar({ title }: { title?: string }) {
 
 	return (
 		<div className="ml-auto flex items-center gap-2">
+			<span className="text-sm text-muted">Condividi su</span>
 			<a
 				href={`https://x.com/intent/tweet?text=${text}&url=${encodedUrl}`}
 				target="_blank"

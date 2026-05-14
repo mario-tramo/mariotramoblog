@@ -22,6 +22,7 @@ export default defineType({
 				{ type: 'block' },
 				imageBlock,
 				admonition,
+				{ type: 'quoteBlock' },
 				defineArrayMember({
 					title: 'Blocco di codice',
 					type: 'code',

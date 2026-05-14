@@ -1,4 +1,4 @@
-import { defineType } from 'sanity'
+import { defineType, defineField } from 'sanity'
 import { RxDividerHorizontal } from 'react-icons/rx'
 
 export default defineType({
@@ -6,7 +6,20 @@ export default defineType({
 	title: 'Divider',
 	icon: RxDividerHorizontal,
 	type: 'object',
-	fields: [],
+	fields: [
+		defineField({
+			name: 'style',
+			title: 'Stile',
+			type: 'string',
+			options: {
+				list: [
+					{ title: 'Linea', value: 'line' },
+					{ title: 'Spazio', value: 'space' },
+				],
+			},
+			initialValue: 'line',
+		}),
+	],
 	preview: {
 		prepare: () => ({
 			title: 'Divider',

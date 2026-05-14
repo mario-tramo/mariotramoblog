@@ -6,6 +6,7 @@ import Image from './Image'
 import Code from './Code'
 import Admonition from './Admonition'
 import CustomHTML from '@/ui/modules/CustomHTML'
+import { QuoteBlock } from '@/ui/blog/blocks/quote-block'
 import type { PortableTextBlock } from '@portabletext/types'
 
 export default function Content({
@@ -33,6 +34,7 @@ export default function Content({
 					types: {
 						image: Image,
 						admonition: Admonition,
+						quoteBlock: QuoteBlock,
 						code: Code,
 						'custom-html': ({ value }) => (
 							<CustomHTML
