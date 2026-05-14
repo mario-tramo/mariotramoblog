@@ -68,7 +68,7 @@ export default async function RootLayout({
 					<SkipToContent />
 					<Announcement />
 					<Header />
-					<main id="main-content" role="main" tabIndex={-1} className="flex-1">
+					<main id="main-content" role="main" tabIndex={-1} className="flex-1 px-3 sm:px-0">
 						{children}
 					</main>
 					<Footer />

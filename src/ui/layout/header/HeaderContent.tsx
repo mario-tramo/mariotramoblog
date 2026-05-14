@@ -137,7 +137,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 	return (
 		<>
 			<header className="sticky top-0 z-40 border-b border-white/5 bg-canvas/90 backdrop-blur-xl">
-				<div className="mx-auto flex h-14 max-w-screen-2xl items-center justify-between gap-4 px-4 sm:h-16 sm:px-6">
+				<div className="mx-auto flex h-14 max-w-screen-2xl items-center justify-between gap-4 px-3 sm:h-16 sm:px-6">
 					{/* Logo */}
 					<Link href="/" className="flex items-center gap-0.5">
 						<Logo logoUrl={logoUrl} siteTitle={siteTitle} />

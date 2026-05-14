@@ -54,7 +54,7 @@ export default function FooterContent({
 	return (
 		<footer className="mt-20 bg-surface">
 			<div
-				className="mx-auto grid max-w-[1400px] grid-cols-2 gap-8 px-4 py-12 text-sm sm:grid-cols-3 sm:gap-10 sm:px-6 sm:py-14 lg:grid-cols-[repeat(var(--footer-cols),minmax(0,1fr))]"
+				className="mx-auto grid max-w-[1400px] grid-cols-2 gap-8 px-3 py-12 text-sm sm:grid-cols-3 sm:gap-10 sm:px-6 sm:py-14 lg:grid-cols-[repeat(var(--footer-cols),minmax(0,1fr))]"
 				style={{ '--footer-cols': columnCount } as React.CSSProperties}
 			>
 				{/* Brand Section */}
