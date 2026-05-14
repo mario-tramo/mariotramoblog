@@ -95,7 +95,7 @@ async function getPost(params: Params) {
 				'text': pt::text(@)
 			},
 			categories[]->,
-			'authors': [author->],
+			'authors': select(defined(author) => [author->], null),
 			metadata {
 				...,
 				'ogimage': image.asset->url + '?w=1200'
