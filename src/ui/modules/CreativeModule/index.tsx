@@ -1,5 +1,6 @@
 import moduleProps from '@/lib/moduleProps'
 import { PortableText, stegaClean } from 'next-sanity'
+import type { PortableTextBlock } from '@portabletext/types'
 import CTAsSubModule, { type CTAsSubModuleType } from './CTAsSubModule'
 import CustomHTMLSubmodule, {
 	type CustomHTMLSubmoduleType,
@@ -20,7 +21,7 @@ export default function CreativeModule({
 	alignItems: ai,
 	...props
 }: Partial<{
-	intro: any
+	intro: PortableTextBlock[]
 	modules: Partial<{
 		subModules: Array<
 			| ImageSubModuleType

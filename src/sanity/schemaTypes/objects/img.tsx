@@ -66,7 +66,7 @@ export default defineType({
 									<TextInputWithPresets
 										prefix="@media"
 										presets={presets}
-										{...(props as any)}
+										{...(props as unknown as Parameters<typeof TextInputWithPresets>[0])}
 									/>
 								),
 							},

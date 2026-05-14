@@ -5,6 +5,7 @@ import SearchForm from './SearchForm'
 import type { SearchScope } from './store'
 import CTAList from '@/ui/primitives/CTAList'
 import moduleProps from '@/lib/moduleProps'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export default function SearchModule({
 	pretitle,
@@ -15,7 +16,7 @@ export default function SearchModule({
 	...props
 }: Partial<{
 	pretitle: string
-	intro: any
+	intro: PortableTextBlock[]
 	ctas: Sanity.CTA[]
 	scope: SearchScope
 	path: string

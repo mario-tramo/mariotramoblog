@@ -35,13 +35,13 @@ export default function SearchForm({
 					type="search"
 					aria-label={
 						scope !== 'all'
-							? `Search ${scope === 'path' ? 'pages' : scope}`
-							: 'Search'
+							? `Cerca ${scope === 'path' ? 'pagine' : scope}`
+							: 'Cerca'
 					}
 					placeholder={
 						scope !== 'all'
-							? `Search ${scope === 'path' ? 'pages' : scope}`
-							: 'Search'
+							? `Cerca ${scope === 'path' ? 'pagine' : scope}`
+							: 'Cerca'
 					}
 					defaultValue={query}
 					onChange={debounce((e) =>
@@ -67,13 +67,13 @@ export default function SearchForm({
 					<div className="frosted-glass bg-canvas border-ink/10 mt-1 max-h-[20em] space-y-2 overflow-y-auto rounded border py-2 shadow-md *:px-3">
 						{loading ? (
 							<Loading className="text-ink/50 justify-center p-4 text-sm">
-								Searching...
+								Ricerca in corso...
 							</Loading>
 						) : (
 							<>
 								<p className="text-ink/50 text-center text-sm">
 									<span className="line-clamp-1">
-										{count(results, 'result')} found for{' '}
+										{count(results, 'risultato', 'risultati')} per{' '}
 										<output>"{query}"</output>
 									</span>
 								</p>
@@ -94,7 +94,7 @@ export default function SearchForm({
 													</span>
 
 													<small className="technical text-accent/50 shrink-0 text-xs">
-														{result._type === 'blog.post' ? 'Blog' : 'Page'}
+														{result._type === 'blog.post' ? 'Blog' : 'Pagina'}
 													</small>
 												</a>
 											</li>

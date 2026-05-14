@@ -29,7 +29,7 @@ export default defineType({
 			components: {
 				input: ({ elementProps, path }) => {
 					const indexOfModule = path.indexOf('modules')
-					const moduleKey = (path[indexOfModule + 1] as any)?._key
+					const moduleKey = (path[indexOfModule + 1] as { _key?: string })?._key
 					const [checked, setChecked] = useState(false)
 
 					return (
@@ -37,7 +37,7 @@ export default defineType({
 							<Text muted>#</Text>
 
 							<Box flex={1}>
-								<TextInput {...elementProps as any} placeholder={moduleKey} />
+								<TextInput {...(elementProps as unknown as React.ComponentProps<typeof TextInput>)} placeholder={moduleKey} />
 							</Box>
 
 							<Button

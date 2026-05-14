@@ -1,10 +1,11 @@
 import Pretitle from '@/ui/primitives/Pretitle'
 import { PortableText } from 'next-sanity'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export type RichtextSubModuleType = Sanity.Module<'richtext'> &
 	Partial<{
 		pretitle: string
-		content: any
+		content: PortableTextBlock[]
 	}>
 
 export default function RichtextSubModule({

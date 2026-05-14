@@ -9,6 +9,14 @@ export default defineType({
 	description: 'Layout a 3 colonne stile giornale con notizie, sidebar e trending',
 	fields: [
 		defineField({
+			name: 'slides',
+			title: 'Slides carosello',
+			type: 'array',
+			description:
+				'Se presenti, il carosello Hero sostituisce la griglia "Articoli in evidenza" al centro.',
+			of: [{ type: 'hero-slide' }],
+		}),
+		defineField({
 			name: 'mainPost',
 			title: 'Articolo principale',
 			description: 'Quale articolo mostrare in grande nella parte superiore della pagina blog',

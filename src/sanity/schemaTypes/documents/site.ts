@@ -73,6 +73,14 @@ export default defineType({
 			group: 'footer',
 		}),
 		defineField({
+			name: 'showNewsletter',
+			title: 'Mostra Newsletter',
+			description: 'Attiva/disattiva la sezione newsletter nel footer',
+			type: 'boolean',
+			initialValue: true,
+			group: 'footer',
+		}),
+		defineField({
 			name: 'copyright',
 			title: 'Copyright',
 			type: 'array',

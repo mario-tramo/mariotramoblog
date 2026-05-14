@@ -29,18 +29,6 @@ export function websiteJsonLd(siteTitle: string, description?: string) {
 	}
 }
 
-export function webPageJsonLd(page: Sanity.PageBase) {
-	const url = `${BASE_URL}/${page.metadata.slug.current === 'index' ? '' : page.metadata.slug.current}`
-	return {
-		'@context': 'https://schema.org',
-		'@type': 'WebPage',
-		name: page.metadata.title,
-		description: page.metadata.description,
-		url,
-		publisher: PUBLISHER,
-	}
-}
-
 export function blogPostingJsonLd(post: Sanity.BlogPost) {
 	const url = `${BASE_URL}/${BLOG_DIR}/${post.metadata.slug.current}`
 	const image = post.metadata.ogimage || post.metadata.image

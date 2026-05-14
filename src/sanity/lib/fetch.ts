@@ -7,7 +7,7 @@ import { draftMode } from 'next/headers'
 import { defineLive } from 'next-sanity/live'
 import { type QueryOptions, type QueryParams } from 'next-sanity'
 
-export async function fetchSanity<T = any>({
+export async function fetchSanity<T = unknown>({
 	query,
 	params = {},
 	next,
@@ -49,7 +49,7 @@ export const { sanityFetch, SanityLive } = defineLive({
 	browserToken: token,
 })
 
-export async function fetchSanityLive<T = any>(
+export async function fetchSanityLive<T = unknown>(
 	args: Parameters<typeof sanityFetch>[0],
 ) {
 	const preview = dev || (await draftMode()).isEnabled

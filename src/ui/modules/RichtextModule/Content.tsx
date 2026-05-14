@@ -6,12 +6,13 @@ import Image from './Image'
 import Code from './Code'
 import Admonition from './Admonition'
 import CustomHTML from '@/ui/modules/CustomHTML'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export default function Content({
 	value,
 	className,
 	children,
-}: { value: any } & React.ComponentProps<'div'>) {
+}: { value: PortableTextBlock[] } & React.ComponentProps<'div'>) {
 	return (
 		<div
 			className={cn(

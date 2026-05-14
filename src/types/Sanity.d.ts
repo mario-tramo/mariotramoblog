@@ -1,5 +1,6 @@
 import type { SanityImageObject } from '@sanity/image-url/lib/types/types'
 import type { SanityAssetDocument, SanityDocument } from 'next-sanity'
+import type { PortableTextBlock } from '@portabletext/types'
 
 declare global {
 	namespace Sanity {
@@ -8,8 +9,8 @@ declare global {
 		interface Site extends SanityDocument {
 			title: string
 			logo?: Image
-			blurb?: any
-			copyright?: any
+			blurb?: PortableTextBlock[]
+			copyright?: PortableTextBlock[]
 			ogimage?: string
 			// header
 			headerLinks?: (Link | LinkList)[]
@@ -17,6 +18,7 @@ declare global {
 			// footer
 			footerLinks?: LinkList[]
 			socialLinks?: Link[]
+			showNewsletter?: boolean
 			// misc
 			announcements?: Announcement[]
 		}
@@ -51,13 +53,13 @@ declare global {
 
 		interface LegalPage extends PageBase {
 			readonly _type: 'legal'
-			body: any
+			body: PortableTextBlock[]
 			lastUpdated?: string
 		}
 
 		interface BlogPost extends PageBase {
 			readonly _type: 'blog.post'
-			body: any
+			body: PortableTextBlock[]
 			readTime: number
 			headings?: { style: string; text: string }[]
 			categories: BlogCategory[]
@@ -75,7 +77,7 @@ declare global {
 		// miscellaneous
 
 		interface Announcement extends SanityDocument {
-			content: any
+			content: PortableTextBlock[]
 			cta?: Link
 			start?: string
 			end?: string

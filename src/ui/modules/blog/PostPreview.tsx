@@ -26,7 +26,7 @@ export default function PostPreview({
 				/>
 
 				{post?.featured && (
-					<span className="absolute top-2 right-2 rounded-full bg-brand px-2.5 py-0.5 text-[10px] font-bold text-brand-foreground shadow-md">
+					<span className="absolute top-2 right-2 rounded bg-brand px-2.5 py-0.5 text-[10px] font-bold text-brand-foreground shadow-md">
 						In evidenza
 					</span>
 				)}

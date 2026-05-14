@@ -6,15 +6,20 @@ import { groq } from 'next-sanity'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
 import ReadTime from './ReadTime'
 import SectionTitle from '@/ui/primitives/SectionTitle'
+import SectionCard from '@/ui/primitives/SectionCard'
 
 export default async function RelatedPosts({
 	post,
+	variant = 'full',
 }: {
 	post: Sanity.BlogPost
+	variant?: 'full' | 'sidebar'
 }) {
 	const categoryIds = post.categories?.map((c) => c._id) ?? []
 
 	if (!categoryIds.length) return null
+
+	const limit = variant === 'sidebar' ? 4 : 3
 
 	const related = await fetchSanityLive<Sanity.BlogPost[]>({
 		query: groq`
@@ -22,7 +27,7 @@ export default async function RelatedPosts({
 				_type == 'blog.post'
 				&& _id != $postId
 				&& count(categories[@._ref in $categoryIds]) > 0
-			]|order(publishDate desc)[0...3]{
+			]|order(publishDate desc)[0...${limit}]{
 				_type,
 				_id,
 				publishDate,
@@ -37,6 +42,42 @@ export default async function RelatedPosts({
 	})
 
 	if (!related?.length) return null
+
+	if (variant === 'sidebar') {
+		return (
+			<SectionCard className="p-4 sm:p-5">
+				<SectionTitle className="mb-4">ARTICOLI CORRELATI</SectionTitle>
+				<ul className="space-y-4">
+					{related.map((r) => (
+						<li key={r._id} className="group relative">
+							<Link
+								href={resolveUrl(r, { base: false })}
+								className="flex gap-3"
+							>
+								<figure className="size-14 flex-shrink-0 overflow-hidden rounded-lg">
+									<Img
+										className="size-full object-cover"
+										image={r.metadata.image}
+										width={112}
+										alt={r.metadata.title}
+									/>
+								</figure>
+								<div className="min-w-0">
+									<p className="line-clamp-2 text-[13px] font-medium leading-snug group-hover:underline">
+										{r.metadata.title}
+									</p>
+									<ReadTime
+										value={r.readTime}
+										className="mt-1 text-[11px] text-muted"
+									/>
+								</div>
+							</Link>
+						</li>
+					))}
+				</ul>
+			</SectionCard>
+		)
+	}
 
 	return (
 		<section className="mx-auto mt-14 max-w-[820px] px-4 pb-10 sm:px-6">

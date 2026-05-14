@@ -5,6 +5,7 @@ import Image from './RichtextModule/Image'
 import Code from './RichtextModule/Code'
 import CustomHTML from './CustomHTML'
 import { cn } from '@/lib/utils'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export default function AccordionList({
 	pretitle,
@@ -16,10 +17,10 @@ export default function AccordionList({
 	...props
 }: Partial<{
 	pretitle: string
-	intro: any
+	intro: PortableTextBlock[]
 	items: {
 		summary: string
-		content: any
+		content: PortableTextBlock[]
 		open?: boolean
 	}[]
 	layout: 'vertical' | 'horizontal'

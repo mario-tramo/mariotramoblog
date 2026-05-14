@@ -3,6 +3,7 @@ import TableOfContents from './TableOfContents'
 import Content from './Content'
 import { cn } from '@/lib/utils'
 import { stegaClean } from 'next-sanity'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export default function RichtextModule({
 	content,
@@ -12,7 +13,7 @@ export default function RichtextModule({
 	headings,
 	...props
 }: Partial<{
-	content: any
+	content: PortableTextBlock[]
 	tableOfContents: boolean
 	tocPosition: 'left' | 'right'
 	stretch: boolean
@@ -45,7 +46,7 @@ export default function RichtextModule({
 			)}
 
 			<Content
-				value={content}
+				value={content ?? []}
 				className={cn(
 					!tableOfContents && (stretch ? 'max-w-screen-lg' : 'max-w-screen-md'),
 				)}

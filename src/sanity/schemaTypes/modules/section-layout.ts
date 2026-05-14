@@ -18,6 +18,10 @@ const LAYOUT_OPTIONS = [
 		title: '3 colonne (33/33/33)',
 		value: '3',
 	},
+	{
+		title: '3 colonne (stretto + largo + stretto)',
+		value: '3-asymmetric',
+	},
 ]
 
 const layoutLabels: Record<string, string> = {
@@ -25,6 +29,7 @@ const layoutLabels: Record<string, string> = {
 	'2': '2 colonne',
 	'2-asymmetric': '2 col (largo + stretto)',
 	'3': '3 colonne',
+	'3-asymmetric': '3 col (stretto + largo + stretto)',
 }
 
 function columnTitle(index: number) {
@@ -34,6 +39,7 @@ function columnTitle(index: number) {
 
 function columnModules() {
 	return [
+		{ type: 'hero' },
 		{ type: 'blog-list' },
 		{ type: 'card-list' },
 		{ type: 'richtext-module' },
@@ -126,7 +132,7 @@ export default defineType({
 			group: 'content',
 			hidden: ({ parent }) => {
 				const layout = parent?.layout
-				return layout !== '3'
+				return layout !== '3' && layout !== '3-asymmetric'
 			},
 		}),
 	],

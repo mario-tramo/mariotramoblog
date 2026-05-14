@@ -11,6 +11,7 @@ import Footer from '@/ui/layout/footer'
 import CookieBanner from '@/ui/features/CookieBanner'
 import VisualEditingControls from '@/ui/dev/VisualEditingControls'
 import DevFontSwitcher from '@/ui/dev/DevFontSwitcher'
+import DevColorSwitcher from '@/ui/dev/DevColorSwitcher'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import '@/styles/app.css'
@@ -67,7 +68,12 @@ export default async function RootLayout({
 					<CookieBanner />
 
 					<VisualEditingControls />
-					{process.env.NODE_ENV === 'development' && <DevFontSwitcher />}
+					{process.env.NODE_ENV === 'development' && (
+						<>
+							<DevColorSwitcher />
+							<DevFontSwitcher />
+						</>
+					)}
 				</NuqsAdapter>
 
 				<Analytics />

@@ -23,7 +23,7 @@ export default function Icon({
 		<Img
 			className="aspect-square w-auto object-contain"
 			image={icon?.image}
-			style={{ maxHeight: stegaClean(icon?.size) ?? '40px' }}
+			style={{ maxHeight: stegaClean(icon?.size) ?? '2.5rem' }}
 			{...props}
 			height={Number(px) * 2}
 		/>

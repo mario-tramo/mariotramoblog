@@ -14,7 +14,14 @@
 	--color-brand: #00d4ff;
 	--color-brand-foreground: #0a0f1a;
 
+	--header-height: 3.5rem;
 	--max-height-fold: calc(100svh - var(--header-height));
+}
+
+@media (min-width: 640px) {
+	:root {
+		--header-height: 4rem;
+	}
 }
 
 @custom-variant hover (&:hover);
@@ -104,6 +111,565 @@
 	hr {
 		@apply border-ink/10;
 	}
+
+	/* Global smooth transitions for interactive elements */
+	a,
+	button,
+	summary,
+	input,
+	select,
+	textarea {
+		transition-property: color, background-color, border-color, box-shadow,
+			opacity, transform;
+		transition-duration: 200ms;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	/* Focus ring glow */
+	:focus-visible {
+		outline: none;
+		box-shadow: 0 0 0 2px var(--color-canvas),
+			0 0 0 4px var(--color-accent),
+			0 0 12px color-mix(in oklab, var(--color-accent) 30%, transparent);
+		border-radius: 4px;
+	}
+
+	/* Custom scrollbar */
+	*,
+	html,
+	body {
+		scrollbar-width: thin;
+		scrollbar-color: var(--color-accent) transparent;
+	}
+
+	*::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+
+	*::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	*::-webkit-scrollbar-thumb {
+		background: var(--color-accent);
+		border-radius: 9999px;
+	}
+
+	*::-webkit-scrollbar-thumb:hover {
+		background: color-mix(in oklab, var(--color-accent) 80%, white);
+	}
+}
+
+/* ═══════════════════════════════════════════════════════
+   MICRO-ANIMATIONS & MICRO-INTERACTIONS
+   Premium CSS-only effects
+   ═══════════════════════════════════════════════════════ */
+
+/* --- Scroll-triggered reveal --- */
+@layer base {
+	.section,
+	[data-module] {
+		animation: scroll-reveal linear both;
+		animation-timeline: view();
+		animation-range: entry 0% entry 20%;
+	}
+
+	@keyframes scroll-reveal {
+		from {
+			opacity: 0;
+			translate: 0 1.5rem;
+		}
+		to {
+			opacity: 1;
+			translate: 0 0;
+		}
+	}
+
+	/* Stagger children in grids */
+	.section :is(article, [class*='grid'] > *) {
+		animation: scroll-reveal-item linear both;
+		animation-timeline: view();
+		animation-range: entry 0% entry 25%;
+	}
+
+	@keyframes scroll-reveal-item {
+		from {
+			opacity: 0;
+			translate: 0 1rem;
+			scale: 0.98;
+		}
+		to {
+			opacity: 1;
+			translate: 0 0;
+			scale: 1;
+		}
+	}
+}
+
+/* --- Skeleton shimmer --- */
+@layer base {
+	[class*='skeleton'] {
+		position: relative;
+		overflow: hidden;
+
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(
+				90deg,
+				transparent,
+				color-mix(in oklab, var(--color-ink) 5%, transparent) 40%,
+				color-mix(in oklab, var(--color-ink) 10%, transparent) 50%,
+				color-mix(in oklab, var(--color-ink) 5%, transparent) 60%,
+				transparent
+			);
+			animation: shimmer 1.8s ease-in-out infinite;
+		}
+	}
+
+	@keyframes shimmer {
+		0% {
+			translate: -100% 0;
+		}
+		100% {
+			translate: 100% 0;
+		}
+	}
+}
+
+/* --- CTA & Button micro-interactions --- */
+
+@utility action {
+	@apply action-base bg-accent rounded border border-transparent text-balance text-canvas;
+	position: relative;
+	overflow: hidden;
+	transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
+		box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+	/* Shine sweep on hover */
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			105deg,
+			transparent 40%,
+			rgba(255, 255, 255, 0.25) 45%,
+			rgba(255, 255, 255, 0.25) 55%,
+			transparent 60%
+		);
+		translate: -100% 0;
+		transition: translate 500ms cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	&:hover::before {
+		translate: 100% 0;
+	}
+
+	&:hover {
+		box-shadow: 0 0 20px color-mix(in oklab, var(--color-accent) 40%, transparent);
+		transform: translateY(-1px);
+	}
+
+	&:active {
+		transform: translateY(0) scale(0.97);
+		box-shadow: none;
+	}
+}
+
+@utility action-outline {
+	@apply action-base border-accent/40 rounded border text-balance text-accent;
+	transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+	&:hover {
+		background-color: color-mix(in oklab, var(--color-accent) 10%, transparent);
+		border-color: var(--color-accent);
+		box-shadow: 0 0 16px color-mix(in oklab, var(--color-accent) 20%, transparent),
+			inset 0 0 8px color-mix(in oklab, var(--color-accent) 5%, transparent);
+	}
+
+	&:active {
+		transform: scale(0.97);
+	}
+}
+
+@utility ghost {
+	@apply action-base rounded text-white/60;
+
+	&:hover {
+		color: white;
+		background-color: rgba(255, 255, 255, 0.05);
+	}
+
+	&:active {
+		transform: scale(0.97);
+	}
+}
+
+/* --- Link underline slide --- */
+
+@utility link {
+	text-decoration: none;
+	background-image: linear-gradient(var(--color-accent), var(--color-accent));
+	background-size: 0% 1px;
+	background-position: 0% 100%;
+	background-repeat: no-repeat;
+	transition: background-size 300ms cubic-bezier(0.4, 0, 0.2, 1),
+		color 200ms;
+
+	&:hover {
+		background-size: 100% 2px;
+		color: var(--color-accent);
+	}
+}
+
+/* --- Input glow on focus --- */
+
+@utility input {
+	@apply border-ink/10 rounded border p-[.25em] text-start;
+	transition: border-color 200ms, box-shadow 200ms;
+
+	&:focus {
+		border-color: var(--color-accent);
+		box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 15%, transparent),
+			0 0 12px color-mix(in oklab, var(--color-accent) 10%, transparent);
+	}
+}
+
+/* --- Accordion micro-interactions --- */
+
+@utility accordion {
+	& summary {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 1em;
+		transition: color 200ms, background-color 200ms;
+		border-radius: 0.5rem;
+		padding-inline: 0.5rem;
+
+		&:hover {
+			color: var(--color-accent);
+			background-color: color-mix(in oklab, var(--color-accent) 3%, transparent);
+		}
+
+		&::after {
+			content: '+';
+			display: inline-block;
+			font-family: monospace;
+			font-size: 1.5em;
+			transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1),
+				color 200ms;
+		}
+	}
+
+	& ::-webkit-details-marker {
+		display: none;
+	}
+
+	&:open summary {
+		color: var(--color-accent);
+
+		&::after {
+			content: '-';
+			transform: rotate(180deg);
+		}
+	}
+}
+
+/* --- Card hover effects (PostPreview, SectionCard) --- */
+
+@layer base {
+	/* Cards with border-border class get premium hover */
+	.group:has(> figure) {
+		transition: border-color 300ms, box-shadow 300ms, transform 300ms;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+		&:hover {
+			box-shadow: 0 8px 30px color-mix(in oklab, var(--color-accent) 8%, transparent),
+				0 0 0 1px color-mix(in oklab, var(--color-accent) 15%, transparent);
+			transform: translateY(-2px);
+		}
+	}
+
+	/* Image zoom on card hover */
+	figure {
+		overflow: hidden;
+
+		& img {
+			transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1),
+				filter 500ms cubic-bezier(0.4, 0, 0.2, 1);
+		}
+	}
+
+	.group:hover figure img {
+		transform: scale(1.05);
+		filter: brightness(1.1);
+	}
+
+	/* SectionCard border glow */
+	.rounded-2xl.border.border-border.bg-surface {
+		transition: border-color 300ms, box-shadow 300ms;
+
+		&:hover {
+			border-color: color-mix(in oklab, var(--color-accent) 20%, transparent);
+			box-shadow: 0 4px 20px color-mix(in oklab, var(--color-accent) 6%, transparent);
+		}
+	}
+}
+
+/* --- Social & share icon buttons --- */
+
+@layer base {
+	.grid.place-items-center.rounded-full {
+		transition: transform 200ms, background-color 200ms, color 200ms,
+			box-shadow 200ms;
+
+		&:hover {
+			transform: scale(1.1);
+			box-shadow: 0 0 12px color-mix(in oklab, var(--color-accent) 20%, transparent);
+		}
+
+		&:active {
+			transform: scale(0.92);
+		}
+	}
+}
+
+/* --- Tab indicator glow --- */
+
+@layer base {
+	[role='tab'] {
+		position: relative;
+
+		&[aria-selected='true'] {
+			text-shadow: 0 0 10px color-mix(in oklab, var(--color-accent) 40%, transparent);
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 50%;
+			width: 0;
+			height: 2px;
+			background: var(--color-accent);
+			transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+			translate: -50% 0;
+			border-radius: 1px;
+			box-shadow: 0 0 8px var(--color-accent);
+		}
+
+		&[aria-selected='true']::after {
+			width: 100%;
+		}
+	}
+}
+
+/* --- Richtext enhanced --- */
+
+@layer base {
+	.richtext blockquote {
+		position: relative;
+		transition: border-color 300ms;
+
+		&:hover {
+			border-color: var(--color-accent);
+		}
+	}
+
+	.richtext table tbody tr {
+		transition: background-color 200ms;
+
+		&:hover {
+			background-color: color-mix(in oklab, var(--color-accent) 6%, transparent) !important;
+		}
+	}
+
+	/* Inline code hover glow */
+	.richtext :not(pre) > code {
+		transition: background-color 200ms, box-shadow 200ms;
+
+		&:hover {
+			background-color: color-mix(in oklab, var(--color-ink) 15%, transparent);
+			box-shadow: 0 0 8px color-mix(in oklab, var(--color-accent) 10%, transparent);
+		}
+	}
+
+	/* Code block hover border */
+	[data-module='code'] {
+		transition: box-shadow 300ms;
+
+		&:hover {
+			box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-accent) 20%, transparent),
+				0 4px 16px color-mix(in oklab, var(--color-accent) 8%, transparent);
+		}
+	}
+}
+
+/* --- Admonition left border pulse --- */
+
+@layer base {
+	dl.border-s-2 {
+		transition: box-shadow 300ms;
+
+		&:hover {
+			box-shadow: inset 3px 0 12px -4px currentColor;
+		}
+	}
+}
+
+/* --- Cookie banner slide-up entrance --- */
+
+@layer base {
+	[role='dialog'][aria-label='Cookie consent'] {
+		animation: slide-up 400ms cubic-bezier(0.4, 0, 0.2, 1) both;
+	}
+
+	@keyframes slide-up {
+		from {
+			translate: 0 100%;
+			opacity: 0;
+		}
+		to {
+			translate: 0 0;
+			opacity: 1;
+		}
+	}
+}
+
+/* --- Category badge hover --- */
+
+@layer base {
+	.bg-brand.text-brand-foreground {
+		transition: box-shadow 200ms, transform 200ms;
+
+		&:hover {
+			box-shadow: 0 0 12px color-mix(in oklab, var(--color-brand) 40%, transparent);
+			transform: translateY(-1px);
+		}
+	}
+}
+
+/* --- Breadcrumb separator animation --- */
+
+@layer base {
+	nav[aria-label*='readcrumb'] span,
+	.breadcrumbs span[aria-hidden] {
+		display: inline-block;
+		transition: transform 200ms;
+	}
+
+	nav[aria-label*='readcrumb'] a:hover + span,
+	.breadcrumbs a:hover + span[aria-hidden] {
+		transform: translateX(2px);
+	}
+}
+
+/* --- SectionTitle dot pulse --- */
+
+@layer base {
+	.bg-brand.rounded-full.size-2 {
+		animation: dot-pulse 2s ease-in-out infinite;
+	}
+
+	@keyframes dot-pulse {
+		0%,
+		100% {
+			box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-brand) 40%, transparent);
+		}
+		50% {
+			box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-brand) 0%, transparent);
+		}
+	}
+}
+
+/* --- Hero dots glow for active --- */
+
+@layer base {
+	.bg-brand.rounded-full.w-8 {
+		box-shadow: 0 0 8px color-mix(in oklab, var(--color-brand) 50%, transparent);
+	}
+}
+
+/* --- Dropdown menu items --- */
+
+@layer base {
+	ul.rounded-lg.border.border-border.bg-surface li a {
+		transition: padding-left 200ms, background-color 200ms, color 200ms;
+
+		&:hover {
+			padding-left: 1.25rem;
+		}
+	}
+}
+
+/* --- Header logo hover --- */
+
+@layer base {
+	header a:has(.text-brand.italic) {
+		transition: transform 200ms;
+
+		&:hover {
+			transform: scale(1.03);
+		}
+	}
+}
+
+/* --- Callout subtle glow --- */
+
+@layer base {
+	.bg-accent\/3.rounded {
+		transition: box-shadow 300ms;
+
+		&:hover {
+			box-shadow: 0 0 30px color-mix(in oklab, var(--color-accent) 8%, transparent);
+		}
+	}
+}
+
+/* --- "In evidenza" featured badge pulse --- */
+
+@layer base {
+	.bg-brand.shadow-md {
+		animation: badge-glow 2.5s ease-in-out infinite;
+	}
+
+	@keyframes badge-glow {
+		0%,
+		100% {
+			box-shadow: 0 2px 8px color-mix(in oklab, var(--color-brand) 30%, transparent);
+		}
+		50% {
+			box-shadow: 0 2px 16px color-mix(in oklab, var(--color-brand) 60%, transparent);
+		}
+	}
+}
+
+/* --- Footer link hover indent --- */
+
+@layer base {
+	footer ul li a {
+		transition: color 200ms, padding-left 200ms;
+
+		&:hover {
+			padding-left: 0.25rem;
+		}
+	}
+}
+
+/* --- Reduced motion: respect user preferences --- */
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
 }
 
 /* animations */
@@ -191,26 +757,6 @@
 	text-align: center;
 	text-shadow: none;
 	color: var(--color-ink);
-}
-
-@utility action {
-	@apply action-base bg-accent rounded border border-transparent text-balance text-canvas;
-}
-
-@utility action-outline {
-	@apply action-base border-accent/40 rounded border text-balance text-accent hover:bg-accent/10;
-}
-
-@utility ghost {
-	@apply action-base rounded text-white/60 hover:text-white hover:bg-white/5;
-}
-
-@utility link {
-	@apply underline hover:decoration-2;
-}
-
-@utility input {
-	@apply border-ink/10 rounded border p-[.25em] text-start;
 }
 
 /* utilities */
@@ -368,36 +914,18 @@
 
 /* components */
 
-@utility accordion {
-	& summary {
-		display: grid;
-		grid-template-columns: 1fr auto;
-		align-items: center;
-		gap: 1em;
-
-		&::after {
-			content: '+';
-			display: inline-block;
-			font-family: monospace;
-			font-size: 1.5em;
-		}
-	}
-
-	& ::-webkit-details-marker {
-		display: none;
-	}
-
-	&:open summary::after {
-		content: '-';
-	}
-}
-
 @utility carousel {
 	display: grid;
 	grid-auto-flow: column;
 	grid-auto-columns: min(var(--size, 300px), 80vw);
 	overflow-x: auto;
 	scroll-snap-type: x mandatory;
+	-webkit-overflow-scrolling: touch;
+	scrollbar-width: none;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 
 	& > * {
 		scroll-snap-align: center;

@@ -1,5 +1,7 @@
+import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import Standings from '@/ui/modules/Standings'
+import StandingsSkeleton from '@/ui/skeletons/StandingsSkeleton'
 import type { CompetitionCode } from '@/lib/football-data'
 
 export const metadata: Metadata = {
@@ -20,7 +22,9 @@ export default function ClassifichePage() {
 			</header>
 
 			{COMPETITIONS.map((code) => (
-				<Standings key={code} competition={code} />
+				<Suspense key={code} fallback={<StandingsSkeleton />}>
+					<Standings competition={code} />
+				</Suspense>
 			))}
 		</div>
 	)

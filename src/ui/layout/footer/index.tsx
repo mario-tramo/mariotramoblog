@@ -2,7 +2,8 @@ import { getSite } from '@/sanity/lib/queries'
 import FooterContent from './FooterContent'
 
 export default async function Footer() {
-	const { blurb, copyright, footerLinks, socialLinks } = await getSite()
+	const { blurb, copyright, footerLinks, socialLinks, showNewsletter } =
+		await getSite()
 
 	return (
 		<FooterContent
@@ -10,6 +11,7 @@ export default async function Footer() {
 			copyright={copyright}
 			footerLinks={footerLinks}
 			socialLinks={socialLinks}
+			showNewsletter={false}
 		/>
 	)
 }

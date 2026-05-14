@@ -1,12 +1,13 @@
 import { PortableText } from 'next-sanity'
 import CTAList from '@/ui/primitives/CTAList'
 import Code from './RichtextModule/Code'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export default function Callout({
 	content,
 	ctas,
 }: Partial<{
-	content: any
+	content: PortableTextBlock[]
 	ctas: Sanity.CTA[]
 }>) {
 	return (

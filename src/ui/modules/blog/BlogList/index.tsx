@@ -11,6 +11,7 @@ import { Suspense } from 'react'
 import PostPreview from '../PostPreview'
 import List from './List'
 import { cn } from '@/lib/utils'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export default async function BlogList({
 	pretitle,
@@ -23,7 +24,7 @@ export default async function BlogList({
 	...props
 }: Partial<{
 	pretitle: string
-	intro: any
+	intro: PortableTextBlock[]
 	layout: 'grid' | 'carousel'
 	limit: number
 	showFeaturedPostsFirst: boolean
@@ -63,7 +64,7 @@ export default async function BlogList({
 	const listClassName = cn(
 		'items-stretch gap-x-8 gap-y-12',
 		stegaClean(layout) === 'grid'
-			? 'grid md:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]'
+			? 'grid md:grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))]'
 			: 'carousel max-xl:full-bleed md:overflow-fade-r pb-4 [--size:320px] max-xl:px-4',
 	)
 
@@ -76,7 +77,19 @@ export default async function BlogList({
 				</header>
 			)}
 
-			{displayFilters && !filteredCategory && <FilterList />}
+			{displayFilters && !filteredCategory && (
+			<Suspense
+				fallback={
+					<div className="flex flex-wrap gap-1 max-sm:justify-center">
+						{Array.from({ length: 6 }).map((_, i) => (
+							<div key={i} className="h-8 w-20 rounded-full bg-ink/3" />
+						))}
+					</div>
+				}
+			>
+				<FilterList />
+			</Suspense>
+		)}
 
 			<Suspense
 				fallback={

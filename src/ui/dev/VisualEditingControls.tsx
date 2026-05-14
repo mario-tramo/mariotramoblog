@@ -5,7 +5,7 @@ import { VisualEditing } from 'next-sanity/visual-editing'
 import DraftModeControls from './DraftModeControls'
 
 export default async function VisualEditingControls() {
-	const globalModules = await fetchSanityLive({
+	const globalModules = await fetchSanityLive<Sanity.GlobalModule[]>({
 		query: groq`*[_type == 'global-module']{
 			_id,
 			path,

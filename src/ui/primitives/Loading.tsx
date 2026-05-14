@@ -9,7 +9,7 @@ export default function Loading({
 	return (
 		<aside className={cn('flex items-center gap-2', className)}>
 			<Loader2 className="size-4 animate-spin" />
-			{children || 'Loading...'}
+			{children || 'Caricamento...'}
 		</aside>
 	)
 }

@@ -1,13 +1,14 @@
 import { cn } from '@/lib/utils'
 import { PortableText } from 'next-sanity'
 import { Info, Lightbulb, AlertCircle, AlertTriangle } from 'lucide-react'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export default function Admonition({
 	value,
 }: {
 	value: Partial<{
 		title: string
-		content: any
+		content: PortableTextBlock[]
 		tone: 'note' | 'important' | 'tip' | 'warning' | 'caution'
 	}>
 }) {

@@ -58,6 +58,13 @@ export default async function Standings({
 		return <section className="section">{errorContent}</section>
 	}
 
+	const secondaryColClass = inline
+		? 'hidden md:table-cell'
+		: 'hidden sm:table-cell'
+	const tertiaryColClass = inline
+		? 'hidden lg:table-cell'
+		: 'hidden md:table-cell'
+
 	const content = (
 		<div className={inline ? '' : 'mx-auto max-w-screen-lg'}>
 			<header className="mb-6 flex items-center gap-3">
@@ -82,28 +89,34 @@ export default async function Standings({
 				<table className="w-full text-left text-sm">
 					<thead>
 						<tr className="bg-surface border-b border-white/10 text-xs uppercase tracking-wider text-white/60">
-							<th className="px-3 py-3 text-center">#</th>
-							<th className="px-3 py-3">Squadra</th>
-							<th className="px-3 py-3 text-center">Pt</th>
-							<th className="hidden px-3 py-3 text-center sm:table-cell">
+							<th className="px-2 py-2 text-center sm:px-3 sm:py-3">
+								#
+							</th>
+							<th className="px-2 py-2 sm:px-3 sm:py-3">
+								Squadra
+							</th>
+							<th className="px-2 py-2 text-center sm:px-3 sm:py-3">
+								Pt
+							</th>
+							<th className={`px-3 py-3 text-center ${secondaryColClass}`}>
 								G
 							</th>
-							<th className="hidden px-3 py-3 text-center sm:table-cell">
+							<th className={`px-3 py-3 text-center ${secondaryColClass}`}>
 								V
 							</th>
-							<th className="hidden px-3 py-3 text-center sm:table-cell">
+							<th className={`px-3 py-3 text-center ${secondaryColClass}`}>
 								N
 							</th>
-							<th className="hidden px-3 py-3 text-center sm:table-cell">
+							<th className={`px-3 py-3 text-center ${secondaryColClass}`}>
 								S
 							</th>
-							<th className="hidden px-3 py-3 text-center md:table-cell">
+							<th className={`px-3 py-3 text-center ${tertiaryColClass}`}>
 								GF
 							</th>
-							<th className="hidden px-3 py-3 text-center md:table-cell">
+							<th className={`px-3 py-3 text-center ${tertiaryColClass}`}>
 								GS
 							</th>
-							<th className="hidden px-3 py-3 text-center md:table-cell">
+							<th className={`px-3 py-3 text-center ${tertiaryColClass}`}>
 								DR
 							</th>
 						</tr>
@@ -114,46 +127,46 @@ export default async function Standings({
 								key={row.team.id}
 								className={`border-b border-white/5 transition-colors hover:bg-white/5 ${getRowVisibilityClass(i, mobileRows, desktopRows)}`}
 							>
-								<td className="px-3 py-2.5 text-center font-medium">
+								<td className="px-2 py-2 text-center font-medium sm:px-3 sm:py-2.5">
 									{row.position}
 								</td>
-								<td className="px-3 py-2.5">
-									<div className="flex items-center gap-2">
+								<td className="px-2 py-2 sm:px-3 sm:py-2.5">
+									<div className="flex min-w-0 items-center gap-2">
 										<img
 											src={row.team.crest}
 											alt={row.team.shortName}
-											className="h-5 w-5"
+											className="h-5 w-5 shrink-0"
 										/>
-										<span className="hidden sm:inline">
+										<span className="hidden truncate sm:inline">
 											{row.team.name}
 										</span>
-										<span className="sm:hidden">
+										<span className="truncate sm:hidden">
 											{row.team.shortName}
 										</span>
 									</div>
 								</td>
-								<td className="px-3 py-2.5 text-center font-bold text-accent">
+								<td className="px-2 py-2 text-center font-bold text-accent sm:px-3 sm:py-2.5">
 									{row.points}
 								</td>
-								<td className="hidden px-3 py-2.5 text-center sm:table-cell">
+								<td className={`px-3 py-2.5 text-center ${secondaryColClass}`}>
 									{row.playedGames}
 								</td>
-								<td className="hidden px-3 py-2.5 text-center sm:table-cell">
+								<td className={`px-3 py-2.5 text-center ${secondaryColClass}`}>
 									{row.won}
 								</td>
-								<td className="hidden px-3 py-2.5 text-center sm:table-cell">
+								<td className={`px-3 py-2.5 text-center ${secondaryColClass}`}>
 									{row.draw}
 								</td>
-								<td className="hidden px-3 py-2.5 text-center sm:table-cell">
+								<td className={`px-3 py-2.5 text-center ${secondaryColClass}`}>
 									{row.lost}
 								</td>
-								<td className="hidden px-3 py-2.5 text-center md:table-cell">
+								<td className={`px-3 py-2.5 text-center ${tertiaryColClass}`}>
 									{row.goalsFor}
 								</td>
-								<td className="hidden px-3 py-2.5 text-center md:table-cell">
+								<td className={`px-3 py-2.5 text-center ${tertiaryColClass}`}>
 									{row.goalsAgainst}
 								</td>
-								<td className="hidden px-3 py-2.5 text-center md:table-cell">
+								<td className={`px-3 py-2.5 text-center ${tertiaryColClass}`}>
 									{row.goalDifference > 0
 										? `+${row.goalDifference}`
 										: row.goalDifference}

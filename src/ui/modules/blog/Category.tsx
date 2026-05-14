@@ -13,7 +13,7 @@ export default function Category({
 }) {
 	const props = {
 		className: cn(
-			'inline-block rounded-full bg-brand px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-brand-foreground',
+			'inline-block rounded bg-brand px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-brand-foreground',
 			linked && 'relative z-10 hover:opacity-80 transition-opacity',
 			!linked && 'pointer-events-none',
 		),

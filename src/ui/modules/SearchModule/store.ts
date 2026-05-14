@@ -82,9 +82,9 @@ export async function handleSearch({
 			metadata
 		}`,
 		params: {
-			query: `*${query}*` as any,
-			path,
-		},
+			query: `*${query}*`,
+			path: path ?? '',
+		} as Record<string, string>,
 	})
 
 	setLoading(false)

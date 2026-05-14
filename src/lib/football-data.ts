@@ -47,9 +47,18 @@ export interface StandingsResponse {
 	}[]
 }
 
+// In-memory cache with TTL
+const cache = new Map<string, { data: StandingsResponse; expiresAt: number }>()
+const CACHE_TTL = 60 * 60 * 1000 // 1 hour
+
 export async function fetchStandings(
 	competition: CompetitionCode,
 ): Promise<StandingsResponse> {
+	const cached = cache.get(competition)
+	if (cached && Date.now() < cached.expiresAt) {
+		return cached.data
+	}
+
 	const apiKey = process.env.FOOTBALL_DATA_API_KEY
 
 	if (!apiKey) {
@@ -65,10 +74,17 @@ export async function fetchStandings(
 	)
 
 	if (!res.ok) {
+		// Return stale cache on rate limit (429)
+		if (res.status === 429 && cached) {
+			return cached.data
+		}
 		throw new Error(
 			`football-data.org API error: ${res.status} ${res.statusText}`,
 		)
 	}
 
-	return res.json()
+	const data: StandingsResponse = await res.json()
+	cache.set(competition, { data, expiresAt: Date.now() + CACHE_TTL })
+
+	return data
 }

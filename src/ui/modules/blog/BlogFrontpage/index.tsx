@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { cookies } from 'next/headers'
 import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
@@ -5,24 +6,28 @@ import { groq } from 'next-sanity'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
 import { stegaClean } from 'next-sanity'
 import sortFeaturedPosts from './sortFeaturedPosts'
-import { Suspense } from 'react'
 import FilterList from '../BlogList/FilterList'
-import Paginated from './Paginated'
+import Pagination from './Pagination'
 import PostPreview from '../PostPreview'
 import NewsletterSubscribe from '@/ui/features/newsletter'
 import PostListWidget from '../PostListWidget'
 import FeaturedPostCard from '../FeaturedPostCard'
+import Hero from '@/ui/modules/Hero'
 
 export default async function BlogFrontpage({
+	slides,
 	mainPost,
 	showFeaturedPostsFirst,
-	itemsPerPage,
+	itemsPerPage = 6,
 	categoria,
+	page = 1,
 }: Partial<{
+	slides: Sanity.HeroSlide[]
 	mainPost: 'recent' | 'featured'
 	showFeaturedPostsFirst: boolean
 	itemsPerPage: number
 	categoria: string
+	page: number
 }>) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
 
@@ -64,7 +69,19 @@ export default async function BlogFrontpage({
 		...sorted.filter((p) => !p.featured),
 	].slice(0, 5)
 	const morePosts = sorted.slice(4, 10)
-	const remainingPosts = sorted.slice(4)
+	const remainingPosts = sortFeaturedPosts(
+		sorted.slice(4),
+		showFeaturedPostsFirst,
+	)
+
+	// Server-side pagination
+	const currentPage = Math.max(1, page)
+	const totalPages = Math.ceil(remainingPosts.length / itemsPerPage)
+	const safePage = Math.min(currentPage, Math.max(1, totalPages))
+	const paginatedPosts = remainingPosts.slice(
+		(safePage - 1) * itemsPerPage,
+		safePage * itemsPerPage,
+	)
 
 	return (
 		<section className="section space-y-5">
@@ -85,13 +102,17 @@ export default async function BlogFrontpage({
 
 				{/* CENTER CONTENT */}
 				<div className="order-1 col-span-12 space-y-4 sm:space-y-5 lg:order-2 lg:col-span-6">
-					<PostListWidget
-						variant="grid"
-						posts={topStories}
-						title="ARTICOLI IN EVIDENZA"
-						viewAllHref="/blog"
-						viewAllLabel="Vedi tutti"
-					/>
+					{slides?.length ? (
+						<Hero slides={slides} _type="hero" _key="blog-frontpage-hero" />
+					) : (
+						<PostListWidget
+							variant="grid"
+							posts={topStories}
+							title="ARTICOLI IN EVIDENZA"
+							viewAllHref="/blog"
+							viewAllLabel="Vedi tutti"
+						/>
+					)}
 					<PostListWidget
 						variant="list"
 						posts={morePosts}
@@ -120,26 +141,40 @@ export default async function BlogFrontpage({
 			{/* Full-width: Filter + Paginated list */}
 			<hr />
 
-			<FilterList />
-
 			<Suspense
-				fallback={
-					<ul className="grid gap-x-8 gap-y-12 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]">
-						{Array.from({ length: itemsPerPage ?? 6 }).map(
-							(_, i) => (
-								<li key={i}>
-									<PostPreview skeleton />
-								</li>
-							),
-						)}
-					</ul>
-				}
-			>
-				<Paginated
-					posts={sortFeaturedPosts(remainingPosts, showFeaturedPostsFirst)}
-					itemsPerPage={itemsPerPage}
+			fallback={
+				<div className="flex flex-wrap gap-1 max-sm:justify-center">
+					{Array.from({ length: 6 }).map((_, i) => (
+						<div key={i} className="h-8 w-20 rounded-full bg-ink/3" />
+					))}
+				</div>
+			}
+		>
+			<FilterList />
+		</Suspense>
+
+			<div className="relative space-y-12">
+				<ul
+					id="blog-list"
+					className="grid scroll-mt-[calc(var(--header-height)+1rem)] gap-x-8 gap-y-12 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"
+				>
+					{paginatedPosts.length > 0 ? (
+						paginatedPosts.map((post) => (
+							<li className="anim-fade" key={post._id}>
+								<PostPreview post={post} />
+							</li>
+						))
+					) : (
+						<li>Nessun articolo trovato...</li>
+					)}
+				</ul>
+
+				<Pagination
+					currentPage={safePage}
+					totalPages={totalPages}
+					basePath="/blog"
 				/>
-			</Suspense>
+			</div>
 		</section>
 	)
 }

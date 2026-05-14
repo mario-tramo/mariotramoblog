@@ -51,15 +51,15 @@ export function Standings({ value }: StandingsProps) {
         <table className="w-full text-sm">
           <thead>
             <tr className="bg-muted text-xs text-muted-foreground uppercase">
-              <th className="px-3 py-2 text-left w-8">#</th>
-              <th className="px-3 py-2 text-left">Squadra</th>
-              <th className="px-3 py-2 text-center">G</th>
-              <th className="px-3 py-2 text-center">V</th>
-              <th className="px-3 py-2 text-center">P</th>
-              <th className="px-3 py-2 text-center">S</th>
-              <th className="px-3 py-2 text-center">GF</th>
-              <th className="px-3 py-2 text-center">GS</th>
-              <th className="px-3 py-2 text-center font-bold">Pts</th>
+              <th className="px-2 py-2 text-left w-8 sm:px-3">#</th>
+              <th className="px-2 py-2 text-left sm:px-3">Squadra</th>
+              <th className="hidden px-3 py-2 text-center sm:table-cell">G</th>
+              <th className="hidden px-3 py-2 text-center sm:table-cell">V</th>
+              <th className="hidden px-3 py-2 text-center sm:table-cell">P</th>
+              <th className="hidden px-3 py-2 text-center sm:table-cell">S</th>
+              <th className="hidden px-3 py-2 text-center md:table-cell">GF</th>
+              <th className="hidden px-3 py-2 text-center md:table-cell">GS</th>
+              <th className="px-2 py-2 text-center font-bold sm:px-3">Pts</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
@@ -71,15 +71,15 @@ export function Standings({ value }: StandingsProps) {
                   key={row.position}
                   className={`${isHighlighted ? "bg-primary/5 font-semibold" : ""} ${zoneBorder ? `border-l-4 ${zoneBorder}` : ""}`}
                 >
-                  <td className="px-3 py-2 text-muted-foreground">{row.position}</td>
-                  <td className="px-3 py-2">{row.team}</td>
-                  <td className="px-3 py-2 text-center">{row.played}</td>
-                  <td className="px-3 py-2 text-center">{row.won}</td>
-                  <td className="px-3 py-2 text-center">{row.drawn}</td>
-                  <td className="px-3 py-2 text-center">{row.lost}</td>
-                  <td className="px-3 py-2 text-center">{row.goalsFor}</td>
-                  <td className="px-3 py-2 text-center">{row.goalsAgainst}</td>
-                  <td className="px-3 py-2 text-center font-bold">{row.points}</td>
+                  <td className="px-2 py-2 text-muted-foreground sm:px-3">{row.position}</td>
+                  <td className="max-w-[120px] truncate px-2 py-2 sm:max-w-none sm:px-3">{row.team}</td>
+                  <td className="hidden px-3 py-2 text-center sm:table-cell">{row.played}</td>
+                  <td className="hidden px-3 py-2 text-center sm:table-cell">{row.won}</td>
+                  <td className="hidden px-3 py-2 text-center sm:table-cell">{row.drawn}</td>
+                  <td className="hidden px-3 py-2 text-center sm:table-cell">{row.lost}</td>
+                  <td className="hidden px-3 py-2 text-center md:table-cell">{row.goalsFor}</td>
+                  <td className="hidden px-3 py-2 text-center md:table-cell">{row.goalsAgainst}</td>
+                  <td className="px-2 py-2 text-center font-bold sm:px-3">{row.points}</td>
                 </tr>
               );
             })}

@@ -1,6 +1,7 @@
 "use client";
 
 import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import type { PortableTextBlock } from "@portabletext/types";
 import { MatchResult } from "./blocks/match-result";
 import { PlayerStats } from "./blocks/player-stats";
 import { Lineup } from "./blocks/lineup";
@@ -84,8 +85,7 @@ const components: PortableTextComponents = {
 };
 
 interface PortableTextRendererProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  content: any[];
+  content: PortableTextBlock[];
 }
 
 export function PortableTextRenderer({ content }: PortableTextRendererProps) {

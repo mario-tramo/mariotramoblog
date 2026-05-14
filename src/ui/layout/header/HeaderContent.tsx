@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react'
 import { Search, Menu, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
+import SearchOverlay from './SearchOverlay'
 
 export interface NavItem {
 	label: string
@@ -85,13 +86,24 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 	const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
+	const [searchOpen, setSearchOpen] = useState(false)
 
 	useEffect(() => {
-		document.body.style.overflow = mobileMenuOpen ? 'hidden' : ''
+		document.body.style.overflow =
+			mobileMenuOpen || searchOpen ? 'hidden' : ''
 		return () => {
 			document.body.style.overflow = ''
 		}
-	}, [mobileMenuOpen])
+	}, [mobileMenuOpen, searchOpen])
+
+	useEffect(() => {
+		if (!searchOpen) return
+		const handleKey = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') setSearchOpen(false)
+		}
+		document.addEventListener('keydown', handleKey)
+		return () => document.removeEventListener('keydown', handleKey)
+	}, [searchOpen])
 
 	return (
 		<>
@@ -126,19 +138,19 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 
 					{/* Right Actions */}
 					<div className="flex items-center gap-1 sm:gap-2">
-						<Link
-							href="/search"
+						<button
+							onClick={() => setSearchOpen(true)}
 							className="grid size-9 place-items-center rounded-full transition hover:bg-surface"
 							aria-label="Cerca"
 						>
 							<Search size={18} />
-						</Link>
+						</button>
 
 						{ctas?.map((cta, i) => (
 							<Link
 								key={i}
 								href={cta.href}
-								className="hidden rounded-full border border-brand px-5 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand/10 md:block"
+								className="hidden rounded border border-brand px-5 py-1.5 text-sm font-medium text-brand transition-colors hover:bg-brand/10 md:block"
 							>
 								{cta.label}
 							</Link>
@@ -154,6 +166,9 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 					</div>
 				</div>
 			</header>
+
+			{/* Search overlay */}
+			<SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 
 			{/* Mobile drawer */}
 			{mobileMenuOpen && (
@@ -248,7 +263,7 @@ export default function HeaderContent({ navItems, ctas }: HeaderContentProps) {
 							<Link
 								key={i}
 								href={cta.href}
-								className="mt-4 mb-2 block w-full rounded-full border border-brand px-5 py-2 text-center text-sm font-medium text-brand transition-colors hover:bg-brand/10"
+								className="mt-4 mb-2 block w-full rounded border border-brand px-5 py-2 text-center text-sm font-medium text-brand transition-colors hover:bg-brand/10"
 								onClick={() => setMobileMenuOpen(false)}
 							>
 								{cta.label}

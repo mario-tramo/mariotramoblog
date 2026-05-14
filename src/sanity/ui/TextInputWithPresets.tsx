@@ -59,7 +59,7 @@ export function TextInputWithPresets({
 
 				<Card flex={1}>
 					<TextInput
-						{...(elementProps as any)}
+						{...(elementProps as unknown as React.ComponentProps<typeof TextInput>)}
 						onChange={(e: React.FormEvent<HTMLInputElement>) => handleChange(e.currentTarget.value)}
 					/>
 				</Card>

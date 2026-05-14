@@ -45,7 +45,10 @@ export default function Modules({
 	const getAdditionalProps = (module: Sanity.Module) => {
 		switch (module._type) {
 			case 'blog-frontpage':
-				return { categoria: searchParams?.categoria as string | undefined }
+				return {
+					categoria: searchParams?.categoria as string | undefined,
+					page: Number(searchParams?.page) || 1,
+				}
 			case 'blog-post-content':
 				return { post }
 			case 'breadcrumbs':

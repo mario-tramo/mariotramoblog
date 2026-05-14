@@ -4,7 +4,7 @@ import { stegaClean } from 'next-sanity'
 import { cn } from '@/lib/utils'
 
 type SectionLayoutProps = Partial<{
-	layout: '1' | '2' | '2-asymmetric' | '3'
+	layout: '1' | '2' | '2-asymmetric' | '3' | '3-asymmetric'
 	verticalAlign: 'start' | 'center' | 'end' | 'stretch'
 	column1: Sanity.Module[]
 	column2: Sanity.Module[]
@@ -17,6 +17,7 @@ const gridClasses: Record<string, string> = {
 	'2': 'lg:grid-cols-2',
 	'2-asymmetric': 'lg:grid-cols-[2fr_1fr]',
 	'3': 'lg:grid-cols-3',
+	'3-asymmetric': 'lg:grid-cols-[1fr_2fr_1fr]',
 }
 
 const alignClasses: Record<string, string> = {
@@ -39,7 +40,7 @@ export default function SectionLayout({
 
 	const columns = [column1]
 	if (cleanLayout !== '1') columns.push(column2)
-	if (cleanLayout === '3') columns.push(column3)
+	if (cleanLayout === '3' || cleanLayout === '3-asymmetric') columns.push(column3)
 
 	return (
 		<section className="section" {...moduleProps(props)}>
@@ -51,7 +52,7 @@ export default function SectionLayout({
 				)}
 			>
 				{columns.map((columnModules, i) => (
-					<div key={i} className="min-w-0 space-y-8">
+					<div key={i} className="min-w-0 space-y-8 [&_.section]:mx-0 [&_.section]:max-w-none [&_.section]:p-0 [&_.mx-auto]:mx-0 [&_.max-w-screen-lg]:max-w-none">
 						<Modules modules={columnModules} />
 					</div>
 				))}

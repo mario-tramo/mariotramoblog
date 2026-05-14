@@ -50,7 +50,7 @@ export function VideoEmbed({ value }: VideoEmbedProps) {
 
   return (
     <figure className="my-6">
-      <div className="relative w-full overflow-hidden rounded-xl" style={{ paddingBottom: "56.25%" }}>
+      <div className="relative w-full overflow-hidden rounded-xl aspect-video">
         <iframe
           src={embedUrl}
           className="absolute inset-0 w-full h-full"

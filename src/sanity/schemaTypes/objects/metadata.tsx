@@ -36,7 +36,7 @@ export default defineType({
 			type: 'slug',
 			description: 'Indirizzo della pagina sul sito (es. /chi-siamo). Clicca "Genera" per crearlo automaticamente dal titolo.',
 			options: {
-				source: (doc: any) => doc.title || doc.metadata.title,
+				source: (doc: Record<string, unknown> & { title?: string; metadata?: { title?: string } }) => doc.title || doc.metadata?.title || '',
 			},
 			validation: (Rule) => Rule.required(),
 		}),
@@ -55,7 +55,7 @@ export default defineType({
 			components: {
 				input: (props) => (
 					<>
-						<SeoTitleFeedback {...(props as any)} />
+						<SeoTitleFeedback {...(props as unknown as Parameters<typeof SeoTitleFeedback>[0])} />
 						<PreviewOG title={props.elementProps.value} />
 					</>
 				),

@@ -12,7 +12,7 @@ export default function List({
 	const filtered = filterPosts(posts)
 
 	if (!filtered.length) {
-		return <div>No posts found...</div>
+		return <div>Nessun articolo trovato...</div>
 	}
 
 	return (

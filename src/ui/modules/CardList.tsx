@@ -4,6 +4,7 @@ import { PortableText, stegaClean } from 'next-sanity'
 import CTAList from '@/ui/primitives/CTAList'
 import { Img } from '@/ui/primitives/Img'
 import { cn } from '@/lib/utils'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export default function CardList({
 	pretitle,
@@ -16,11 +17,11 @@ export default function CardList({
 	...props
 }: Partial<{
 	pretitle: string
-	intro: any
+	intro: PortableTextBlock[]
 	ctas: Sanity.CTA[]
 	cards: Partial<{
 		image: Sanity.Image
-		content: any
+		content: PortableTextBlock[]
 		ctas: Sanity.CTA[]
 	}>[]
 	layout: 'grid' | 'carousel'

@@ -24,7 +24,7 @@ export default async function processMetadata(
 	if (isBlogPost && page.categories?.[0]) ogParams.set('category', page.categories[0].title)
 	if (isBlogPost && page.publishDate) ogParams.set('date', page.publishDate)
 	if (isBlogPost && !ogimage && page.metadata.image) {
-		const imgUrl = (page.metadata.image as any)?.asset?.url
+		const imgUrl = (page.metadata.image as Sanity.Image & { asset?: { url?: string } })?.asset?.url
 		if (imgUrl) ogParams.set('image', imgUrl + '?w=420&h=630&fit=crop')
 	}
 	const image = ogimage || `${BASE_URL}/api/og?${ogParams.toString()}`

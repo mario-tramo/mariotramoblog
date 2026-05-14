@@ -1,5 +1,6 @@
 import { Img } from '@/ui/primitives/Img'
 import { stegaClean } from 'next-sanity'
+import { cn } from '@/lib/utils'
 
 export default function Image({
 	value,
@@ -11,10 +12,11 @@ export default function Image({
 			float: 'left' | 'right'
 		}>
 }) {
+	const floatClass = stegaClean(value.float) === 'left' ? 'float-left' : stegaClean(value.float) === 'right' ? 'float-right' : ''
+
 	return (
 		<figure
-			className="max-lg:full-bleed space-y-2 text-center md:[grid-column:bleed]!"
-			style={{ float: stegaClean(value.float) }}
+			className={cn('max-lg:full-bleed space-y-2 text-center md:[grid-column:bleed]!', floatClass)}
 		>
 			<Img
 				className="bg-accent/3 mx-auto max-h-svh w-auto text-[0px]"

@@ -5,6 +5,7 @@ import Wrapper from './Wrapper'
 import CTAList from '@/ui/primitives/CTAList'
 import Asset from '@/ui/modules/Asset'
 import { cn } from '@/lib/utils'
+import type { PortableTextBlock } from '@portabletext/types'
 
 export default function TabbedContent({
 	pretitle,
@@ -12,11 +13,11 @@ export default function TabbedContent({
 	tabs,
 }: Partial<{
 	pretitle: string
-	intro: any
+	intro: PortableTextBlock[]
 	tabs: Partial<{
 		label: string
 		pretitle: string
-		content: any
+		content: PortableTextBlock[]
 		ctas: Sanity.CTA[]
 		assets: Array<Sanity.Img | Sanity.Code | Sanity.CustomHTML>
 		assetOnRight: boolean

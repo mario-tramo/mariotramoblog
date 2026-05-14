@@ -28,6 +28,15 @@ export const MODULES_QUERY = groq`
 		...,
 		link{ ${LINK_QUERY} }
 	},
+	_type == 'blog-frontpage' => {
+		slides[]{
+			...,
+			author->,
+			cta{ ${CTA_QUERY} },
+			'imageUrl': image.asset->url,
+			'lqip': image.asset->metadata.lqip,
+		}
+	},
 	_type == 'blog-list' => { filteredCategory-> },
 	_type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
 	_type == 'card-list' => {
@@ -52,6 +61,7 @@ export const MODULES_QUERY = groq`
 			ctas[]{ ..., link{ ${LINK_QUERY} } },
 			_type == 'blog-list' => { filteredCategory-> },
 			_type == 'card-list' => { cards[]{ ..., ctas[]{ ${CTA_QUERY} } } },
+			_type == 'hero' => { slides[]{ ..., author->, cta{ ${CTA_QUERY} }, 'imageUrl': image.asset->url, 'lqip': image.asset->metadata.lqip } },
 			_type == 'richtext-module' => {
 				content[]{ ..., _type == 'image' => { ${IMAGE_QUERY} } },
 				'headings': select(
@@ -66,6 +76,7 @@ export const MODULES_QUERY = groq`
 			ctas[]{ ..., link{ ${LINK_QUERY} } },
 			_type == 'blog-list' => { filteredCategory-> },
 			_type == 'card-list' => { cards[]{ ..., ctas[]{ ${CTA_QUERY} } } },
+			_type == 'hero' => { slides[]{ ..., author->, cta{ ${CTA_QUERY} }, 'imageUrl': image.asset->url, 'lqip': image.asset->metadata.lqip } },
 			_type == 'richtext-module' => {
 				content[]{ ..., _type == 'image' => { ${IMAGE_QUERY} } },
 				'headings': select(
@@ -80,6 +91,7 @@ export const MODULES_QUERY = groq`
 			ctas[]{ ..., link{ ${LINK_QUERY} } },
 			_type == 'blog-list' => { filteredCategory-> },
 			_type == 'card-list' => { cards[]{ ..., ctas[]{ ${CTA_QUERY} } } },
+			_type == 'hero' => { slides[]{ ..., author->, cta{ ${CTA_QUERY} }, 'imageUrl': image.asset->url, 'lqip': image.asset->metadata.lqip } },
 			_type == 'richtext-module' => {
 				content[]{ ..., _type == 'image' => { ${IMAGE_QUERY} } },
 				'headings': select(

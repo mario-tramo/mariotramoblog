@@ -4,17 +4,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import moduleProps from '@/lib/moduleProps'
 import CTAList from '@/ui/primitives/CTAList'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
-
-function getInitials(name?: string) {
-	if (!name) return '??'
-	return name
-		.split(' ')
-		.map((w) => w[0])
-		.join('')
-		.toUpperCase()
-		.slice(0, 2)
-}
+import { cn, getInitials } from '@/lib/utils'
 
 function Slide({
 	slide,
@@ -71,6 +61,8 @@ export default function Hero({
 	}, [isCarousel, next, paused])
 
 	const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+		// Don't capture pointer if clicking on a link/button inside the slide
+		if ((e.target as HTMLElement).closest('a, button')) return
 		dragX.current = e.clientX
 		dragDx.current = 0
 		;(e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId)
@@ -112,7 +104,7 @@ export default function Hero({
 
 	return (
 		<section
-			className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-border outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[16/12] md:aspect-[16/11]"
+			className="relative aspect-[4/5] touch-pan-y select-none overflow-hidden rounded-2xl border border-border outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[16/12] md:aspect-[16/11]"
 			aria-roledescription={isCarousel ? 'carousel' : undefined}
 			aria-label={isCarousel ? 'Hero slides' : undefined}
 			tabIndex={0}
@@ -123,7 +115,6 @@ export default function Hero({
 			onPointerCancel={isCarousel ? onPointerUp : undefined}
 			onMouseEnter={() => setPaused(true)}
 			onMouseLeave={() => setPaused(false)}
-			style={{ touchAction: 'pan-y', userSelect: 'none' }}
 			{...moduleProps(props)}
 		>
 			<div aria-live="polite" aria-atomic="true" className="sr-only">
@@ -142,7 +133,7 @@ export default function Hero({
 			<div className="relative flex h-full flex-col justify-between p-5 sm:p-7">
 				{/* Top tag */}
 				{s.cta?.link?.label && (
-					<span className="self-start rounded-full bg-brand px-3 py-1 text-[10px] font-bold tracking-widest text-brand-foreground">
+					<span className="self-start rounded bg-brand px-3 py-1 text-[10px] font-bold tracking-widest text-brand-foreground">
 						{s.cta.link.label.toUpperCase()}
 					</span>
 				)}
@@ -175,7 +166,7 @@ export default function Hero({
 					<div className="mt-5 flex items-center justify-between gap-3">
 						<CTAList
 							ctas={[s.cta]}
-							className="[&_a]:inline-flex [&_a]:items-center [&_a]:gap-2 [&_a]:rounded-full [&_a]:bg-brand [&_a]:px-4 [&_a]:py-2.5 [&_a]:text-sm [&_a]:font-semibold [&_a]:text-brand-foreground [&_a]:transition [&_a]:hover:opacity-90 sm:[&_a]:px-5"
+							className="[&_a]:inline-flex [&_a]:items-center [&_a]:gap-2 [&_a]:rounded [&_a]:bg-brand [&_a]:px-4 [&_a]:py-2.5 [&_a]:text-sm [&_a]:font-semibold [&_a]:text-brand-foreground [&_a]:transition [&_a]:hover:opacity-90 sm:[&_a]:px-5"
 						/>
 
 						{isCarousel && (

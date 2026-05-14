@@ -257,7 +257,7 @@ export default function PostListWidget({
 			{viewAllHref && effectiveCtaStyle === 'outline' && (
 				<Link
 					href={viewAllHref}
-					className="mt-5 block w-full rounded-full border border-border bg-canvas py-2 text-center text-xs font-semibold transition hover:bg-surface-light"
+					className="mt-5 block w-full rounded border border-border bg-canvas py-2 text-center text-xs font-semibold transition hover:bg-surface-light"
 				>
 					{viewAllLabel}
 				</Link>
@@ -267,7 +267,7 @@ export default function PostListWidget({
 				<div className="mt-5 grid place-items-center">
 					<Link
 						href={viewAllHref}
-						className="inline-flex h-10 items-center rounded-full bg-brand px-6 text-sm font-semibold text-brand-foreground transition hover:opacity-90"
+						className="inline-flex h-10 items-center rounded bg-brand px-6 text-sm font-semibold text-brand-foreground transition hover:opacity-90"
 					>
 						{viewAllLabel}
 					</Link>

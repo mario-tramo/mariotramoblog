@@ -56,7 +56,7 @@ export default function TableOfContents({
 			open
 		>
 			<summary className="font-bold lg:group-open:after:invisible">
-				Table of Contents
+				Indice dei contenuti
 			</summary>
 
 			<ol className="anim-fade-to-b mt-2 leading-tight">
