@@ -1,7 +1,6 @@
 "use client";
 
-import { PortableText, type PortableTextComponents } from "@portabletext/react";
-import type { PortableTextBlock } from "@portabletext/types";
+import { PortableText, type PortableTextComponents, type PortableTextBlock } from "@portabletext/react";
 import { MatchResult } from "./blocks/match-result";
 import { PlayerStats } from "./blocks/player-stats";
 import { Lineup } from "./blocks/lineup";
