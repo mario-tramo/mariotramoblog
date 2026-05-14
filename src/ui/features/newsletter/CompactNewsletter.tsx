@@ -18,7 +18,7 @@ export default function CompactNewsletter({
 
 	return (
 		<motion.div
-			className="relative overflow-hidden rounded-2xl bg-surface-light p-5 sm:p-6"
+			className="relative overflow-hidden rounded-2xl bg-surface-light p-6 sm:p-7"
 			initial={{ opacity: 0, y: 20 }}
 			whileInView={{ opacity: 1, y: 0 }}
 			viewport={{ once: true, margin: '-50px' }}
@@ -32,7 +32,7 @@ export default function CompactNewsletter({
 			/>
 
 			<motion.h3
-				className="relative z-10 mb-1 text-base font-extrabold uppercase leading-tight"
+				className="relative z-10 mb-2 text-base font-extrabold uppercase leading-tight"
 				initial={{ opacity: 0, x: -10 }}
 				whileInView={{ opacity: 1, x: 0 }}
 				viewport={{ once: true }}
@@ -41,7 +41,7 @@ export default function CompactNewsletter({
 				{displayTitle}
 			</motion.h3>
 			<motion.p
-				className="relative z-10 mb-4 text-xs text-muted"
+				className="relative z-10 mb-5 text-xs text-muted"
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1 }}
 				viewport={{ once: true }}
@@ -79,7 +79,7 @@ export default function CompactNewsletter({
 			</form>
 
 			<motion.div
-				className="relative z-10 mt-3 text-center"
+				className="relative z-10 mt-4 text-center"
 				initial={{ opacity: 0 }}
 				whileInView={{ opacity: 1 }}
 				viewport={{ once: true }}

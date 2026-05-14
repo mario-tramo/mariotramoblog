@@ -207,37 +207,7 @@
 	}
 }
 
-/* --- Skeleton shimmer --- */
-@layer base {
-	[class*='skeleton'] {
-		position: relative;
-		overflow: hidden;
-
-		&::after {
-			content: '';
-			position: absolute;
-			inset: 0;
-			background: linear-gradient(
-				90deg,
-				transparent,
-				color-mix(in oklab, var(--color-ink) 5%, transparent) 40%,
-				color-mix(in oklab, var(--color-ink) 10%, transparent) 50%,
-				color-mix(in oklab, var(--color-ink) 5%, transparent) 60%,
-				transparent
-			);
-			animation: shimmer 1.8s ease-in-out infinite;
-		}
-	}
-
-	@keyframes shimmer {
-		0% {
-			translate: -100% 0;
-		}
-		100% {
-			translate: 100% 0;
-		}
-	}
-}
+/* --- Skeleton (no shimmer) --- */
 
 /* --- CTA & Button micro-interactions --- */
 
@@ -783,13 +753,13 @@
 /* layout */
 
 @utility section {
-	@apply mx-auto max-w-screen-xl p-8 max-md:px-4 md:py-16;
+	@apply mx-auto max-w-screen-2xl p-8 max-md:px-6 md:py-20;
 }
 
 /* richtext */
 
 @utility richtext {
-	@apply space-y-2 leading-relaxed;
+	@apply space-y-4 leading-relaxed;
 
 	& :is(h1, h2, h3, h4, h5, h6) strong {
 		@apply text-gradient;

@@ -22,7 +22,7 @@ export default async function FilterList() {
 			<div
 				className={cn(
 					css.list,
-					'filtering group flex flex-wrap gap-1 max-sm:justify-center',
+					'filtering group flex flex-wrap gap-2 max-sm:justify-center',
 				)}
 			>
 				<Suspense>

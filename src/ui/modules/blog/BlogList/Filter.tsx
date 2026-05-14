@@ -19,10 +19,10 @@ export default function Filter({
 		<button
 			className={cn(
 				css.filter,
-				'rounded-full px-4 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-colors',
+				'rounded-full border px-4 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-colors',
 				category === value
-					? 'bg-ink/10 text-ink'
-					: 'text-muted hover:text-ink',
+					? 'border-brand bg-brand text-brand-foreground'
+					: 'border-brand/40 text-muted hover:border-brand/60 hover:text-ink',
 			)}
 			onClick={() => {
 				setCategory(value)

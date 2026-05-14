@@ -84,9 +84,9 @@ export default async function BlogFrontpage({
 	)
 
 	return (
-		<section className="section space-y-5">
+		<section className="section space-y-8">
 			{/* 3-column newspaper layout */}
-			<div className="grid grid-cols-12 gap-5 sm:gap-6">
+			<div className="grid grid-cols-12 gap-6 sm:gap-8">
 				{/* LEFT SIDEBAR */}
 				<aside className="order-2 col-span-12 space-y-6 lg:order-1 lg:col-span-3">
 					<PostListWidget
@@ -101,7 +101,7 @@ export default async function BlogFrontpage({
 				</aside>
 
 				{/* CENTER CONTENT */}
-				<div className="order-1 col-span-12 space-y-5 lg:order-2 lg:col-span-6">
+				<div className="order-1 col-span-12 space-y-6 lg:order-2 lg:col-span-6">
 					{slides?.length ? (
 						<Hero slides={slides} _type="hero" _key="blog-frontpage-hero" />
 					) : (
@@ -139,19 +139,21 @@ export default async function BlogFrontpage({
 			</div>
 
 			{/* Full-width: Filter + Paginated list */}
-			<hr />
+			<hr className="my-4" />
 
-			<Suspense
-			fallback={
-				<div className="flex flex-wrap gap-1 max-sm:justify-center">
-					{Array.from({ length: 6 }).map((_, i) => (
-						<div key={i} className="h-8 w-20 rounded-full bg-ink/3" />
-					))}
-				</div>
-			}
-		>
-			<FilterList />
-		</Suspense>
+			<div className="py-4">
+				<Suspense
+					fallback={
+						<div className="flex flex-wrap gap-2 max-sm:justify-center">
+							{Array.from({ length: 6 }).map((_, i) => (
+								<div key={i} className="h-8 w-20 rounded-full bg-ink/3" />
+							))}
+						</div>
+					}
+				>
+					<FilterList />
+				</Suspense>
+			</div>
 
 			<div className="relative space-y-12">
 				<ul

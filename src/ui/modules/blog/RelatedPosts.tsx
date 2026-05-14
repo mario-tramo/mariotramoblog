@@ -45,9 +45,9 @@ export default async function RelatedPosts({
 
 	if (variant === 'sidebar') {
 		return (
-			<SectionCard className="p-4 sm:p-5">
-				<SectionTitle className="mb-4">ARTICOLI CORRELATI</SectionTitle>
-				<ul className="space-y-4">
+			<SectionCard className="p-5 sm:p-6">
+				<SectionTitle className="mb-5">ARTICOLI CORRELATI</SectionTitle>
+				<ul className="space-y-5">
 					{related.map((r) => (
 						<li key={r._id} className="group relative">
 							<Link
@@ -80,10 +80,10 @@ export default async function RelatedPosts({
 	}
 
 	return (
-		<section className="mx-auto mt-14 max-w-[820px] px-4 pb-10 sm:px-6">
-			<SectionTitle className="mb-4">ARTICOLI CORRELATI</SectionTitle>
+		<section className="mx-auto mt-16 max-w-[820px] px-4 pb-12 sm:px-6">
+			<SectionTitle className="mb-6">ARTICOLI CORRELATI</SectionTitle>
 
-			<div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+			<div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
 				{related.map((r) => (
 					<Link
 						key={r._id}
@@ -98,7 +98,7 @@ export default async function RelatedPosts({
 								alt={r.metadata.title}
 							/>
 						</div>
-						<div className="p-3">
+						<div className="p-4">
 							<h3 className="line-clamp-2 text-sm font-semibold leading-snug transition group-hover:text-brand">
 								{r.metadata.title}
 							</h3>

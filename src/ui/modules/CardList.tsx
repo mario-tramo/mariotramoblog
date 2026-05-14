@@ -64,8 +64,8 @@ export default function CardList({
 				{cards?.map((card, key) => (
 					<article
 						className={cn(
-							'flex flex-col gap-2',
-							visualSeparation && 'rounded-xl bg-surface p-5',
+							'flex flex-col gap-4',
+							visualSeparation && 'rounded-xl bg-surface p-6',
 						)}
 						key={key}
 					>

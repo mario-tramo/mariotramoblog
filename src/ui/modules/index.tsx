@@ -6,6 +6,7 @@ import Breadcrumbs from './Breadcrumbs'
 import Callout from './Callout'
 import CardList from './CardList'
 import CustomHTML from './CustomHTML'
+import Divider from './Divider'
 import Hero from './Hero'
 import NewsletterBlock from './NewsletterBlock'
 import RichtextModule from './RichtextModule'
@@ -23,6 +24,7 @@ const MODULE_MAP = {
 	callout: Callout,
 	'card-list': CardList,
 	'custom-html': CustomHTML,
+	divider: Divider,
 	hero: Hero,
 	'newsletter-block': NewsletterBlock,
 	'richtext-module': RichtextModule,

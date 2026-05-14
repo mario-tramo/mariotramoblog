@@ -130,14 +130,7 @@ export default function Hero({
 			<div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
 
 			{/* Content */}
-			<div className="relative flex h-full flex-col justify-between p-5 sm:p-7">
-				{/* Top tag */}
-				{s.cta?.link?.label && (
-					<span className="self-start rounded bg-brand px-3 py-1 text-[10px] font-bold tracking-widest text-brand-foreground">
-						{s.cta.link.label.toUpperCase()}
-					</span>
-				)}
-
+			<div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
 				{/* Bottom content */}
 				<div>
 					<h2 className="text-2xl font-extrabold leading-tight text-white drop-shadow sm:text-3xl md:text-4xl">
@@ -145,14 +138,14 @@ export default function Hero({
 					</h2>
 
 					{s.description && (
-						<p className="mt-3 max-w-xl text-sm text-white/85">
+						<p className="mt-4 max-w-xl text-sm text-white/85">
 							{s.description}
 						</p>
 					)}
 
 					{/* Author info */}
 					{s.author && (
-						<div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/75">
+						<div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/75">
 							<div className="flex items-center gap-2">
 								<span className="grid size-7 place-items-center rounded-full bg-brand text-[10px] font-bold text-brand-foreground">
 									{getInitials(s.author.name)}
@@ -163,7 +156,7 @@ export default function Hero({
 					)}
 
 					{/* Actions + navigation */}
-					<div className="mt-5 flex items-center justify-between gap-3">
+					<div className="mt-6 flex items-center justify-between gap-3">
 						<CTAList
 							ctas={[s.cta]}
 							className="[&_a]:inline-flex [&_a]:items-center [&_a]:gap-2 [&_a]:rounded [&_a]:bg-brand [&_a]:px-4 [&_a]:py-2.5 [&_a]:text-sm [&_a]:font-semibold [&_a]:text-brand-foreground [&_a]:transition [&_a]:hover:opacity-90 sm:[&_a]:px-5"
@@ -192,7 +185,7 @@ export default function Hero({
 					{/* Dots */}
 					{isCarousel && (
 						<div
-							className="mt-4 flex items-center gap-1.5"
+							className="mt-5 flex items-center gap-1.5"
 							role="group"
 							aria-label="Seleziona slide"
 						>

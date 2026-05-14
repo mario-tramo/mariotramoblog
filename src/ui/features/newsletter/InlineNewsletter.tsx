@@ -18,7 +18,7 @@ export default function InlineNewsletter({
 
 	return (
 		<motion.div
-			className="py-6"
+			className="py-8"
 			initial={{ opacity: 0 }}
 			whileInView={{ opacity: 1 }}
 			viewport={{ once: true }}
@@ -31,7 +31,7 @@ export default function InlineNewsletter({
 					viewport={{ once: true }}
 					transition={{ delay: 0.1 }}
 				>
-					<h3 className="mb-1 text-lg font-bold uppercase">
+					<h3 className="mb-2 text-lg font-bold uppercase">
 						{displayTitle}
 					</h3>
 					<p className="text-sm text-muted">{displayDescription}</p>

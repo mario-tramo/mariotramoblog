@@ -67,11 +67,11 @@ export default function PostContent({
 			</nav>
 
 			{/* 2-column layout */}
-			<div className="mx-auto grid max-w-screen-xl gap-8 px-4 pt-6 sm:px-6 lg:grid-cols-[1fr_320px]">
+			<div className="mx-auto grid max-w-screen-xl gap-10 px-4 pt-8 sm:px-6 lg:grid-cols-[1fr_320px]">
 				{/* Main content */}
 				<div className="min-w-0">
 					{/* Header */}
-					<header className="space-y-4">
+					<header className="space-y-5">
 						{/* Category tag */}
 						{post.categories?.[0] && (
 							<Categories
@@ -93,32 +93,50 @@ export default function PostContent({
 
 						{/* Author bar + share */}
 						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-ink/5 py-4 text-sm text-muted">
-							{firstAuthor && (
-								<div className="flex items-center gap-2">
-									<span className="grid size-9 place-items-center rounded-full bg-brand text-xs font-bold text-brand-foreground">
-										{firstAuthor.image ? (
-											<Img
-												className="size-full rounded-full object-cover"
-												image={firstAuthor.image}
-												width={72}
-												alt={firstAuthor.name}
-											/>
-										) : (
-											getInitials(firstAuthor.name)
-										)}
-									</span>
-									<div className="leading-tight">
-										<p className="text-sm font-semibold text-ink">
-											Di {firstAuthor.name}
-										</p>
-										<p className="text-xs">
-											<Date value={post.publishDate} />
-											{' \u2022 '}
-											<ReadTime value={post.readTime} />
-										</p>
-									</div>
-								</div>
-							)}
+							<div className="flex items-center gap-2">
+								{firstAuthor ? (
+									<>
+										<span className="grid size-9 place-items-center rounded-full bg-brand text-xs font-bold text-brand-foreground">
+											{firstAuthor.image ? (
+												<Img
+													className="size-full rounded-full object-cover"
+													image={firstAuthor.image}
+													width={72}
+													alt={firstAuthor.name}
+												/>
+											) : (
+												getInitials(firstAuthor.name)
+											)}
+										</span>
+										<div className="leading-tight">
+											<p className="text-sm font-semibold text-ink">
+												Di {firstAuthor.name}
+											</p>
+											<p className="text-xs">
+												<Date value={post.publishDate} />
+												{' \u2022 '}
+												<ReadTime value={post.readTime} />
+											</p>
+										</div>
+									</>
+								) : (
+									<>
+										<span className="grid size-9 place-items-center rounded-full bg-accent/10 text-xs font-bold text-accent/50">
+											TM
+										</span>
+										<div className="leading-tight">
+											<p className="text-sm font-semibold text-ink">
+												Di Redazione
+											</p>
+											<p className="text-xs">
+												<Date value={post.publishDate} />
+												{' \u2022 '}
+												<ReadTime value={post.readTime} />
+											</p>
+										</div>
+									</>
+								)}
+							</div>
 
 							<ShareBar title={post.metadata.title} />
 						</div>
@@ -126,7 +144,7 @@ export default function PostContent({
 
 					{/* Hero image */}
 					{post.metadata.image && (
-						<figure className="mt-6 overflow-hidden rounded-xl bg-surface">
+						<figure className="mt-8 overflow-hidden rounded-xl bg-surface">
 							<Img
 								className="aspect-video w-full object-cover"
 								image={post.metadata.image}
@@ -140,7 +158,7 @@ export default function PostContent({
 					{/* Body */}
 					<div
 						className={cn(
-							'mt-8 grid gap-8',
+							'mt-10 grid gap-10',
 							showTOC && 'lg:grid-cols-[1fr_auto]',
 						)}
 					>
@@ -160,7 +178,7 @@ export default function PostContent({
 
 					{/* Tags */}
 					{post.categories && post.categories.length > 0 && (
-						<div className="mt-8 flex flex-wrap items-center gap-2 border-t border-ink/5 pt-6">
+						<div className="mt-10 flex flex-wrap items-center gap-2 border-t border-ink/5 pt-6">
 							<span className="text-xs font-bold uppercase tracking-widest text-muted">
 								Etichette
 							</span>
@@ -173,7 +191,7 @@ export default function PostContent({
 					)}
 
 					{/* Footer nav */}
-					<div className="mt-8 flex items-center justify-between border-t border-ink/5 pt-6">
+					<div className="mt-10 flex items-center justify-between border-t border-ink/5 pt-6">
 						{post.categories?.[0] && (
 							<Link
 								href={`/blog?categoria=${post.categories[0].slug.current}`}
@@ -193,7 +211,7 @@ export default function PostContent({
 				</div>
 
 				{/* Sidebar */}
-				<aside className="space-y-5 max-lg:order-last lg:sticky-below-header lg:self-start lg:[--offset:1rem]">
+				<aside className="space-y-6 max-lg:order-last lg:sticky-below-header lg:self-start lg:[--offset:1rem]">
 					{/* Related stories */}
 					<Suspense fallback={<RelatedPostsSkeleton />}>
 						<RelatedPosts post={post} variant="sidebar" />

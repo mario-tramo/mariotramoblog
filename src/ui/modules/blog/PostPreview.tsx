@@ -16,7 +16,7 @@ export default function PostPreview({
 	if (!post && !skeleton) return null
 
 	return (
-		<div className="group relative isolate flex h-full flex-col space-y-2 rounded-2xl bg-surface p-3 transition">
+		<div className="group relative isolate flex h-full flex-col space-y-3 rounded-2xl bg-surface p-4 transition">
 			<figure className="relative aspect-video overflow-hidden rounded-lg bg-ink/3">
 				<Img
 					className="aspect-video w-full object-cover transition-all group-hover:scale-105 group-hover:brightness-110"
@@ -75,7 +75,7 @@ export default function PostPreview({
 				)}
 			</div>
 
-			<div className="flex flex-wrap gap-x-4 border-t border-ink/5 pt-2 text-sm empty:skeleton">
+			<div className="flex flex-wrap gap-x-4 border-t border-ink/5 pt-3 text-sm empty:skeleton">
 				<Date value={post?.publishDate} />
 				<Categories
 					className="relative z-10 flex flex-wrap gap-x-2"

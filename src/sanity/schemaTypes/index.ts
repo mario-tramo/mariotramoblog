@@ -33,6 +33,7 @@ import breadcrumbs from './modules/breadcrumbs'
 import callout from './modules/callout'
 import cardList from './modules/card-list'
 import customHtml from './modules/custom-html'
+import divider from './modules/divider'
 import hero from './modules/hero'
 import richtextModule from './modules/richtext-module'
 import searchModule from './modules/search-module'
@@ -75,6 +76,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	callout,
 	cardList,
 	customHtml,
+	divider,
 	hero,
 	richtextModule,
 	sectionLayout,

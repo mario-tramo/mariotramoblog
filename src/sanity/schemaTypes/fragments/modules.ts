@@ -14,6 +14,7 @@ export default defineField({
 		{ type: 'callout' },
 		{ type: 'card-list' },
 		{ type: 'custom-html' },
+		{ type: 'divider' },
 		{ type: 'hero' },
 		{ type: 'newsletter-block' },
 		{ type: 'richtext-module' },

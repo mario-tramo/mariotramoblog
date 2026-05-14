@@ -118,9 +118,9 @@ function Grid({
 	limit: number
 }) {
 	return (
-		<div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+		<div className="grid grid-cols-2 gap-4 md:grid-cols-4">
 			{posts.slice(0, limit).map((post) => (
-				<article key={post._id} className="group relative space-y-2">
+				<article key={post._id} className="group relative space-y-3">
 					<div className="aspect-[4/3] overflow-hidden rounded-lg">
 						<Img
 							className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
@@ -225,9 +225,9 @@ export default function PostListWidget({
 	const Renderer = RENDERERS[variant]
 
 	return (
-		<SectionCard className="p-4 sm:p-5">
+		<SectionCard className="p-5 sm:p-6">
 			{/* Header */}
-			<div className="mb-4 flex items-center justify-between">
+			<div className="mb-5 flex items-center justify-between">
 				<SectionTitle showDot={showDot}>{title}</SectionTitle>
 
 				{viewAllHref && effectiveCtaStyle === 'link' && (
@@ -247,7 +247,7 @@ export default function PostListWidget({
 			{viewAllHref && effectiveCtaStyle === 'link' && (
 				<Link
 					href={viewAllHref}
-					className="mt-5 flex w-full items-center justify-between border-t border-ink/5 pt-4 text-xs font-semibold text-muted transition hover:text-ink"
+					className="mt-6 flex w-full items-center justify-between border-t border-ink/5 pt-4 text-xs font-semibold text-muted transition hover:text-ink"
 				>
 					{viewAllLabel}
 					<ChevronIcon className="size-3.5" />
@@ -257,14 +257,14 @@ export default function PostListWidget({
 			{viewAllHref && effectiveCtaStyle === 'outline' && (
 				<Link
 					href={viewAllHref}
-					className="mt-5 block w-full rounded-lg bg-ink/5 py-2 text-center text-xs font-semibold transition hover:bg-ink/10"
+					className="mt-6 block w-full rounded-lg bg-ink/5 py-2 text-center text-xs font-semibold transition hover:bg-ink/10"
 				>
 					{viewAllLabel}
 				</Link>
 			)}
 
 			{viewAllHref && effectiveCtaStyle === 'brand' && (
-				<div className="mt-5 grid place-items-center">
+				<div className="mt-6 grid place-items-center">
 					<Link
 						href={viewAllHref}
 						className="inline-flex h-10 items-center rounded bg-brand px-6 text-sm font-semibold text-brand-foreground transition hover:opacity-90"
