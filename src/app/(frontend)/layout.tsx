@@ -9,6 +9,7 @@ import Announcement from '@/ui/layout/Announcement'
 import Header from '@/ui/layout/header'
 import Footer from '@/ui/layout/footer'
 import CookieBanner from '@/ui/features/CookieBanner'
+import { ToastProvider } from '@/ui/features/Toast'
 import VisualEditingControls from '@/ui/dev/VisualEditingControls'
 import DevFontSwitcher from '@/ui/dev/DevFontSwitcher'
 import DevColorSwitcher from '@/ui/dev/DevColorSwitcher'
@@ -65,14 +66,16 @@ export default async function RootLayout({
 					}}
 				/>
 				<NuqsAdapter>
+					<ToastProvider>
 					<SkipToContent />
 					<Announcement />
 					<Header />
-					<main id="main-content" role="main" tabIndex={-1} className="flex-1 px-3 sm:px-0">
+					<main id="main-content" role="main" tabIndex={-1} className="flex-1">
 						{children}
 					</main>
 					<Footer />
 					<CookieBanner />
+					</ToastProvider>
 
 					<VisualEditingControls />
 					{process.env.NODE_ENV === 'development' && (

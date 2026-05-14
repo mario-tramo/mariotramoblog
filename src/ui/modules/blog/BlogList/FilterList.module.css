@@ -1,6 +1,6 @@
 @supports (anchor-name: --a) {
 	.list {
-		gap: 0;
+		gap: 0.5rem;
 
 		&::before {
 			content: '';

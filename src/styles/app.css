@@ -753,7 +753,7 @@
 /* layout */
 
 @utility section {
-	@apply mx-auto max-w-screen-2xl p-8 max-md:px-6 md:py-20;
+	@apply mx-auto max-w-screen-2xl p-8 max-md:px-3 md:py-20;
 }
 
 /* richtext */

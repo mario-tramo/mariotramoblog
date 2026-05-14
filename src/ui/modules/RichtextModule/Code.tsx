@@ -55,6 +55,7 @@ export default async function Code({
 						<li>
 							<ClickToCopy
 								value={stegaClean(value.code)}
+								toastMessage="Codice copiato!"
 								className={cn(
 									'anim-fade-to-l m-1 hidden rounded p-[.3em] text-lg backdrop-blur group-hover:block hover:bg-white/10 active:scale-95 active:bg-white/20 [&.pointer-events-none]:block',
 									!theme.includes('light') && 'text-white',
