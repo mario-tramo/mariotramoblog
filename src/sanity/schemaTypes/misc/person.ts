@@ -41,6 +41,14 @@ export default defineType({
 			rows: 3,
 			description: 'Breve descrizione dell\'autore mostrata alla fine degli articoli',
 		}),
+		defineField({
+			name: 'socialLink',
+			title: 'Link social',
+			type: 'url',
+			description: 'Link al profilo social principale (es. LinkedIn, Instagram, X)',
+			validation: (Rule) =>
+				Rule.uri({ allowRelative: false, scheme: ['http', 'https'] }),
+		}),
 	],
 	preview: {
 		select: {

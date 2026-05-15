@@ -87,6 +87,8 @@ declare global {
 			name: string
 			image?: Image
 			bio?: string
+			socialLink?: string
+			articleCount?: number
 		}
 
 		// objects

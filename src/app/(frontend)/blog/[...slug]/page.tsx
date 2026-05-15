@@ -95,7 +95,10 @@ async function getPost(params: Params) {
 				'text': pt::text(@)
 			},
 			categories[]->,
-			'authors': select(defined(author) => [author->], null),
+			'authors': select(defined(author) => [author->{
+				...,
+				'articleCount': count(*[_type == 'blog.post' && author._ref == ^._id])
+			}], null),
 			metadata {
 				...,
 				'ogimage': image.asset->url + '?w=1200'

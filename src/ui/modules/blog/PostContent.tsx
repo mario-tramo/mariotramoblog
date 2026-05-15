@@ -12,8 +12,17 @@ import RelatedPosts from './RelatedPosts'
 import ChevronIcon from '@/ui/icons/ChevronIcon'
 import NewsletterSubscribe from '@/ui/features/newsletter'
 import { cn, getInitials } from '@/lib/utils'
+import { FaLinkedinIn, FaInstagram, FaXTwitter } from 'react-icons/fa6'
+import { IoIosLink } from 'react-icons/io'
 import { RelatedPostsSkeleton } from '@/ui/skeletons/PostContentSkeleton'
 import css from './PostContent.module.css'
+
+function AuthorSocialIcon({ url }: { url: string }) {
+	if (url.includes('linkedin.com')) return <FaLinkedinIn className="size-3.5" />
+	if (url.includes('instagram.com')) return <FaInstagram className="size-3.5" />
+	if (url.includes('x.com') || url.includes('twitter.com')) return <FaXTwitter className="size-3.5" />
+	return <IoIosLink className="size-3.5" />
+}
 
 export default function PostContent({
 	post,
@@ -176,27 +185,50 @@ export default function PostContent({
 						</Content>
 					</div>
 
-					{/* Author box */}
+					{/* Scritto da */}
 					{firstAuthor && (
-						<div className={cn("mt-10 flex gap-4 rounded-xl border border-ink/5 bg-surface p-5", firstAuthor.bio ? "items-start" : "items-center")}>
-							<span className="grid size-14 shrink-0 place-items-center rounded-full bg-brand text-lg font-bold text-brand-foreground">
-								{firstAuthor.image ? (
-									<Img
-										className="size-full rounded-full object-cover"
-										image={firstAuthor.image}
-										width={112}
-										alt={firstAuthor.name}
-									/>
-								) : (
-									getInitials(firstAuthor.name)
-								)}
-							</span>
-							<div className="min-w-0">
-								<p className="text-sm font-bold text-ink">
-									{firstAuthor.name}
-								</p>
+						<div className="mt-10">
+							<h3 className="mb-4 text-xl font-extrabold text-ink sm:text-2xl">
+								Scritto da
+							</h3>
+							<div className="rounded-xl border border-ink/5 bg-surface p-5 sm:p-6">
+								<div className="flex gap-4">
+									<span className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full bg-brand text-lg font-bold text-brand-foreground sm:size-20">
+										{firstAuthor.image ? (
+											<Img
+												className="size-full rounded-full object-cover"
+												image={firstAuthor.image}
+												width={160}
+												alt={firstAuthor.name}
+											/>
+										) : (
+											getInitials(firstAuthor.name)
+										)}
+									</span>
+									<div className="min-w-0">
+										<p className="text-lg font-bold text-ink">
+											{firstAuthor.name}
+										</p>
+										{firstAuthor.articleCount && firstAuthor.articleCount > 0 && (
+											<p className="mt-0.5 text-sm font-medium text-accent">
+												{firstAuthor.articleCount} {firstAuthor.articleCount === 1 ? 'Articolo' : 'Articoli'}
+											</p>
+										)}
+										{firstAuthor.socialLink && (
+											<a
+												href={firstAuthor.socialLink}
+												target="_blank"
+												rel="noopener noreferrer"
+												className="mt-2 inline-grid size-8 place-items-center rounded border border-ink/10 text-muted transition hover:border-accent hover:text-accent"
+												aria-label="Profilo social"
+											>
+												<AuthorSocialIcon url={firstAuthor.socialLink} />
+											</a>
+										)}
+									</div>
+								</div>
 								{firstAuthor.bio && (
-									<p className="mt-1 text-sm leading-relaxed text-muted">
+									<p className="mt-4 text-sm leading-relaxed text-muted">
 										{firstAuthor.bio}
 									</p>
 								)}
