@@ -52,45 +52,79 @@ export default function FooterContent({
 	return (
 		<footer className="mt-12">
 			{/* Banner */}
-			<div className="bg-brand py-14 sm:py-20">
-				<div className="mx-auto flex max-w-screen-2xl flex-col items-center gap-8 px-4 text-center">
-					{/* Logo grande */}
-					<Link href="/">
+			<div
+				className="relative overflow-hidden px-6 pt-20 pb-0 sm:px-8 sm:pt-24"
+				style={{
+					background: `linear-gradient(180deg, var(--color-banner) 0%, var(--color-banner-deep) 100%)`,
+				}}
+			>
+				{/* Top accent line */}
+				<div
+					className="absolute inset-x-0 top-0 h-px"
+					style={{
+						background: `linear-gradient(90deg, transparent 0%, var(--color-brand) 50%, transparent 100%)`,
+						opacity: 0.4,
+					}}
+				/>
+
+				{/* Radial glow */}
+				<div
+					className="pointer-events-none absolute inset-0"
+					style={{
+						background: `radial-gradient(ellipse 60% 50% at 50% 30%, var(--color-brand-glow), transparent 70%)`,
+					}}
+				/>
+
+				<div className="relative mx-auto flex max-w-screen-2xl flex-col items-center text-center">
+					{/* Logo */}
+					<Link href="/" className="mb-8">
 						{logoUrl ? (
 							<Image
 								src={logoUrl}
 								alt={siteTitle || 'Logo'}
 								width={400}
 								height={100}
-								className="h-16 w-auto sm:h-24"
+								className="h-10 w-auto sm:h-14"
 							/>
 						) : (
-							<span className="text-4xl font-extrabold italic tracking-tight text-brand-foreground sm:text-6xl">
-								<span>TM</span>
-								<span className="font-light">SPORT</span>
+							<span className="text-xl font-black uppercase italic tracking-tighter text-ink">
+								TRM<span className="text-brand">Sport</span>
 							</span>
 						)}
 					</Link>
 
+					{/* Heading */}
+					<h2 className="mb-6 text-4xl font-black uppercase leading-[0.9] tracking-tighter text-ink sm:text-5xl md:text-6xl">
+						Stay in the{' '}
+						<span
+							className="italic text-brand"
+							style={{
+								textShadow: '0 0 40px var(--color-brand-glow), 0 0 80px var(--color-brand-glow)',
+							}}
+						>
+							game
+						</span>
+					</h2>
+
 					{/* Blurb */}
 					{blurb && (
-						<div className="max-w-2xl text-sm leading-relaxed text-brand-foreground/80 sm:text-base">
+						<div className="mb-10 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
 							<PortableText value={blurb} />
 						</div>
 					)}
 
 					{/* Social icons */}
 					{socialLinks && socialLinks.length > 0 && (
-						<div className="flex flex-wrap items-center justify-center gap-3">
+						<div className="flex items-center gap-4 sm:gap-5">
 							{socialLinks.map((link, i) => (
 								<CTA
 									key={i}
 									link={link}
-									className="grid size-10 place-items-center rounded-lg border border-brand-foreground/20 text-brand-foreground transition hover:bg-brand-foreground/10"
+									className="group grid size-10 place-items-center rounded-full border border-ink/10 text-muted transition-all duration-300 hover:border-brand/30 hover:text-brand hover:shadow-[0_0_12px_var(--color-brand-glow)]"
 								>
 									<SocialIcon
 										url={link.external}
-										className="!size-4"
+										className="!size-4 transition-transform duration-300 group-hover:scale-110"
 										aria-label={link.label}
 									/>
 								</CTA>
@@ -100,8 +134,15 @@ export default function FooterContent({
 
 					{/* Copyright */}
 					{copyright && (
-						<div className="text-xs text-brand-foreground/60">
-							<PortableText value={copyright} />
+						<div
+							className="mt-8 w-full pt-5"
+							style={{
+								borderTop: '1px solid color-mix(in oklab, var(--color-brand) 10%, transparent)',
+							}}
+						>
+							<div className="text-[10px] uppercase tracking-widest text-muted/60">
+								<PortableText value={copyright} />
+							</div>
 						</div>
 					)}
 				</div>

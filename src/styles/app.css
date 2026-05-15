@@ -32,6 +32,12 @@
 @variant headings (& :is(h1, h2, h3, h4, h5, h6));
 
 @layer base {
+	:root {
+		--color-banner: color-mix(in oklab, var(--color-brand) 12%, var(--color-canvas));
+		--color-banner-deep: color-mix(in oklab, var(--color-brand) 6%, var(--color-canvas));
+		--color-brand-glow: color-mix(in oklab, var(--color-brand) 30%, transparent);
+	}
+
 	* {
 		min-width: 0;
 	}
