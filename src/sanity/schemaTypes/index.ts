@@ -25,7 +25,7 @@ import heroSlide from './objects/hero-slide'
 import moduleOptions from './objects/module-options'
 
 // blocks
-import { quoteBlock, videoEmbed } from './blocks'
+import { quoteBlock, videoEmbed, socialEmbed } from './blocks'
 
 // modules
 import accordionList from './modules/accordion-list'
@@ -73,6 +73,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	// blocks
 	quoteBlock,
 	videoEmbed,
+	socialEmbed,
 
 	// modules
 	accordionList,

@@ -9,3 +9,4 @@ export { quoteBlock } from "./quote-block";
 export { videoEmbed } from "./video-embed";
 export { imageGallery } from "./image-gallery";
 export { infoBox } from "./info-box";
+export { socialEmbed } from "./social-embed";

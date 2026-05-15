@@ -32,6 +32,7 @@ export default defineType({
 				}),
 				{ type: 'custom-html' },
 				{ type: 'videoEmbed' },
+				{ type: 'socialEmbed' },
 			],
 			validation: (Rule) => Rule.required().min(1).error('Il corpo dell\'articolo è obbligatorio'),
 			group: 'content',

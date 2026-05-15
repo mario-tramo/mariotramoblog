@@ -11,6 +11,7 @@ import { QuoteBlock } from "./blocks/quote-block";
 import { VideoEmbed } from "./blocks/video-embed";
 import { ImageGallery } from "./blocks/image-gallery";
 import { InfoBox } from "./blocks/info-box";
+import { SocialEmbed } from "./blocks/social-embed";
 
 const components: PortableTextComponents = {
   types: {
@@ -24,6 +25,7 @@ const components: PortableTextComponents = {
     videoEmbed: VideoEmbed,
     imageGallery: ImageGallery,
     infoBox: InfoBox,
+    socialEmbed: SocialEmbed,
     image: ({ value }: { value: { caption?: string; credit?: string } }) => (
       <figure className="my-6">
         <div className="rounded-xl overflow-hidden bg-muted aspect-video flex items-center justify-center text-muted-foreground">

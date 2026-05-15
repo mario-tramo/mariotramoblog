@@ -7,6 +7,7 @@ import Code from './Code'
 import Admonition from './Admonition'
 import CustomHTML from '@/ui/modules/CustomHTML'
 import { QuoteBlock } from '@/ui/blog/blocks/quote-block'
+import { SocialEmbed } from '@/ui/blog/blocks/social-embed'
 import type { PortableTextBlock } from '@portabletext/react'
 
 export default function Content({
@@ -36,7 +37,8 @@ export default function Content({
 						admonition: Admonition,
 						quoteBlock: QuoteBlock,
 						code: Code,
-						'custom-html': ({ value }) => (
+						socialEmbed: SocialEmbed,
+					'custom-html': ({ value }) => (
 							<CustomHTML
 								className="has-[table]:md:[grid-column:bleed] has-[table]:md:mx-auto"
 								{...value}
