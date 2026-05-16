@@ -22,6 +22,7 @@ interface Zone {
 interface StandingsProps {
   value: {
     title: string;
+    compact?: boolean;
     highlightTeams?: string[];
     rows?: StandingsRow[];
     zones?: Zone[];
@@ -53,12 +54,19 @@ export function Standings({ value }: StandingsProps) {
             <tr className="bg-muted text-xs text-muted-foreground uppercase">
               <th className="px-2 py-2 text-left w-8 sm:px-3">#</th>
               <th className="px-2 py-2 text-left sm:px-3">Squadra</th>
-              <th className="hidden px-3 py-2 text-center sm:table-cell">G</th>
-              <th className="hidden px-3 py-2 text-center sm:table-cell">V</th>
-              <th className="hidden px-3 py-2 text-center sm:table-cell">P</th>
-              <th className="hidden px-3 py-2 text-center sm:table-cell">S</th>
-              <th className="hidden px-3 py-2 text-center md:table-cell">GF</th>
-              <th className="hidden px-3 py-2 text-center md:table-cell">GS</th>
+              {!value.compact && (
+                <>
+                  <th className="hidden px-3 py-2 text-center sm:table-cell">G</th>
+                  <th className="hidden px-3 py-2 text-center sm:table-cell">V</th>
+                  <th className="hidden px-3 py-2 text-center sm:table-cell">P</th>
+                  <th className="hidden px-3 py-2 text-center sm:table-cell">S</th>
+                  <th className="hidden px-3 py-2 text-center md:table-cell">GF</th>
+                  <th className="hidden px-3 py-2 text-center md:table-cell">GS</th>
+                </>
+              )}
+              {value.compact && (
+                <th className="px-2 py-2 text-center sm:px-3">G</th>
+              )}
               <th className="px-2 py-2 text-center font-bold sm:px-3">Pts</th>
             </tr>
           </thead>
@@ -73,12 +81,19 @@ export function Standings({ value }: StandingsProps) {
                 >
                   <td className="px-2 py-2 text-muted-foreground sm:px-3">{row.position}</td>
                   <td className="max-w-[120px] truncate px-2 py-2 sm:max-w-none sm:px-3">{row.team}</td>
-                  <td className="hidden px-3 py-2 text-center sm:table-cell">{row.played}</td>
-                  <td className="hidden px-3 py-2 text-center sm:table-cell">{row.won}</td>
-                  <td className="hidden px-3 py-2 text-center sm:table-cell">{row.drawn}</td>
-                  <td className="hidden px-3 py-2 text-center sm:table-cell">{row.lost}</td>
-                  <td className="hidden px-3 py-2 text-center md:table-cell">{row.goalsFor}</td>
-                  <td className="hidden px-3 py-2 text-center md:table-cell">{row.goalsAgainst}</td>
+                  {!value.compact && (
+                    <>
+                      <td className="hidden px-3 py-2 text-center sm:table-cell">{row.played}</td>
+                      <td className="hidden px-3 py-2 text-center sm:table-cell">{row.won}</td>
+                      <td className="hidden px-3 py-2 text-center sm:table-cell">{row.drawn}</td>
+                      <td className="hidden px-3 py-2 text-center sm:table-cell">{row.lost}</td>
+                      <td className="hidden px-3 py-2 text-center md:table-cell">{row.goalsFor}</td>
+                      <td className="hidden px-3 py-2 text-center md:table-cell">{row.goalsAgainst}</td>
+                    </>
+                  )}
+                  {value.compact && (
+                    <td className="px-2 py-2 text-center sm:px-3">{row.played}</td>
+                  )}
                   <td className="px-2 py-2 text-center font-bold sm:px-3">{row.points}</td>
                 </tr>
               );

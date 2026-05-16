@@ -14,6 +14,7 @@ export default function CardList({
 	layout,
 	columns = 3,
 	visualSeparation,
+	nested,
 	...props
 }: Partial<{
 	pretitle: string
@@ -27,12 +28,14 @@ export default function CardList({
 	layout: 'grid' | 'carousel'
 	columns: number
 	visualSeparation: boolean
+	nested: boolean
 }> &
 	Sanity.Module) {
 	const isCarousel = stegaClean(layout) === 'carousel'
+	const Tag = nested ? 'div' : 'section'
 
 	return (
-		<section className="section space-y-12" {...moduleProps(props)}>
+		<Tag className={cn(!nested && 'section', 'space-y-12')} {...moduleProps(props)}>
 			{(pretitle || intro) && (
 				<header className="richtext text-center">
 					<Pretitle>{pretitle}</Pretitle>
@@ -86,6 +89,6 @@ export default function CardList({
 					</article>
 				))}
 			</div>
-		</section>
+		</Tag>
 	)
 }

@@ -1,18 +1,23 @@
 import { PortableText } from 'next-sanity'
 import CTAList from '@/ui/primitives/CTAList'
 import Code from './RichtextModule/Code'
+import { cn } from '@/lib/utils'
 import type { PortableTextBlock } from '@portabletext/react'
 
 export default function Callout({
 	content,
 	ctas,
+	nested,
 }: Partial<{
 	content: PortableTextBlock[]
 	ctas: Sanity.CTA[]
+	nested: boolean
 }>) {
+	const Tag = nested ? 'div' : 'section'
+
 	return (
-		<section className="section text-center">
-			<div className="section bg-accent/3 max-w-screen-lg rounded">
+		<Tag className={cn(!nested && 'section', 'text-center')}>
+			<div className={cn(!nested && 'section', 'bg-accent/3 max-w-screen-lg rounded')}>
 				<div className="richtext mx-auto max-w-screen-sm text-balance">
 					<PortableText
 						value={content}
@@ -31,6 +36,6 @@ export default function Callout({
 					<CTAList className="!mt-8 justify-center" ctas={ctas} />
 				</div>
 			</div>
-		</section>
+		</Tag>
 	)
 }

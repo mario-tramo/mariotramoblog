@@ -10,7 +10,12 @@ export const socialEmbed = defineType({
       title: "URL del post",
       type: "url",
       description:
-        "Link al post: TikTok, Instagram, X (Twitter), Facebook o Threads",
+        "Incolla il link del post. Esempi:\n" +
+        "• TikTok: https://www.tiktok.com/@utente/video/1234567890\n" +
+        "• Instagram: https://www.instagram.com/p/ABC123/ oppure /reel/ABC123/\n" +
+        "• X (Twitter): https://x.com/utente/status/1234567890\n" +
+        "• Facebook: https://www.facebook.com/utente/posts/1234567890\n" +
+        "• Threads: https://www.threads.net/@utente/post/ABC123",
       validation: (rule) => rule.required(),
     }),
     defineField({

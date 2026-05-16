@@ -11,6 +11,7 @@ import Hero from './Hero'
 import NewsletterBlock from './NewsletterBlock'
 import RichtextModule from './RichtextModule'
 import SearchModule from './SearchModule'
+import LayoutBlock from './LayoutBlock'
 import SectionLayout from './SectionLayout'
 import Standings from './Standings'
 import { createDataAttribute } from 'next-sanity'
@@ -26,6 +27,7 @@ const MODULE_MAP = {
 	'custom-html': CustomHTML,
 	divider: Divider,
 	hero: Hero,
+	'layout-block': LayoutBlock,
 	'newsletter-block': NewsletterBlock,
 	'richtext-module': RichtextModule,
 	'search-module': SearchModule,
@@ -37,11 +39,13 @@ export default function Modules({
 	modules,
 	page,
 	post,
+	nested,
 	searchParams,
 }: {
 	modules?: Sanity.Module[]
 	page?: Sanity.Page
 	post?: Sanity.BlogPost
+	nested?: boolean
 	searchParams?: Record<string, string | string[] | undefined>
 }) {
 	const getAdditionalProps = (module: Sanity.Module) => {
@@ -65,7 +69,9 @@ export default function Modules({
 			{modules?.map((module) => {
 				if (!module) return null
 
-				const Component = MODULE_MAP[module._type as keyof typeof MODULE_MAP]
+				const Component = MODULE_MAP[
+				module._type as keyof typeof MODULE_MAP
+			] as React.ComponentType<any>
 
 				if (!Component) return null
 
@@ -73,6 +79,7 @@ export default function Modules({
 					<Component
 						{...module}
 						{...getAdditionalProps(module)}
+						{...(nested ? { nested: true } : {})}
 						data-sanity={
 							!!page?._id &&
 							createDataAttribute({

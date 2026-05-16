@@ -195,6 +195,20 @@ declare global {
 				uid?: string
 			}
 		}
+
+		interface LayoutBlock extends Module<'layout-block'> {
+			layout: '1' | '2' | '2-wide-left' | '2-wide-right' | '3' | '3-wide-center'
+			verticalAlign?: 'start' | 'center' | 'end' | 'stretch'
+			gap?: 'none' | 'small' | 'medium' | 'large'
+			background?: 'none' | 'surface' | 'accent' | 'dark' | 'custom'
+			customBgColor?: string
+			fullBleed?: boolean
+			paddingY?: 'none' | 'small' | 'medium' | 'large'
+			rounded?: boolean
+			column1?: Module[]
+			column2?: Module[]
+			column3?: Module[]
+		}
 	}
 }
 

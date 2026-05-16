@@ -13,6 +13,13 @@ export const standings = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "compact",
+      title: "Versione compatta",
+      type: "boolean",
+      description: "Mostra solo posizione, squadra, partite giocate e punti",
+      initialValue: false,
+    }),
+    defineField({
       name: "highlightTeams",
       title: "Squadre da evidenziare",
       type: "array",

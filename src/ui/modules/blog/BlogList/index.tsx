@@ -21,6 +21,7 @@ export default async function BlogList({
 	showFeaturedPostsFirst,
 	displayFilters,
 	filteredCategory,
+	nested,
 	...props
 }: Partial<{
 	pretitle: string
@@ -30,6 +31,7 @@ export default async function BlogList({
 	showFeaturedPostsFirst: boolean
 	displayFilters: boolean
 	filteredCategory: Sanity.BlogCategory
+	nested: boolean
 }> &
 	Sanity.Module) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
@@ -69,7 +71,7 @@ export default async function BlogList({
 	)
 
 	return (
-		<section className="section space-y-8" {...moduleProps(props)}>
+		<section className={cn(!nested && 'section', 'space-y-8')} {...moduleProps(props)}>
 			{intro && (
 				<header className="richtext">
 					<Pretitle>{pretitle}</Pretitle>

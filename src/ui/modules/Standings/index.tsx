@@ -27,11 +27,13 @@ export default async function Standings({
 	mobileRows = '5',
 	desktopRows = 'all',
 	inline = false,
+	nested = false,
 }: Partial<{
 	competition: CompetitionCode
 	mobileRows: '5' | '10' | 'all'
 	desktopRows: '5' | '10' | 'all'
 	inline: boolean
+	nested: boolean
 }>) {
 	let standings: Standing[] = []
 	let competitionName: string = COMPETITIONS[competition]
@@ -54,7 +56,7 @@ export default async function Standings({
 			</div>
 		)
 
-		if (inline) return errorContent
+		if (inline || nested) return errorContent
 		return <section className="section">{errorContent}</section>
 	}
 
@@ -179,6 +181,6 @@ export default async function Standings({
 		</div>
 	)
 
-	if (inline) return content
+	if (inline || nested) return content
 	return <section className="section">{content}</section>
 }

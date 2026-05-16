@@ -42,6 +42,7 @@ import richtextModule from './modules/richtext-module'
 import searchModule from './modules/search-module'
 import newsletterBlock from './modules/newsletter-block'
 import sectionLayout from './modules/section-layout'
+import layoutBlock from './modules/layout-block'
 import standings from './modules/standings'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
@@ -88,6 +89,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	hero,
 	richtextModule,
 	sectionLayout,
+	layoutBlock,
 	searchModule,
 	newsletterBlock,
 	standings,

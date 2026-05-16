@@ -192,6 +192,11 @@
 		}
 	}
 
+	/* Suppress double animation on nested modules inside layout blocks */
+	[data-module] [data-module] {
+		animation: none;
+	}
+
 	/* Stagger children in grids */
 	.section :is(article, [class*='grid'] > *) {
 		animation: scroll-reveal-item linear both;

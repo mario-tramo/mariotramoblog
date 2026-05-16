@@ -11,6 +11,7 @@ export default function RichtextModule({
 	tocPosition = 'right',
 	stretch,
 	headings,
+	nested,
 	...props
 }: Partial<{
 	content: PortableTextBlock[]
@@ -21,14 +22,17 @@ export default function RichtextModule({
 		style: string
 		text: string
 	}[]
+	nested: boolean
 }> &
 	Sanity.Module) {
 	const tocRight = stegaClean(tocPosition) === 'right'
+	const Tag = nested ? 'div' : 'section'
 
 	return (
-		<section
+		<Tag
 			className={cn(
-				'section grid gap-8',
+				!nested && 'section',
+				'grid gap-8',
 				tableOfContents &&
 					(tocRight ? 'lg:grid-cols-[1fr_auto]' : 'lg:grid-cols-[auto_1fr]'),
 			)}
@@ -51,6 +55,6 @@ export default function RichtextModule({
 					!tableOfContents && (stretch ? 'max-w-screen-lg' : 'max-w-screen-md'),
 				)}
 			/>
-		</section>
+		</Tag>
 	)
 }

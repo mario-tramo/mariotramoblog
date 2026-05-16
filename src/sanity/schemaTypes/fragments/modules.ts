@@ -16,6 +16,7 @@ export default defineField({
 		{ type: 'custom-html' },
 		{ type: 'divider' },
 		{ type: 'hero' },
+		{ type: 'layout-block' },
 		{ type: 'newsletter-block' },
 		{ type: 'richtext-module' },
 		{ type: 'search-module' },
@@ -42,7 +43,7 @@ export default defineField({
 				{
 					name: 'layout',
 					title: 'Layout',
-					of: ['section-layout'],
+					of: ['layout-block', 'section-layout'],
 				},
 				{
 					name: 'liste',

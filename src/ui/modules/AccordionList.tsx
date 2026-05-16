@@ -14,11 +14,13 @@ export default function AccordionList({
 	layout = 'vertical',
 	connect,
 	generateSchema,
+	nested,
 	...props
 }: Partial<{
 	pretitle: string
 	intro: PortableTextBlock[]
 	items: {
+		_key: string
 		summary: string
 		content: PortableTextBlock[]
 		open?: boolean
@@ -26,12 +28,15 @@ export default function AccordionList({
 	layout: 'vertical' | 'horizontal'
 	connect: boolean
 	generateSchema: boolean
+	nested: boolean
 }> &
 	Sanity.Module) {
+	const Tag = nested ? 'div' : 'section'
+
 	return (
-		<section
+		<Tag
 			className={cn(
-				'section',
+				!nested && 'section',
 				layout === 'horizontal' ? 'grid gap-8 md:grid-cols-2' : 'space-y-8',
 			)}
 			{...(generateSchema && {
@@ -53,7 +58,7 @@ export default function AccordionList({
 			</header>
 
 			<div className="mx-auto w-full max-w-screen-md">
-				{items?.map(({ summary, content, open }, key) => (
+				{items?.map(({ _key, summary, content, open }) => (
 					<details
 						className="accordion border-ink/10 border-b"
 						name={connect ? props._key : undefined}
@@ -63,7 +68,7 @@ export default function AccordionList({
 							itemProp: 'mainEntity',
 							itemType: 'https://schema.org/Question',
 						})}
-						key={key}
+						key={_key}
 					>
 						<summary
 							className="py-4 font-bold"
@@ -106,6 +111,6 @@ export default function AccordionList({
 					</details>
 				))}
 			</div>
-		</section>
+		</Tag>
 	)
 }
