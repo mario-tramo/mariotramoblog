@@ -195,16 +195,16 @@ export default function ShowcasePage() {
 				<p className="text-xs text-muted-foreground italic">
 					Verticale — connesso (un solo pannello aperto alla volta):
 				</p>
-				{/* @ts-expect-error -- showcase mock */}
 				<AccordionList
 					_key="acc-demo"
+					_type="accordion-list"
 					pretitle="FAQ"
 					intro={[ptBlock('acc-intro', 'Domande frequenti sul blog')]}
 					items={[
-						{ summary: 'Come posso iscrivermi alla newsletter?', content: [ptBlock('a1', 'Trovi il form di iscrizione in fondo a ogni pagina, nella sidebar degli articoli, oppure nella sezione dedicata. Basta inserire la tua email.')], open: true },
-						{ summary: 'Con che frequenza pubblicate?', content: [ptBlock('a2', 'Pubblichiamo nuovi articoli ogni giorno durante la stagione calcistica. Durante le pause seguiamo il calciomercato e le nazionali.')] },
-						{ summary: 'Posso proporre un argomento?', content: [ptBlock('a3', 'Certo! Scrivici sui social o via email. Leggiamo tutti i suggerimenti e cerchiamo di trattare gli argomenti più richiesti.')] },
-						{ summary: 'Gli articoli sono disponibili in altre lingue?', content: [ptBlock('a4', 'Al momento il blog è solo in italiano, ma stiamo valutando di aggiungere una versione in inglese per i contenuti più importanti.')] },
+						{ summary: 'Come posso iscrivermi alla newsletter?', content: [ptBlock('a1', 'Trovi il form di iscrizione in fondo a ogni pagina, nella sidebar degli articoli, oppure nella sezione dedicata. Basta inserire la tua email.')], open: true } as any,
+						{ summary: 'Con che frequenza pubblicate?', content: [ptBlock('a2', 'Pubblichiamo nuovi articoli ogni giorno durante la stagione calcistica. Durante le pause seguiamo il calciomercato e le nazionali.')] } as any,
+						{ summary: 'Posso proporre un argomento?', content: [ptBlock('a3', 'Certo! Scrivici sui social o via email. Leggiamo tutti i suggerimenti e cerchiamo di trattare gli argomenti più richiesti.')] } as any,
+						{ summary: 'Gli articoli sono disponibili in altre lingue?', content: [ptBlock('a4', 'Al momento il blog è solo in italiano, ma stiamo valutando di aggiungere una versione in inglese per i contenuti più importanti.')] } as any,
 					]}
 					layout="vertical"
 					connect
@@ -213,15 +213,15 @@ export default function ShowcasePage() {
 				<p className="text-xs text-muted-foreground italic mt-8">
 					Orizzontale — con Schema.org FAQ:
 				</p>
-				{/* @ts-expect-error -- showcase mock */}
 				<AccordionList
 					_key="acc-horiz"
+					_type="accordion-list"
 					pretitle="Regolamento"
 					intro={[ptBlock('acc-h-intro', 'Le regole della Serie A 2025/26')]}
 					items={[
-						{ summary: 'Quante sostituzioni si possono fare?', content: [ptBlock('r1', 'Cinque sostituzioni in tre finestre, più una extra nei tempi supplementari.')] },
-						{ summary: 'Come funziona il VAR?', content: [ptBlock('r2', 'Il VAR interviene solo in caso di chiaro ed evidente errore su gol, rigori, cartellini rossi e scambi di identità.')] },
-						{ summary: 'Cosa succede in caso di parità punti?', content: [ptBlock('r3', 'Si guarda lo scontro diretto, poi differenza reti negli scontri diretti, poi differenza reti generale, poi gol segnati.')] },
+						{ summary: 'Quante sostituzioni si possono fare?', content: [ptBlock('r1', 'Cinque sostituzioni in tre finestre, più una extra nei tempi supplementari.')] } as any,
+						{ summary: 'Come funziona il VAR?', content: [ptBlock('r2', 'Il VAR interviene solo in caso di chiaro ed evidente errore su gol, rigori, cartellini rossi e scambi di identità.')] } as any,
+						{ summary: 'Cosa succede in caso di parità punti?', content: [ptBlock('r3', 'Si guarda lo scontro diretto, poi differenza reti negli scontri diretti, poi differenza reti generale, poi gol segnati.')] } as any,
 					]}
 					layout="horizontal"
 					generateSchema
