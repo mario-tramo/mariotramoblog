@@ -45,11 +45,6 @@ declare global {
 			}[]
 		}
 
-		interface GlobalModule extends SanityDocument {
-			path: string
-			excludePaths?: string[]
-			modules?: Module[]
-		}
 
 		interface LegalPage extends PageBase {
 			readonly _type: 'legal'

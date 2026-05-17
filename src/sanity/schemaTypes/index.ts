@@ -3,7 +3,7 @@ import { type SchemaTypeDefinition } from 'sanity'
 // documents
 import site from './documents/site'
 import page from './documents/page'
-import globalModule from './documents/global-module'
+
 import blogPost from './documents/blog.post'
 import blogCategory from './documents/blog.category'
 import legal from './documents/legal'
@@ -28,6 +28,7 @@ import moduleOptions from './objects/module-options'
 import { quoteBlock, videoEmbed, socialEmbed } from './blocks'
 
 // modules
+import articleCarousel from './modules/article-carousel'
 import accordionList from './modules/accordion-list'
 import blogFrontpage from './modules/blog-frontpage'
 import blogList from './modules/blog-list'
@@ -49,7 +50,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	// documents
 	site,
 	page,
-	globalModule,
 	blogPost,
 	blogCategory,
 	legal,
@@ -77,6 +77,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	socialEmbed,
 
 	// modules
+	articleCarousel,
 	accordionList,
 	blogFrontpage,
 	blogList,

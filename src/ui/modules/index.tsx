@@ -1,4 +1,5 @@
 import AccordionList from './AccordionList'
+import ArticleCarousel from './ArticleCarousel'
 import BlogFrontpage from './blog/BlogFrontpage'
 import BlogList from './blog/BlogList'
 import BlogPostContent from './blog/PostContent'
@@ -18,6 +19,7 @@ import { createDataAttribute } from 'next-sanity'
 
 const MODULE_MAP = {
 	'accordion-list': AccordionList,
+	'article-carousel': ArticleCarousel,
 	'blog-frontpage': BlogFrontpage,
 	'blog-list': BlogList,
 	'blog-post-content': BlogPostContent,

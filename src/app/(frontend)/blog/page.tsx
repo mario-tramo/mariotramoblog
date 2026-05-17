@@ -7,7 +7,6 @@ import { groq } from 'next-sanity'
 import { BLOG_DIR } from '@/lib/env'
 import {
 	MODULES_QUERY,
-	GLOBAL_MODULE_PATH_QUERY,
 	TRANSLATIONS_QUERY,
 } from '@/sanity/lib/queries'
 
@@ -31,18 +30,7 @@ async function getPage() {
 			&& metadata.slug.current == $slug
 		][0]{
 			...,
-			'modules': (
-				// global modules (before)
-				*[_type == 'global-module' && path == '*'].before[]{ ${MODULES_QUERY} }
-				// path modules (before)
-				+ *[_type == 'global-module' && path != '*' && ${GLOBAL_MODULE_PATH_QUERY}].before[]{ ${MODULES_QUERY} }
-				// page modules
-				+ modules[]{ ${MODULES_QUERY} }
-				// path modules (after)
-				+ *[_type == 'global-module' && path != '*' && ${GLOBAL_MODULE_PATH_QUERY}].after[]{ ${MODULES_QUERY} }
-				// global modules (after)
-				+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
-			),
+			modules[]{ ${MODULES_QUERY} },
 			metadata {
 				...,
 				'ogimage': image.asset->url + '?w=1200'

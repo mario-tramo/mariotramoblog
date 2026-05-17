@@ -7,6 +7,7 @@ export default defineField({
 	type: 'array',
 	of: [
 		{ type: 'accordion-list' },
+		{ type: 'article-carousel' },
 		{ type: 'blog-frontpage' },
 		{ type: 'blog-list' },
 		{ type: 'blog-post-content' },
@@ -37,7 +38,7 @@ export default defineField({
 				{
 					name: 'blog',
 					title: 'Blog',
-					of: ['blog-frontpage', 'blog-list', 'blog-post-content'],
+					of: ['article-carousel', 'blog-frontpage', 'blog-list', 'blog-post-content'],
 				},
 				{ name: 'hero', title: 'Hero', of: ['hero'] },
 				{

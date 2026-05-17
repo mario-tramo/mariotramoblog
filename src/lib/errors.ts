@@ -13,10 +13,4 @@ export default {
 		"Missing homepage: 🏚️ There's no place like... index?\n\n" +
 		'Solution: Add a new Page document in your Sanity Studio with the slug "index".\n\n' +
 		'💁‍♂️ https://sanitypress.dev/docs/errors#missing-homepage',
-
-	missingBlogTemplate:
-		'Missing blog template: 👻 Oof, your blog posts are ghosting...\n\n' +
-		'Solution: Add a new Global module document in your Sanity Studio with the path "blog/".\n' +
-		'Also add the Blog post content module to display blog post content.\n\n' +
-		'💁‍♂️ https://sanitypress.dev/docs/errors#missing-blog-template',
 }

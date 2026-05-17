@@ -5,9 +5,11 @@ import { useBlogFilters } from '../store'
 
 export default function List({
 	posts,
+	cardSize = 'standard',
 	...props
 }: {
 	posts: Sanity.BlogPost[]
+	cardSize?: 'standard' | 'large'
 } & React.ComponentProps<'ul'>) {
 	const filtered = filterPosts(posts)
 
@@ -19,7 +21,7 @@ export default function List({
 		<ul {...props}>
 			{filtered?.map((post) => (
 				<li className="anim-fade" key={post._id}>
-					<PostPreview post={post} />
+					<PostPreview post={post} cardSize={cardSize} />
 				</li>
 			))}
 		</ul>

@@ -51,6 +51,21 @@ export default defineType({
 			group: 'options',
 		}),
 		defineField({
+			name: 'cardSize',
+			title: 'Dimensione card',
+			type: 'string',
+			description: 'Standard: card con immagine e testo separati. Grande: immagine a tutto campo con titolo sovrapposto.',
+			options: {
+				list: [
+					{ title: 'Standard', value: 'standard' },
+					{ title: 'Grande', value: 'large' },
+				],
+				layout: 'radio',
+			},
+			initialValue: 'standard',
+			group: 'options',
+		}),
+		defineField({
 			name: 'showFeaturedPostsFirst',
 			title: 'Articoli in evidenza prima',
 			description: 'Mostra gli articoli marcati "In evidenza" in cima alla lista',

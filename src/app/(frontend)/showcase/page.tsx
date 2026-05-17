@@ -22,6 +22,7 @@ import CardList from '@/ui/modules/CardList'
 import AccordionList from '@/ui/modules/AccordionList'
 import ModuleCallout from '@/ui/modules/Callout'
 import Divider from '@/ui/modules/Divider'
+import ArticleCarousel from '@/ui/modules/ArticleCarousel'
 import BlogList from '@/ui/modules/blog/BlogList'
 import StandingsModule from '@/ui/modules/Standings'
 import Breadcrumbs from '@/ui/modules/Breadcrumbs'
@@ -104,6 +105,38 @@ export default function ShowcasePage() {
 						]}
 					/>
 				</div>
+			</Section>
+
+			{/* ── ARTICLE CAROUSEL ── */}
+			<Section title="Article Carousel" wide>
+				<p className="mx-auto max-w-screen-md text-sm text-muted-foreground">
+					Carosello articoli stile hero — circolare, con peek laterale. Dati live dal CMS.
+				</p>
+				<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
+					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
+					<ArticleCarousel limit={5} showFeaturedFirst />
+				</Suspense>
+			</Section>
+
+			{/* ── BLOG LIST — CARD GRANDE ── */}
+			<Section title="Blog List — Card Grande" wide>
+				<p className="mx-auto max-w-screen-md text-sm text-muted-foreground">
+					Lista articoli con card grandi — immagine a tutto campo, titolo e categoria sovrapposti.
+				</p>
+				<p className="mx-auto max-w-screen-md text-xs text-muted-foreground italic">
+					Carousel — card grande:
+				</p>
+				<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
+					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
+					<BlogList layout="carousel" cardSize="large" limit={6} nested />
+				</Suspense>
+				<p className="mx-auto max-w-screen-md text-xs text-muted-foreground italic mt-8">
+					Grid — card grande:
+				</p>
+				<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
+					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
+					<BlogList layout="grid" cardSize="large" limit={4} nested />
+				</Suspense>
 			</Section>
 
 			{/* ── BREADCRUMBS ── */}

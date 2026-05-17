@@ -6,7 +6,6 @@ import { groq } from 'next-sanity'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import {
 	MODULES_QUERY,
-	GLOBAL_MODULE_PATH_QUERY,
 	TRANSLATIONS_QUERY,
 } from '@/sanity/lib/queries'
 import { languages } from '@/lib/i18n'
@@ -49,18 +48,7 @@ async function getPage(params: Params) {
 			${lang ? `&& language == '${lang}'` : ''}
 		][0]{
 			...,
-			'modules': (
-				// global modules (before)
-				*[_type == 'global-module' && path == '*'].before[]{ ${MODULES_QUERY} }
-				// path modules (before)
-				+ *[_type == 'global-module' && path != '*' && ${GLOBAL_MODULE_PATH_QUERY}].before[]{ ${MODULES_QUERY} }
-				// page modules
-				+ modules[]{ ${MODULES_QUERY} }
-				// path modules (after)
-				+ *[_type == 'global-module' && path != '*' && ${GLOBAL_MODULE_PATH_QUERY}].after[]{ ${MODULES_QUERY} }
-				// global modules (after)
-				+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
-			),
+			modules[]{ ${MODULES_QUERY} },
 			metadata {
 				...,
 				'ogimage': image.asset->url + '?w=1200'

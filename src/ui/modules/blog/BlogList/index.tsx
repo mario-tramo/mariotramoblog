@@ -17,6 +17,7 @@ export default async function BlogList({
 	pretitle,
 	intro,
 	layout,
+	cardSize,
 	limit,
 	showFeaturedPostsFirst,
 	displayFilters,
@@ -27,6 +28,7 @@ export default async function BlogList({
 	pretitle: string
 	intro: PortableTextBlock[]
 	layout: 'grid' | 'carousel'
+	cardSize: 'standard' | 'large'
 	limit: number
 	showFeaturedPostsFirst: boolean
 	displayFilters: boolean
@@ -63,11 +65,22 @@ export default async function BlogList({
 		},
 	})
 
+	const cleanCardSize = stegaClean(cardSize) || 'standard'
+	const isLarge = cleanCardSize === 'large'
+
 	const listClassName = cn(
 		'items-stretch gap-x-8 gap-y-12',
 		stegaClean(layout) === 'grid'
-			? 'grid md:grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))]'
-			: 'carousel max-xl:full-bleed md:overflow-fade-r pb-4 [--size:320px] max-xl:px-4',
+			? cn(
+					'grid',
+					isLarge
+						? 'md:grid-cols-[repeat(auto-fill,minmax(min(400px,100%),1fr))]'
+						: 'md:grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))]',
+				)
+			: cn(
+					'carousel max-xl:full-bleed md:overflow-fade-r pb-4 max-xl:px-4',
+					isLarge ? '[--size:min(600px,45vw)]' : '[--size:320px]',
+				),
 	)
 
 	return (
@@ -98,13 +111,13 @@ export default async function BlogList({
 					<ul className={listClassName}>
 						{Array.from({ length: limit ?? 6 }).map((_, i) => (
 							<li key={i}>
-								<PostPreview skeleton />
+								<PostPreview skeleton cardSize={cleanCardSize} />
 							</li>
 						))}
 					</ul>
 				}
 			>
-				<List posts={posts} className={listClassName} />
+				<List posts={posts} className={listClassName} cardSize={cleanCardSize} />
 			</Suspense>
 		</section>
 	)

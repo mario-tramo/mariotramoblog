@@ -25,6 +25,7 @@ export const CTA_QUERY = groq`
 const COLUMN_MODULES_QUERY = groq`
 	...,
 	ctas[]{ ..., link{ ${LINK_QUERY} } },
+	_type == 'article-carousel' => { filteredCategory-> },
 	_type == 'blog-list' => { filteredCategory-> },
 	_type == 'card-list' => { cards[]{ ..., ctas[]{ ${CTA_QUERY} } } },
 	_type == 'hero' => {
@@ -47,6 +48,7 @@ export const MODULES_QUERY = groq`
 		...,
 		link{ ${LINK_QUERY} }
 	},
+	_type == 'article-carousel' => { filteredCategory-> },
 	_type == 'blog-frontpage' => {
 		slides[]{
 			...,
@@ -99,13 +101,6 @@ export const MODULES_QUERY = groq`
 	},
 `
 
-export const GLOBAL_MODULE_PATH_QUERY = groq`
-	string::startsWith($slug, path)
-	&& select(
-		defined(excludePaths) => count(excludePaths[string::startsWith($slug, @)]) == 0,
-		true
-	)
-`
 
 export const TRANSLATIONS_QUERY = groq`
 	'translations': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{

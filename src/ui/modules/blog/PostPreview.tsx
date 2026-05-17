@@ -9,11 +9,57 @@ import { cn } from '@/lib/utils'
 export default function PostPreview({
 	post,
 	skeleton,
+	cardSize = 'standard',
 }: {
 	post?: Sanity.BlogPost
 	skeleton?: boolean
+	cardSize?: 'standard' | 'large'
 }) {
 	if (!post && !skeleton) return null
+
+	if (cardSize === 'large') {
+		return (
+			<div className="group relative isolate flex h-full flex-col overflow-hidden rounded-2xl bg-surface">
+				{/* Large image with overlay content */}
+				<figure className="relative aspect-[4/3] overflow-hidden">
+					<Img
+						className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
+						image={post?.metadata.image}
+						width={800}
+						alt={post?.metadata.title}
+					/>
+
+					{post?.featured && (
+						<span className="absolute top-3 right-3 rounded-full bg-black/60 px-2.5 py-0.5 text-[10px] font-semibold text-white backdrop-blur-sm">
+							In evidenza
+						</span>
+					)}
+
+					{/* Gradient overlay */}
+					<div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+
+					{/* Content overlaid on image */}
+					<div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-5">
+						{post?.categories?.[0] && (
+							<span className="w-fit rounded bg-brand px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-foreground">
+								{post.categories[0].title}
+							</span>
+						)}
+
+						<div className={cn('text-lg font-bold leading-snug text-white', skeleton && 'skeleton-2')}>
+							<Link
+								className="group-hover:underline"
+								href={resolveUrl(post, { base: false })}
+							>
+								<span className="absolute inset-0" />
+								{post?.metadata.title}
+							</Link>
+						</div>
+					</div>
+				</figure>
+			</div>
+		)
+	}
 
 	return (
 		<div className="group relative isolate flex h-full flex-col space-y-3 rounded-2xl bg-surface p-4 transition">

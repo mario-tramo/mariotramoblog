@@ -66,6 +66,7 @@ function columnTitle(index: number) {
 
 function contentModules() {
 	return [
+		{ type: 'article-carousel' },
 		{ type: 'hero' },
 		{ type: 'richtext-module' },
 		{ type: 'card-list' },

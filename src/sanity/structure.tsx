@@ -4,7 +4,7 @@ import { Iframe } from 'sanity-plugin-iframe-pane'
 import { singleton } from './lib/builders'
 import { BLOG_DIR } from '@/lib/env'
 import { VscFiles, VscServerProcess, VscInfo, VscFileMedia, VscLaw } from 'react-icons/vsc'
-import { VscSymbolField } from 'react-icons/vsc'
+
 import { VscPin } from 'react-icons/vsc'
 import { PiFlowArrow } from 'react-icons/pi'
 import InfoBanner from './ui/InfoBanner'
@@ -97,19 +97,7 @@ export const structure = structureTool({
 					},
 				),
 
-				documentTypeWithInfo(
-					S,
-					'global-module',
-					'Moduli globali',
-					VscSymbolField,
-					{
-						description:
-							'I moduli globali iniettano contenuti (hero, breadcrumb, banner, ecc.) prima o dopo il contenuto di tutte le pagine che corrispondono a un certo percorso. Così non devi aggiungere lo stesso modulo manualmente a ogni pagina.',
-						example:
-							'Percorso "blog/" con un modulo Breadcrumb nel campo "Prima" → tutte le pagine sotto /blog/ mostreranno automaticamente il breadcrumb sopra al contenuto.',
-					},
-				),
-
+	
 				documentTypeWithInfo(
 					S,
 					'announcement',

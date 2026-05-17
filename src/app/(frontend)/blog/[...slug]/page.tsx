@@ -8,11 +8,9 @@ import { groq } from 'next-sanity'
 import { BASE_URL, BLOG_DIR } from '@/lib/env'
 import {
 	IMAGE_QUERY,
-	MODULES_QUERY,
 	TRANSLATIONS_QUERY,
 } from '@/sanity/lib/queries'
 import { languages, type Lang } from '@/lib/i18n'
-import errors from '@/lib/errors'
 
 export default async function Page({ params }: Props) {
 	const post = await getPost(await params)
@@ -67,12 +65,6 @@ export async function generateStaticParams() {
 }
 
 async function getPost(params: Params) {
-	const blogTemplateExists = await fetchSanityLive<boolean>({
-		query: groq`count(*[_type == 'global-module' && path == '${BLOG_DIR}/']) > 0`,
-	})
-
-	if (!blogTemplateExists) throw new Error(errors.missingBlogTemplate)
-
 	const { slug, lang } = processSlug(params)
 
 	return await fetchSanityLive<Sanity.BlogPost & { modules: Sanity.Module[] }>({
@@ -103,16 +95,6 @@ async function getPost(params: Params) {
 				...,
 				'ogimage': image.asset->url + '?w=1200'
 			},
-			'modules': (
-				// global modules (before)
-				*[_type == 'global-module' && path == '*'].before[]{ ${MODULES_QUERY} }
-				// path modules (before)
-				+ *[_type == 'global-module' && path == '${BLOG_DIR}/'].before[]{ ${MODULES_QUERY} }
-				// path modules (after)
-				+ *[_type == 'global-module' && path == '${BLOG_DIR}/'].after[]{ ${MODULES_QUERY} }
-				// global modules (after)
-				+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
-			)[defined(_type)],
 			${TRANSLATIONS_QUERY},
 		}`,
 		params: { slug },
