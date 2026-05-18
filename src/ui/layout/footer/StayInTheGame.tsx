@@ -85,7 +85,7 @@ export default function StayInTheGame({
 				</Link>
 
 				{/* Heading */}
-				<h2 className="mb-6 text-4xl font-black uppercase leading-[0.9] tracking-tighter text-ink sm:text-5xl md:text-6xl">
+				<h2 className="mb-6 text-4xl font-black uppercase leading-[0.9] tracking-wide text-ink sm:text-5xl md:text-6xl">
 					Stay in the{' '}
 					<span
 						className="italic text-brand"
