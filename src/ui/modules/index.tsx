@@ -13,7 +13,6 @@ import NewsletterBlock from './NewsletterBlock'
 import RichtextModule from './RichtextModule'
 import SearchModule from './SearchModule'
 import LayoutBlock from './LayoutBlock'
-import SectionLayout from './SectionLayout'
 import Standings from './Standings'
 import { createDataAttribute } from 'next-sanity'
 
@@ -33,7 +32,6 @@ const MODULE_MAP = {
 	'newsletter-block': NewsletterBlock,
 	'richtext-module': RichtextModule,
 	'search-module': SearchModule,
-	'section-layout': SectionLayout,
 	standings: Standings,
 } as const
 

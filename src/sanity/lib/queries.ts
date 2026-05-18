@@ -75,12 +75,6 @@ export const MODULES_QUERY = groq`
 			'lqip': image.asset->metadata.lqip,
 		}
 	},
-	_type == 'section-layout' => {
-		...,
-		column1[]{ ${COLUMN_MODULES_QUERY} },
-		column2[]{ ${COLUMN_MODULES_QUERY} },
-		column3[]{ ${COLUMN_MODULES_QUERY} },
-	},
 	_type == 'layout-block' => {
 		...,
 		column1[]{ ${COLUMN_MODULES_QUERY} },

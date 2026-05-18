@@ -3,7 +3,7 @@ import { RxDividerHorizontal } from 'react-icons/rx'
 
 export default defineType({
 	name: 'divider',
-	title: 'Divider',
+	title: 'Separatore',
 	icon: RxDividerHorizontal,
 	type: 'object',
 	fields: [
@@ -22,8 +22,7 @@ export default defineType({
 	],
 	preview: {
 		prepare: () => ({
-			title: 'Divider',
-			subtitle: 'Spaziatore',
+			title: 'Separatore',
 		}),
 	},
 })

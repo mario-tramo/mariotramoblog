@@ -5,7 +5,7 @@ import { count } from '@/lib/utils'
 
 export default defineType({
 	name: 'card-list',
-	title: 'Lista card',
+	title: 'Card',
 	icon: TfiLayoutMediaLeftAlt,
 	type: 'object',
 	groups: [{ name: 'content', title: 'Contenuto', default: true }, { name: 'options', title: 'Opzioni' }],

@@ -42,7 +42,6 @@ import hero from './modules/hero'
 import richtextModule from './modules/richtext-module'
 import searchModule from './modules/search-module'
 import newsletterBlock from './modules/newsletter-block'
-import sectionLayout from './modules/section-layout'
 import layoutBlock from './modules/layout-block'
 import standings from './modules/standings'
 
@@ -89,7 +88,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	divider,
 	hero,
 	richtextModule,
-	sectionLayout,
 	layoutBlock,
 	searchModule,
 	newsletterBlock,

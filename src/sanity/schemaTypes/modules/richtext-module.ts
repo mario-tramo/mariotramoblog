@@ -5,7 +5,7 @@ import { getBlockText } from '@/lib/utils'
 
 export default defineType({
 	name: 'richtext-module',
-	title: 'Testo ricco',
+	title: 'Testo',
 	icon: VscSymbolKeyword,
 	type: 'object',
 	groups: [

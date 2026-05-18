@@ -4,7 +4,7 @@ import { getBlockText } from '@/lib/utils'
 
 export default defineType({
 	name: 'callout',
-	title: 'Callout',
+	title: 'Riquadro evidenza',
 	icon: VscInspect,
 	type: 'object',
 	fields: [

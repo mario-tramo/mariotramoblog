@@ -83,7 +83,7 @@ function contentModules() {
 
 export default defineType({
 	name: 'layout-block',
-	title: 'Blocco Layout',
+	title: 'Layout',
 	icon: TfiLayoutCtaCenter,
 	type: 'object',
 	groups: [
@@ -246,7 +246,7 @@ export default defineType({
 				background && background !== 'none' ? ` · sfondo ${background}` : ''
 
 			return {
-				title: `Blocco Layout — ${layoutLabel}`,
+				title: `Layout — ${layoutLabel}`,
 				subtitle: `${totalModules} ${totalModules === 1 ? 'modulo' : 'moduli'}${bgLabel}`,
 			}
 		},
