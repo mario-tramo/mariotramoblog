@@ -7,6 +7,9 @@ interface SocialEmbedProps {
     url: string;
     platform?: string;
     caption?: string;
+    description?: string;
+    width?: number;
+    height?: number;
   };
 }
 
@@ -52,7 +55,12 @@ function getTweetId(url: string): string | null {
   return match ? match[1] : null;
 }
 
-function TikTokEmbed({ url }: { url: string }) {
+interface EmbedSize {
+  width?: number;
+  height?: number;
+}
+
+function TikTokEmbed({ url, size }: { url: string; size?: EmbedSize }) {
   const videoId = getTikTokId(url);
   if (!videoId) return <FallbackLink url={url} platform="tiktok" />;
 
@@ -60,7 +68,7 @@ function TikTokEmbed({ url }: { url: string }) {
     <iframe
       src={`https://www.tiktok.com/embed/v2/${videoId}`}
       className="w-full rounded-xl border-0"
-      style={{ height: 750, maxWidth: 605, margin: "0 auto", display: "block" }}
+      style={{ height: size?.height ?? 750, maxWidth: size?.width ?? 605, margin: "0 auto", display: "block" }}
       allow="encrypted-media"
       allowFullScreen
       title="TikTok"
@@ -68,7 +76,7 @@ function TikTokEmbed({ url }: { url: string }) {
   );
 }
 
-function InstagramEmbed({ url }: { url: string }) {
+function InstagramEmbed({ url, size }: { url: string; size?: EmbedSize }) {
   const shortcode = getInstagramShortcode(url);
   if (!shortcode) return <FallbackLink url={url} platform="instagram" />;
 
@@ -76,7 +84,7 @@ function InstagramEmbed({ url }: { url: string }) {
     <iframe
       src={`https://www.instagram.com/p/${shortcode}/embed/`}
       className="w-full rounded-xl border-0"
-      style={{ height: 600, maxWidth: 540, margin: "0 auto", display: "block" }}
+      style={{ height: size?.height ?? 600, maxWidth: size?.width ?? 540, margin: "0 auto", display: "block" }}
       allow="encrypted-media"
       allowFullScreen
       title="Instagram"
@@ -84,7 +92,7 @@ function InstagramEmbed({ url }: { url: string }) {
   );
 }
 
-function TwitterEmbed({ url }: { url: string }) {
+function TwitterEmbed({ url, size }: { url: string; size?: EmbedSize }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -122,17 +130,19 @@ function TwitterEmbed({ url }: { url: string }) {
     <div
       ref={containerRef}
       className="flex justify-center [&>div]:!m-0"
+      style={size?.width ? { maxWidth: size.width, margin: "0 auto" } : undefined}
     />
   );
 }
 
-function FacebookEmbed({ url }: { url: string }) {
+function FacebookEmbed({ url, size }: { url: string; size?: EmbedSize }) {
+  const w = size?.width ?? 500;
   const encoded = encodeURIComponent(url);
   return (
     <iframe
-      src={`https://www.facebook.com/plugins/post.php?href=${encoded}&show_text=true&width=500`}
+      src={`https://www.facebook.com/plugins/post.php?href=${encoded}&show_text=true&width=${w}`}
       className="rounded-xl border-0"
-      style={{ width: 500, height: 600, maxWidth: "100%", margin: "0 auto", display: "block" }}
+      style={{ width: w, height: size?.height ?? 600, maxWidth: "100%", margin: "0 auto", display: "block" }}
       allow="encrypted-media"
       allowFullScreen
       title="Facebook"
@@ -140,7 +150,7 @@ function FacebookEmbed({ url }: { url: string }) {
   );
 }
 
-function ThreadsEmbed({ url }: { url: string }) {
+function ThreadsEmbed({ url, size }: { url: string; size?: EmbedSize }) {
   const match = url.match(/threads\.net\/@?[^/]+\/post\/([a-zA-Z0-9_-]+)/);
   if (!match) return <FallbackLink url={url} platform="threads" />;
 
@@ -148,7 +158,7 @@ function ThreadsEmbed({ url }: { url: string }) {
     <iframe
       src={`https://www.threads.net/@/post/${match[1]}/embed/`}
       className="w-full rounded-xl border-0"
-      style={{ height: 500, maxWidth: 540, margin: "0 auto", display: "block" }}
+      style={{ height: size?.height ?? 500, maxWidth: size?.width ?? 540, margin: "0 auto", display: "block" }}
       allow="encrypted-media"
       allowFullScreen
       title="Threads"
@@ -177,13 +187,14 @@ function FallbackLink({
 
 export function SocialEmbed({ value }: SocialEmbedProps) {
   const platform = (value.platform as Platform) || detectPlatform(value.url);
+  const size: EmbedSize = { width: value.width, height: value.height };
 
   const embedMap: Record<string, React.ReactNode> = {
-    tiktok: <TikTokEmbed url={value.url} />,
-    instagram: <InstagramEmbed url={value.url} />,
-    twitter: <TwitterEmbed url={value.url} />,
-    facebook: <FacebookEmbed url={value.url} />,
-    threads: <ThreadsEmbed url={value.url} />,
+    tiktok: <TikTokEmbed url={value.url} size={size} />,
+    instagram: <InstagramEmbed url={value.url} size={size} />,
+    twitter: <TwitterEmbed url={value.url} size={size} />,
+    facebook: <FacebookEmbed url={value.url} size={size} />,
+    threads: <ThreadsEmbed url={value.url} size={size} />,
   };
 
   return (
@@ -192,6 +203,11 @@ export function SocialEmbed({ value }: SocialEmbedProps) {
         embedMap[platform]
       ) : (
         <FallbackLink url={value.url} platform={platform} />
+      )}
+      {value.description && (
+        <p className="mt-3 text-sm text-muted-foreground text-center italic">
+          {value.description}
+        </p>
       )}
       {value.caption && (
         <figcaption className="mt-2 text-sm text-muted-foreground text-center">

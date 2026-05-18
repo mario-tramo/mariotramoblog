@@ -76,7 +76,7 @@ export default function PostContent({
 			</nav>
 
 			{/* 2-column layout */}
-			<div className="mx-auto grid max-w-screen-2xl gap-10 px-4 pt-8 sm:px-6 lg:grid-cols-[1fr_320px]">
+			<div className="mx-auto grid max-w-screen-2xl gap-10 px-4 pt-8 pb-16 sm:px-6 sm:pb-20 lg:grid-cols-[1fr_320px]">
 				{/* Main content */}
 				<div className="min-w-0">
 					{/* Header */}

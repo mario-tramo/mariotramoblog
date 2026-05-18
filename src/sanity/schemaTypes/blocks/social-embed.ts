@@ -40,6 +40,30 @@ export const socialEmbed = defineType({
       type: "string",
       description: "Descrizione opzionale sotto il post",
     }),
+    defineField({
+      name: "description",
+      title: "Descrizione",
+      type: "text",
+      rows: 3,
+      description:
+        "Contesto aggiuntivo sul post embeddato (es. perché è rilevante per l'articolo)",
+    }),
+    defineField({
+      name: "width",
+      title: "Larghezza massima (px)",
+      type: "number",
+      description:
+        "Larghezza massima dell'embed in pixel. Se non specificata, usa il valore predefinito della piattaforma.",
+      validation: (rule) => rule.min(200).max(1200),
+    }),
+    defineField({
+      name: "height",
+      title: "Altezza (px)",
+      type: "number",
+      description:
+        "Altezza dell'embed in pixel. Se non specificata, usa il valore predefinito della piattaforma.",
+      validation: (rule) => rule.min(200).max(1500),
+    }),
   ],
   preview: {
     select: { caption: "caption", url: "url", platform: "platform" },

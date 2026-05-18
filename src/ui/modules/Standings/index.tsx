@@ -87,7 +87,7 @@ export default async function Standings({
 				</div>
 			</header>
 
-			<div className="overflow-x-auto rounded-lg border border-white/10">
+			<div className={`overflow-x-auto rounded-lg border border-white/10 ${inline ? 'no-scrollbar' : ''}`}>
 				<table className="w-full text-left text-sm">
 					<thead>
 						<tr className="bg-surface border-b border-white/10 text-xs uppercase tracking-wider text-white/60">
