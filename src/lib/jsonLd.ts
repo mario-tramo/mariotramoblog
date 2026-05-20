@@ -6,7 +6,9 @@ const PUBLISHER = {
 	url: BASE_URL,
 	logo: {
 		'@type': 'ImageObject',
-		url: `${BASE_URL}/favicon.ico`,
+		url: `${BASE_URL}/logo.png`,
+		width: 512,
+		height: 512,
 	},
 } as const
 
@@ -18,6 +20,7 @@ export function websiteJsonLd(siteTitle: string, description?: string) {
 		url: BASE_URL,
 		inLanguage: 'it',
 		...(description && { description }),
+		publisher: PUBLISHER,
 		potentialAction: {
 			'@type': 'SearchAction',
 			target: {
@@ -32,8 +35,8 @@ export function websiteJsonLd(siteTitle: string, description?: string) {
 export function blogPostingJsonLd(post: Sanity.BlogPost) {
 	const url = `${BASE_URL}/${BLOG_DIR}/${post.metadata.slug.current}`
 	const image = post.metadata.ogimage || post.metadata.image
-	const tagNames = post.tags?.map((t) => t.title) || []
-	const categoryNames = post.categories?.map((c) => c.title) || []
+	const tagNames = post.tags?.filter(Boolean).map((t) => t.title) || []
+	const categoryNames = post.categories?.filter(Boolean).map((c) => c.title) || []
 	const keywords = post.metadata.keywords?.length
 		? [...post.metadata.keywords, ...tagNames]
 		: [...categoryNames, ...tagNames]
@@ -61,7 +64,7 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 		author: post.authors?.map((author) => ({
 			'@type': 'Person',
 			name: author.name,
-			url: `${BASE_URL}/blog?author=${author._id}`,
+			url: `${BASE_URL}/blog?author=${encodeURIComponent(author.name)}`,
 		})),
 		publisher: PUBLISHER,
 		mainEntityOfPage: {
@@ -74,6 +77,46 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 		...(keywords?.length && {
 			keywords: keywords.join(', '),
 		}),
+	}
+}
+
+export function collectionPageJsonLd(title: string, description?: string) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'CollectionPage',
+		name: title,
+		url: `${BASE_URL}/${BLOG_DIR}`,
+		inLanguage: 'it',
+		...(description && { description }),
+		isPartOf: {
+			'@type': 'WebSite',
+			name: 'Mario Tramo',
+			url: BASE_URL,
+		},
+		publisher: PUBLISHER,
+	}
+}
+
+export function webPageJsonLd(page: {
+	title: string
+	description?: string
+	url: string
+	dateModified?: string
+}) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		name: page.title,
+		url: page.url,
+		inLanguage: 'it',
+		...(page.description && { description: page.description }),
+		...(page.dateModified && { dateModified: page.dateModified }),
+		isPartOf: {
+			'@type': 'WebSite',
+			name: 'Mario Tramo',
+			url: BASE_URL,
+		},
+		publisher: PUBLISHER,
 	}
 }
 
@@ -95,6 +138,6 @@ export function personJsonLd(author: Sanity.Person & { slug?: { current: string 
 		'@context': 'https://schema.org',
 		'@type': 'Person',
 		name: author.name,
-		url: `${BASE_URL}/blog?author=${author._id}`,
+		url: `${BASE_URL}/blog?author=${encodeURIComponent(author.name)}`,
 	}
 }

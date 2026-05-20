@@ -53,11 +53,14 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 				className="flex items-center gap-1 rounded-lg px-4 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-ink"
 				onClick={() => setOpen((v) => !v)}
 				aria-expanded={open}
+				aria-haspopup="true"
+				aria-label={`${item.label}, sottomenu`}
 			>
 				{item.label}
 				<ChevronDown
 					size={14}
 					className={`transition-transform ${open ? 'rotate-180' : ''}`}
+					aria-hidden="true"
 				/>
 			</button>
 
@@ -76,9 +79,12 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 							</li>
 						))}
 					</ul>
-					<div
+					<button
+						type="button"
 						className="fixed inset-0 -z-10"
 						onClick={() => setOpen(false)}
+						aria-label="Chiudi sottomenu"
+						tabIndex={-1}
 					/>
 				</>
 			)}
@@ -232,6 +238,8 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 														: item.label,
 												)
 											}
+											aria-expanded={mobileExpanded === item.label}
+											aria-label={`${item.label}, sottomenu`}
 										>
 											{item.label}
 											<ChevronDown
@@ -242,6 +250,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 														? 'rotate-180'
 														: ''
 												}`}
+												aria-hidden="true"
 											/>
 										</button>
 										{mobileExpanded === item.label && (

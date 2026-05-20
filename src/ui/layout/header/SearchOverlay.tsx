@@ -63,11 +63,13 @@ export default function SearchOverlay({
 	if (!open) return null
 
 	return (
-		<div className="fixed inset-0 z-50 flex flex-col">
+		<div className="fixed inset-0 z-50 flex flex-col" role="dialog" aria-modal="true" aria-label="Ricerca">
 			{/* Backdrop */}
-			<div
+			<button
+				type="button"
 				className="absolute inset-0 bg-canvas/80 backdrop-blur-sm"
 				onClick={onClose}
+				aria-label="Chiudi ricerca"
 			/>
 
 			{/* Modal container */}

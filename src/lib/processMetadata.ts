@@ -19,8 +19,8 @@ export default async function processMetadata(
 	const { title, description, ogimage, noIndex, keywords, canonicalUrl } = page.metadata
 	const isBlogPost = page._type === 'blog.post'
 
-	const tagNames = page.tags?.map((t) => t.title) || []
-	const baseKeywords = keywords ?? page.categories?.map((c) => c.title) ?? []
+	const tagNames = page.tags?.filter(Boolean).map((t) => t.title) || []
+	const baseKeywords = keywords ?? page.categories?.filter(Boolean).map((c) => c.title) ?? []
 	const seoKeywords = [...baseKeywords, ...tagNames]
 
 	const ogParams = new URLSearchParams({ title })

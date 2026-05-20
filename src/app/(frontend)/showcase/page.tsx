@@ -109,18 +109,24 @@ export default function ShowcasePage() {
 								title: 'Derby Inter-Milan: Lautaro trascina i nerazzurri',
 								description: 'Tripletta e prestazione da MVP per il Toro nel derby della Madonnina. Inter vola in vetta.',
 								author: { name: 'Mario Tramo' },
+								imageUrl: 'https://picsum.photos/seed/hero1/1200/675',
+								cta: { link: { type: 'external', external: '#', label: 'Leggi di più' }, _type: 'cta' },
 							} as any,
 							{
 								_key: 'slide-2',
 								title: 'Champions League: il sorteggio dei quarti',
 								description: 'Tutte le sfide dei quarti di finale. Le italiane pescano avversari ostici.',
 								author: { name: 'Mario Tramo' },
+								imageUrl: 'https://picsum.photos/seed/hero2/1200/675',
+								cta: { link: { type: 'external', external: '#', label: 'Leggi di più' }, _type: 'cta' },
 							} as any,
 							{
 								_key: 'slide-3',
 								title: 'Calciomercato: le trattative calde di giugno',
 								description: 'Da Osimhen al PSG a Zirkzee al Milan: tutti i nomi sul tavolo.',
 								author: { name: 'Mario Tramo' },
+								imageUrl: 'https://picsum.photos/seed/hero3/1200/675',
+								cta: { link: { type: 'external', external: '#', label: 'Leggi di più' }, _type: 'cta' },
 							} as any,
 						]}
 					/>

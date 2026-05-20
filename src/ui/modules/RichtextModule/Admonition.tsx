@@ -39,7 +39,7 @@ export default function Admonition({
 	return (
 		<dl className={cn('space-y-2 border-s-2 px-4 py-3', color)}>
 			<dt className="flex items-center gap-2 font-bold">
-				{Icon && <Icon className="size-5" />}
+				{Icon && <Icon className="size-5" aria-hidden="true" />}
 				<div>{title}</div>
 			</dt>
 

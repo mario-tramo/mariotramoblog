@@ -11,6 +11,7 @@ import { Suspense } from 'react'
 import PostPreview from '../PostPreview'
 import List from './List'
 import { cn } from '@/lib/utils'
+import ScrollCarousel from '@/ui/primitives/ScrollCarousel'
 import type { PortableTextBlock } from '@portabletext/react'
 
 export default async function BlogList({
@@ -67,10 +68,11 @@ export default async function BlogList({
 
 	const cleanCardSize = stegaClean(cardSize) || 'standard'
 	const isLarge = cleanCardSize === 'large'
+	const isCarousel = stegaClean(layout) !== 'grid'
 
 	const listClassName = cn(
 		'items-stretch gap-x-8 gap-y-12',
-		stegaClean(layout) === 'grid'
+		!isCarousel
 			? cn(
 					'grid',
 					isLarge
@@ -82,6 +84,8 @@ export default async function BlogList({
 					isLarge ? '[--size:min(600px,45vw)]' : '[--size:320px]',
 				),
 	)
+
+	const CarouselWrapper = isCarousel ? ScrollCarousel : 'div'
 
 	return (
 		<section className={cn(!nested && 'section', 'space-y-8')} {...moduleProps(props)}>
@@ -106,19 +110,21 @@ export default async function BlogList({
 			</Suspense>
 		)}
 
-			<Suspense
-				fallback={
-					<ul className={listClassName}>
-						{Array.from({ length: limit ?? 6 }).map((_, i) => (
-							<li key={i}>
-								<PostPreview skeleton cardSize={cleanCardSize} />
-							</li>
-						))}
-					</ul>
-				}
-			>
-				<List posts={posts} className={listClassName} cardSize={cleanCardSize} />
-			</Suspense>
+			<CarouselWrapper>
+				<Suspense
+					fallback={
+						<ul className={listClassName}>
+							{Array.from({ length: limit ?? 6 }).map((_, i) => (
+								<li key={i}>
+									<PostPreview skeleton cardSize={cleanCardSize} />
+								</li>
+							))}
+						</ul>
+					}
+				>
+					<List posts={posts} className={listClassName} cardSize={cleanCardSize} />
+				</Suspense>
+			</CarouselWrapper>
 		</section>
 	)
 }

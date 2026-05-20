@@ -71,7 +71,11 @@ export default function ExtendedNewsletter({
 								initial={{ opacity: 1 }}
 								exit={{ opacity: 0, scale: 0.95 }}
 							>
+								<label htmlFor="newsletter-extended-email" className="sr-only">
+									Indirizzo email
+								</label>
 								<motion.input
+									id="newsletter-extended-email"
 									type="email"
 									placeholder="La tua email"
 									value={email}

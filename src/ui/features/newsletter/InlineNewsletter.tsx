@@ -56,7 +56,11 @@ export default function InlineNewsletter({
 									initial={{ opacity: 1 }}
 									exit={{ opacity: 0, scale: 0.95 }}
 								>
+									<label htmlFor="newsletter-inline-email" className="sr-only">
+										Indirizzo email
+									</label>
 									<input
+										id="newsletter-inline-email"
 										type="email"
 										placeholder="La tua email"
 										value={email}

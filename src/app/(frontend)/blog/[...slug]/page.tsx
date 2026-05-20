@@ -87,8 +87,8 @@ async function getPost(params: Params) {
 				style,
 				'text': pt::text(@)
 			},
-			categories[]->,
-			tags[]->,
+			'categories': categories[@->title != null]->{ ... },
+			'tags': tags[@->title != null]->{ ... },
 			'authors': select(defined(author) => [author->{
 				...,
 				'articleCount': count(*[_type == 'blog.post' && author._ref == ^._id])

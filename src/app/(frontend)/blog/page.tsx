@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Modules from '@/ui/modules'
 import processMetadata from '@/lib/processMetadata'
+import { collectionPageJsonLd } from '@/lib/jsonLd'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
 import { BLOG_DIR } from '@/lib/env'
@@ -14,7 +15,19 @@ export default async function Page({ searchParams }: Props) {
 	const page = await getPage()
 	if (!page) notFound()
 	const resolvedSearchParams = await searchParams
-	return <Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
+	return (
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify(
+						collectionPageJsonLd(page.metadata.title, page.metadata.description),
+					),
+				}}
+			/>
+			<Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
+		</>
+	)
 }
 
 export async function generateMetadata(): Promise<Metadata> {

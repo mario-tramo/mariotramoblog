@@ -875,17 +875,18 @@
 @utility carousel {
 	display: grid;
 	grid-auto-flow: column;
-	grid-auto-columns: min(var(--size, 300px), 80vw);
+	grid-auto-columns: min(var(--size, 300px), 85vw);
 	overflow-x: auto;
 	scroll-snap-type: x mandatory;
 	-webkit-overflow-scrolling: touch;
 	scrollbar-width: none;
+	scroll-padding-inline: 1rem;
 
 	&::-webkit-scrollbar {
 		display: none;
 	}
 
 	& > * {
-		scroll-snap-align: center;
+		scroll-snap-align: start;
 	}
 }

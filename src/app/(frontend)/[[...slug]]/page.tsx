@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import Modules from '@/ui/modules'
 import processMetadata from '@/lib/processMetadata'
+import { webPageJsonLd } from '@/lib/jsonLd'
+import resolveUrl from '@/lib/resolveUrl'
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
@@ -15,7 +17,24 @@ export default async function Page({ params, searchParams }: Props) {
 	const page = await getPage(await params)
 	if (!page) notFound()
 	const resolvedSearchParams = await searchParams
-	return <Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
+	return (
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{
+					__html: JSON.stringify(
+						webPageJsonLd({
+							title: page.metadata.title,
+							description: page.metadata.description,
+							url: resolveUrl(page),
+							dateModified: page._updatedAt,
+						}),
+					),
+				}}
+			/>
+			<Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
+		</>
+	)
 }
 
 export async function generateMetadata({ params }: Props) {
