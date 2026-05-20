@@ -20,6 +20,13 @@ import { ScheduleAction } from '@/sanity/actions/ScheduleAction'
 import { UnscheduleAction } from '@/sanity/actions/UnscheduleAction'
 
 const singletonTypes = ['site']
+const schedulableTypes = ['blog.post', 'page', 'legal']
+const customSchedulingActions = [ScheduleAction, UnscheduleAction]
+
+const isNativeScheduleAction = (action: unknown) =>
+	typeof action === 'function' &&
+	'displayName' in action &&
+	action.displayName === 'SchedulePublishAction'
 
 export default defineConfig({
 	title: 'Trm Sport Blog',
@@ -81,9 +88,14 @@ export default defineConfig({
 				)
 			}
 
-			const schedulableTypes = ['blog.post', 'page', 'legal']
 			if (schedulableTypes.includes(schemaType)) {
-				return [...input, ScheduleAction, UnscheduleAction]
+				const actions = input.filter(
+					(action) =>
+						!isNativeScheduleAction(action) &&
+						!customSchedulingActions.includes(action),
+				)
+
+				return [...actions, ...customSchedulingActions]
 			}
 
 			return input

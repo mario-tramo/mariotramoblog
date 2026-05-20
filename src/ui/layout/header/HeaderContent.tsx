@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { Search, Menu, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useFocusTrap } from '@/lib/useFocusTrap'
 import SearchOverlay from './SearchOverlay'
 
 export interface NavItem {
@@ -27,6 +28,8 @@ interface HeaderContentProps {
 function DesktopDropdown({ item }: { item: NavItem }) {
 	const [open, setOpen] = useState(false)
 	const ref = useRef<HTMLDivElement>(null)
+	const triggerRef = useRef<HTMLButtonElement>(null)
+	const menuRef = useRef<HTMLUListElement>(null)
 	const timeout = useRef<NodeJS.Timeout>(null)
 
 	function handleEnter() {
@@ -42,14 +45,51 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 		if (timeout.current) clearTimeout(timeout.current)
 	}, [])
 
+	useEffect(() => {
+		if (open && menuRef.current) {
+			const firstLink = menuRef.current.querySelector<HTMLAnchorElement>('a')
+			firstLink?.focus()
+		}
+	}, [open])
+
+	function handleKeyDown(e: React.KeyboardEvent) {
+		if (!open) return
+
+		const links = menuRef.current?.querySelectorAll<HTMLAnchorElement>('a')
+		if (!links?.length) return
+		const active = document.activeElement as HTMLElement
+		const idx = Array.from(links).indexOf(active as HTMLAnchorElement)
+
+		switch (e.key) {
+			case 'Escape':
+				e.preventDefault()
+				setOpen(false)
+				triggerRef.current?.focus()
+				break
+			case 'ArrowDown':
+				e.preventDefault()
+				links[idx < links.length - 1 ? idx + 1 : 0]?.focus()
+				break
+			case 'ArrowUp':
+				e.preventDefault()
+				links[idx > 0 ? idx - 1 : links.length - 1]?.focus()
+				break
+			case 'Tab':
+				setOpen(false)
+				break
+		}
+	}
+
 	return (
 		<div
 			ref={ref}
 			className="relative"
 			onMouseEnter={handleEnter}
 			onMouseLeave={handleLeave}
+			onKeyDown={handleKeyDown}
 		>
 			<button
+				ref={triggerRef}
 				className="flex items-center gap-1 rounded-lg px-4 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-ink"
 				onClick={() => setOpen((v) => !v)}
 				aria-expanded={open}
@@ -66,11 +106,16 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 
 			{open && (
 				<>
-					<ul className="absolute top-full left-0 z-50 mt-2 min-w-[180px] rounded-xl bg-surface-light py-2 shadow-2xl shadow-black/30 backdrop-blur-xl">
+					<ul
+						ref={menuRef}
+						role="menu"
+						className="absolute top-full left-0 z-50 mt-2 min-w-[180px] rounded-xl bg-surface-light py-2 shadow-2xl shadow-black/30 backdrop-blur-xl"
+					>
 						{item.children?.map((child) => (
-							<li key={child.href}>
+							<li key={child.href} role="none">
 								<Link
 									href={child.href}
+									role="menuitem"
 									className="block px-4 py-2 text-sm text-muted transition-colors hover:bg-surface-light hover:text-ink"
 									onClick={() => setOpen(false)}
 								>
@@ -122,6 +167,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 	const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
 	const [searchOpen, setSearchOpen] = useState(false)
+	const mobileDrawerRef = useFocusTrap<HTMLDivElement>(mobileMenuOpen)
 
 	useEffect(() => {
 		document.body.style.overflow =
@@ -139,6 +185,15 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 		document.addEventListener('keydown', handleKey)
 		return () => document.removeEventListener('keydown', handleKey)
 	}, [searchOpen])
+
+	useEffect(() => {
+		if (!mobileMenuOpen) return
+		const handleKey = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') setMobileMenuOpen(false)
+		}
+		document.addEventListener('keydown', handleKey)
+		return () => document.removeEventListener('keydown', handleKey)
+	}, [mobileMenuOpen])
 
 	return (
 		<>
@@ -202,7 +257,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 
 			{/* Mobile drawer */}
 			{mobileMenuOpen && (
-				<div className="fixed inset-0 z-50 flex animate-in fade-in flex-col bg-canvas duration-150 lg:hidden">
+				<div ref={mobileDrawerRef} role="dialog" aria-modal="true" aria-label="Menu di navigazione" className="fixed inset-0 z-50 flex animate-in fade-in flex-col bg-canvas duration-150 lg:hidden">
 					<div className="flex h-14 items-center justify-between px-4">
 						<Link
 							href="/"

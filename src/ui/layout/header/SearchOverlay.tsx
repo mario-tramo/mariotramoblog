@@ -5,6 +5,7 @@ import { Search, X, ArrowRight, Loader2 } from 'lucide-react'
 import { searchStore, handleSearch, type SearchScope } from '@/ui/modules/SearchModule/store'
 import resolveUrl from '@/lib/resolveUrl'
 import { debounce } from '@/lib/utils'
+import { useFocusTrap } from '@/lib/useFocusTrap'
 import Link from 'next/link'
 
 interface SearchOverlayProps {
@@ -21,6 +22,7 @@ export default function SearchOverlay({
 	path,
 }: SearchOverlayProps) {
 	const inputRef = useRef<HTMLInputElement>(null)
+	const trapRef = useFocusTrap<HTMLDivElement>(open)
 	const [query, setQueryLocal] = useState('')
 	const { loading, results, setLoading, setResults } = searchStore()
 
@@ -28,6 +30,8 @@ export default function SearchOverlay({
 		if (!open) {
 			setQueryLocal('')
 			setResults([])
+		} else {
+			setTimeout(() => inputRef.current?.focus(), 50)
 		}
 	}, [open, setResults])
 
@@ -63,7 +67,7 @@ export default function SearchOverlay({
 	if (!open) return null
 
 	return (
-		<div className="fixed inset-0 z-50 flex flex-col" role="dialog" aria-modal="true" aria-label="Ricerca">
+		<div ref={trapRef} className="fixed inset-0 z-50 flex flex-col" role="dialog" aria-modal="true" aria-label="Ricerca">
 			{/* Backdrop */}
 			<button
 				type="button"
