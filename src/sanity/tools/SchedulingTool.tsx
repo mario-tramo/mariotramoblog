@@ -84,6 +84,13 @@ function formatDateShort(iso: string) {
 	})
 }
 
+function formatTime(iso: string) {
+	return new Date(iso).toLocaleTimeString('it-IT', {
+		hour: '2-digit',
+		minute: '2-digit',
+	})
+}
+
 function isSameDay(a: Date, b: Date) {
 	return (
 		a.getFullYear() === b.getFullYear() &&
@@ -144,8 +151,19 @@ const QUERY = `{
 }`
 
 function processResults(data: {
-	scheduled: Array<{ _id: string; _type: string; title: string; publishAt: string }>
-	published: Array<{ _id: string; _type: string; title: string; publishDate?: string; _createdAt: string }>
+	scheduled: Array<{
+		_id: string
+		_type: string
+		title: string
+		publishAt: string
+	}>
+	published: Array<{
+		_id: string
+		_type: string
+		title: string
+		publishDate?: string
+		_createdAt: string
+	}>
 }): ScheduledDoc[] {
 	const now = new Date()
 	const docs: ScheduledDoc[] = []
@@ -161,7 +179,9 @@ function processResults(data: {
 		})
 	}
 
-	const scheduledIds = new Set(data.scheduled.map((d) => d._id.replace('drafts.', '')))
+	const scheduledIds = new Set(
+		data.scheduled.map((d) => d._id.replace('drafts.', '')),
+	)
 
 	for (const d of data.published) {
 		if (scheduledIds.has(d._id)) continue
@@ -176,7 +196,9 @@ function processResults(data: {
 		})
 	}
 
-	return docs.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+	return docs.sort(
+		(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+	)
 }
 
 // ——— Popover for day cell ———
@@ -242,10 +264,7 @@ function DayPopover({
 									{docTitle(doc)}
 								</Text>
 								<Flex align="center" gap={2}>
-									<Badge
-										tone={STATUS_TONES[doc.status]}
-										fontSize={0}
-									>
+									<Badge tone={STATUS_TONES[doc.status]} fontSize={0}>
 										{TYPE_LABELS[doc._type] || doc._type}
 									</Badge>
 									<Text size={0} muted>
@@ -294,29 +313,46 @@ function DayCell({
 				onClick={() => hasDocs && setOpen(!open)}
 			>
 				<Stack space={2}>
-					<Text size={0} weight={isToday ? 'bold' : 'regular'}>
-						{day}
-					</Text>
-					{docs.slice(0, 2).map((doc) => (
-						<Card
-							key={doc._id}
-							padding={1}
-							radius={2}
-							tone={STATUS_TONES[doc.status]}
-						>
-							<Text
-								size={0}
-								textOverflow="ellipsis"
-								style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}
-							>
-								{docTitle(doc)}
-							</Text>
-						</Card>
-					))}
-					{docs.length > 2 && (
-						<Text size={0} muted weight="bold">
-							+{docs.length - 2} altri
+					<Flex align="center" justify="space-between" gap={2}>
+						<Text size={0} weight={isToday ? 'bold' : 'regular'}>
+							{day}
 						</Text>
+						{hasDocs && (
+							<Text size={0} muted>
+								{docs.length === 1
+									? formatTime(docs[0].date)
+									: `${docs.length} contenuti`}
+							</Text>
+						)}
+					</Flex>
+
+					{hasDocs && (
+						<Stack space={1}>
+							{docs.slice(0, 2).map((doc) => (
+								<Card
+									key={doc._id}
+									padding={1}
+									radius={2}
+									tone={STATUS_TONES[doc.status]}
+								>
+									<Text
+										size={0}
+										style={{
+											whiteSpace: 'normal',
+											overflowWrap: 'anywhere',
+											lineHeight: 1.25,
+										}}
+									>
+										{docTitle(doc)}
+									</Text>
+								</Card>
+							))}
+							{docs.length > 2 && (
+								<Text size={0} muted weight="bold">
+									+{docs.length - 2} altri
+								</Text>
+							)}
+						</Stack>
 					)}
 				</Stack>
 			</Card>
@@ -404,12 +440,7 @@ function CalendarView({
 						onClick={prevMonth}
 						aria-label="Mese precedente"
 					/>
-					<Button
-						text="Oggi"
-						mode="bleed"
-						fontSize={0}
-						onClick={goToday}
-					/>
+					<Button text="Oggi" mode="bleed" fontSize={0} onClick={goToday} />
 					<Button
 						icon={ChevronRightIcon}
 						mode="bleed"
@@ -440,7 +471,9 @@ function CalendarView({
 			<Grid columns={7} gap={1}>
 				{cells.map((day, i) => {
 					if (day === null) {
-						return <Card key={`empty-${i}`} padding={2} style={{ minHeight: 80 }} />
+						return (
+							<Card key={`empty-${i}`} padding={2} style={{ minHeight: 80 }} />
+						)
 					}
 
 					const dayDocs = docsForDay(day)
@@ -461,16 +494,37 @@ function CalendarView({
 			{/* Legend */}
 			<Flex align="center" gap={4} justify="center">
 				<Flex align="center" gap={2}>
-					<Card padding={1} radius={2} tone="positive" style={{ width: 12, height: 12 }} />
-					<Text size={0} muted>Pubblicato</Text>
+					<Card
+						padding={1}
+						radius={2}
+						tone="positive"
+						style={{ width: 12, height: 12 }}
+					/>
+					<Text size={0} muted>
+						Pubblicato
+					</Text>
 				</Flex>
 				<Flex align="center" gap={2}>
-					<Card padding={1} radius={2} tone="caution" style={{ width: 12, height: 12 }} />
-					<Text size={0} muted>Programmato</Text>
+					<Card
+						padding={1}
+						radius={2}
+						tone="caution"
+						style={{ width: 12, height: 12 }}
+					/>
+					<Text size={0} muted>
+						Programmato
+					</Text>
 				</Flex>
 				<Flex align="center" gap={2}>
-					<Card padding={1} radius={2} tone="critical" style={{ width: 12, height: 12 }} />
-					<Text size={0} muted>In ritardo</Text>
+					<Card
+						padding={1}
+						radius={2}
+						tone="critical"
+						style={{ width: 12, height: 12 }}
+					/>
+					<Text size={0} muted>
+						In ritardo
+					</Text>
 				</Flex>
 			</Flex>
 		</Stack>
@@ -496,9 +550,7 @@ function ListView({
 						<Text size={1}>
 							<WarningOutlineIcon />
 						</Text>
-						<Heading size={0}>
-							In ritardo ({overdue.length})
-						</Heading>
+						<Heading size={0}>In ritardo ({overdue.length})</Heading>
 					</Flex>
 					{overdue.map((doc) => (
 						<DocRow key={doc._id} doc={doc} onNavigate={onNavigate} />
@@ -512,9 +564,7 @@ function ListView({
 						<Text size={1}>
 							<ClockIcon />
 						</Text>
-						<Heading size={0}>
-							Programmati ({scheduled.length})
-						</Heading>
+						<Heading size={0}>Programmati ({scheduled.length})</Heading>
 					</Flex>
 					{scheduled.map((doc) => (
 						<DocRow key={doc._id} doc={doc} onNavigate={onNavigate} />
@@ -527,9 +577,7 @@ function ListView({
 					<Text size={1}>
 						<PublishIcon />
 					</Text>
-					<Heading size={0}>
-						Pubblicati recenti ({published.length})
-					</Heading>
+					<Heading size={0}>Pubblicati recenti ({published.length})</Heading>
 				</Flex>
 				{published.length === 0 ? (
 					<Card padding={4} radius={2} tone="transparent">
@@ -580,16 +628,10 @@ function DocRow({
 				</Flex>
 
 				<Flex align="center" gap={2} style={{ flexShrink: 0 }}>
-					<Badge
-						tone={STATUS_TONES[doc.status]}
-						fontSize={0}
-					>
+					<Badge tone={STATUS_TONES[doc.status]} fontSize={0}>
 						{TYPE_LABELS[doc._type] || doc._type}
 					</Badge>
-					<Badge
-						tone={STATUS_TONES[doc.status]}
-						fontSize={0}
-					>
+					<Badge tone={STATUS_TONES[doc.status]} fontSize={0}>
 						{STATUS_LABELS[doc.status]}
 					</Badge>
 				</Flex>
@@ -621,21 +663,22 @@ export function SchedulingToolComponent() {
 		return () => clearInterval(interval)
 	}, [fetchDocs])
 
-	const navigateToDoc = useCallback(
-		(id: string, type: string) => {
-			const cleanId = id.replace('drafts.', '')
-			const basePath = window.location.pathname.replace(/\/[^/]*$/, '')
-			window.location.href = `${basePath}/intent/edit/id=${cleanId};type=${type}`
-		},
-		[],
-	)
+	const navigateToDoc = useCallback((id: string, type: string) => {
+		const cleanId = id.replace('drafts.', '')
+		const basePath = window.location.pathname.replace(/\/[^/]*$/, '')
+		window.location.href = `${basePath}/intent/edit/id=${cleanId};type=${type}`
+	}, [])
 
 	const overdueCount = docs.filter((d) => d.status === 'overdue').length
 	const scheduledCount = docs.filter((d) => d.status === 'scheduled').length
 	const publishedCount = docs.filter((d) => d.status === 'published').length
 
 	return (
-		<Card padding={5} sizing="border" style={{ overflow: 'auto', height: '100%' }}>
+		<Card
+			padding={5}
+			sizing="border"
+			style={{ overflow: 'auto', height: '100%' }}
+		>
 			<Stack space={5} style={{ maxWidth: 960, margin: '0 auto' }}>
 				{/* Title */}
 				<Flex align="center" justify="space-between">
