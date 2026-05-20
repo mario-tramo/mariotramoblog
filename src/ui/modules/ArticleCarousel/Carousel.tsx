@@ -8,6 +8,7 @@ import Link from 'next/link'
 type Post = {
 	_id: string
 	title: string
+	description: string | null
 	slug: string
 	publishDate: string
 	imageUrl: string | null
@@ -57,6 +58,12 @@ function Slide({ post, active }: { post: Post; active: boolean }) {
 				<h3 className="line-clamp-2 text-2xl font-bold leading-tight text-white sm:text-4xl lg:text-[2.75rem]">
 					{post.title}
 				</h3>
+
+				{post.description && (
+					<p className="line-clamp-2 max-w-xl text-sm text-white/70 sm:text-base">
+						{post.description}
+					</p>
+				)}
 
 				{post.author && (
 					<div className="flex items-center gap-3 text-base text-white/80 sm:text-lg">

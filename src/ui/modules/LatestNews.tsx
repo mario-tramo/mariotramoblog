@@ -7,6 +7,7 @@ import moduleProps from '@/lib/moduleProps'
 import PostPreview from './blog/PostPreview'
 import { cn } from '@/lib/utils'
 import { Suspense } from 'react'
+import ScrollCarousel from '@/ui/primitives/ScrollCarousel'
 
 export default async function LatestNews({
 	title,
@@ -48,25 +49,27 @@ export default async function LatestNews({
 				</header>
 			)}
 
-			<Suspense
-				fallback={
-					<ul className="grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-						{Array.from({ length: limit }).map((_, i) => (
-							<li key={i}>
-								<PostPreview skeleton />
+			<ScrollCarousel>
+				<Suspense
+					fallback={
+						<ul className="carousel max-xl:full-bleed md:overflow-fade-r pb-4 max-xl:px-4 [--size:320px]">
+							{Array.from({ length: limit }).map((_, i) => (
+								<li key={i}>
+									<PostPreview skeleton />
+								</li>
+							))}
+						</ul>
+					}
+				>
+					<ul className="carousel max-xl:full-bleed md:overflow-fade-r pb-4 max-xl:px-4 [--size:320px]">
+						{posts?.map((post) => (
+							<li key={post._id} className="anim-fade">
+								<PostPreview post={post} />
 							</li>
 						))}
 					</ul>
-				}
-			>
-				<ul className="grid gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-					{posts?.map((post) => (
-						<li key={post._id} className="anim-fade">
-							<PostPreview post={post} />
-						</li>
-					))}
-				</ul>
-			</Suspense>
+				</Suspense>
+			</ScrollCarousel>
 		</section>
 	)
 }

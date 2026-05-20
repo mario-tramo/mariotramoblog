@@ -22,6 +22,7 @@ export default async function ArticleCarousel({
 		{
 			_id: string
 			title: string
+			description: string | null
 			slug: string
 			publishDate: string
 			imageUrl: string | null
@@ -41,6 +42,7 @@ export default async function ArticleCarousel({
 			)[0...${limit}]{
 				_id,
 				'title': metadata.title,
+				'description': metadata.description,
 				'slug': '/${BLOG_DIR}/' + metadata.slug.current,
 				publishDate,
 				'imageUrl': metadata.image.asset->url,

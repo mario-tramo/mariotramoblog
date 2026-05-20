@@ -12,6 +12,9 @@ import PostPreview from '../PostPreview'
 import List from './List'
 import { cn } from '@/lib/utils'
 import ScrollCarousel from '@/ui/primitives/ScrollCarousel'
+import Link from 'next/link'
+import { BLOG_DIR } from '@/lib/env'
+import { ChevronRight } from 'lucide-react'
 import type { PortableTextBlock } from '@portabletext/react'
 
 export default async function BlogList({
@@ -90,9 +93,20 @@ export default async function BlogList({
 	return (
 		<section className={cn(!nested && 'section', 'space-y-8')} {...moduleProps(props)}>
 			{(pretitle || intro) && (
-				<header className={cn(intro ? 'richtext' : 'border-b-2 border-ink/10 pb-3')}>
+				<header className={cn(intro ? 'richtext' : 'flex items-end justify-between border-b-2 border-ink/10 pb-3')}>
 					{pretitle && !intro ? (
-						<h2 className="text-2xl font-extrabold tracking-tight">{pretitle}</h2>
+						<>
+							<h2 className="text-2xl font-extrabold tracking-tight">{pretitle}</h2>
+							{filteredCategory?.slug?.current && (
+								<Link
+									href={`/${BLOG_DIR}?categoria=${filteredCategory.slug.current}`}
+									className="flex items-center gap-1 text-sm font-semibold text-brand transition-colors hover:text-brand/80"
+								>
+									Vedi tutti
+									<ChevronRight className="size-4" />
+								</Link>
+							)}
+						</>
 					) : (
 						<>
 							<Pretitle>{pretitle}</Pretitle>
