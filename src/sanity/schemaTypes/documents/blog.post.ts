@@ -63,8 +63,13 @@ export default defineType({
 		defineField({
 			name: 'publishDate',
 			title: 'Data di pubblicazione',
-			description: 'Data in cui l\'articolo viene pubblicato sul sito',
-			type: 'date',
+			description: 'Data e ora in cui l\'articolo viene pubblicato sul sito',
+			type: 'datetime',
+			options: {
+				dateFormat: 'DD/MM/YYYY',
+				timeFormat: 'HH:mm',
+				timeStep: 1,
+			},
 			validation: (Rule) => Rule.required().error('La data di pubblicazione è obbligatoria'),
 			group: 'content',
 		}),

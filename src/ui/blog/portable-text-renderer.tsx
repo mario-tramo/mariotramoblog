@@ -5,7 +5,6 @@ import { MatchResult } from "./blocks/match-result";
 import { PlayerStats } from "./blocks/player-stats";
 import { Lineup } from "./blocks/lineup";
 import { MatchTimeline } from "./blocks/match-timeline";
-import { Standings } from "./blocks/standings";
 import { Callout } from "./blocks/callout";
 import { QuoteBlock } from "./blocks/quote-block";
 import { VideoEmbed } from "./blocks/video-embed";
@@ -19,7 +18,6 @@ const components: PortableTextComponents = {
     playerStats: PlayerStats,
     lineup: Lineup,
     matchTimeline: MatchTimeline,
-    standings: Standings,
     callout: Callout,
     quoteBlock: QuoteBlock,
     videoEmbed: VideoEmbed,

@@ -14,7 +14,6 @@ import {
 	ImageGallery,
 } from '@/ui/blog/blocks'
 import Admonition from '@/ui/modules/RichtextModule/Admonition'
-import Code from '@/ui/modules/RichtextModule/Code'
 import AnchoredHeading from '@/ui/modules/RichtextModule/AnchoredHeading'
 import Hero from '@/ui/modules/Hero'
 import NewsletterSubscribe from '@/ui/features/newsletter'
@@ -376,74 +375,6 @@ export default function ShowcasePage() {
 				>
 					Sottotitolo H4 con ancora
 				</AnchoredHeading>
-			</Section>
-
-			{/* ── CODE ── */}
-			<Section title="Code">
-				<p className="text-sm text-muted-foreground">
-					Blocchi di codice con syntax highlighting (Shiki), nome file e copia.
-				</p>
-				<Code
-					value={{
-						_type: 'code',
-						code: `// Formazione con modulo tattico
-interface Formazione {
-  modulo: string
-  titolari: Giocatore[]
-  panchina: Giocatore[]
-}
-
-function calcolaMedia(stats: number[]): number {
-  return stats.reduce((a, b) => a + b, 0) / stats.length
-}`,
-						language: 'typescript',
-						filename: 'src/utils/formazione.ts',
-					}}
-				/>
-				<Code
-					value={{
-						_type: 'code',
-						code: `.classifica-zona-champions {
-  border-left: 4px solid var(--color-brand);
-  background: var(--color-brand-glow);
-}
-
-.classifica-zona-retrocessione {
-  border-left: 4px solid var(--color-destructive);
-  background: rgba(239, 68, 68, 0.05);
-}`,
-						language: 'css',
-						filename: 'styles/classifica.css',
-					}}
-				/>
-				<Code
-					value={{
-						_type: 'code',
-						code: `# Fetch dei risultati live
-curl -s "https://api.football-data.org/v4/matches" \\
-  -H "X-Auth-Token: $API_KEY" | jq '.matches[] | {
-    home: .homeTeam.name,
-    away: .awayTeam.name,
-    score: .score.fullTime
-  }'`,
-						language: 'bash',
-						filename: 'scripts/live-scores.sh',
-					}}
-				/>
-				<Code
-					value={{
-						_type: 'code',
-						code: `SELECT p.name, p.goals, p.assists,
-       ROUND(p.goals::decimal / p.appearances, 2) AS goal_ratio
-FROM players p
-JOIN teams t ON p.team_id = t.id
-WHERE t.league = 'Serie A'
-  AND p.appearances >= 10
-ORDER BY goal_ratio DESC
-LIMIT 10;`,
-						language: 'sql',
-					}}
-				/>
 			</Section>
 
 			{/* ── IMAGE GALLERY ── */}

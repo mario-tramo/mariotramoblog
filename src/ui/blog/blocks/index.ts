@@ -2,7 +2,6 @@ export { MatchResult } from "./match-result";
 export { PlayerStats } from "./player-stats";
 export { Lineup } from "./lineup";
 export { MatchTimeline } from "./match-timeline";
-export { Standings } from "./standings";
 export { Callout } from "./callout";
 export { QuoteBlock } from "./quote-block";
 export { VideoEmbed } from "./video-embed";

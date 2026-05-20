@@ -2,7 +2,6 @@ import moduleProps from '@/lib/moduleProps'
 import Pretitle from '@/ui/primitives/Pretitle'
 import { PortableText } from 'next-sanity'
 import Image from './RichtextModule/Image'
-import Code from './RichtextModule/Code'
 import CustomHTML from './CustomHTML'
 import { cn } from '@/lib/utils'
 import type { PortableTextBlock } from '@portabletext/react'
@@ -96,7 +95,6 @@ export default function AccordionList({
 									components={{
 										types: {
 											image: Image,
-											code: Code,
 											'custom-html': ({ value }) => (
 												<CustomHTML
 													className="has-[table]:md:[grid-column:bleed] has-[table]:md:mx-auto"

@@ -3,7 +3,6 @@ import AnchoredHeading from './AnchoredHeading'
 import { cn } from '@/lib/utils'
 
 import Image from './Image'
-import Code from './Code'
 import Admonition from './Admonition'
 import CustomHTML from '@/ui/modules/CustomHTML'
 import { QuoteBlock } from '@/ui/blog/blocks/quote-block'
@@ -36,7 +35,6 @@ export default function Content({
 						image: Image,
 						admonition: Admonition,
 						quoteBlock: QuoteBlock,
-						code: Code,
 						socialEmbed: SocialEmbed,
 					'custom-html': ({ value }) => (
 							<CustomHTML

@@ -27,7 +27,7 @@ interface PostListWidgetProps {
 
 function timeAgo(dateStr: string) {
 	const now = new Date()
-	const date = new Date(dateStr + 'T00:00:00')
+	const date = new Date(dateStr)
 	const diffMs = now.getTime() - date.getTime()
 	const diffH = Math.floor(diffMs / (1000 * 60 * 60))
 	const diffD = Math.floor(diffH / 24)

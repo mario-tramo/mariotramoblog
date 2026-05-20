@@ -1,6 +1,5 @@
 import { PortableText } from 'next-sanity'
 import CTAList from '@/ui/primitives/CTAList'
-import Code from './RichtextModule/Code'
 import { cn } from '@/lib/utils'
 import type { PortableTextBlock } from '@portabletext/react'
 
@@ -19,20 +18,7 @@ export default function Callout({
 		<Tag className={cn(!nested && 'section', 'text-center')}>
 			<div className={cn(!nested && 'section', 'bg-accent/3 max-w-screen-lg rounded')}>
 				<div className="richtext mx-auto max-w-screen-sm text-balance">
-					<PortableText
-						value={content}
-						components={{
-							types: {
-								code: ({ value }) => (
-									<Code
-										value={value}
-										className="mx-auto max-w-max"
-										theme="snazzy-light"
-									/>
-								),
-							},
-						}}
-					/>
+					<PortableText value={content} />
 					<CTAList className="!mt-8 justify-center" ctas={ctas} />
 				</div>
 			</div>
