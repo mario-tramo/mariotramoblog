@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from "react";
 
 interface GalleryImage {
   asset?: { _ref: string };
+  imageUrl?: string;
   caption?: string;
   credit?: string;
 }
@@ -64,11 +65,13 @@ export function ImageGallery({ value }: ImageGalleryProps) {
         <div className={`grid gap-2 ${value.images.length === 1 ? "grid-cols-1" : value.images.length === 2 ? "grid-cols-2" : "grid-cols-2 md:grid-cols-3"}`}>
           {value.images.map((img, i) => (
             <div key={i} className="relative rounded-xl overflow-hidden bg-muted aspect-video">
-              {img.asset?._ref && (
+              {img.imageUrl ? (
+                <img src={img.imageUrl} alt={img.caption || `Immagine ${i + 1}`} className="w-full h-full object-cover" />
+              ) : img.asset?._ref ? (
                 <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
                   [Immagine {i + 1}]
                 </div>
-              )}
+              ) : null}
               {img.caption && (
                 <div className="absolute bottom-0 inset-x-0 bg-black/50 text-white text-xs px-2 py-1">
                   {img.caption}
@@ -98,9 +101,13 @@ export function ImageGallery({ value }: ImageGalleryProps) {
         onPointerUp={isMultiple ? onPointerUp : undefined}
         onPointerCancel={isMultiple ? onPointerUp : undefined}
       >
-        <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-          [Immagine {activeIndex + 1} di {value.images.length}]
-        </div>
+        {current.imageUrl ? (
+          <img src={current.imageUrl} alt={current.caption || `Immagine ${activeIndex + 1}`} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+            [Immagine {activeIndex + 1} di {value.images.length}]
+          </div>
+        )}
 
         {isMultiple && (
           <>

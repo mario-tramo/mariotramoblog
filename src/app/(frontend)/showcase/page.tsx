@@ -33,8 +33,8 @@ export const metadata: Metadata = {
 
 function Section({ title, children, wide }: { title: string; children: React.ReactNode; wide?: boolean }) {
 	return (
-		<section className={wide ? 'space-y-6' : 'mx-auto max-w-screen-md space-y-6'}>
-			<h2 className="border-b border-border pb-2 text-2xl font-black uppercase tracking-tight text-ink">
+		<section className={`rounded-2xl border border-border/50 bg-surface/50 p-6 sm:p-8 ${wide ? 'space-y-6' : 'mx-auto max-w-screen-md space-y-6'}`}>
+			<h2 className="border-b-2 border-brand pb-3 text-2xl font-black uppercase tracking-tight text-ink">
 				{title}
 			</h2>
 			{children}
@@ -42,12 +42,33 @@ function Section({ title, children, wide }: { title: string; children: React.Rea
 	)
 }
 
-const ptBlock = (key: string, text: string) => ({
-	_type: 'block' as const,
-	_key: key,
-	children: [{ _type: 'span' as const, _key: `${key}s`, text }],
-	markDefs: [],
-})
+function Variant({ label, props }: { label: string; props?: string }) {
+	return (
+		<div className="flex items-baseline gap-3 rounded-lg bg-ink/5 px-3 py-2">
+			<span className="text-xs font-bold uppercase tracking-widest text-brand">{label}</span>
+			{props && <code className="text-xs text-muted-foreground">{props}</code>}
+		</div>
+	)
+}
+
+const ptBlock = (key: string, text: string) => {
+	// Support **bold** markdown syntax in text
+	const boldMatch = text.match(/^\*\*(.+)\*\*$/)
+	if (boldMatch) {
+		return {
+			_type: 'block' as const,
+			_key: key,
+			children: [{ _type: 'span' as const, _key: `${key}s`, text: boldMatch[1], marks: ['strong'] }],
+			markDefs: [],
+		}
+	}
+	return {
+		_type: 'block' as const,
+		_key: key,
+		children: [{ _type: 'span' as const, _key: `${key}s`, text }],
+		markDefs: [],
+	}
+}
 
 export default function ShowcasePage() {
 	return (
@@ -122,16 +143,12 @@ export default function ShowcasePage() {
 				<p className="mx-auto max-w-screen-md text-sm text-muted-foreground">
 					Lista articoli con card grandi — immagine a tutto campo, titolo e categoria sovrapposti.
 				</p>
-				<p className="mx-auto max-w-screen-md text-xs text-muted-foreground italic">
-					Carousel — card grande:
-				</p>
+				<Variant label="Carousel — card grande" props='layout="carousel" cardSize="large"' />
 				<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
 					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
 					<BlogList layout="carousel" cardSize="large" limit={6} nested />
 				</Suspense>
-				<p className="mx-auto max-w-screen-md text-xs text-muted-foreground italic mt-8">
-					Grid — card grande:
-				</p>
+				<Variant label="Grid — card grande" props='layout="grid" cardSize="large"' />
 				<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
 					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
 					<BlogList layout="grid" cardSize="large" limit={4} nested />
@@ -165,16 +182,12 @@ export default function ShowcasePage() {
 				<p className="mx-auto max-w-screen-md text-sm text-muted-foreground">
 					Lista articoli da Sanity — layout carousel e grid. Dati live dal CMS.
 				</p>
-				<p className="mx-auto max-w-screen-md text-xs text-muted-foreground italic">
-					Carousel — ultimi 4 articoli:
-				</p>
+				<Variant label="Carousel" props='layout="carousel" limit={4}' />
 				<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
 					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
 					<BlogList layout="carousel" limit={4} nested />
 				</Suspense>
-				<p className="mx-auto max-w-screen-md text-xs text-muted-foreground italic mt-8">
-					Grid — ultimi 6 articoli con filtri categoria:
-				</p>
+				<Variant label="Grid con filtri" props='layout="grid" limit={6} displayFilters' />
 				<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
 					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
 					<BlogList layout="grid" limit={6} displayFilters nested />
@@ -186,9 +199,7 @@ export default function ShowcasePage() {
 				<p className="text-sm text-muted-foreground">
 					Grid di card con contenuto e CTA. Supporta layout grid e carousel.
 				</p>
-				<p className="text-xs text-muted-foreground italic">
-					Grid 3 colonne con separazione visuale:
-				</p>
+				<Variant label="Grid 3 colonne" props='layout="grid" columns={3} visualSeparation' />
 				{/* @ts-expect-error -- showcase mock */}
 				<CardList
 					pretitle="Le nostre rubriche"
@@ -202,9 +213,7 @@ export default function ShowcasePage() {
 					visualSeparation
 					nested
 				/>
-				<p className="text-xs text-muted-foreground italic mt-8">
-					Carousel senza separazione:
-				</p>
+				<Variant label="Carousel" props='layout="carousel"' />
 				{/* @ts-expect-error -- showcase mock */}
 				<CardList
 					pretitle="Highlights della settimana"
@@ -224,9 +233,7 @@ export default function ShowcasePage() {
 				<p className="text-sm text-muted-foreground">
 					FAQ e contenuti espandibili. Layout verticale e orizzontale.
 				</p>
-				<p className="text-xs text-muted-foreground italic">
-					Verticale — connesso (un solo pannello aperto alla volta):
-				</p>
+				<Variant label="Verticale — connesso" props='layout="vertical" connect' />
 				<AccordionList
 					_key="acc-demo"
 					_type="accordion-list"
@@ -242,9 +249,7 @@ export default function ShowcasePage() {
 					connect
 					nested
 				/>
-				<p className="text-xs text-muted-foreground italic mt-8">
-					Orizzontale — con Schema.org FAQ:
-				</p>
+				<Variant label="Orizzontale — Schema.org FAQ" props='layout="horizontal" generateSchema' />
 				<AccordionList
 					_key="acc-horiz"
 					_type="accordion-list"
@@ -280,19 +285,19 @@ export default function ShowcasePage() {
 				<p className="text-sm text-muted-foreground">
 					Tre varianti del form newsletter.
 				</p>
-				<p className="text-xs text-muted-foreground italic">Extended (hero):</p>
+				<Variant label="Extended (hero)" props='variant="extended"' />
 				<NewsletterSubscribe
 					variant="extended"
 					title="Resta aggiornato"
 					description="Le ultime notizie di calcio, ogni settimana nella tua inbox."
 				/>
-				<p className="text-xs text-muted-foreground italic mt-8">Inline:</p>
+				<Variant label="Inline" props='variant="inline"' />
 				<NewsletterSubscribe
 					variant="inline"
 					title="Newsletter"
 					description="Iscriviti per non perdere nessun articolo."
 				/>
-				<p className="text-xs text-muted-foreground italic mt-8">Compact (sidebar):</p>
+				<Variant label="Compact (sidebar)" props='variant="compact"' />
 				<div className="max-w-xs">
 					<NewsletterSubscribe
 						variant="compact"
@@ -308,20 +313,20 @@ export default function ShowcasePage() {
 				</p>
 				<div className="mx-auto max-w-screen-md grid gap-8 md:grid-cols-2">
 					<div>
-						<p className="text-xs text-muted-foreground italic mb-2">Serie A — top 5:</p>
+						<Variant label="Serie A — top 5" props='competition="SA" rows="5"' />
 						<Suspense fallback={<div className="h-48 animate-pulse rounded-xl bg-muted" />}>
 							<StandingsModule competition="SA" mobileRows="5" desktopRows="5" nested />
 						</Suspense>
 					</div>
 					<div>
-						<p className="text-xs text-muted-foreground italic mb-2">Premier League — top 5:</p>
+						<Variant label="Premier League — top 5" props='competition="PL" rows="5"' />
 						<Suspense fallback={<div className="h-48 animate-pulse rounded-xl bg-muted" />}>
 							<StandingsModule competition="PL" mobileRows="5" desktopRows="5" nested />
 						</Suspense>
 					</div>
 				</div>
 				<div className="mx-auto max-w-screen-md">
-					<p className="text-xs text-muted-foreground italic mb-2">La Liga — classifica completa:</p>
+					<Variant label="La Liga — completa" props='competition="PD" desktopRows="all"' />
 					<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
 						<StandingsModule competition="PD" mobileRows="10" desktopRows="all" nested />
 					</Suspense>
@@ -379,46 +384,40 @@ export default function ShowcasePage() {
 
 			{/* ── IMAGE GALLERY ── */}
 			<Section title="Image Gallery">
-				<p className="text-sm text-muted-foreground">
-					Carousel (default) — swipe/drag per navigare:
-				</p>
+				<Variant label="Carousel (default)" props="swipe/drag" />
 				<ImageGallery
 					value={{
 						title: 'Derby di Milano — Le foto',
 						images: [
-							{ asset: { _ref: 'placeholder-1' }, caption: 'Il gol di Lautaro', credit: 'Getty Images' },
-							{ asset: { _ref: 'placeholder-2' }, caption: 'Esultanza sotto la curva', credit: 'Reuters' },
-							{ asset: { _ref: 'placeholder-3' }, caption: 'Il rigore di Calhanoglu', credit: 'AFP' },
-							{ asset: { _ref: 'placeholder-4' }, caption: 'Inzaghi a fine partita' },
+							{ imageUrl: 'https://picsum.photos/seed/derby1/800/450', caption: 'Il gol di Lautaro', credit: 'Getty Images' },
+							{ imageUrl: 'https://picsum.photos/seed/derby2/800/450', caption: 'Esultanza sotto la curva', credit: 'Reuters' },
+							{ imageUrl: 'https://picsum.photos/seed/derby3/800/450', caption: 'Il rigore di Calhanoglu', credit: 'AFP' },
+							{ imageUrl: 'https://picsum.photos/seed/derby4/800/450', caption: 'Inzaghi a fine partita' },
 						],
 					}}
 				/>
-				<p className="text-sm text-muted-foreground">
-					Grid layout — tutte le immagini visibili:
-				</p>
+				<Variant label="Grid" props='layout="grid"' />
 				<ImageGallery
 					value={{
 						title: 'Pre-partita — Dietro le quinte',
 						layout: 'grid',
 						images: [
-							{ asset: { _ref: 'placeholder-1' }, caption: 'Riscaldamento' },
-							{ asset: { _ref: 'placeholder-2' }, caption: 'Spogliatoio' },
-							{ asset: { _ref: 'placeholder-3' }, caption: 'Tunnel' },
+							{ imageUrl: 'https://picsum.photos/seed/pre1/800/450', caption: 'Riscaldamento' },
+							{ imageUrl: 'https://picsum.photos/seed/pre2/800/450', caption: 'Spogliatoio' },
+							{ imageUrl: 'https://picsum.photos/seed/pre3/800/450', caption: 'Tunnel' },
 						],
 					}}
 				/>
-				<p className="text-sm text-muted-foreground">
-					Masonry layout:
-				</p>
+				<Variant label="Masonry" props='layout="masonry"' />
 				<ImageGallery
 					value={{
 						title: 'Conferenza stampa',
 						layout: 'masonry',
 						images: [
-							{ asset: { _ref: 'placeholder-1' }, caption: 'Inzaghi al microfono' },
-							{ asset: { _ref: 'placeholder-2' }, caption: 'Domande dei giornalisti' },
-							{ asset: { _ref: 'placeholder-3' }, caption: 'Lautaro con il trofeo' },
-							{ asset: { _ref: 'placeholder-4' }, caption: 'Foto di squadra' },
+							{ imageUrl: 'https://picsum.photos/seed/conf1/800/450', caption: 'Inzaghi al microfono' },
+							{ imageUrl: 'https://picsum.photos/seed/conf2/800/450', caption: 'Domande dei giornalisti' },
+							{ imageUrl: 'https://picsum.photos/seed/conf3/800/450', caption: 'Lautaro con il trofeo' },
+							{ imageUrl: 'https://picsum.photos/seed/conf4/800/450', caption: 'Foto di squadra' },
 						],
 					}}
 				/>
@@ -645,9 +644,7 @@ export default function ShowcasePage() {
 						],
 					}}
 				/>
-				<p className="text-xs text-muted-foreground italic mt-8">
-					Versione compatta — solo posizione, squadra, partite e punti:
-				</p>
+				<Variant label="Compatta — top 6" props='compact highlightTeams={["Inter"]}' />
 				<StandingsBlock
 					value={{
 						title: 'Serie A — Top 6',
@@ -865,9 +862,7 @@ export default function ShowcasePage() {
 
 			{/* ── SOCIAL EMBED ── */}
 			<Section title="Social Embed">
-				<p className="text-sm text-muted-foreground">
-					Twitter/X — Basta incollare il link del tweet:
-				</p>
+				<Variant label="Twitter/X" props='platform="twitter"' />
 				<SocialEmbed
 					value={{
 						url: 'https://twitter.com/MartinLandaluc/status/2055183943524057169',
@@ -875,9 +870,7 @@ export default function ShowcasePage() {
 						caption: 'Post-partita di Landaluce a Roma',
 					}}
 				/>
-				<p className="text-sm text-muted-foreground">
-					TikTok — Basta incollare il link del video:
-				</p>
+				<Variant label="TikTok" props='platform="tiktok"' />
 				<SocialEmbed
 					value={{
 						url: 'https://www.tiktok.com/@sabordefutbol/video/7504974782308102446',
@@ -885,9 +878,7 @@ export default function ShowcasePage() {
 						caption: 'Esempio embed TikTok',
 					}}
 				/>
-				<p className="text-sm text-muted-foreground">
-					Instagram — Basta incollare il link del post o reel:
-				</p>
+				<Variant label="Instagram" props='platform="instagram"' />
 				<SocialEmbed
 					value={{
 						url: 'https://www.instagram.com/p/DJxE4TNNKPK/',

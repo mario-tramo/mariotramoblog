@@ -5,6 +5,9 @@ import moduleProps from '@/lib/moduleProps'
 import CTAList from '@/ui/primitives/CTAList'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn, getInitials } from '@/lib/utils'
+import resolveUrl from '@/lib/resolveUrl'
+import { stegaClean } from 'next-sanity'
+import Link from 'next/link'
 
 function Slide({
 	slide,
@@ -102,9 +105,16 @@ export default function Hero({
 
 	const s = slides[current]
 
+	// Extract URL from CTA for full-slide clickability
+	const slideHref = s.cta?.link?.type === 'internal' && s.cta.link.internal
+		? resolveUrl(s.cta.link.internal, { base: false, params: s.cta.link.params })
+		: s.cta?.link?.type === 'external' && s.cta.link.external
+			? stegaClean(s.cta.link.external)
+			: null
+
 	return (
 		<section
-			className="relative aspect-[4/5] touch-pan-y select-none overflow-hidden rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[16/10] md:aspect-[16/9]"
+			className="group relative aspect-[4/5] touch-pan-y select-none overflow-hidden rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[16/10] md:aspect-[16/9]"
 			aria-roledescription={isCarousel ? 'carousel' : undefined}
 			aria-label={isCarousel ? 'Hero slides' : undefined}
 			tabIndex={0}
@@ -129,8 +139,15 @@ export default function Hero({
 			<div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/20" />
 			<div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
 
+			{/* Full-slide clickable overlay */}
+			{slideHref && (
+				<Link href={slideHref} className="absolute inset-0 z-[1]" aria-label={s.title}>
+					<span className="sr-only">{s.title}</span>
+				</Link>
+			)}
+
 			{/* Content */}
-			<div className="relative flex h-full flex-col justify-end p-6 sm:p-8">
+			<div className="relative z-[2] flex h-full flex-col justify-end p-6 pointer-events-none sm:p-8">
 				{/* Bottom content */}
 				<div>
 					<h2 className="text-2xl font-extrabold leading-tight text-white drop-shadow sm:text-3xl md:text-4xl">
@@ -159,11 +176,11 @@ export default function Hero({
 					<div className="mt-6 flex items-center justify-between gap-3">
 						<CTAList
 							ctas={[s.cta]}
-							className="[&_a]:inline-flex [&_a]:items-center [&_a]:gap-2 [&_a]:rounded [&_a]:bg-brand [&_a]:px-4 [&_a]:py-2.5 [&_a]:text-sm [&_a]:font-semibold [&_a]:text-brand-foreground [&_a]:transition [&_a]:hover:opacity-90 sm:[&_a]:px-5"
+							className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-2 [&_a]:rounded [&_a]:bg-brand [&_a]:px-4 [&_a]:py-2.5 [&_a]:text-sm [&_a]:font-semibold [&_a]:text-brand-foreground [&_a]:transition [&_a]:hover:opacity-90 sm:[&_a]:px-5"
 						/>
 
 						{isCarousel && (
-							<div className="flex items-center gap-2">
+							<div className="pointer-events-auto flex items-center gap-2">
 								<button
 									onClick={prev}
 									className="grid size-9 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20"
@@ -185,7 +202,7 @@ export default function Hero({
 					{/* Dots */}
 					{isCarousel && (
 						<div
-							className="mt-5 flex items-center gap-1.5"
+							className="pointer-events-auto mt-5 flex items-center gap-1.5"
 							role="group"
 							aria-label="Seleziona slide"
 						>
