@@ -30,6 +30,7 @@ export async function fetchSanity<T = unknown>({
 					next: {
 						revalidate: 0,
 						...next,
+						tags: ['sanity', ...(next?.tags ?? [])],
 					},
 				}
 			: {
@@ -38,6 +39,7 @@ export async function fetchSanity<T = unknown>({
 					next: {
 						revalidate: 3600, // every hour
 						...next,
+						tags: ['sanity', ...(next?.tags ?? [])],
 					},
 				},
 	)
@@ -57,6 +59,7 @@ export async function fetchSanityLive<T = unknown>(
 	const { data } = await sanityFetch({
 		...args,
 		perspective: preview ? 'drafts' : 'published',
+		tags: ['sanity', ...(args.tags ?? [])],
 	})
 
 	return data as T
