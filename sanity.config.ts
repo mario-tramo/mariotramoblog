@@ -22,11 +22,17 @@ import { UnscheduleAction } from '@/sanity/actions/UnscheduleAction'
 const singletonTypes = ['site']
 const schedulableTypes = ['blog.post', 'page', 'legal']
 const customSchedulingActions = [ScheduleAction, UnscheduleAction]
+const customSchedulingBadges = [ScheduledBadge]
 
 const isNativeScheduleAction = (action: unknown) =>
 	typeof action === 'function' &&
 	'displayName' in action &&
 	action.displayName === 'SchedulePublishAction'
+
+const isNativeScheduledBadge = (badge: unknown) =>
+	typeof badge === 'function' &&
+	'displayName' in badge &&
+	badge.displayName === 'ScheduledBadge'
 
 export default defineConfig({
 	title: 'Trm Sport Blog',
@@ -68,10 +74,17 @@ export default defineConfig({
 			),
 	},
 	document: {
-		badges: (prev, { schemaType }) =>
-			['blog.post', 'page', 'legal'].includes(schemaType)
-				? [...prev, ScheduledBadge]
-				: prev,
+		badges: (prev, { schemaType }) => {
+			if (!schedulableTypes.includes(schemaType)) return prev
+
+			const badges = prev.filter(
+				(badge) =>
+					!isNativeScheduledBadge(badge) &&
+					!customSchedulingBadges.includes(badge),
+			)
+
+			return [...badges, ...customSchedulingBadges]
+		},
 
 		productionUrl: async (prev, { document }) => {
 			if (['page', 'blog.post'].includes(document?._type)) {

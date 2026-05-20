@@ -1,6 +1,6 @@
 import type { DocumentBadgeComponent } from 'sanity'
 
-export const ScheduledBadge: DocumentBadgeComponent = ({ draft, published }) => {
+export const ScheduledBadge: DocumentBadgeComponent = ({ draft }) => {
 	const publishAt = (draft as Record<string, unknown> | null)?.publishAt as
 		| string
 		| undefined
@@ -14,7 +14,7 @@ export const ScheduledBadge: DocumentBadgeComponent = ({ draft, published }) => 
 	if (isOverdue) {
 		return {
 			label: 'In ritardo',
-			title: 'Pronto per la pubblicazione automatica',
+			title: 'La data programmata è passata',
 			color: 'danger',
 		}
 	}
@@ -28,7 +28,7 @@ export const ScheduledBadge: DocumentBadgeComponent = ({ draft, published }) => 
 	})
 
 	return {
-		label: published ? 'Aggiornamento programmato' : 'Programmato',
+		label: 'Programmato',
 		title: `Pubblicazione: ${formatted}`,
 		color: 'warning',
 	}

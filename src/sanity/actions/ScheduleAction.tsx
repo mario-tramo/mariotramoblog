@@ -48,7 +48,9 @@ export const ScheduleAction: DocumentActionComponent = (props) => {
 	const isValid = date && time && new Date(`${date}T${time}:00`) > new Date()
 
 	return {
-		label: currentPublishAt ? 'Modifica programmazione' : 'Programma',
+		label: currentPublishAt
+			? 'Modifica pubblicazione programmata'
+			: 'Programma pubblicazione',
 		icon: CalendarIcon,
 		tone: currentPublishAt ? 'caution' : 'primary',
 		onHandle: handleOpen,
@@ -67,9 +69,7 @@ export const ScheduleAction: DocumentActionComponent = (props) => {
 									<TextInput
 										type="date"
 										value={date}
-										onChange={(e) =>
-											setDate(e.currentTarget.value)
-										}
+										onChange={(e) => setDate(e.currentTarget.value)}
 									/>
 								</Stack>
 
@@ -80,11 +80,13 @@ export const ScheduleAction: DocumentActionComponent = (props) => {
 									<TextInput
 										type="time"
 										value={time}
-										onChange={(e) =>
-											setTime(e.currentTarget.value)
-										}
+										onChange={(e) => setTime(e.currentTarget.value)}
 									/>
 								</Stack>
+
+								<Text size={1} muted align="center">
+									Usa questa azione come unico punto di programmazione.
+								</Text>
 
 								{date && time && (
 									<Card
