@@ -618,6 +618,40 @@
 	}
 }
 
+/* --- Micro motion utilities --- */
+
+@layer base {
+	.premium-float {
+		animation: float-soft 6s ease-in-out infinite;
+	}
+
+	.premium-glow {
+		animation: glow-soft 5s ease-in-out infinite;
+	}
+
+	@keyframes float-soft {
+		0%,
+		100% {
+			transform: translateY(0);
+		}
+
+		50% {
+			transform: translateY(-3px);
+		}
+	}
+
+	@keyframes glow-soft {
+		0%,
+		100% {
+			box-shadow: 0 0 0px rgba(0, 200, 255, 0.2);
+		}
+
+		50% {
+			box-shadow: 0 0 18px rgba(0, 200, 255, 0.18);
+		}
+	}
+}
+
 /* --- Reduced motion: respect user preferences --- */
 
 @media (prefers-reduced-motion: reduce) {
