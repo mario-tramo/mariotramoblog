@@ -167,7 +167,7 @@ declare global {
 			readonly _type: 'link'
 			label: string
 			type: 'internal' | 'external'
-			internal?: Page | BlogPost | LegalPage
+			internal?: Page | BlogPost | BlogCategory | LegalPage
 			external?: string
 			params?: string
 		}

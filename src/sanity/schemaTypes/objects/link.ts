@@ -37,7 +37,7 @@ export default defineType({
 			title: 'Interno',
 			type: 'reference',
 			description: 'Seleziona una pagina o articolo del sito',
-			to: [{ type: 'page' }, { type: 'blog.post' }, { type: 'legal' }],
+			to: [{ type: 'page' }, { type: 'blog.post' }, { type: 'blog.category' }, { type: 'legal' }],
 			hidden: ({ parent }) => parent?.type !== 'internal',
 			validation: (Rule) =>
 				Rule.custom((value, context) => {
@@ -84,12 +84,13 @@ export default defineType({
 			_type: 'internal._type',
 			title: 'internal.title',
 			internal: 'internal.metadata.slug.current',
+			categorySlug: 'internal.slug.current',
 			params: 'params',
 			external: 'external',
 		},
-		prepare: ({ label, title, _type, internal, params, external }) => ({
+		prepare: ({ label, title, _type, internal, categorySlug, params, external }) => ({
 			title: label || title,
-			subtitle: resolveSlug({ _type, internal, params, external }),
+			subtitle: resolveSlug({ _type, internal: internal || categorySlug, params, external }),
 		}),
 	},
 })

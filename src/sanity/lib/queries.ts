@@ -8,7 +8,8 @@ export const LINK_QUERY = groq`
 	internal->{
 		_type,
 		title,
-		metadata
+		metadata,
+		slug
 	}
 `
 
