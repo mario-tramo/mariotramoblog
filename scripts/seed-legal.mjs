@@ -54,7 +54,7 @@ const docs = [
 		},
 		body: [
 			block('h2', 'Titolare del trattamento'),
-			block('normal', 'Mario Tramo – [inserire indirizzo e contatto email]'),
+			block('normal', 'Trm Sport – [inserire indirizzo e contatto email]'),
 			block('h2', 'Dati raccolti'),
 			block(
 				'normal',
@@ -138,17 +138,17 @@ const docs = [
 			block('h2', 'Contenuti'),
 			block(
 				'normal',
-				"I contenuti (articoli, analisi, immagini) sono di proprietà di Mario Tramo e protetti da copyright. È vietata la riproduzione senza autorizzazione scritta.",
+				"I contenuti (articoli, analisi, immagini) sono di proprietà di Trm Sport e protetti da copyright. È vietata la riproduzione senza autorizzazione scritta.",
 			),
 			block('h2', 'Limitazione di responsabilità'),
 			block(
 				'normal',
-				"Le informazioni hanno scopo puramente informativo. Mario Tramo non garantisce l'accuratezza o completezza dei contenuti.",
+				"Le informazioni hanno scopo puramente informativo. Trm Sport non garantisce l'accuratezza o completezza dei contenuti.",
 			),
 			block('h2', 'Link esterni'),
 			block(
 				'normal',
-				'Il sito può contenere link a siti di terze parti. Mario Tramo non è responsabile del loro contenuto.',
+				'Il sito può contenere link a siti di terze parti. Trm Sport non è responsabile del loro contenuto.',
 			),
 			block('h2', 'Legge applicabile'),
 			block(

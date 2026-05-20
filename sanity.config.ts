@@ -22,7 +22,7 @@ import { UnscheduleAction } from '@/sanity/actions/UnscheduleAction'
 const singletonTypes = ['site']
 
 export default defineConfig({
-	title: 'Mario Tramo Blog',
+	title: 'Trm Sport Blog',
 	icon,
 	projectId,
 	dataset,

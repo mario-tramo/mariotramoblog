@@ -14,7 +14,7 @@ export default defineType({
 		defineField({
 			name: 'title',
 			title: 'Nome del sito',
-			description: 'Nome del sito web (es. "Mario Tramo Blog")',
+			description: 'Nome del sito web (es. "Trm Sport Blog")',
 			type: 'string',
 			validation: (Rule) => Rule.required(),
 			group: 'generale',

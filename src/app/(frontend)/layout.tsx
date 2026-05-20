@@ -22,12 +22,12 @@ const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!
 export const metadata: Metadata = {
 	metadataBase: new URL(BASE_URL),
 	title: {
-		template: '%s | Mario Tramo',
-		default: 'Mario Tramo',
+		template: '%s | Trm Sport',
+		default: 'Trm Sport',
 	},
 	description: 'Blog di sport, calcio, tattiche e molto altro.',
 	openGraph: {
-		siteName: 'Mario Tramo',
+		siteName: 'Trm Sport',
 		locale: 'it_IT',
 		type: 'website',
 	},

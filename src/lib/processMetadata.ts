@@ -3,7 +3,7 @@ import { BASE_URL, BLOG_DIR, vercelPreview } from './env'
 import type { Metadata } from 'next'
 import { DEFAULT_LANG } from './i18n'
 
-const SITE_NAME = 'Mario Tramo'
+const SITE_NAME = 'Trm Sport'
 
 export default async function processMetadata(
 	page: Sanity.PageBase & {

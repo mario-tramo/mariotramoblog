@@ -1,4 +1,4 @@
-# Mario Tramo Blog
+# Trm Sport Blog
 
 ## Stack
 - **Framework**: Next.js (App Router)

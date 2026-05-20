@@ -2,7 +2,7 @@ import { BASE_URL, BLOG_DIR } from './env'
 
 const PUBLISHER = {
 	'@type': 'Organization',
-	name: 'Mario Tramo',
+	name: 'Trm Sport',
 	url: BASE_URL,
 	logo: {
 		'@type': 'ImageObject',
@@ -90,7 +90,7 @@ export function collectionPageJsonLd(title: string, description?: string) {
 		...(description && { description }),
 		isPartOf: {
 			'@type': 'WebSite',
-			name: 'Mario Tramo',
+			name: 'Trm Sport',
 			url: BASE_URL,
 		},
 		publisher: PUBLISHER,
@@ -113,7 +113,7 @@ export function webPageJsonLd(page: {
 		...(page.dateModified && { dateModified: page.dateModified }),
 		isPartOf: {
 			'@type': 'WebSite',
-			name: 'Mario Tramo',
+			name: 'Trm Sport',
 			url: BASE_URL,
 		},
 		publisher: PUBLISHER,
