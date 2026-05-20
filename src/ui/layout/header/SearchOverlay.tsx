@@ -81,9 +81,10 @@ export default function SearchOverlay({
 							<Loader2
 								size={20}
 								className="shrink-0 animate-spin text-muted"
+								aria-hidden="true"
 							/>
 						) : (
-							<Search size={20} className="shrink-0 text-muted" />
+							<Search size={20} className="shrink-0 text-muted" aria-hidden="true" />
 						)}
 
 						<input
@@ -154,6 +155,7 @@ export default function SearchOverlay({
 											<ArrowRight
 												size={14}
 												className="shrink-0 text-muted/40"
+												aria-hidden="true"
 											/>
 										</Link>
 									</li>

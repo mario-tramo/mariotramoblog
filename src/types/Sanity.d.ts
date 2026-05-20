@@ -195,6 +195,9 @@ declare global {
 			options?: {
 				hidden?: boolean
 				uid?: string
+				background?: 'none' | 'surface' | 'accent' | 'dark' | 'custom'
+				customBgColor?: string
+				fullBleed?: boolean
 			}
 		}
 

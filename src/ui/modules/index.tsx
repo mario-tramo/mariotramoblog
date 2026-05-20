@@ -15,6 +15,8 @@ import SearchModule from './SearchModule'
 import LayoutBlock from './LayoutBlock'
 import Standings from './Standings'
 import { createDataAttribute } from 'next-sanity'
+import { stegaClean } from 'next-sanity'
+import { cn } from '@/lib/utils'
 
 const MODULE_MAP = {
 	'accordion-list': AccordionList,
@@ -34,6 +36,13 @@ const MODULE_MAP = {
 	'search-module': SearchModule,
 	standings: Standings,
 } as const
+
+const bgClasses: Record<string, string> = {
+	none: '',
+	surface: 'bg-surface',
+	accent: 'bg-accent/5',
+	dark: 'bg-ink text-canvas',
+}
 
 export default function Modules({
 	modules,
@@ -75,11 +84,21 @@ export default function Modules({
 
 				if (!Component) return null
 
-				return (
+				const bg = stegaClean(module.options?.background) || 'none'
+				const customBg = stegaClean(module.options?.customBgColor)
+				const fullBleed = stegaClean(module.options?.fullBleed)
+				const hasBg = bg !== 'none'
+				const isCustomBg = bg === 'custom' && customBg
+
+				// LayoutBlock handles its own background
+				const skipWrap = module._type === 'layout-block'
+
+				const rendered = (
 					<Component
 						{...module}
 						{...getAdditionalProps(module)}
 						{...(nested ? { nested: true } : {})}
+						{...(hasBg && !skipWrap ? { nested: true } : {})}
 						data-sanity={
 							!!page?._id &&
 							createDataAttribute({
@@ -90,6 +109,39 @@ export default function Modules({
 						}
 						key={module._key}
 					/>
+				)
+
+				if (!hasBg || skipWrap) return rendered
+
+				const bgClass = !isCustomBg ? bgClasses[bg] : ''
+				const style = isCustomBg
+					? { backgroundColor: customBg }
+					: undefined
+
+				if (fullBleed) {
+					return (
+						<div
+							key={module._key}
+							className={cn(bgClass, 'py-1')}
+							style={style}
+						>
+							{rendered}
+						</div>
+					)
+				}
+
+				return (
+					<div
+						key={module._key}
+						className={cn(
+							'mx-auto max-w-screen-2xl',
+							bgClass,
+							'rounded-2xl',
+						)}
+						style={style}
+					>
+						{rendered}
+					</div>
 				)
 			})}
 		</>

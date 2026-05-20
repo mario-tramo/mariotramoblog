@@ -5,6 +5,14 @@ import { defineField, defineType } from 'sanity'
 import { Box, Button, Flex, Text, TextInput } from '@sanity/ui'
 import { VscCheck, VscCopy } from 'react-icons/vsc'
 
+const BACKGROUND_OPTIONS = [
+	{ title: 'Nessuno', value: 'none' },
+	{ title: 'Superficie', value: 'surface' },
+	{ title: 'Accento', value: 'accent' },
+	{ title: 'Scuro', value: 'dark' },
+	{ title: 'Personalizzato', value: 'custom' },
+]
+
 export default defineType({
 	name: 'module-options',
 	title: 'Opzioni modulo',
@@ -58,6 +66,31 @@ export default defineType({
 					)
 				},
 			},
+		}),
+		defineField({
+			name: 'background',
+			title: 'Sfondo sezione',
+			type: 'string',
+			options: {
+				list: BACKGROUND_OPTIONS,
+				layout: 'radio',
+			},
+			initialValue: 'none',
+		}),
+		defineField({
+			name: 'customBgColor',
+			title: 'Colore personalizzato',
+			type: 'string',
+			description: 'Codice colore HEX (es. #1a1a2e)',
+			hidden: ({ parent }) => parent?.background !== 'custom',
+		}),
+		defineField({
+			name: 'fullBleed',
+			title: 'Sfondo a tutta larghezza',
+			type: 'boolean',
+			description: 'Estende lo sfondo ai bordi dello schermo',
+			initialValue: false,
+			hidden: ({ parent }) => !parent?.background || parent?.background === 'none',
 		}),
 	],
 })
