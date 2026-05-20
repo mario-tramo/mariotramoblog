@@ -1,5 +1,6 @@
 import { defineField, defineType } from 'sanity'
 import modules from '../fragments/modules'
+import { publishAt } from '../fragments'
 import {
 	VscHome,
 	VscQuestion,
@@ -27,6 +28,10 @@ export default defineType({
 		defineField({
 			...modules,
 			description: 'Sezioni che compongono la pagina. Aggiungile, riordinale o nascondile.',
+			group: 'content',
+		}),
+		defineField({
+			...publishAt,
 			group: 'content',
 		}),
 		defineField({

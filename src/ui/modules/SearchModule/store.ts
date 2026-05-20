@@ -73,7 +73,9 @@ export async function handleSearch({
 				modules[].intro[].children[].text,
 				title,
 				metadata.title,
-				metadata.description
+				metadata.description,
+				tags[]->title,
+				categories[]->title
 			] match $query
 		]{
 			_id,

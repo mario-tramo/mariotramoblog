@@ -12,13 +12,16 @@ export default async function processMetadata(
 		_updatedAt?: string
 		authors?: Sanity.Person[]
 		categories?: Sanity.BlogCategory[]
+		tags?: Sanity.BlogTag[]
 	},
 ): Promise<Metadata> {
 	const url = resolveUrl(page)
 	const { title, description, ogimage, noIndex, keywords, canonicalUrl } = page.metadata
 	const isBlogPost = page._type === 'blog.post'
 
-	const seoKeywords = keywords ?? page.categories?.map((c) => c.title)
+	const tagNames = page.tags?.map((t) => t.title) || []
+	const baseKeywords = keywords ?? page.categories?.map((c) => c.title) ?? []
+	const seoKeywords = [...baseKeywords, ...tagNames]
 
 	const ogParams = new URLSearchParams({ title })
 	if (isBlogPost && page.categories?.[0]) ogParams.set('category', page.categories[0].title)

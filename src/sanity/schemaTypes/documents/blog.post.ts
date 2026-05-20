@@ -1,6 +1,7 @@
 import { defineArrayMember, defineField, defineType } from 'sanity'
 import { VscEdit } from 'react-icons/vsc'
-import { imageBlock, admonition } from '../fragments'
+import { imageBlock, admonition, publishAt } from '../fragments'
+import { PortableTextCharCount } from '@/sanity/ui/PortableTextCharCount'
 
 export default defineType({
 	name: 'blog.post',
@@ -34,6 +35,9 @@ export default defineType({
 				{ type: 'videoEmbed' },
 				{ type: 'socialEmbed' },
 			],
+			components: {
+				input: PortableTextCharCount,
+			},
 			validation: (Rule) => Rule.required().min(1).error('Il corpo dell\'articolo è obbligatorio'),
 			group: 'content',
 		}),
@@ -52,6 +56,22 @@ export default defineType({
 			group: 'content',
 		}),
 		defineField({
+			name: 'tags',
+			title: 'Tag',
+			description:
+				'Tag specifici dell\'articolo (es. Champions League, Jannik Sinner, VAR). Usa 3-8 tag per articolo.',
+			type: 'array',
+			of: [
+				{
+					type: 'reference',
+					to: [{ type: 'blog.tag' }],
+				},
+			],
+			validation: (Rule) =>
+				Rule.max(8).warning('Troppi tag riducono l\'efficacia SEO. Usa al massimo 8 tag.'),
+			group: 'content',
+		}),
+		defineField({
 			name: 'authors',
 			title: 'Autori',
 			description: 'Chi ha scritto questo articolo',
@@ -63,15 +83,14 @@ export default defineType({
 		defineField({
 			name: 'publishDate',
 			title: 'Data di pubblicazione',
-			description: 'Data e ora in cui l\'articolo viene pubblicato sul sito',
-			type: 'datetime',
-			options: {
-				dateFormat: 'DD/MM/YYYY',
-				timeFormat: 'HH:mm',
-				timeStep: 1,
-			},
+			description: 'Data in cui l\'articolo viene pubblicato sul sito',
+			type: 'date',
 			validation: (Rule) => Rule.required().error('La data di pubblicazione è obbligatoria'),
 			group: 'content',
+		}),
+		defineField({
+			...publishAt,
+			group: 'options',
 		}),
 		defineField({
 			name: 'featured',

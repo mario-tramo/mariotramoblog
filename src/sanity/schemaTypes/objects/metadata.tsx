@@ -98,6 +98,21 @@ export default defineType({
 				hotspot: true,
 				metadata: ['lqip'],
 			},
+			fields: [
+				defineField({
+					name: 'alt',
+					title: 'Testo alternativo',
+					description: 'Descrive l\'immagine per i motori di ricerca e gli screen reader (es. "Mario Tramo in conferenza stampa")',
+					type: 'string',
+					validation: (Rule) => Rule.required().warning('Il testo alternativo migliora l\'accessibilità e il posizionamento SEO'),
+				}),
+				defineField({
+					name: 'caption',
+					title: 'Didascalia',
+					description: 'Breve descrizione o credito dell\'immagine (opzionale)',
+					type: 'string',
+				}),
+			],
 		}),
 		defineField({
 			name: 'socialPreview',

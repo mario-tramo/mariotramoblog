@@ -13,6 +13,11 @@ import { supportedLanguages } from '@/lib/i18n'
 import { documentInternationalization } from '@sanity/document-internationalization'
 import { schemaTypes } from './src/sanity/schemaTypes'
 import resolveUrl from '@/lib/resolveUrl'
+import { ScheduledBadge } from '@/sanity/ui/ScheduledBadge'
+import { CalendarIcon } from '@sanity/icons'
+import { SchedulingToolComponent } from '@/sanity/tools/SchedulingTool'
+import { ScheduleAction } from '@/sanity/actions/ScheduleAction'
+import { UnscheduleAction } from '@/sanity/actions/UnscheduleAction'
 
 const singletonTypes = ['site']
 
@@ -39,6 +44,15 @@ export default defineConfig({
 		}),
 	],
 
+	tools: [
+		{
+			title: 'Programmazione',
+			name: 'scheduling',
+			icon: CalendarIcon,
+			component: SchedulingToolComponent,
+		},
+	],
+
 	schema: {
 		types: schemaTypes,
 		templates: (templates) =>
@@ -47,6 +61,11 @@ export default defineConfig({
 			),
 	},
 	document: {
+		badges: (prev, { schemaType }) =>
+			['blog.post', 'page', 'legal'].includes(schemaType)
+				? [...prev, ScheduledBadge]
+				: prev,
+
 		productionUrl: async (prev, { document }) => {
 			if (['page', 'blog.post'].includes(document?._type)) {
 				return resolveUrl(document as Sanity.PageBase, { base: true })
@@ -60,6 +79,11 @@ export default defineConfig({
 					({ action }) =>
 						action && ['publish', 'discardChanges', 'restore'].includes(action),
 				)
+			}
+
+			const schedulableTypes = ['blog.post', 'page', 'legal']
+			if (schedulableTypes.includes(schemaType)) {
+				return [...input, ScheduleAction, UnscheduleAction]
 			}
 
 			return input

@@ -25,6 +25,8 @@ export async function GET() {
 				body,
 				publishDate,
 				authors[]->,
+				categories[]->,
+				tags[]->,
 				metadata,
 				'image': metadata.image.asset->url,
 				language,
@@ -84,6 +86,10 @@ export async function GET() {
 				},
 			}),
 			image: post.image,
+			category: [
+				...(post.categories?.map((c) => ({ name: c.title })) || []),
+				...(post.tags?.map((t) => ({ name: t.title })) || []),
+			],
 		})
 	})
 

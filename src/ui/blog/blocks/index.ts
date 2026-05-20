@@ -8,3 +8,4 @@ export { VideoEmbed } from "./video-embed";
 export { ImageGallery } from "./image-gallery";
 export { InfoBox } from "./info-box";
 export { SocialEmbed } from "./social-embed";
+export { Standings } from "./standings";

@@ -62,9 +62,16 @@ declare global {
 			featured: boolean
 			hideTableOfContents: boolean
 			publishDate: string
+			publishAt?: string
+			tags?: BlogTag[]
 		}
 
 		interface BlogCategory extends SanityDocument {
+			title: string
+			slug: { current: string }
+		}
+
+		interface BlogTag extends SanityDocument {
 			title: string
 			slug: { current: string }
 		}

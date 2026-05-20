@@ -16,8 +16,9 @@ export default async function RelatedPosts({
 	variant?: 'full' | 'sidebar'
 }) {
 	const categoryIds = post.categories?.map((c) => c._id) ?? []
+	const tagIds = post.tags?.map((t) => t._id) ?? []
 
-	if (!categoryIds.length) return null
+	if (!categoryIds.length && !tagIds.length) return null
 
 	const limit = variant === 'sidebar' ? 4 : 3
 
@@ -26,8 +27,15 @@ export default async function RelatedPosts({
 			*[
 				_type == 'blog.post'
 				&& _id != $postId
-				&& count(categories[@._ref in $categoryIds]) > 0
-			]|order(publishDate desc)[0...${limit}]{
+				&& (
+					count(categories[@._ref in $categoryIds]) > 0
+					|| count(tags[@._ref in $tagIds]) > 0
+				)
+			]|order(
+				count(tags[@._ref in $tagIds]) desc,
+				count(categories[@._ref in $categoryIds]) desc,
+				publishDate desc
+			)[0...${limit}]{
 				_type,
 				_id,
 				publishDate,
@@ -38,7 +46,7 @@ export default async function RelatedPosts({
 				},
 			}
 		`,
-		params: { postId: post._id, categoryIds },
+		params: { postId: post._id, categoryIds, tagIds },
 	})
 
 	if (!related?.length) return null

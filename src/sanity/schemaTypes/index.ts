@@ -6,6 +6,7 @@ import page from './documents/page'
 
 import blogPost from './documents/blog.post'
 import blogCategory from './documents/blog.category'
+import blogTag from './documents/blog.tag'
 import legal from './documents/legal'
 import redirect from './documents/redirect'
 import mediaAsset from './documents/media-asset'
@@ -51,6 +52,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	page,
 	blogPost,
 	blogCategory,
+	blogTag,
 	legal,
 
 	mediaAsset,

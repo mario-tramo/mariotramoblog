@@ -81,6 +81,7 @@ export const structure = structureTool({
 				S.documentTypeListItem('page').title('Pagine').icon(VscFiles),
 				S.documentTypeListItem('blog.post').title('Articoli'),
 				S.documentTypeListItem('blog.category').title('Categorie'),
+				S.documentTypeListItem('blog.tag').title('Tag'),
 				S.documentTypeListItem('legal').title('Pagine legali').icon(VscLaw),
 				S.divider(),
 

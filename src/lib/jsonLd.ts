@@ -32,9 +32,11 @@ export function websiteJsonLd(siteTitle: string, description?: string) {
 export function blogPostingJsonLd(post: Sanity.BlogPost) {
 	const url = `${BASE_URL}/${BLOG_DIR}/${post.metadata.slug.current}`
 	const image = post.metadata.ogimage || post.metadata.image
+	const tagNames = post.tags?.map((t) => t.title) || []
+	const categoryNames = post.categories?.map((c) => c.title) || []
 	const keywords = post.metadata.keywords?.length
-		? post.metadata.keywords
-		: post.categories?.map((c) => c.title)
+		? [...post.metadata.keywords, ...tagNames]
+		: [...categoryNames, ...tagNames]
 
 	return {
 		'@context': 'https://schema.org',

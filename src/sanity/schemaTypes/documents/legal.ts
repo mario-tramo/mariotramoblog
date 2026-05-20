@@ -1,6 +1,6 @@
 import { defineField, defineType } from 'sanity'
 import { VscLaw } from 'react-icons/vsc'
-import { imageBlock, admonition } from '../fragments'
+import { imageBlock, admonition, publishAt } from '../fragments'
 
 export default defineType({
 	name: 'legal',
@@ -33,6 +33,10 @@ export default defineType({
 			description: 'Data dell\'ultimo aggiornamento di questa pagina (mostrata in fondo al testo)',
 			type: 'date',
 			validation: (Rule) => Rule.required().error('Inserisci la data di aggiornamento'),
+			group: 'content',
+		}),
+		defineField({
+			...publishAt,
 			group: 'content',
 		}),
 		defineField({

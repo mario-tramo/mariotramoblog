@@ -185,6 +185,21 @@ export default function PostContent({
 						</Content>
 					</div>
 
+					{/* Tag */}
+					{post.tags && post.tags.length > 0 && (
+						<div className="mt-8 flex flex-wrap gap-2">
+							{post.tags.map((tag) => (
+								<Link
+									key={tag._id}
+									href={`/blog?tag=${tag.slug.current}`}
+									className="inline-flex items-center rounded-full border border-ink/10 bg-surface px-3 py-1 text-xs font-medium text-muted transition hover:border-brand hover:text-brand"
+								>
+									#{tag.title}
+								</Link>
+							))}
+						</div>
+					)}
+
 					{/* Scritto da */}
 					{firstAuthor && (
 						<div className="mt-10">
