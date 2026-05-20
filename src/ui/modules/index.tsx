@@ -14,6 +14,7 @@ import RichtextModule from './RichtextModule'
 import SearchModule from './SearchModule'
 import LayoutBlock from './LayoutBlock'
 import Standings from './Standings'
+import LatestNews from './LatestNews'
 import { createDataAttribute } from 'next-sanity'
 import { stegaClean } from 'next-sanity'
 import { cn } from '@/lib/utils'
@@ -35,6 +36,7 @@ const MODULE_MAP = {
 	'richtext-module': RichtextModule,
 	'search-module': SearchModule,
 	standings: Standings,
+	'latest-news': LatestNews,
 } as const
 
 const bgClasses: Record<string, string> = {

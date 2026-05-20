@@ -2,17 +2,17 @@
 @import './fonts.css';
 
 @theme {
-	--color-canvas: #05070a;
-	--color-ink: #ffffff;
-	--color-accent: #00d4ff;
+	--color-canvas: #0a0a14;
+	--color-ink: #e8e8f0;
+	--color-accent: #00c8ff;
 
-	--color-surface: #0a0e15;
-	--color-surface-light: #101620;
-	--color-surface-2: #151d2b;
-	--color-muted: #6b7f94;
-	--color-border: rgba(255, 255, 255, 0.05);
-	--color-brand: #00d4ff;
-	--color-brand-foreground: #05070a;
+	--color-surface: #12121e;
+	--color-surface-light: #1a1a2a;
+	--color-surface-2: #222236;
+	--color-muted: #8888a0;
+	--color-border: rgba(255, 255, 255, 0.08);
+	--color-brand: #00c8ff;
+	--color-brand-foreground: #0a0a14;
 
 	--font-heading: var(--font-bebas-neue), system-ui, sans-serif;
 	--font-body: var(--font-inter), system-ui, sans-serif;
