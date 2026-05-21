@@ -15,6 +15,14 @@ export default defineType({
 	],
 	fields: [
 		defineField({
+			name: 'title',
+			title: 'Titolo',
+			description: 'Il titolo principale dell\'articolo e rilevante per SEO. Usa un titolo chiaro e accattivante.',
+			type: 'string',
+			validation: (Rule) => Rule.required().error('Il titolo è obbligatorio'),
+			group: 'content',
+		}),
+		defineField({
 			name: 'body',
 			title: 'Corpo dell\'articolo',
 			description: 'Il contenuto principale dell\'articolo. Puoi aggiungere testo, immagini, avvisi e codice.',
@@ -123,7 +131,7 @@ export default defineType({
 	preview: {
 		select: {
 			featured: 'featured',
-			title: 'metadata.title',
+			title: 'title',
 			publishDate: 'publishDate',
 			language: 'language',
 			image: 'metadata.image',
@@ -144,7 +152,7 @@ export default defineType({
 		},
 		{
 			title: 'Titolo',
-			name: 'metadata.title',
+			name: 'title',
 			by: [{ field: 'title', direction: 'asc' }],
 		},
 	],
