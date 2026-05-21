@@ -173,7 +173,7 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 
 	return (
 		<div
-			className="relative"
+			className="relative overflow-hidden"
 			aria-roledescription={isCarousel ? 'carousel' : undefined}
 			aria-label={isCarousel ? 'Articoli in evidenza' : undefined}
 			onMouseEnter={() => setPaused(true)}

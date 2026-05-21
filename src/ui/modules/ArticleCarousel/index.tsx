@@ -94,5 +94,9 @@ export default async function ArticleCarousel({
 
 	if (!posts?.length) return null
 
-	return <Carousel posts={posts} />
+	return (
+		<section className="section">
+			<Carousel posts={posts} />
+		</section>
+	)
 }

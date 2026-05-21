@@ -77,7 +77,7 @@ export default defineType({
 			description: 'Chi ha scritto questo articolo',
 			type: 'array',
 			of: [{ type: 'reference', to: [{ type: 'person' }] }],
-			validation: (Rule) => Rule.required().min(1).warning('Aggiungi almeno un autore'),
+			validation: (Rule) => Rule.required().min(1).error('Ogni articolo deve avere almeno un autore'),
 			group: 'content',
 		}),
 		defineField({
