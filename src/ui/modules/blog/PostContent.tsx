@@ -70,7 +70,7 @@ export default function PostContent({
 					)}
 					<li aria-hidden="true">&gt;</li>
 					<li className="truncate text-ink/50">
-						{post.metadata.title}
+						{post.title}
 					</li>
 				</ol>
 			</nav>
@@ -91,7 +91,7 @@ export default function PostContent({
 						)}
 
 						<h1 className="text-3xl font-extrabold leading-tight tracking-tight sm:text-5xl">
-							{post.metadata.title}
+							{post.title}
 						</h1>
 
 						{post.metadata.description && (
@@ -147,7 +147,7 @@ export default function PostContent({
 								)}
 							</div>
 
-							<ShareBar title={post.metadata.title} />
+							<ShareBar title={post.title} />
 						</div>
 					</header>
 
@@ -158,7 +158,7 @@ export default function PostContent({
 								className="aspect-video w-full object-cover"
 								image={post.metadata.image}
 								width={900}
-								alt={post.metadata.title}
+								alt={post.title}
 								loading="eager"
 							/>
 						</figure>

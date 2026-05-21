@@ -26,7 +26,7 @@ export default function PostPreview({
 						className="size-full object-cover transition-transform duration-500 group-hover:scale-105"
 						image={post?.metadata.image}
 						width={800}
-						alt={post?.metadata.title}
+						alt={post?.title}
 					/>
 
 					{post?.featured && (
@@ -52,7 +52,7 @@ export default function PostPreview({
 								href={resolveUrl(post, { base: false })}
 							>
 								<span className="absolute inset-0" />
-								{post?.metadata.title}
+								{post?.title}
 							</Link>
 						</div>
 					</div>
@@ -68,7 +68,7 @@ export default function PostPreview({
 					className="aspect-video w-full object-cover transition-all group-hover:scale-105 group-hover:brightness-110"
 					image={post?.metadata.image}
 					width={700}
-					alt={post?.metadata.title}
+					alt={post?.title}
 				/>
 
 				{post?.featured && (
@@ -90,7 +90,7 @@ export default function PostPreview({
 					href={resolveUrl(post, { base: false })}
 				>
 					<span className="absolute inset-0" />
-					{post?.metadata.title}
+					{post?.title}
 				</Link>
 			</div>
 

@@ -90,7 +90,7 @@ export default function SearchForm({
 													}
 												>
 													<span className="line-clamp-1 grow group-hover:underline">
-														{result.metadata.title}
+														{result.title || result.metadata.title}
 													</span>
 
 													<small className="technical text-accent/50 shrink-0 text-xs">

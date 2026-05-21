@@ -54,6 +54,7 @@ declare global {
 
 		interface BlogPost extends PageBase {
 			readonly _type: 'blog.post'
+			title: string
 			body: PortableTextBlock[]
 			readTime: number
 			headings?: { style: string; text: string }[]
@@ -69,6 +70,8 @@ declare global {
 		interface BlogCategory extends SanityDocument {
 			title: string
 			slug: { current: string }
+			metadata?: Metadata
+			modules?: Module[]
 		}
 
 		interface BlogTag extends SanityDocument {

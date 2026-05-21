@@ -73,7 +73,7 @@ export default async function ArticleCarousel({
 				publishDate desc
 			)[0...${limit}]{
 				_id,
-				'title': metadata.title,
+				'title': coalesce(title, metadata.title),
 				'description': metadata.description,
 				'slug': '/${BLOG_DIR}/' + metadata.slug.current,
 				publishDate,

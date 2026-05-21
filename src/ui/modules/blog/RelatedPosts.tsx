@@ -38,6 +38,7 @@ export default async function RelatedPosts({
 			)[0...${limit}]{
 				_type,
 				_id,
+				title,
 				publishDate,
 				'readTime': round(length(pt::text(body)) / 5 / 180),
 				metadata {
@@ -67,12 +68,12 @@ export default async function RelatedPosts({
 										className="size-full object-cover"
 										image={r.metadata.image}
 										width={112}
-										alt={r.metadata.title}
+										alt={r.title}
 									/>
 								</figure>
 								<div className="min-w-0">
 									<p className="line-clamp-2 text-[13px] font-medium leading-snug group-hover:underline">
-										{r.metadata.title}
+										{r.title}
 									</p>
 									<ReadTime
 										value={r.readTime}
@@ -103,12 +104,12 @@ export default async function RelatedPosts({
 								className="size-full object-cover transition duration-500 group-hover:scale-105"
 								image={r.metadata.image}
 								width={400}
-								alt={r.metadata.title}
+								alt={r.title}
 							/>
 						</div>
 						<div className="p-4">
 							<h3 className="line-clamp-2 text-sm font-semibold leading-snug transition group-hover:text-brand">
-								{r.metadata.title}
+								{r.title}
 							</h3>
 							<ReadTime
 								value={r.readTime}

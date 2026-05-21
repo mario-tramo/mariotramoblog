@@ -32,7 +32,7 @@ export default async function Page({ params }: Props) {
 							{ name: 'Home', url: BASE_URL },
 							{ name: 'Blog', url: `${BASE_URL}/${BLOG_DIR}` },
 							{
-								name: post.metadata.title,
+								name: post.title,
 								url: `${BASE_URL}/${BLOG_DIR}/${post.metadata.slug.current}`,
 							},
 						]),

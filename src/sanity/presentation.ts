@@ -58,7 +58,7 @@ export const presentation = presentationTool({
 			}),
 			'blog.post': defineLocations({
 				select: {
-					title: 'metadata.title',
+					title: 'title',
 					slug: 'metadata.slug.current',
 				},
 				resolve: (doc) => ({

@@ -24,6 +24,8 @@ export default function Filter({
 					? 'border-brand bg-brand text-brand-foreground'
 					: 'border-brand/40 text-muted hover:border-brand/60 hover:text-ink',
 			)}
+			aria-label={`Filtra per ${label}`}
+			aria-pressed={category === value}
 			onClick={() => {
 				setCategory(value)
 				setPage(1)

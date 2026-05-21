@@ -154,12 +154,7 @@ async function getPage(params: Params) {
 async function getCategory(params: Params) {
 	const { slug } = processSlug(params)
 
-	const raw = await fetchSanityLive<
-		Sanity.BlogCategory & {
-			modules?: Sanity.Module[]
-			metadata?: Partial<Sanity.Metadata>
-		}
-	>({
+	const raw = await fetchSanityLive<Sanity.BlogCategory>({
 		query: groq`*[
 			_type == 'blog.category'
 			&& slug.current == $slug

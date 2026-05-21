@@ -37,13 +37,13 @@ export default function FeaturedPostCard({
 						className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
 						image={post.metadata.image}
 						width={600}
-						alt={post.metadata.title}
+						alt={post.title}
 					/>
 				</div>
 
 				<div className="p-4 sm:p-5">
 					<h3 className="font-extrabold leading-snug group-hover:underline">
-						{post.metadata.title}
+						{post.title}
 					</h3>
 
 					{author && (

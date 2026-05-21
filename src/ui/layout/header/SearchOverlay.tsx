@@ -138,7 +138,7 @@ export default function SearchOverlay({
 										>
 											<div className="min-w-0 flex-1">
 												<p className="truncate text-sm font-medium text-ink">
-													{result.metadata.title}
+													{result.title || result.metadata.title}
 												</p>
 												{result.metadata.description && (
 													<p className="mt-0.5 truncate text-xs text-muted">

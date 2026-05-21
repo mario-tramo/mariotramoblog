@@ -59,7 +59,7 @@ function SidebarThumbs({
 								className="size-full object-cover"
 								image={post.metadata.image}
 								width={128}
-								alt={post.metadata.title}
+								alt={post.title}
 							/>
 						</figure>
 						<div className="min-w-0">
@@ -67,7 +67,7 @@ function SidebarThumbs({
 								{timeAgo(post.publishDate)}
 							</p>
 							<p className="line-clamp-2 text-sm font-medium leading-snug group-hover:underline">
-								{post.metadata.title}
+								{post.title}
 							</p>
 						</div>
 					</Link>
@@ -98,7 +98,7 @@ function SidebarNumbered({
 						</span>
 						<div>
 							<p className="text-[13px] font-medium leading-snug group-hover:underline">
-								{post.metadata.title}
+								{post.title}
 							</p>
 							<ReadTime value={post.readTime} className="text-[11px] text-muted" />
 						</div>
@@ -126,7 +126,7 @@ function Grid({
 							className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
 							image={post.metadata.image}
 							width={400}
-							alt={post.metadata.title}
+							alt={post.title}
 						/>
 					</div>
 
@@ -140,7 +140,7 @@ function Grid({
 						<Link href={resolveUrl(post, { base: false })}>
 							<span className="absolute inset-0" />
 							<span className="line-clamp-2">
-								{post.metadata.title}
+								{post.title}
 							</span>
 						</Link>
 					</h3>
@@ -169,14 +169,14 @@ function List({
 							className="size-full object-cover"
 							image={post.metadata.image}
 							width={128}
-							alt={post.metadata.title}
+							alt={post.title}
 						/>
 					</figure>
 					<div>
 						<h3 className="text-sm font-semibold leading-snug">
 							<Link href={resolveUrl(post, { base: false })}>
 								<span className="absolute inset-0" />
-								{post.metadata.title}
+								{post.title}
 							</Link>
 						</h3>
 						<ReadTime value={post.readTime} className="text-[11px] text-muted" />
