@@ -61,7 +61,7 @@ export default async function LatestNews({
 						</ul>
 					}
 				>
-					<ul className="carousel max-xl:full-bleed md:overflow-fade-r pb-4 max-xl:px-4 [--size:320px]">
+					<ul className="carousel max-xl:full-bleed md:overflow-fade-r pb-4 max-xl:px-4 gap-4 [--size:320px]">
 						{posts?.map((post) => (
 							<li key={post._id} className="anim-fade">
 								<PostPreview post={post} />
