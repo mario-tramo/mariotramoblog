@@ -63,7 +63,7 @@ export default function PostPreview({
 
 	return (
 		<div className="group relative isolate flex h-full flex-col space-y-2 rounded-2xl bg-surface p-4 transition">
-			<figure className="relative aspect-video overflow-hidden rounded-lg bg-ink/3">
+			<figure className="relative aspect-video overflow-hidden rounded-lg border border-white/10 bg-ink/3">
 				<Img
 					className="aspect-video w-full object-cover transition-all group-hover:scale-105 group-hover:brightness-110"
 					image={post?.metadata.image}
@@ -112,7 +112,7 @@ export default function PostPreview({
 						skeleton
 					/>
 				) : (
-					<div className="flex items-center gap-[.5ch]">
+					<div className="flex items-center gap-2">
 						<span className="bg-accent/3 grid aspect-square w-[1.7em] shrink-0 place-content-center overflow-hidden rounded-full text-[10px] font-bold text-accent/40">
 							TM
 						</span>

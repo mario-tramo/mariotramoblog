@@ -36,7 +36,7 @@ function Author({
 }) {
 	const props = {
 		className: cn(
-			'flex items-center gap-[.5ch] hover:underline',
+			'flex items-center gap-2 hover:underline',
 			!linked && 'pointer-events-none',
 		),
 		children: (
