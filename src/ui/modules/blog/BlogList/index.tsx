@@ -110,7 +110,7 @@ export default async function BlogList({
 	const isCarousel = stegaClean(layout) !== 'grid'
 
 	const listClassName = cn(
-		'items-stretch gap-x-8 gap-y-12',
+		'items-stretch gap-x-10 gap-y-12',
 		!isCarousel
 			? cn(
 					'grid',

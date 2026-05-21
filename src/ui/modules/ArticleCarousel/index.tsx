@@ -95,7 +95,7 @@ export default async function ArticleCarousel({
 	if (!posts?.length) return null
 
 	return (
-		<section className="section">
+		<section className="section !py-4 md:!py-8">
 			<Carousel posts={posts} />
 		</section>
 	)

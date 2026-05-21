@@ -260,13 +260,14 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 					<div className="flex items-center gap-1 sm:gap-2">
 						<motion.button
 							onClick={() => setSearchOpen(true)}
-							className="grid size-9 place-items-center rounded-full transition hover:bg-surface"
+							className="flex items-center gap-2 rounded-full px-2 py-1.5 text-sm text-muted transition hover:bg-surface sm:px-3"
 							whileHover={{ y: -1 }}
 							whileTap={{ scale: 0.98 }}
 							transition={{ duration: 0.15 }}
-							aria-label="Cerca"
+							aria-label="Cerca notizie"
 						>
-							<Search size={18} />
+							<Search size={16} />
+							<span className="hidden sm:inline">Cerca notizie</span>
 						</motion.button>
 
 						{ctas?.map((cta, i) => (
