@@ -63,9 +63,12 @@ export default function Modules({
 		switch (module._type) {
 			case 'blog-frontpage':
 				return {
-					categoria: searchParams?.categoria as string | undefined,
+					searchParams,
 					page: Number(searchParams?.page) || 1,
 				}
+			case 'blog-list':
+			case 'article-carousel':
+				return { searchParams }
 			case 'blog-post-content':
 				return { post }
 			case 'breadcrumbs':

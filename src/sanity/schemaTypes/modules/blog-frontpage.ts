@@ -39,6 +39,14 @@ export default defineType({
 			initialValue: true,
 		}),
 		defineField({
+			name: 'filters',
+			title: 'Filtri configurabili',
+			description:
+				'Configura filtri statici o dinamici (da parametri URL) per categoria, tag o autore. Se vuoto, nessun filtro viene applicato.',
+			type: 'array',
+			of: [{ type: 'collection-filter' }],
+		}),
+		defineField({
 			name: 'itemsPerPage',
 			title: 'Articoli per pagina',
 			type: 'number',

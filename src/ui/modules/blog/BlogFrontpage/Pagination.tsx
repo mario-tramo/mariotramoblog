@@ -4,15 +4,24 @@ export default function Pagination({
 	currentPage,
 	totalPages,
 	basePath,
+	searchParams,
 }: {
 	currentPage: number
 	totalPages: number
 	basePath: string
+	searchParams?: Record<string, string | string[] | undefined>
 }) {
 	if (totalPages <= 1) return null
 
 	function pageUrl(page: number) {
 		const params = new URLSearchParams()
+		// Preserve existing search params (e.g. categoria)
+		if (searchParams) {
+			for (const [key, val] of Object.entries(searchParams)) {
+				if (key === 'page' || val == null) continue
+				params.set(key, Array.isArray(val) ? val[0] ?? '' : val)
+			}
+		}
 		if (page > 1) params.set('page', String(page))
 		const qs = params.toString()
 		return qs ? `${basePath}?${qs}` : basePath

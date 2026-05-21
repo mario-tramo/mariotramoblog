@@ -16,6 +16,12 @@ import Link from 'next/link'
 import { BLOG_DIR } from '@/lib/env'
 import { ChevronRight } from 'lucide-react'
 import type { PortableTextBlock } from '@portabletext/react'
+import {
+	type CollectionFilter,
+	resolveCollectionFilters,
+	buildGroqFilterConditions,
+	buildGroqFilterParams,
+} from '@/lib/resolveCollectionFilters'
 
 export default async function BlogList({
 	pretitle,
@@ -26,6 +32,8 @@ export default async function BlogList({
 	showFeaturedPostsFirst,
 	displayFilters,
 	filteredCategory,
+	filters,
+	searchParams,
 	nested,
 	...props
 }: Partial<{
@@ -37,17 +45,28 @@ export default async function BlogList({
 	showFeaturedPostsFirst: boolean
 	displayFilters: boolean
 	filteredCategory: Sanity.BlogCategory
+	filters: CollectionFilter[]
+	searchParams: Record<string, string | string[] | undefined>
 	nested: boolean
 }> &
 	Sanity.Module) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
+
+	// Resolve dynamic filters (new system)
+	const resolvedFilters = resolveCollectionFilters(filters, { searchParams })
+	const filterConditions = buildGroqFilterConditions(resolvedFilters)
+	const filterParams = buildGroqFilterParams(resolvedFilters)
+
+	// Legacy: filteredCategory still works if no new filters are configured
+	const hasLegacyFilter = !!filteredCategory && !filters?.length
 
 	const posts = await fetchSanityLive<Sanity.BlogPost[]>({
 		query: groq`
 			*[
 				_type == 'blog.post'
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
-				${!!filteredCategory ? `&& $filteredCategory in categories[]->._id` : ''}
+				${hasLegacyFilter ? `&& $filteredCategory in categories[]->._id` : ''}
+				${filterConditions}
 			]|order(
 				${showFeaturedPostsFirst ? 'featured desc, ' : ''}
 				publishDate desc
@@ -64,7 +83,10 @@ export default async function BlogList({
 			}
 		`,
 		params: {
-			filteredCategory: filteredCategory?._id || '',
+			...(hasLegacyFilter
+				? { filteredCategory: filteredCategory?._id || '' }
+				: {}),
+			...filterParams,
 			limit: limit ?? 0,
 		},
 	})

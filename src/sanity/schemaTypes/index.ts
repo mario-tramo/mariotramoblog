@@ -7,6 +7,7 @@ import page from './documents/page'
 import blogPost from './documents/blog.post'
 import blogCategory from './documents/blog.category'
 import blogTag from './documents/blog.tag'
+import categoryTemplate from './documents/category-template'
 import legal from './documents/legal'
 import redirect from './documents/redirect'
 import mediaAsset from './documents/media-asset'
@@ -24,6 +25,7 @@ import linkList from './objects/link.list'
 import metadata from './objects/metadata'
 import heroSlide from './objects/hero-slide'
 import moduleOptions from './objects/module-options'
+import collectionFilter from './objects/collection-filter'
 
 // blocks
 import { quoteBlock, videoEmbed, socialEmbed } from './blocks'
@@ -54,6 +56,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	blogPost,
 	blogCategory,
 	blogTag,
+	categoryTemplate,
 	legal,
 
 	mediaAsset,
@@ -72,6 +75,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	heroSlide,
 	metadata,
 	moduleOptions,
+	collectionFilter,
 
 	// blocks
 	quoteBlock,

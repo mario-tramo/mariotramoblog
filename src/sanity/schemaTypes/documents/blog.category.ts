@@ -1,11 +1,17 @@
 import { defineField, defineType } from 'sanity'
 import { VscTag } from 'react-icons/vsc'
+import modules from '../fragments/modules'
 
 export default defineType({
 	name: 'blog.category',
 	title: 'Categoria blog',
 	type: 'document',
 	icon: VscTag,
+	groups: [
+		{ name: 'content', title: 'Contenuto', default: true },
+		{ name: 'page', title: 'Pagina categoria' },
+		{ name: 'metadata', title: 'SEO e Metadati' },
+	],
 	fields: [
 		defineField({
 			name: 'title',
@@ -13,6 +19,7 @@ export default defineType({
 			type: 'string',
 			description: 'Nome della categoria (es. Calcio, Tennis, Formula 1)',
 			validation: (Rule) => Rule.required(),
+			group: 'content',
 		}),
 		defineField({
 			name: 'slug',
@@ -23,6 +30,38 @@ export default defineType({
 				source: 'title',
 			},
 			validation: (Rule) => Rule.required(),
+			group: 'content',
+		}),
+		defineField({
+			...modules,
+			description:
+				'Sezioni della pagina categoria. I moduli blog (Lista articoli, Carosello) filtreranno automaticamente per questa categoria.',
+			group: 'page',
+		}),
+		defineField({
+			name: 'metadata',
+			title: 'SEO e Metadati',
+			type: 'metadata',
+			description:
+				'Metadati per la pagina categoria. Lo slug viene ignorato (si usa quello della categoria).',
+			group: 'metadata',
 		}),
 	],
+	preview: {
+		select: {
+			title: 'title',
+			metaSlug: 'metadata.slug.current',
+			slug: 'slug.current',
+			modules: 'modules',
+		},
+		prepare: ({ title, metaSlug, slug, modules }) => ({
+			title,
+			subtitle: [
+				metaSlug ? `/${metaSlug}` : slug && `/blog?categoria=${slug}`,
+				modules?.length && `${modules.length} moduli`,
+			]
+				.filter(Boolean)
+				.join(' — '),
+		}),
+	},
 })

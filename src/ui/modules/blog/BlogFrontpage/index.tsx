@@ -13,30 +13,55 @@ import NewsletterSubscribe from '@/ui/features/newsletter'
 import PostListWidget from '../PostListWidget'
 import FeaturedPostCard from '../FeaturedPostCard'
 import Hero from '@/ui/modules/Hero'
+import {
+	type CollectionFilter,
+	resolveCollectionFilters,
+	buildGroqFilterConditions,
+	buildGroqFilterParams,
+} from '@/lib/resolveCollectionFilters'
 
 export default async function BlogFrontpage({
 	slides,
 	mainPost,
 	showFeaturedPostsFirst,
 	itemsPerPage = 6,
-	categoria,
+	filters,
+	searchParams,
 	page = 1,
 }: Partial<{
 	slides: Sanity.HeroSlide[]
 	mainPost: 'recent' | 'featured'
 	showFeaturedPostsFirst: boolean
 	itemsPerPage: number
-	categoria: string
+	filters: CollectionFilter[]
+	searchParams: Record<string, string | string[] | undefined>
 	page: number
 }>) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
+
+	const resolvedFilters = resolveCollectionFilters(filters, { searchParams })
+	const filterConditions = buildGroqFilterConditions(resolvedFilters)
+	const filterParams = buildGroqFilterParams(resolvedFilters)
+
+	// Auto-apply ?categoria from URL (used by FilterList) when no explicit category filter configured
+	const hasExplicitCategoryFilter = resolvedFilters.some(
+		(f) => f.field === 'category',
+	)
+	const rawCategoria = searchParams?.categoria
+	const urlCategoria =
+		!hasExplicitCategoryFilter &&
+		typeof rawCategoria === 'string' &&
+		rawCategoria !== 'All'
+			? rawCategoria
+			: undefined
 
 	const posts = await fetchSanityLive<Sanity.BlogPost[]>({
 		query: groq`
 			*[
 				_type == 'blog.post'
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
-				${categoria && categoria !== 'All' ? `&& $categoria in categories[]->.slug.current` : ''}
+				${filterConditions}
+				${urlCategoria ? `&& $urlCategoria in categories[]->.slug.current` : ''}
 			]|order(publishDate desc){
 				_type,
 				_id,
@@ -52,7 +77,10 @@ export default async function BlogFrontpage({
 				},
 			}
 		`,
-		params: { categoria: categoria ?? '' },
+		params: {
+			...filterParams,
+			...(urlCategoria ? { urlCategoria } : {}),
+		},
 	})
 
 	const sorted =
@@ -175,6 +203,7 @@ export default async function BlogFrontpage({
 					currentPage={safePage}
 					totalPages={totalPages}
 					basePath="/blog"
+					searchParams={searchParams}
 				/>
 			</div>
 		</section>

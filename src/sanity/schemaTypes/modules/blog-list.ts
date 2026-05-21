@@ -93,10 +93,20 @@ export default defineType({
 		}),
 		defineField({
 			name: 'filteredCategory',
-			title: 'Filtra i post per categoria',
-			description: 'Lascia vuoto per mostrare tutti i post',
+			title: 'Filtra i post per categoria (legacy)',
+			description: 'Deprecato: usa i filtri configurabili qui sotto',
 			type: 'reference',
 			to: [{ type: 'blog.category' }],
+			group: 'filtering',
+			hidden: ({ parent }) => !!parent?.filters?.length,
+		}),
+		defineField({
+			name: 'filters',
+			title: 'Filtri configurabili',
+			description:
+				'Configura filtri statici o dinamici (da parametri URL) per categoria, tag o autore',
+			type: 'array',
+			of: [{ type: 'collection-filter' }],
 			group: 'filtering',
 		}),
 	],
