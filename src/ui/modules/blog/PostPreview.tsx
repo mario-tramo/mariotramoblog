@@ -121,7 +121,7 @@ export default function PostPreview({
 				)}
 			</div>
 
-			<div className="flex flex-wrap gap-x-4 border-t border-ink/5 pt-2 text-sm empty:skeleton">
+			<div className="space-y-2 border-t border-ink/5 pt-2 text-sm empty:skeleton">
 				<Date value={post?.publishDate} />
 				<Categories
 					className="relative z-10 flex flex-wrap gap-x-2"

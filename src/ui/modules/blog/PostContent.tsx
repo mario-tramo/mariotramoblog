@@ -69,7 +69,7 @@ export default function PostContent({
 						</>
 					)}
 					<li aria-hidden="true">&gt;</li>
-					<li className="truncate text-ink/50">
+					<li className="truncate text-brand">
 						{post.title}
 					</li>
 				</ol>
