@@ -4,7 +4,7 @@ import { DEFAULT_LANG } from '@/lib/i18n'
 import { BLOG_DIR } from '@/lib/env'
 import type { MetadataRoute } from 'next'
 
-const BASE = process.env.NEXT_PUBLIC_BASE_URL + '/'
+const BASE = process.env.NEXT_PUBLIC_BASE_URL!.replace(/\/+$/, '') + '/'
 
 // Posts published within 30 days get higher priority
 const RECENT_THRESHOLD = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString()
