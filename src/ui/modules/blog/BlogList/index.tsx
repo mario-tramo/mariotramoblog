@@ -87,6 +87,7 @@ export default async function BlogList({
 			${limit ? `[0...${limit}]` : ''}
 			{
 				...,
+				'title': coalesce(title, metadata.title),
 				categories[]->,
 				authors[]->,
 				metadata{

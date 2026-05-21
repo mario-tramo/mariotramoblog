@@ -29,6 +29,7 @@ export default async function LatestNews({
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
 			]|order(publishDate desc)[0...${limit}]{
 				...,
+				'title': coalesce(title, metadata.title),
 				categories[]->,
 				authors[]->,
 				metadata{

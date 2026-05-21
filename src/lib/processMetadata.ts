@@ -7,6 +7,7 @@ const SITE_NAME = 'Trm Sport'
 
 export default async function processMetadata(
 	page: Sanity.PageBase & {
+		title?: string
 		translations?: { slug: string; language?: string }[]
 		publishDate?: string
 		_updatedAt?: string
@@ -16,7 +17,8 @@ export default async function processMetadata(
 	},
 ): Promise<Metadata> {
 	const url = resolveUrl(page)
-	const { title, description, ogimage, noIndex, keywords, canonicalUrl } = page.metadata
+	const { description, ogimage, noIndex, keywords, canonicalUrl } = page.metadata
+	const title = page.metadata.title || page.title || ''
 	const isBlogPost = page._type === 'blog.post'
 
 	const tagNames = page.tags?.filter(Boolean).map((t) => t.title) || []

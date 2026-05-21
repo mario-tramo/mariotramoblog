@@ -38,7 +38,7 @@ export default async function RelatedPosts({
 			)[0...${limit}]{
 				_type,
 				_id,
-				title,
+				'title': coalesce(title, metadata.title),
 				publishDate,
 				'readTime': round(length(pt::text(body)) / 5 / 180),
 				metadata {

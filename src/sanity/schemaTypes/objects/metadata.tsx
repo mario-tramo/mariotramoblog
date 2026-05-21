@@ -44,12 +44,11 @@ export default defineType({
 		// --- SEO ---
 		defineField({
 			name: 'title',
-			title: 'Titolo SEO',
+			title: 'Titolo SEO (override)',
 			type: 'string',
-			description: 'Il titolo che appare nei risultati di Google e nelle anteprime social. Ideale: 50-60 caratteri. Includi la parola chiave principale.',
+			description: 'Lascia vuoto per usare il titolo principale. Compilalo solo se vuoi un titolo diverso nei risultati di Google (es. più corto o con keyword specifiche). Ideale: 50-60 caratteri.',
 			fieldset: 'seo',
 			validation: (Rule) => [
-				Rule.required().error('Il titolo SEO e obbligatorio'),
 				Rule.max(70).warning('Il titolo potrebbe essere tagliato da Google. Resta sotto i 60 caratteri.'),
 			],
 			components: {

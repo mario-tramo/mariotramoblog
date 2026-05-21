@@ -44,7 +44,7 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'BlogPosting',
-		headline: post.metadata.title,
+		headline: post.title || post.metadata.title,
 		description: post.metadata.description,
 		url,
 		inLanguage: post.language || 'it',
@@ -56,7 +56,7 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 		...(image && {
 			image: {
 				'@type': 'ImageObject',
-				url: typeof image === 'string' ? image : `${BASE_URL}/api/og?title=${encodeURIComponent(post.metadata.title)}`,
+				url: typeof image === 'string' ? image : `${BASE_URL}/api/og?title=${encodeURIComponent(post.title || post.metadata.title)}`,
 				width: 1200,
 				height: 630,
 			},

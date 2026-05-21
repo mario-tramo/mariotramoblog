@@ -22,6 +22,7 @@ export async function GET() {
 			},
 			'posts': *[_type == 'blog.post']{
 				_type,
+				'title': coalesce(title, metadata.title),
 				body,
 				publishDate,
 				authors[]->,
@@ -59,7 +60,7 @@ export async function GET() {
 		const url = resolveUrl(post, { language: post.language })
 
 		return feed.addItem({
-			title: escapeHTML(post.metadata.title),
+			title: escapeHTML(post.title || post.metadata.title),
 			description: post.metadata.description,
 			id: url,
 			link: url,

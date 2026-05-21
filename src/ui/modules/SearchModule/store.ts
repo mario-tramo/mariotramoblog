@@ -80,7 +80,7 @@ export async function handleSearch({
 		]{
 			_id,
 			_type,
-			title,
+			'title': coalesce(title, metadata.title),
 			metadata
 		}`,
 		params: {

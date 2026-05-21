@@ -75,6 +75,7 @@ async function getPost(params: Params) {
 			${lang ? `&& language == '${lang}'` : ''}
 		][0]{
 			...,
+			'title': coalesce(title, metadata.title),
 			body[]{
 				...,
 				_type == 'image' => {

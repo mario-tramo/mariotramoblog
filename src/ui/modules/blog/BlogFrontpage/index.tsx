@@ -65,7 +65,7 @@ export default async function BlogFrontpage({
 			]|order(publishDate desc){
 				_type,
 				_id,
-				title,
+				'title': coalesce(title, metadata.title),
 				featured,
 				categories[]->,
 				authors[]->,
