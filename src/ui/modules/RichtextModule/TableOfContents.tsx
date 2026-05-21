@@ -14,40 +14,45 @@ export default function TableOfContents({
 	}[]
 }) {
 	useEffect(() => {
-		if (typeof document === 'undefined') return
+		if (typeof document === 'undefined' || !headings?.length) return
 
 		const headerHeight =
 			document.querySelector('body > header')?.clientHeight || 0
 
-		headings?.forEach(({ text }) => {
-			const target = document.getElementById(slug(text))
+		const targets = new Map<Element, string>()
 
-			if (!target) return
-
-			const observer = new IntersectionObserver(
-				(entries) => {
-					entries.forEach((entry) => {
-						const tocItem = document.querySelector(
-							`[data-toc-item="${slug(text)}"]`,
-						)
-
-						if (entry.isIntersecting) {
-							tocItem?.classList.add(css.inView)
-						} else {
-							tocItem?.classList.remove(css.inView)
-						}
-					})
-				},
-				{
-					threshold: 1,
-					rootMargin: `-${headerHeight}px 0px 0px 0px`,
-				},
-			)
-
-			observer.observe(target)
-
-			return () => observer.disconnect()
+		headings.forEach(({ text }) => {
+			const id = slug(text)
+			const el = document.getElementById(id)
+			if (el) targets.set(el, id)
 		})
+
+		if (!targets.size) return
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					const id = targets.get(entry.target)
+					if (!id) return
+					const tocItem = document.querySelector(
+						`[data-toc-item="${id}"]`,
+					)
+					if (entry.isIntersecting) {
+						tocItem?.classList.add(css.inView)
+					} else {
+						tocItem?.classList.remove(css.inView)
+					}
+				})
+			},
+			{
+				threshold: 1,
+				rootMargin: `-${headerHeight}px 0px 0px 0px`,
+			},
+		)
+
+		targets.forEach((_, el) => observer.observe(el))
+
+		return () => observer.disconnect()
 	}, [headings])
 
 	return (

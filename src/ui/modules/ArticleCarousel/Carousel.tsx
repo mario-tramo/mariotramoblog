@@ -17,7 +17,7 @@ type Post = {
 	categories: { title: string }[]
 }
 
-function Slide({ post, active }: { post: Post; active: boolean }) {
+function Slide({ post, active, isFirst }: { post: Post; active: boolean; isFirst: boolean }) {
 	return (
 		<Link
 			href={post.slug}
@@ -34,7 +34,8 @@ function Slide({ post, active }: { post: Post; active: boolean }) {
 					src={post.imageUrl + '?w=1200&auto=format'}
 					alt={post.title}
 					className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-					loading="lazy"
+					loading={isFirst ? 'eager' : 'lazy'}
+					fetchPriority={isFirst ? 'high' : undefined}
 					{...(post.lqip && {
 						style: {
 							backgroundImage: `url(${post.lqip})`,
@@ -136,20 +137,20 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 	}, [isCarousel, next, paused])
 
 	// Drag / swipe
-	const onPointerDown = (e: React.PointerEvent<HTMLElement>) => {
+	const onPointerDown = useCallback((e: React.PointerEvent<HTMLElement>) => {
 		if ((e.target as HTMLElement).closest('a, button')) return
 		dragX.current = e.clientX
 		dragDx.current = 0
 		;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
 		setPaused(true)
-	}
+	}, [])
 
-	const onPointerMove = (e: React.PointerEvent<HTMLElement>) => {
+	const onPointerMove = useCallback((e: React.PointerEvent<HTMLElement>) => {
 		if (dragX.current === null) return
 		dragDx.current = e.clientX - dragX.current
-	}
+	}, [])
 
-	const onPointerUp = (e: React.PointerEvent<HTMLElement>) => {
+	const onPointerUp = useCallback((e: React.PointerEvent<HTMLElement>) => {
 		if (dragX.current === null) return
 		const dx = dragDx.current
 		dragX.current = null
@@ -159,9 +160,9 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 		} catch {}
 		setPaused(false)
 		if (Math.abs(dx) > 50) (dx < 0 ? next : prev)()
-	}
+	}, [next, prev])
 
-	const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+	const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLElement>) => {
 		if (e.key === 'ArrowRight') {
 			e.preventDefault()
 			next()
@@ -169,7 +170,7 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 			e.preventDefault()
 			prev()
 		}
-	}
+	}, [next, prev])
 
 	return (
 		<div
@@ -214,7 +215,7 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 								key={`${post._id}-${i}`}
 								className="w-[var(--card)] shrink-0"
 							>
-								<Slide post={post} active={isActive} />
+								<Slide post={post} active={isActive} isFirst={i === (isCarousel ? 1 : 0)} />
 							</div>
 						)
 					})}

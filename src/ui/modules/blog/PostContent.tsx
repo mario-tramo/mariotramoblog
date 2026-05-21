@@ -160,6 +160,7 @@ export default function PostContent({
 								width={900}
 								alt={post.title}
 								loading="eager"
+								fetchPriority="high"
 							/>
 						</figure>
 					)}

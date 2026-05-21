@@ -26,7 +26,7 @@ export function Img({
 			height={height}
 			alt={props.alt || image.alt || ''}
 			loading={loading}
-			priority={loading === 'eager'}
+			fetchPriority={loading === 'eager' ? 'high' : undefined}
 			placeholder={image.lqip ? 'blur' : undefined}
 			blurDataURL={image.lqip}
 			{...props}

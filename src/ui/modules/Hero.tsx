@@ -12,9 +12,11 @@ import Link from 'next/link'
 function Slide({
 	slide,
 	active,
+	isFirst,
 }: {
 	slide: Sanity.HeroSlide
 	active: boolean
+	isFirst: boolean
 }) {
 	return (
 		<div
@@ -29,7 +31,8 @@ function Slide({
 					src={slide.imageUrl}
 					alt={slide.title}
 					className="absolute inset-0 size-full object-cover"
-					loading="eager"
+					loading={isFirst ? 'eager' : 'lazy'}
+					fetchPriority={isFirst ? 'high' : undefined}
 				/>
 			)}
 		</div>
@@ -63,21 +66,20 @@ export default function Hero({
 		return () => clearInterval(interval)
 	}, [isCarousel, next, paused])
 
-	const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-		// Don't capture pointer if clicking on a link/button inside the slide
+	const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
 		if ((e.target as HTMLElement).closest('a, button')) return
 		dragX.current = e.clientX
 		dragDx.current = 0
 		;(e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId)
 		setPaused(true)
-	}
+	}, [])
 
-	const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+	const onPointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
 		if (dragX.current === null) return
 		dragDx.current = e.clientX - dragX.current
-	}
+	}, [])
 
-	const onPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+	const onPointerUp = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
 		if (dragX.current === null) return
 		const dx = dragDx.current
 		dragX.current = null
@@ -89,9 +91,9 @@ export default function Hero({
 		} catch {}
 		setPaused(false)
 		if (Math.abs(dx) > 50) (dx < 0 ? next : prev)()
-	}
+	}, [next, prev])
 
-	const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+	const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
 		if (e.key === 'ArrowRight') {
 			e.preventDefault()
 			next()
@@ -99,7 +101,10 @@ export default function Hero({
 			e.preventDefault()
 			prev()
 		}
-	}
+	}, [next, prev])
+
+	const onMouseEnter = useCallback(() => setPaused(true), [])
+	const onMouseLeave = useCallback(() => setPaused(false), [])
 
 	if (!slides?.length) return null
 
@@ -123,8 +128,8 @@ export default function Hero({
 			onPointerMove={isCarousel ? onPointerMove : undefined}
 			onPointerUp={isCarousel ? onPointerUp : undefined}
 			onPointerCancel={isCarousel ? onPointerUp : undefined}
-			onMouseEnter={() => setPaused(true)}
-			onMouseLeave={() => setPaused(false)}
+			onMouseEnter={onMouseEnter}
+			onMouseLeave={onMouseLeave}
 			{...moduleProps(props)}
 		>
 			<div aria-live="polite" aria-atomic="true" className="sr-only">
@@ -132,7 +137,7 @@ export default function Hero({
 			</div>
 
 			{slides.map((slide, i) => (
-				<Slide key={slide._key} slide={slide} active={i === current} />
+				<Slide key={slide._key} slide={slide} active={i === current} isFirst={i === 0} />
 			))}
 
 			{/* Gradient overlays */}
