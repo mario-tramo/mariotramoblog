@@ -116,8 +116,8 @@ export async function generateStaticParams() {
 		client.fetch<{ slug: string }[]>(
 			groq`*[
 				_type == 'blog.category'
-				&& defined(metadata.slug.current)
-			]{ 'slug': metadata.slug.current }`,
+				&& defined(slug.current)
+			]{ 'slug': slug.current }`,
 		),
 	])
 
@@ -162,7 +162,7 @@ async function getCategory(params: Params) {
 	>({
 		query: groq`*[
 			_type == 'blog.category'
-			&& metadata.slug.current == $slug
+			&& slug.current == $slug
 		][0]{
 			...,
 			modules[]{ ${MODULES_QUERY} },
@@ -180,7 +180,7 @@ async function getCategory(params: Params) {
 		...raw,
 		modules: raw.modules ?? [],
 		metadata: {
-			slug: raw.metadata?.slug ?? { current: slug },
+			slug: { current: slug },
 			title: raw.metadata?.title ?? raw.title,
 			description: raw.metadata?.description ?? '',
 			noIndex: raw.metadata?.noIndex ?? false,
@@ -224,7 +224,7 @@ function processSlug(params: Params) {
 
 async function getCategoryTemplate(): Promise<Sanity.Module[]> {
 	const template = await fetchSanityLive<{ modules?: Sanity.Module[] }>({
-		query: groq`*[_id == 'category-template'][0]{
+		query: groq`*[_type == 'category-template'][0]{
 			modules[]{ ${MODULES_QUERY} }
 		}`,
 	})

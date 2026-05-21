@@ -33,6 +33,18 @@ export default async function ArticleCarousel({
 	const filterConditions = buildGroqFilterConditions(resolvedFilters)
 	const filterParams = buildGroqFilterParams(resolvedFilters)
 
+	// Auto-apply ?categoria from URL when no explicit category filter configured
+	const hasExplicitCategoryFilter = resolvedFilters.some(
+		(f) => f.field === 'category',
+	)
+	const rawCategoria = searchParams?.categoria
+	const urlCategoria =
+		!hasExplicitCategoryFilter &&
+		typeof rawCategoria === 'string' &&
+		rawCategoria !== 'All'
+			? rawCategoria
+			: undefined
+
 	// Legacy: filteredCategory still works if no new filters are configured
 	const hasLegacyFilter = !!filteredCategory && !filters?.length
 
@@ -55,6 +67,7 @@ export default async function ArticleCarousel({
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
 				${hasLegacyFilter ? `&& $filteredCategory in categories[]->._id` : ''}
 				${filterConditions}
+				${urlCategoria ? `&& $urlCategoria in categories[]->.slug.current` : ''}
 			]|order(
 				${showFeaturedFirst ? 'featured desc, ' : ''}
 				publishDate desc
@@ -75,6 +88,7 @@ export default async function ArticleCarousel({
 				? { filteredCategory: filteredCategory?._id || '' }
 				: {}),
 			...filterParams,
+			...(urlCategoria ? { urlCategoria } : {}),
 		},
 	})
 

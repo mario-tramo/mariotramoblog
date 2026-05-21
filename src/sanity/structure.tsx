@@ -76,12 +76,12 @@ export const structure = structureTool({
 			.title('Contenuti')
 			.items([
 				singleton(S, 'site', 'Impostazioni sito').icon(VscServerProcess),
-				singleton(S, 'category-template', 'Template categoria'),
 				S.divider(),
 
 				S.documentTypeListItem('page').title('Pagine').icon(VscFiles),
 				S.documentTypeListItem('blog.post').title('Articoli'),
 				S.documentTypeListItem('blog.category').title('Categorie'),
+				S.documentTypeListItem('category-template').title('Template categoria'),
 				S.documentTypeListItem('blog.tag').title('Tag'),
 				S.documentTypeListItem('legal').title('Pagine legali').icon(VscLaw),
 				S.divider(),
