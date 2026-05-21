@@ -47,28 +47,28 @@ function Slide({ post, active, isFirst }: { post: Post; active: boolean; isFirst
 				<div className="absolute inset-0 bg-surface" />
 			)}
 
-			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/95 via-black/60 via-40% to-transparent sm:h-[60%] lg:h-[70%]" />
 
-			<div className="absolute inset-x-0 bottom-0 flex flex-col gap-3 p-6 sm:gap-4 sm:p-10 lg:p-12">
+			<div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-5 sm:gap-3 sm:p-8 lg:gap-4 lg:p-12">
 				{post.categories?.[0] && (
-					<span className="w-fit rounded bg-brand px-3.5 py-1.5 text-sm font-bold uppercase tracking-wide text-brand-foreground sm:text-base lg:text-lg">
+					<span className="w-fit rounded bg-brand px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-brand-foreground sm:px-3 sm:py-1.5 sm:text-sm lg:text-base">
 						{post.categories[0].title}
 					</span>
 				)}
 
-				<h3 className="line-clamp-2 text-2xl font-bold leading-tight text-white sm:text-4xl lg:text-[2.75rem]">
+				<h3 className="line-clamp-2 text-xl font-bold leading-tight text-white sm:text-3xl lg:text-[2.75rem]">
 					{post.title}
 				</h3>
 
 				{post.description && (
-					<p className="line-clamp-2 max-w-xl text-sm text-white/70 sm:text-base">
+					<p className="line-clamp-1 max-w-xl text-xs text-white/70 sm:line-clamp-2 sm:text-sm lg:text-base">
 						{post.description}
 					</p>
 				)}
 
 				{post.author && (
-					<div className="flex items-center gap-3 text-base text-white/80 sm:text-lg">
-						<span className="grid size-8 place-items-center rounded-full bg-white/20 text-sm font-bold text-white sm:size-9">
+					<div className="flex items-center gap-2 text-sm text-white/80 sm:gap-3 sm:text-base lg:text-lg">
+						<span className="grid size-7 place-items-center rounded-full bg-white/20 text-xs font-bold text-white sm:size-8 sm:text-sm lg:size-9">
 							{getInitials(post.author.name)}
 						</span>
 						{post.author.name}
