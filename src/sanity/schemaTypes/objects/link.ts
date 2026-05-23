@@ -8,7 +8,7 @@ export default defineType({
 	icon: VscLink,
 	type: 'object',
 	options: {
-		columns: 2,
+		columns: 1,
 	},
 	fields: [
 		defineField({
