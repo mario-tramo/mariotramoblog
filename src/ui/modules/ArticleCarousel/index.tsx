@@ -57,7 +57,7 @@ export default async function ArticleCarousel({
 			publishDate: string
 			imageUrl: string | null
 			lqip: string | null
-			author: { name: string } | null
+			authors: { name: string }[] | null
 			categories: { title: string }[]
 		}[]
 	>({
@@ -79,7 +79,7 @@ export default async function ArticleCarousel({
 				publishDate,
 				'imageUrl': metadata.image.asset->url,
 				'lqip': metadata.image.asset->metadata.lqip,
-				'author': author->{ name },
+				'authors': authors[]->{ name },
 				categories[]->{ title },
 			}
 		`,

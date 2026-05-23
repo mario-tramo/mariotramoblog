@@ -80,12 +80,16 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 	}
 }
 
-export function collectionPageJsonLd(title: string, description?: string) {
+export function collectionPageJsonLd(
+	title: string,
+	description?: string,
+	url?: string,
+) {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'CollectionPage',
 		name: title,
-		url: `${BASE_URL}/${BLOG_DIR}`,
+		url: url || `${BASE_URL}/${BLOG_DIR}`,
 		inLanguage: 'it',
 		...(description && { description }),
 		isPartOf: {

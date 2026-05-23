@@ -9,7 +9,7 @@ export default function CompactNewsletter({
 	title,
 	description,
 }: NewsletterVariantProps) {
-	const { email, setEmail, isSubmitting, isSuccess, isFocused, setIsFocused, handleSubmit } =
+	const { email, setEmail, isSubmitting, isSuccess, error, isFocused, setIsFocused, handleSubmit } =
 		useNewsletterForm()
 
 	const displayTitle = title || 'Calcio Quotidiano Nella Tua Inbox'
@@ -81,6 +81,10 @@ export default function CompactNewsletter({
 					)}
 				</AnimatePresence>
 			</form>
+
+			{error && (
+				<p className="relative z-10 mt-2 text-xs text-red-500">{error}</p>
+			)}
 
 			<motion.div
 				className="relative z-10 mt-4 text-center"

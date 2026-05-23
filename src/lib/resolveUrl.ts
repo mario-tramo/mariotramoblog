@@ -1,4 +1,4 @@
-import { BLOG_DIR } from './env'
+import { BASE_URL, BLOG_DIR } from './env'
 import { DEFAULT_LANG } from './i18n'
 import { stegaClean } from 'next-sanity'
 
@@ -18,7 +18,7 @@ export default function resolveUrl(
 		const catSlug = (page as unknown as Sanity.BlogCategory).slug?.current
 		const lang_ = language && language !== DEFAULT_LANG ? `/${language}` : ''
 		return [
-			base && process.env.NEXT_PUBLIC_BASE_URL,
+			base && BASE_URL,
 			lang_,
 			`/${BLOG_DIR}`,
 			catSlug ? `?categoria=${catSlug}` : '',
@@ -38,7 +38,7 @@ export default function resolveUrl(
 	const path = slug === 'index' ? null : slug
 
 	return [
-		base && process.env.NEXT_PUBLIC_BASE_URL,
+		base && BASE_URL,
 		lang,
 		segment,
 		path,

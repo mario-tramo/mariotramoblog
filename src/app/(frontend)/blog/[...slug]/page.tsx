@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Modules from '@/ui/modules'
+import ViewTracker from '@/ui/ViewTracker'
 import processMetadata from '@/lib/processMetadata'
 import { blogPostingJsonLd, breadcrumbJsonLd, personJsonLd } from '@/lib/jsonLd'
 import { client } from '@/sanity/lib/client'
@@ -11,7 +12,7 @@ import {
 	MODULES_QUERY,
 	TRANSLATIONS_QUERY,
 } from '@/sanity/lib/queries'
-import { languages, type Lang } from '@/lib/i18n'
+import { processSlug } from '@/lib/processSlug'
 
 export default async function Page({ params }: Props) {
 	const post = await getPost(await params)
@@ -46,6 +47,7 @@ export default async function Page({ params }: Props) {
 					dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd(author)) }}
 				/>
 			))}
+			<ViewTracker slug={post.metadata.slug.current} />
 			<Modules modules={post.modules} post={post} />
 		</>
 	)
@@ -83,7 +85,7 @@ async function getPost(params: Params) {
 					asset->
 				}
 			},
-			'readTime': length(string::split(pt::text(body), ' ')) / 200,
+			'readTime': round(length(pt::text(body)) / 5 / 180),
 			'headings': body[style in ['h2', 'h3']]{
 				style,
 				'text': pt::text(@)
@@ -118,17 +120,4 @@ type Params = { slug: string[] }
 
 type Props = {
 	params: Promise<Params>
-}
-
-function processSlug(params: Params) {
-	const lang = languages.includes(params.slug[0] as Lang)
-		? params.slug[0]
-		: undefined
-
-	const slug = params.slug.join('/')
-
-	return {
-		slug: lang ? slug.replace(new RegExp(`^${lang}/`), '') : slug,
-		lang,
-	}
 }

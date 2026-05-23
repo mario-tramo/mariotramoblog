@@ -23,6 +23,7 @@ import ModuleCallout from '@/ui/modules/Callout'
 import Divider from '@/ui/modules/Divider'
 import ArticleCarousel from '@/ui/modules/ArticleCarousel'
 import BlogList from '@/ui/modules/blog/BlogList'
+import PostsFeed from '@/ui/modules/PostsFeed'
 import StandingsModule from '@/ui/modules/Standings'
 import Breadcrumbs from '@/ui/modules/Breadcrumbs'
 
@@ -141,6 +142,47 @@ export default function ShowcasePage() {
 				<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
 					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
 					<ArticleCarousel limit={5} showFeaturedFirst />
+				</Suspense>
+			</Section>
+
+			{/* ── POSTS FEED ── */}
+			<Section title="Posts Feed" wide>
+				<p className="mx-auto max-w-screen-md text-sm text-muted-foreground">
+					Modulo universale per mostrare articoli. Un solo componente, configurabile per fonte dati e layout.
+				</p>
+
+				<Variant label="Ultimi — Carosello" props='source="latest" layout="carousel"' />
+				<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
+					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
+					<PostsFeed title="Ultime Notizie" source="latest" layout="carousel" limit={6} nested />
+				</Suspense>
+
+				<Variant label="Trending — Griglia" props='source="trending" layout="grid"' />
+				<Suspense fallback={<div className="h-64 animate-pulse rounded-xl bg-muted" />}>
+					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
+					<PostsFeed title="Di Tendenza" source="trending" layout="grid" limit={4} nested />
+				</Suspense>
+
+				<Variant label="Ultimi — Lista numerata" props='source="latest" layout="numbered"' />
+				<div className="mx-auto max-w-sm">
+					<Suspense fallback={<div className="h-48 animate-pulse rounded-xl bg-muted" />}>
+						{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
+						<PostsFeed title="TOP 5" source="latest" layout="numbered" limit={5} nested />
+					</Suspense>
+				</div>
+
+				<Variant label="Trending — Lista con miniature" props='source="trending" layout="thumbs"' />
+				<div className="mx-auto max-w-sm">
+					<Suspense fallback={<div className="h-48 animate-pulse rounded-xl bg-muted" />}>
+						{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
+						<PostsFeed title="Da Non Perdere" source="trending" layout="thumbs" limit={5} nested />
+					</Suspense>
+				</div>
+
+				<Variant label="Ultimi — Lista compatta" props='source="latest" layout="list"' />
+				<Suspense fallback={<div className="h-48 animate-pulse rounded-xl bg-muted" />}>
+					{/* @ts-expect-error -- Sanity.Module _type/_key not needed for showcase */}
+					<PostsFeed title="Altre Notizie" source="latest" layout="list" limit={6} nested />
 				</Suspense>
 			</Section>
 

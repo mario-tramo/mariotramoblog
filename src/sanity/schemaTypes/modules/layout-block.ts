@@ -76,7 +76,7 @@ function contentModules() {
 		{ type: 'newsletter-block' },
 		{ type: 'standings' },
 		{ type: 'custom-html' },
-		{ type: 'latest-news' },
+		{ type: 'posts-feed' },
 		{ type: 'divider' },
 		{ type: 'search-module' },
 	]

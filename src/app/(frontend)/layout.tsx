@@ -15,9 +15,8 @@ import VisualEditingControls from '@/ui/dev/VisualEditingControls'
 import DevColorSwitcher from '@/ui/dev/DevColorSwitcher'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { BASE_URL } from '@/lib/env'
 import '@/styles/app.css'
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!
 
 export const metadata: Metadata = {
 	metadataBase: new URL(BASE_URL),

@@ -21,7 +21,7 @@ export default defineField({
 		{ type: 'standings' },
 		{ type: 'breadcrumbs' },
 		{ type: 'custom-html' },
-		{ type: 'latest-news' },
+		{ type: 'posts-feed' },
 		{ type: 'divider' },
 	],
 	options: {
@@ -48,7 +48,7 @@ export default defineField({
 				{
 					name: 'blog',
 					title: 'Blog',
-					of: ['article-carousel', 'blog-list', 'blog-frontpage', 'blog-post-content', 'latest-news'],
+					of: ['article-carousel', 'blog-list', 'blog-frontpage', 'blog-post-content', 'posts-feed'],
 				},
 				{
 					name: 'altro',

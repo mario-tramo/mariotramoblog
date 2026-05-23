@@ -14,10 +14,11 @@ import RichtextModule from './RichtextModule'
 import SearchModule from './SearchModule'
 import LayoutBlock from './LayoutBlock'
 import Standings from './Standings'
-import LatestNews from './LatestNews'
+import PostsFeed from './PostsFeed'
 import { createDataAttribute } from 'next-sanity'
 import { stegaClean } from 'next-sanity'
 import { cn } from '@/lib/utils'
+import { bgClasses } from '@/lib/bgClasses'
 
 const MODULE_MAP = {
 	'accordion-list': AccordionList,
@@ -36,15 +37,9 @@ const MODULE_MAP = {
 	'richtext-module': RichtextModule,
 	'search-module': SearchModule,
 	standings: Standings,
-	'latest-news': LatestNews,
+	'latest-news': PostsFeed, // backward compat — replaced by posts-feed
+	'posts-feed': PostsFeed,
 } as const
-
-const bgClasses: Record<string, string> = {
-	none: '',
-	surface: 'bg-surface',
-	accent: 'bg-accent/5',
-	dark: 'bg-ink text-canvas',
-}
 
 export default function Modules({
 	modules,
@@ -68,6 +63,7 @@ export default function Modules({
 				}
 			case 'blog-list':
 			case 'article-carousel':
+			case 'posts-feed':
 				return { searchParams }
 			case 'blog-post-content':
 				return { post }

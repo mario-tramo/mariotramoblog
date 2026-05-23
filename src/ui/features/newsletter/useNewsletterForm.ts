@@ -6,6 +6,7 @@ export function useNewsletterForm() {
 	const [email, setEmail] = useState('')
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [isSuccess, setIsSuccess] = useState(false)
+	const [error, setError] = useState<string | null>(null)
 	const [isFocused, setIsFocused] = useState(false)
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -13,6 +14,7 @@ export function useNewsletterForm() {
 		if (!email) return
 
 		setIsSubmitting(true)
+		setError(null)
 
 		try {
 			const res = await fetch('/api/newsletter/subscribe', {
@@ -29,8 +31,12 @@ export function useNewsletterForm() {
 			setIsSuccess(true)
 			setEmail('')
 			setTimeout(() => setIsSuccess(false), 3000)
-		} catch {
-			setIsSubmitting(false)
+		} catch (err) {
+			setError(
+				err instanceof Error
+					? err.message
+					: "Errore durante l'iscrizione. Riprova più tardi.",
+			)
 		} finally {
 			setIsSubmitting(false)
 		}
@@ -41,6 +47,7 @@ export function useNewsletterForm() {
 		setEmail,
 		isSubmitting,
 		isSuccess,
+		error,
 		isFocused,
 		setIsFocused,
 		handleSubmit,

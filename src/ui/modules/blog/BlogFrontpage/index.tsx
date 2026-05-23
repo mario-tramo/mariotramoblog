@@ -99,7 +99,7 @@ export default async function BlogFrontpage({
 	].slice(0, 5)
 	const morePosts = sorted.slice(4, 10)
 	const remainingPosts = sortFeaturedPosts(
-		sorted.slice(4),
+		sorted.slice(10),
 		showFeaturedPostsFirst,
 	)
 

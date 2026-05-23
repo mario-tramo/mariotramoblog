@@ -47,7 +47,7 @@ import searchModule from './modules/search-module'
 import newsletterBlock from './modules/newsletter-block'
 import layoutBlock from './modules/layout-block'
 import standings from './modules/standings'
-import latestNews from './modules/latest-news'
+import postsFeed from './modules/posts-feed'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
 	// documents
@@ -99,5 +99,5 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	searchModule,
 	newsletterBlock,
 	standings,
-	latestNews,
+	postsFeed,
 ]

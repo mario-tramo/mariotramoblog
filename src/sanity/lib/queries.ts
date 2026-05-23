@@ -28,6 +28,7 @@ const COLUMN_MODULES_QUERY = groq`
 	ctas[]{ ..., link{ ${LINK_QUERY} } },
 	_type == 'article-carousel' => { filteredCategory-> },
 	_type == 'blog-list' => { filteredCategory-> },
+	_type == 'posts-feed' => { manualPosts[]->{ _id } },
 	_type == 'card-list' => { cards[]{ ..., ctas[]{ ${CTA_QUERY} } } },
 	_type == 'hero' => {
 		slides[]{ ..., author->, cta{ ${CTA_QUERY} },
@@ -60,6 +61,7 @@ export const MODULES_QUERY = groq`
 		}
 	},
 	_type == 'blog-list' => { filteredCategory-> },
+	_type == 'posts-feed' => { manualPosts[]->{ _id } },
 	_type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
 	_type == 'card-list' => {
 		cards[]{

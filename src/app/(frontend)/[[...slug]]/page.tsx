@@ -10,8 +10,8 @@ import {
 	MODULES_QUERY,
 	TRANSLATIONS_QUERY,
 } from '@/sanity/lib/queries'
-import { languages } from '@/lib/i18n'
 import { BASE_URL, BLOG_DIR } from '@/lib/env'
+import { processSlug } from '@/lib/processSlug'
 import errors from '@/lib/errors'
 
 export default async function Page({ params, searchParams }: Props) {
@@ -64,6 +64,7 @@ export default async function Page({ params, searchParams }: Props) {
 							collectionPageJsonLd(
 								category.metadata.title,
 								category.metadata.description,
+								`${BASE_URL}/${category.metadata.slug.current}`,
 							),
 						),
 					}}
@@ -189,32 +190,6 @@ type Params = { slug?: string[] }
 type Props = {
 	params: Promise<Params>
 	searchParams: Promise<Record<string, string | string[] | undefined>>
-}
-
-function processSlug(params: Params) {
-	const lang =
-		params.slug && languages.includes(params.slug[0])
-			? params.slug[0]
-			: undefined
-
-	if (params.slug === undefined)
-		return {
-			slug: 'index',
-			lang,
-		}
-
-	const slug = params.slug.join('/')
-
-	if (lang) {
-		const processed = slug.replace(new RegExp(`^${lang}/?`), '')
-
-		return {
-			slug: processed === '' ? 'index' : processed,
-			lang,
-		}
-	}
-
-	return { slug }
 }
 
 async function getCategoryTemplate(): Promise<Sanity.Module[]> {

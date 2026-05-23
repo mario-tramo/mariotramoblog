@@ -9,7 +9,7 @@ export default function InlineNewsletter({
 	title,
 	description,
 }: NewsletterVariantProps) {
-	const { email, setEmail, isSubmitting, isSuccess, handleSubmit } =
+	const { email, setEmail, isSubmitting, isSuccess, error, handleSubmit } =
 		useNewsletterForm()
 
 	const displayTitle = title || 'Calcio Quotidiano Nella Tua Inbox'
@@ -80,6 +80,10 @@ export default function InlineNewsletter({
 							)}
 						</AnimatePresence>
 					</form>
+
+					{error && (
+						<p className="text-xs text-red-500">{error}</p>
+					)}
 
 					<AvatarRow borderColor="var(--color-canvas)" size={24} />
 				</motion.div>

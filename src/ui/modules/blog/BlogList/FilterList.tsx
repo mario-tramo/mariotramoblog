@@ -17,7 +17,7 @@ export default async function FilterList() {
 
 	return (
 		<fieldset>
-			<legend className="sr-only">Filter by category</legend>
+			<legend className="sr-only">Filtra per categoria</legend>
 
 			<div
 				className={cn(

@@ -13,7 +13,7 @@ type Post = {
 	publishDate: string
 	imageUrl: string | null
 	lqip: string | null
-	author: { name: string } | null
+	authors: { name: string }[] | null
 	categories: { title: string }[]
 }
 
@@ -24,7 +24,7 @@ function Slide({ post, active, isFirst }: { post: Post; active: boolean; isFirst
 			className={cn(
 				'group relative block overflow-hidden rounded-2xl transition-opacity duration-500',
 				'aspect-[3/4] sm:aspect-[2/1] lg:aspect-[21/9]',
-				active ? 'opacity-100' : 'opacity-50',
+				active ? 'opacity-100' : 'opacity-40',
 			)}
 			tabIndex={active ? 0 : -1}
 			aria-hidden={!active}
@@ -66,12 +66,12 @@ function Slide({ post, active, isFirst }: { post: Post; active: boolean; isFirst
 					</p>
 				)}
 
-				{post.author && (
+				{post.authors?.[0] && (
 					<div className="flex items-center gap-2 text-sm text-white/80 sm:gap-3 sm:text-base lg:text-lg">
 						<span className="grid size-7 place-items-center rounded-full bg-white/20 text-xs font-bold text-white sm:size-8 sm:text-sm lg:size-9">
-							{getInitials(post.author.name)}
+							{getInitials(post.authors[0].name)}
 						</span>
-						{post.author.name}
+						{post.authors[0].name}
 					</div>
 				)}
 			</div>
@@ -221,6 +221,20 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 					})}
 				</div>
 			</div>
+
+			{/* Edge fade overlays */}
+			{isCarousel && (
+				<>
+					<div
+						className="pointer-events-none absolute inset-y-0 left-0 z-[5] hidden w-[12%] sm:block"
+						style={{ background: 'linear-gradient(to right, var(--color-surface), transparent)' }}
+					/>
+					<div
+						className="pointer-events-none absolute inset-y-0 right-0 z-[5] hidden w-[12%] sm:block"
+						style={{ background: 'linear-gradient(to left, var(--color-surface), transparent)' }}
+					/>
+				</>
+			)}
 
 			{/* Navigation arrows — visible on all devices */}
 			{isCarousel && (

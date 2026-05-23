@@ -202,59 +202,57 @@ export default function PostContent({
 					)}
 
 					{/* Scritto da */}
-					{firstAuthor && (
-						<div className="mt-10">
-							<h3 className="mb-4 text-xl font-extrabold text-ink sm:text-2xl">
-								Scritto da
-							</h3>
-							<div className="rounded-xl border border-ink/5 bg-surface p-5 sm:p-6">
-								<div className="flex gap-4">
-									<span className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full bg-brand text-lg font-bold text-brand-foreground sm:size-20">
-										{firstAuthor.image ? (
-											<Img
-												className="size-full rounded-full object-cover"
-												image={firstAuthor.image}
-												width={160}
-												alt={firstAuthor.name}
-											/>
-										) : (
-											getInitials(firstAuthor.name)
-										)}
-									</span>
-									<div className="min-w-0">
-										<p className="text-lg font-bold text-ink">
-											{firstAuthor.name}
-										</p>
-										{firstAuthor.articleCount && firstAuthor.articleCount > 0 && (
-											<p className="mt-0.5 text-sm font-medium text-accent">
-												{firstAuthor.articleCount} {firstAuthor.articleCount === 1 ? 'Articolo' : 'Articoli'}
-											</p>
-										)}
-										{firstAuthor.socialLink && (
-											<a
-												href={firstAuthor.socialLink}
-												target="_blank"
-												rel="noopener noreferrer"
-												className="mt-2 inline-grid size-8 place-items-center rounded border border-ink/10 text-muted transition hover:border-accent hover:text-accent"
-												aria-label="Profilo social"
-											>
-												<AuthorSocialIcon url={firstAuthor.socialLink} />
-											</a>
-										)}
-									</div>
-								</div>
-								{firstAuthor.bio && (
-									<p className="mt-4 text-sm leading-relaxed text-muted">
-										{firstAuthor.bio}
+					<div className="mt-10">
+						<h3 className="mb-4 text-xl font-extrabold text-ink sm:text-2xl">
+							Scritto da
+						</h3>
+						<div className="rounded-xl border border-ink/5 bg-surface p-5 sm:p-6">
+							<div className="flex gap-4">
+								<span className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full bg-brand text-lg font-bold text-brand-foreground sm:size-20">
+									{firstAuthor?.image ? (
+										<Img
+											className="size-full rounded-full object-cover"
+											image={firstAuthor.image}
+											width={160}
+											alt={firstAuthor.name}
+										/>
+									) : (
+										getInitials(firstAuthor?.name ?? 'Redazione')
+									)}
+								</span>
+								<div className="min-w-0">
+									<p className="text-lg font-bold text-ink">
+										{firstAuthor?.name ?? 'Redazione'}
 									</p>
-								)}
+									{firstAuthor?.articleCount && firstAuthor.articleCount > 0 && (
+										<p className="mt-0.5 text-sm font-medium text-accent">
+											{firstAuthor.articleCount} {firstAuthor.articleCount === 1 ? 'Articolo' : 'Articoli'}
+										</p>
+									)}
+									{firstAuthor?.socialLink && (
+										<a
+											href={firstAuthor.socialLink}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="mt-2 inline-grid size-8 place-items-center rounded border border-ink/10 text-muted transition hover:border-accent hover:text-accent"
+											aria-label="Profilo social"
+										>
+											<AuthorSocialIcon url={firstAuthor.socialLink} />
+										</a>
+									)}
+								</div>
 							</div>
+							{firstAuthor?.bio && (
+								<p className="mt-4 text-sm leading-relaxed text-muted">
+									{firstAuthor.bio}
+								</p>
+							)}
 						</div>
-					)}
+					</div>
 
 					{/* Footer nav */}
-					<div className="mt-10 flex items-center justify-between border-t border-ink/5 pt-6">
-						{post.categories?.[0] && (
+					{post.categories?.[0] && (
+						<div className="mt-10 flex items-center border-t border-ink/5 pt-6">
 							<Link
 								href={`/blog?categoria=${post.categories[0].slug.current}`}
 								className="inline-flex items-center gap-2 text-sm text-brand hover:underline"
@@ -262,14 +260,8 @@ export default function PostContent({
 								<ChevronIcon direction="left" />
 								{post.categories[0].title}
 							</Link>
-						)}
-						<Link
-							href="/blog"
-							className="text-sm text-muted transition hover:text-ink"
-						>
-							Blog
-						</Link>
-					</div>
+						</div>
+					)}
 				</div>
 
 				{/* Sidebar */}

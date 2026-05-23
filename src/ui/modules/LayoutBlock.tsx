@@ -2,6 +2,7 @@ import moduleProps from '@/lib/moduleProps'
 import Modules from '@/ui/modules'
 import { stegaClean } from 'next-sanity'
 import { cn } from '@/lib/utils'
+import { bgClasses } from '@/lib/bgClasses'
 
 const gridClasses: Record<string, string> = {
 	'1': 'grid-cols-1',
@@ -31,13 +32,6 @@ const paddingYClasses: Record<string, string> = {
 	small: 'py-4 md:py-8',
 	medium: 'py-8 md:py-20',
 	large: 'py-12 md:py-28',
-}
-
-const bgClasses: Record<string, string> = {
-	none: '',
-	surface: 'bg-surface',
-	accent: 'bg-accent/5',
-	dark: 'bg-ink text-canvas',
 }
 
 export default function LayoutBlock({

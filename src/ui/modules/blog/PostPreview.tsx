@@ -62,7 +62,7 @@ export default function PostPreview({
 	}
 
 	return (
-		<div className="group relative isolate flex h-full flex-col space-y-2 rounded-2xl bg-surface p-4 transition">
+		<div className="group relative isolate flex h-full flex-col gap-2 rounded-2xl bg-surface p-4 transition">
 			<figure className="relative aspect-video overflow-hidden rounded-lg border border-white/10 bg-ink/3">
 				<Img
 					className="aspect-video w-full object-cover transition-all group-hover:scale-105 group-hover:brightness-110"
@@ -100,15 +100,15 @@ export default function PostPreview({
 				</p>
 			</div>
 
-			<div className="flex flex-wrap items-center gap-4 text-sm">
+			<div className="mt-auto flex flex-wrap items-center text-sm">
 				{post?.authors?.length ? (
 					<Authors
-						className="flex flex-wrap items-center gap-4"
+						className="flex flex-wrap items-center gap-2"
 						authors={post.authors}
 					/>
 				) : skeleton ? (
 					<Authors
-						className="flex flex-wrap items-center gap-4"
+						className="flex flex-wrap items-center gap-2"
 						skeleton
 					/>
 				) : (

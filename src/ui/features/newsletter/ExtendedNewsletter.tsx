@@ -9,7 +9,7 @@ export default function ExtendedNewsletter({
 	title,
 	description,
 }: NewsletterVariantProps) {
-	const { email, setEmail, isSubmitting, isSuccess, setIsFocused, handleSubmit } =
+	const { email, setEmail, isSubmitting, isSuccess, error, setIsFocused, handleSubmit } =
 		useNewsletterForm()
 
 	const displayTitle = title || 'Calcio Quotidiano Nella Tua Inbox'
@@ -98,6 +98,10 @@ export default function ExtendedNewsletter({
 					</AnimatePresence>
 				</motion.form>
 			</div>
+
+			{error && (
+				<p className="relative z-10 mt-3 text-sm text-red-500">{error}</p>
+			)}
 
 			<motion.div
 				className="relative z-10 mt-5"
