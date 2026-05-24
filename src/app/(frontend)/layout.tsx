@@ -8,13 +8,13 @@ import SkipToContent from '@/ui/layout/SkipToContent'
 import Announcement from '@/ui/layout/Announcement'
 import Header from '@/ui/layout/header'
 import Footer from '@/ui/layout/footer'
+import { CookieConsentProvider } from '@/ui/features/CookieConsent'
 import CookieBanner from '@/ui/features/CookieBanner'
+import ConsentAnalytics from '@/ui/features/ConsentAnalytics'
 import { ToastProvider } from '@/ui/features/Toast'
 import VisualEditingControls from '@/ui/dev/VisualEditingControls'
 // import DevFontSwitcher from '@/ui/dev/DevFontSwitcher'
 import DevColorSwitcher from '@/ui/dev/DevColorSwitcher'
-import { Analytics } from '@vercel/analytics/react'
-import { SpeedInsights } from '@vercel/speed-insights/next'
 import { BASE_URL } from '@/lib/env'
 import '@/styles/app.css'
 
@@ -65,6 +65,7 @@ export default async function RootLayout({
 					}}
 				/>
 				<NuqsAdapter>
+					<CookieConsentProvider>
 					<ToastProvider>
 					<SkipToContent />
 					<Announcement />
@@ -74,7 +75,9 @@ export default async function RootLayout({
 					</main>
 					<Footer />
 					<CookieBanner />
+					<ConsentAnalytics />
 					</ToastProvider>
+					</CookieConsentProvider>
 
 					<VisualEditingControls />
 					{process.env.NODE_ENV === 'development' && (
@@ -83,9 +86,6 @@ export default async function RootLayout({
 						</>
 					)}
 				</NuqsAdapter>
-
-				<Analytics />
-				<SpeedInsights />
 			</body>
 		</Root>
 	)

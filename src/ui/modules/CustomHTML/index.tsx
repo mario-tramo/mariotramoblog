@@ -3,6 +3,7 @@ import CSS from './CSS'
 import WithScript from './WithScript'
 import { stegaClean } from 'next-sanity'
 import type { ComponentProps } from 'react'
+import DOMPurify from 'dompurify'
 
 export default function CustomHTML({
 	className,
@@ -16,21 +17,25 @@ export default function CustomHTML({
 	ComponentProps<'section' | 'script'>) {
 	if ((!html?.code && !css?.code) || props?.options?.hidden) return null
 
+	const cleanCode = stegaClean(html?.code ?? '')
+
 	return (
 		<>
 			<CSS code={stegaClean(css?.code)} />
 
 			{html?.code &&
-				(html.code.includes('<script') ? (
+				(cleanCode.includes('<script') ? (
 					<WithScript
-						code={stegaClean(html.code)}
+						code={cleanCode}
 						className={stegaClean(className)}
 						{...props}
 					/>
 				) : (
 					<section
 						className={stegaClean(className)}
-						dangerouslySetInnerHTML={{ __html: stegaClean(html.code) }}
+						dangerouslySetInnerHTML={{
+							__html: DOMPurify.sanitize(cleanCode),
+						}}
 						{...moduleProps(props)}
 					/>
 				))}

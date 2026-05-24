@@ -1,5 +1,3 @@
-'use client'
-
 import CompactNewsletter from './CompactNewsletter'
 import ExtendedNewsletter from './ExtendedNewsletter'
 import InlineNewsletter from './InlineNewsletter'

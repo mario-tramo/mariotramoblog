@@ -1,5 +1,3 @@
-"use client";
-
 interface MatchResultProps {
   value: {
     competition?: string;

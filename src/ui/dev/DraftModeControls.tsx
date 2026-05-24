@@ -1,5 +1,3 @@
-'use client'
-
 import { FlaskConicalOff } from 'lucide-react'
 
 export default function DraftModeControls() {

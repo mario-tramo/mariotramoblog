@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useBlogFilters } from '../store'
 import { cn } from '@/lib/utils'
 import css from './FilterList.module.css'
-import { BLOG_DIR } from '@/lib/env'
+
 
 export default function Filter({
 	label,
@@ -16,12 +16,11 @@ export default function Filter({
 	value?: 'All' | string
 	navigateToCategory?: boolean
 }) {
-	const { category } = useBlogFilters()
 	const pathname = usePathname()
-	const isActive = category === value || (value !== 'All' && pathname === `/${value}`)
 
 	if (navigateToCategory) {
-		const href = value === 'All' ? `/${BLOG_DIR}` : `/${value}`
+		const isActive = value === 'All' ? pathname === '/' : pathname === `/${value}`
+		const href = value === 'All' ? '/' : `/${value}`
 
 		return (
 			<Link

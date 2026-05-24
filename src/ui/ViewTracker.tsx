@@ -1,11 +1,16 @@
 'use client'
 
 import { useEffect } from 'react'
+import { useCookieConsent } from './features/CookieConsent'
 
 export default function ViewTracker({ slug }: { slug: string }) {
+	const { consent } = useCookieConsent()
+
 	useEffect(() => {
-		fetch(`/api/views/${slug}`, { method: 'POST' })
-	}, [slug])
+		if (consent === 'accepted') {
+			fetch(`/api/views/${slug}`, { method: 'POST' })
+		}
+	}, [slug, consent])
 
 	return null
 }

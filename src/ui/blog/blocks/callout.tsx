@@ -1,5 +1,3 @@
-"use client";
-
 interface CalloutProps {
   value: {
     type: string;

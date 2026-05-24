@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+import Image from 'next/image'
 import moduleProps from '@/lib/moduleProps'
 import CTAList from '@/ui/primitives/CTAList'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
@@ -27,12 +28,13 @@ function Slide({
 			aria-hidden={!active}
 		>
 			{slide.imageUrl && (
-				<img
+				<Image
 					src={slide.imageUrl}
-					alt={slide.title}
-					className="absolute inset-0 size-full object-cover"
-					loading={isFirst ? 'eager' : 'lazy'}
-					fetchPriority={isFirst ? 'high' : undefined}
+					alt={slide.title ?? ''}
+					fill
+					sizes="100vw"
+					className="object-cover"
+					priority={isFirst}
 				/>
 			)}
 		</div>

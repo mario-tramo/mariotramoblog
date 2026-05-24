@@ -1,5 +1,3 @@
-"use client";
-
 interface Player {
   number?: number;
   name: string;

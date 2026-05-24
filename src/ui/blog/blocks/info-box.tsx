@@ -1,5 +1,3 @@
-"use client";
-
 interface InfoBoxProps {
   value: {
     type: string;

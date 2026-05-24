@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic'
 import AccordionList from './AccordionList'
 import ArticleCarousel from './ArticleCarousel'
 import BlogFrontpage from './blog/BlogFrontpage'
@@ -6,15 +7,17 @@ import BlogPostContent from './blog/PostContent'
 import Breadcrumbs from './Breadcrumbs'
 import Callout from './Callout'
 import CardList from './CardList'
-import CustomHTML from './CustomHTML'
 import Divider from './Divider'
 import Hero from './Hero'
 import NewsletterBlock from './NewsletterBlock'
 import RichtextModule from './RichtextModule'
-import SearchModule from './SearchModule'
 import LayoutBlock from './LayoutBlock'
-import Standings from './Standings'
 import PostsFeed from './PostsFeed'
+
+// Heavy modules — lazy loaded
+const CustomHTML = dynamic(() => import('./CustomHTML'))
+const SearchModule = dynamic(() => import('./SearchModule'))
+const Standings = dynamic(() => import('./Standings'))
 import { createDataAttribute } from 'next-sanity'
 import { stegaClean } from 'next-sanity'
 import { cn } from '@/lib/utils'
@@ -55,11 +58,18 @@ export default function Modules({
 	searchParams?: Record<string, string | string[] | undefined>
 }) {
 	const getAdditionalProps = (module: Sanity.Module) => {
+		const basePath =
+			page?.metadata?.slug?.current === 'index' ||
+			!page?.metadata?.slug?.current
+				? '/'
+				: `/${page.metadata.slug.current}`
+
 		switch (module._type) {
 			case 'blog-frontpage':
 				return {
 					searchParams,
 					page: Number(searchParams?.page) || 1,
+					basePath,
 				}
 			case 'blog-list':
 			case 'article-carousel':

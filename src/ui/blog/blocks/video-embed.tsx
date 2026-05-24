@@ -1,5 +1,3 @@
-"use client";
-
 interface VideoEmbedProps {
   value: {
     url: string;

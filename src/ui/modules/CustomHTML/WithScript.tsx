@@ -2,6 +2,7 @@
 
 import { ComponentProps, useEffect, useRef, useState } from 'react'
 import moduleProps from '@/lib/moduleProps'
+import DOMPurify from 'dompurify'
 
 /**
  * @description If the code includes a <script> tag, ensure the script is re-run on each render
@@ -20,7 +21,14 @@ export default function WithScript({
 		if (firstRender) {
 			setFirstRender(false)
 		} else {
-			const parsed = document.createRange().createContextualFragment(code)
+			const sanitized = DOMPurify.sanitize(code, {
+				ADD_TAGS: ['script'],
+				ADD_ATTR: ['src', 'async', 'defer', 'type'],
+				FORCE_BODY: true,
+			})
+			const parsed = document
+				.createRange()
+				.createContextualFragment(sanitized)
 			ref.current?.appendChild(parsed)
 		}
 	}, [ref.current, code])

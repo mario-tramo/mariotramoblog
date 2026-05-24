@@ -1,5 +1,3 @@
-'use client'
-
 interface StandingsRow {
 	position: number
 	team: string

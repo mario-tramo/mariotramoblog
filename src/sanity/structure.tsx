@@ -77,7 +77,41 @@ export const structure = structureTool({
 				S.divider(),
 
 				S.documentTypeListItem('page').title('Pagine').icon(VscFiles),
-				S.documentTypeListItem('blog.post').title('Articoli'),
+				S.listItem()
+				.title('Articoli')
+				.child(
+					S.list()
+						.title('Articoli')
+						.items([
+							S.listItem()
+								.title('Tutti')
+								.child(
+									S.documentTypeList('blog.post').title('Tutti gli articoli'),
+								),
+							S.divider(),
+							...[
+								{ title: 'Calcio', slug: 'calcio' },
+								{ title: 'Calciomercato', slug: 'calciomercato' },
+								{ title: 'Fantacalcio', slug: 'fantacalcio' },
+								{ title: 'Tattiche', slug: 'tattiche' },
+								{ title: 'Opinioni', slug: 'opinioni' },
+								{ title: 'Tennis', slug: 'tennis' },
+								{ title: 'Basket', slug: 'basket' },
+								{ title: 'Formula 1', slug: 'formula-1' },
+							].map(({ title, slug }) =>
+								S.listItem()
+									.title(title)
+									.child(
+										S.documentList()
+											.title(title)
+											.filter(
+												'_type == "blog.post" && $slug in categories[]->slug.current',
+											)
+											.params({ slug }),
+									),
+							),
+						]),
+				),
 				S.documentTypeListItem('blog.category').title('Categorie'),
 				group(S, 'Template', [
 					documentTypeWithInfo(

@@ -1,5 +1,3 @@
-"use client";
-
 interface PlayerStatsProps {
   value: {
     playerName: string;

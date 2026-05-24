@@ -1,5 +1,3 @@
-"use client";
-
 interface TimelineEvent {
   minute: string;
   type: string;

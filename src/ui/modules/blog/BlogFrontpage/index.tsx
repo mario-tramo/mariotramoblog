@@ -13,6 +13,7 @@ import NewsletterSubscribe from '@/ui/features/newsletter'
 import PostListWidget from '../PostListWidget'
 import FeaturedPostCard from '../FeaturedPostCard'
 import Hero from '@/ui/modules/Hero'
+import CompactCarousel from '../CompactCarousel'
 import {
 	type CollectionFilter,
 	resolveCollectionFilters,
@@ -28,6 +29,7 @@ export default async function BlogFrontpage({
 	filters,
 	searchParams,
 	page = 1,
+	basePath = '/',
 }: Partial<{
 	slides: Sanity.HeroSlide[]
 	mainPost: 'recent' | 'featured'
@@ -36,6 +38,7 @@ export default async function BlogFrontpage({
 	filters: CollectionFilter[]
 	searchParams: Record<string, string | string[] | undefined>
 	page: number
+	basePath: string
 }>) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
 
@@ -99,7 +102,7 @@ export default async function BlogFrontpage({
 	].slice(0, 5)
 	const morePosts = sorted.slice(4, 10)
 	const remainingPosts = sortFeaturedPosts(
-		sorted.slice(10),
+		urlCategoria ? sorted : sorted.slice(10),
 		showFeaturedPostsFirst,
 	)
 
@@ -123,7 +126,7 @@ export default async function BlogFrontpage({
 						posts={latestPosts}
 						title="ULTIME NOTIZIE"
 						showDot
-						viewAllHref="/blog"
+						viewAllHref="/"
 						viewAllLabel="Vedi tutte le notizie"
 					/>
 					<NewsletterSubscribe variant="compact" />
@@ -134,19 +137,13 @@ export default async function BlogFrontpage({
 					{slides?.length ? (
 						<Hero slides={slides} _type="hero" _key="blog-frontpage-hero" />
 					) : (
-						<PostListWidget
-							variant="grid"
-							posts={topStories}
-							title="ARTICOLI IN EVIDENZA"
-							viewAllHref="/blog"
-							viewAllLabel="Vedi tutti"
-						/>
+						<CompactCarousel posts={topStories} />
 					)}
 					<PostListWidget
 						variant="list"
 						posts={morePosts}
 						title="ALTRE NOTIZIE"
-						viewAllHref="/blog"
+						viewAllHref="/"
 						viewAllLabel="Vedi altre notizie"
 					/>
 				</div>
@@ -157,7 +154,7 @@ export default async function BlogFrontpage({
 						variant="sidebar-numbered"
 						posts={trendingPosts}
 						title="DI TENDENZA"
-						viewAllHref="/blog"
+						viewAllHref="/"
 						viewAllLabel="Vedi tutti i trend"
 					/>
 					<FeaturedPostCard
@@ -170,19 +167,21 @@ export default async function BlogFrontpage({
 			{/* Full-width: Filter + Paginated list */}
 			<hr className="my-4" />
 
-			<div className="py-4">
-				<Suspense
-					fallback={
-						<div className="flex flex-wrap gap-2 max-sm:justify-center">
-							{Array.from({ length: 6 }).map((_, i) => (
-								<div key={i} className="h-8 w-20 rounded-full bg-ink/3" />
-							))}
-						</div>
-					}
-				>
-					<FilterList navigateToCategory />
-				</Suspense>
-			</div>
+			{!urlCategoria && (
+				<div className="py-4">
+					<Suspense
+						fallback={
+							<div className="flex flex-wrap gap-2 max-sm:justify-center">
+								{Array.from({ length: 6 }).map((_, i) => (
+									<div key={i} className="h-8 w-20 rounded-full bg-ink/3" />
+								))}
+							</div>
+						}
+					>
+						<FilterList navigateToCategory />
+					</Suspense>
+				</div>
+			)}
 
 			<div className="relative space-y-12">
 				<ul
@@ -203,7 +202,7 @@ export default async function BlogFrontpage({
 				<Pagination
 					currentPage={safePage}
 					totalPages={totalPages}
-					basePath="/blog"
+					basePath={basePath ?? '/'}
 					searchParams={searchParams}
 				/>
 			</div>

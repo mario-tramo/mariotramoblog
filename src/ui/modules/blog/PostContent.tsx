@@ -49,7 +49,7 @@ export default function PostContent({
 					<li aria-hidden="true">&gt;</li>
 					<li>
 						<Link
-							href="/blog"
+							href="/"
 							className="transition hover:text-ink"
 						>
 							Notizie
@@ -192,7 +192,7 @@ export default function PostContent({
 							{post.tags.map((tag) => (
 								<Link
 									key={tag._id}
-									href={`/blog?tag=${tag.slug.current}`}
+									href={`/?tag=${tag.slug.current}`}
 									className="inline-flex items-center rounded-full border border-ink/10 bg-surface px-3 py-1 text-xs font-medium text-muted transition hover:border-brand hover:text-brand"
 								>
 									#{tag.title}

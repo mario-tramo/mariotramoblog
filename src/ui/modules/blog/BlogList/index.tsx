@@ -31,7 +31,7 @@ export default async function BlogList({
 	filters,
 	searchParams,
 	nested,
-	filteredCategory: _,
+	filteredCategory,
 	...props
 }: Partial<{
 	pretitle: string
@@ -44,9 +44,20 @@ export default async function BlogList({
 	filters: CollectionFilter[]
 	searchParams: Record<string, string | string[] | undefined>
 	nested: boolean
-}> & { filteredCategory?: unknown } &
+	filteredCategory: { _ref: string }
+}> &
 	Sanity.Module) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
+
+	// Legacy filteredCategory support: resolve the reference to a category slug
+	let legacyCategorySlug: string | undefined
+	if (filteredCategory?._ref) {
+		const cat = await fetchSanityLive<{ slug: string } | null>({
+			query: groq`*[_type == 'blog.category' && _id == $catId][0]{ "slug": slug.current }`,
+			params: { catId: filteredCategory._ref },
+		})
+		legacyCategorySlug = cat?.slug
+	}
 
 	// Resolve dynamic filters (new system)
 	const resolvedFilters = resolveCollectionFilters(filters, { searchParams })
@@ -71,6 +82,7 @@ export default async function BlogList({
 				_type == 'blog.post'
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
 				${filterConditions}
+				${legacyCategorySlug ? `&& $legacyCategorySlug in categories[]->.slug.current` : ''}
 				${urlCategoria ? `&& $urlCategoria in categories[]->.slug.current` : ''}
 			]|order(
 				${showFeaturedPostsFirst ? 'featured desc, ' : ''}
@@ -90,6 +102,7 @@ export default async function BlogList({
 		`,
 		params: {
 			...filterParams,
+			...(legacyCategorySlug ? { legacyCategorySlug } : {}),
 			...(urlCategoria ? { urlCategoria } : {}),
 			limit: limit ?? 0,
 		},
@@ -133,7 +146,7 @@ export default async function BlogList({
 				</header>
 			)}
 
-			{displayFilters && (
+			{displayFilters && !urlCategoria && (
 			<Suspense
 				fallback={
 					<div className="flex flex-wrap gap-1 max-sm:justify-center">
