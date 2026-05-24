@@ -57,7 +57,7 @@ export default defineType({
 		prepare: ({ title, metaSlug, slug, modules }) => ({
 			title,
 			subtitle: [
-				metaSlug ? `/${metaSlug}` : slug && `/blog?categoria=${slug}`,
+				metaSlug ? `/${metaSlug}` : slug && `/${slug}`,
 				modules?.length && `${modules.length} moduli`,
 			]
 				.filter(Boolean)

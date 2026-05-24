@@ -5,7 +5,11 @@ import Filter from './Filter'
 import css from './FilterList.module.css'
 import { cn } from '@/lib/utils'
 
-export default async function FilterList() {
+export default async function FilterList({
+	navigateToCategory,
+}: {
+	navigateToCategory?: boolean
+} = {}) {
 	const categories = await fetchSanityLive<Sanity.BlogCategory[]>({
 		query: groq`*[
 			_type == 'blog.category' &&
@@ -26,12 +30,13 @@ export default async function FilterList() {
 				)}
 			>
 				<Suspense>
-					<Filter label="All" />
+					<Filter label="All" navigateToCategory={navigateToCategory} />
 
 					{categories?.map((category, key) => (
 						<Filter
 							label={category.title}
 							value={category.slug?.current}
+							navigateToCategory={navigateToCategory}
 							key={key}
 						/>
 					))}

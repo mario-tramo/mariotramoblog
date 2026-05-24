@@ -60,7 +60,7 @@ export default function PostContent({
 							<li aria-hidden="true">&gt;</li>
 							<li>
 								<Link
-									href={`/blog?categoria=${post.categories[0].slug.current}`}
+									href={`/${post.categories[0].slug.current}`}
 									className="transition hover:text-ink"
 								>
 									{post.categories[0].title}
@@ -254,7 +254,7 @@ export default function PostContent({
 					{post.categories?.[0] && (
 						<div className="mt-10 flex items-center border-t border-ink/5 pt-6">
 							<Link
-								href={`/blog?categoria=${post.categories[0].slug.current}`}
+								href={`/${post.categories[0].slug.current}`}
 								className="inline-flex items-center gap-2 text-sm text-brand hover:underline"
 							>
 								<ChevronIcon direction="left" />

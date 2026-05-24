@@ -1,11 +1,49 @@
 'use client'
 
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useBlogFilters } from '../store'
-import { usePageState } from '@/lib/usePagination'
 import { cn } from '@/lib/utils'
 import css from './FilterList.module.css'
+import { BLOG_DIR } from '@/lib/env'
 
 export default function Filter({
+	label,
+	value = 'All',
+	navigateToCategory,
+}: {
+	label: string
+	value?: 'All' | string
+	navigateToCategory?: boolean
+}) {
+	const { category } = useBlogFilters()
+	const pathname = usePathname()
+	const isActive = category === value || (value !== 'All' && pathname === `/${value}`)
+
+	if (navigateToCategory) {
+		const href = value === 'All' ? `/${BLOG_DIR}` : `/${value}`
+
+		return (
+			<Link
+				href={href}
+				className={cn(
+					css.filter,
+					'rounded-full border px-4 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-colors',
+					isActive
+						? 'border-brand bg-brand text-brand-foreground'
+						: 'border-brand/40 text-muted hover:border-brand/60 hover:text-ink',
+				)}
+				aria-label={`Filtra per ${label}`}
+			>
+				{label}
+			</Link>
+		)
+	}
+
+	return <ClientFilter label={label} value={value} />
+}
+
+function ClientFilter({
 	label,
 	value = 'All',
 }: {
@@ -13,7 +51,6 @@ export default function Filter({
 	value?: 'All' | string
 }) {
 	const { category, setCategory } = useBlogFilters()
-	const { setPage } = usePageState()
 
 	return (
 		<button
@@ -26,10 +63,7 @@ export default function Filter({
 			)}
 			aria-label={`Filtra per ${label}`}
 			aria-pressed={category === value}
-			onClick={() => {
-				setCategory(value)
-				setPage(1)
-			}}
+			onClick={() => setCategory(value)}
 		>
 			{label}
 		</button>

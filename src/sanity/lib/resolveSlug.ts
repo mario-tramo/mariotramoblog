@@ -17,7 +17,7 @@ export default function resolveSlug({
 
 	if (internal) {
 		if (_type === 'blog.category') {
-			return `/${BLOG_DIR}?categoria=${internal}`
+			return `/${internal}`
 		}
 
 		const segment =

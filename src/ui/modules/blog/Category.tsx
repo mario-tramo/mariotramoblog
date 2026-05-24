@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { BLOG_DIR } from '@/lib/env'
 import { cn } from '@/lib/utils'
 
 export default function Category({
@@ -22,10 +21,7 @@ export default function Category({
 
 	return linked ? (
 		<Link
-			href={{
-				pathname: `/${BLOG_DIR}`,
-				query: { categoria: value?.slug?.current },
-			}}
+			href={`/${value?.slug?.current}`}
 			{...props}
 		/>
 	) : (

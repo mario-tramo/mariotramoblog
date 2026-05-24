@@ -31,6 +31,7 @@ export default async function BlogList({
 	filters,
 	searchParams,
 	nested,
+	filteredCategory: _,
 	...props
 }: Partial<{
 	pretitle: string
@@ -43,7 +44,7 @@ export default async function BlogList({
 	filters: CollectionFilter[]
 	searchParams: Record<string, string | string[] | undefined>
 	nested: boolean
-}> &
+}> & { filteredCategory?: unknown } &
 	Sanity.Module) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
 

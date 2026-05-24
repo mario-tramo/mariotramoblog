@@ -20,8 +20,7 @@ export default function resolveUrl(
 		return [
 			base && BASE_URL,
 			lang_,
-			`/${BLOG_DIR}`,
-			catSlug ? `?categoria=${catSlug}` : '',
+			catSlug ? `/${catSlug}` : `/${BLOG_DIR}`,
 		]
 			.filter(Boolean)
 			.join('')

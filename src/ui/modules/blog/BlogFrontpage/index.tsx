@@ -180,7 +180,7 @@ export default async function BlogFrontpage({
 						</div>
 					}
 				>
-					<FilterList />
+					<FilterList navigateToCategory />
 				</Suspense>
 			</div>
 
