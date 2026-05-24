@@ -10,7 +10,6 @@ import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
 import Content from '@/ui/modules/RichtextModule/Content'
 import RelatedPosts from './RelatedPosts'
 import ChevronIcon from '@/ui/icons/ChevronIcon'
-import NewsletterSubscribe from '@/ui/features/newsletter'
 import { cn, getInitials } from '@/lib/utils'
 import { FaLinkedinIn, FaInstagram, FaXTwitter } from 'react-icons/fa6'
 import { IoIosLink } from 'react-icons/io'
@@ -270,9 +269,6 @@ export default function PostContent({
 					<Suspense fallback={<RelatedPostsSkeleton />}>
 						<RelatedPosts post={post} variant="sidebar" />
 					</Suspense>
-
-					{/* Newsletter */}
-					<NewsletterSubscribe variant="compact" />
 				</aside>
 			</div>
 		</article>
