@@ -14,13 +14,11 @@ import {
 export default async function ArticleCarousel({
 	limit = 5,
 	showFeaturedFirst,
-	filteredCategory,
 	filters,
 	searchParams,
 }: Partial<{
 	limit: number
 	showFeaturedFirst: boolean
-	filteredCategory: Sanity.BlogCategory
 	filters: CollectionFilter[]
 	searchParams: Record<string, string | string[] | undefined>
 	nested: boolean
@@ -45,9 +43,6 @@ export default async function ArticleCarousel({
 			? rawCategoria
 			: undefined
 
-	// Legacy: filteredCategory still works if no new filters are configured
-	const hasLegacyFilter = !!filteredCategory && !filters?.length
-
 	const posts = await fetchSanityLive<
 		{
 			_id: string
@@ -65,7 +60,6 @@ export default async function ArticleCarousel({
 			*[
 				_type == 'blog.post'
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
-				${hasLegacyFilter ? `&& $filteredCategory in categories[]->._id` : ''}
 				${filterConditions}
 				${urlCategoria ? `&& $urlCategoria in categories[]->.slug.current` : ''}
 			]|order(
@@ -84,9 +78,6 @@ export default async function ArticleCarousel({
 			}
 		`,
 		params: {
-			...(hasLegacyFilter
-				? { filteredCategory: filteredCategory?._id || '' }
-				: {}),
 			...filterParams,
 			...(urlCategoria ? { urlCategoria } : {}),
 		},

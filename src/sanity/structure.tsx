@@ -1,11 +1,9 @@
 import { structureTool } from 'sanity/structure'
 import type { StructureBuilder, ListItemBuilder } from 'sanity/structure'
 import { Iframe } from 'sanity-plugin-iframe-pane'
-import { singleton } from './lib/builders'
+import { singleton, group } from './lib/builders'
 import { BLOG_DIR } from '@/lib/env'
-import { VscFiles, VscServerProcess, VscInfo, VscFileMedia, VscLaw } from 'react-icons/vsc'
-
-import { VscPin } from 'react-icons/vsc'
+import { VscFiles, VscServerProcess, VscInfo, VscFileMedia, VscLaw, VscSymbolColor, VscPin } from 'react-icons/vsc'
 import { PiFlowArrow } from 'react-icons/pi'
 import InfoBanner from './ui/InfoBanner'
 
@@ -81,7 +79,20 @@ export const structure = structureTool({
 				S.documentTypeListItem('page').title('Pagine').icon(VscFiles),
 				S.documentTypeListItem('blog.post').title('Articoli'),
 				S.documentTypeListItem('blog.category').title('Categorie'),
-				S.documentTypeListItem('category-template').title('Template categoria'),
+				group(S, 'Template', [
+					documentTypeWithInfo(
+						S,
+						'category-template',
+						'Categoria',
+						VscSymbolColor,
+						{
+							description:
+								'Il template categoria definisce il layout di default per tutte le pagine categoria. I moduli configurati qui (Lista articoli, Carosello, ecc.) vengono riutilizzati automaticamente su ogni categoria, filtrando i contenuti in base alla categoria corrente.',
+							example:
+								'Configuri qui un modulo "Lista articoli" e un "Carosello" → ogni pagina categoria li mostrerà automaticamente con gli articoli giusti. Se una categoria ha bisogno di un layout diverso, può sovrascrivere il template aggiungendo i propri moduli.',
+						},
+					),
+				]),
 				S.documentTypeListItem('blog.tag').title('Tag'),
 				S.documentTypeListItem('legal').title('Pagine legali').icon(VscLaw),
 				S.divider(),

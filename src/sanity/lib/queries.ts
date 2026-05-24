@@ -26,8 +26,6 @@ export const CTA_QUERY = groq`
 const COLUMN_MODULES_QUERY = groq`
 	...,
 	ctas[]{ ..., link{ ${LINK_QUERY} } },
-	_type == 'article-carousel' => { filteredCategory-> },
-	_type == 'blog-list' => { filteredCategory-> },
 	_type == 'posts-feed' => { manualPosts[]->{ _id } },
 	_type == 'card-list' => { cards[]{ ..., ctas[]{ ${CTA_QUERY} } } },
 	_type == 'hero' => {
@@ -50,7 +48,6 @@ export const MODULES_QUERY = groq`
 		...,
 		link{ ${LINK_QUERY} }
 	},
-	_type == 'article-carousel' => { filteredCategory-> },
 	_type == 'blog-frontpage' => {
 		slides[]{
 			...,
@@ -60,7 +57,6 @@ export const MODULES_QUERY = groq`
 			'lqip': image.asset->metadata.lqip,
 		}
 	},
-	_type == 'blog-list' => { filteredCategory-> },
 	_type == 'posts-feed' => { manualPosts[]->{ _id } },
 	_type == 'breadcrumbs' => { crumbs[]{ ${LINK_QUERY} } },
 	_type == 'card-list' => {

@@ -12,9 +12,6 @@ import PostPreview from '../PostPreview'
 import List from './List'
 import { cn } from '@/lib/utils'
 import ScrollCarousel from '@/ui/primitives/ScrollCarousel'
-import Link from 'next/link'
-import { BLOG_DIR } from '@/lib/env'
-import { ChevronRight } from 'lucide-react'
 import type { PortableTextBlock } from '@portabletext/react'
 import {
 	type CollectionFilter,
@@ -31,7 +28,6 @@ export default async function BlogList({
 	limit,
 	showFeaturedPostsFirst,
 	displayFilters,
-	filteredCategory,
 	filters,
 	searchParams,
 	nested,
@@ -44,7 +40,6 @@ export default async function BlogList({
 	limit: number
 	showFeaturedPostsFirst: boolean
 	displayFilters: boolean
-	filteredCategory: Sanity.BlogCategory
 	filters: CollectionFilter[]
 	searchParams: Record<string, string | string[] | undefined>
 	nested: boolean
@@ -69,15 +64,11 @@ export default async function BlogList({
 			? rawCategoria
 			: undefined
 
-	// Legacy: filteredCategory still works if no new filters are configured
-	const hasLegacyFilter = !!filteredCategory && !filters?.length
-
 	const posts = await fetchSanityLive<Sanity.BlogPost[]>({
 		query: groq`
 			*[
 				_type == 'blog.post'
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
-				${hasLegacyFilter ? `&& $filteredCategory in categories[]->._id` : ''}
 				${filterConditions}
 				${urlCategoria ? `&& $urlCategoria in categories[]->.slug.current` : ''}
 			]|order(
@@ -97,9 +88,6 @@ export default async function BlogList({
 			}
 		`,
 		params: {
-			...(hasLegacyFilter
-				? { filteredCategory: filteredCategory?._id || '' }
-				: {}),
 			...filterParams,
 			...(urlCategoria ? { urlCategoria } : {}),
 			limit: limit ?? 0,
@@ -134,15 +122,6 @@ export default async function BlogList({
 					{pretitle && !intro ? (
 						<>
 							<h2 className="text-2xl font-extrabold tracking-tight">{pretitle}</h2>
-							{filteredCategory?.slug?.current && (
-								<Link
-									href={`/${BLOG_DIR}?categoria=${filteredCategory.slug.current}`}
-									className="flex items-center gap-1 text-sm font-semibold text-brand transition-colors hover:text-brand/80"
-								>
-									Vedi tutti
-									<ChevronRight className="size-4" />
-								</Link>
-							)}
 						</>
 					) : (
 						<>
@@ -153,7 +132,7 @@ export default async function BlogList({
 				</header>
 			)}
 
-			{displayFilters && !filteredCategory && (
+			{displayFilters && (
 			<Suspense
 				fallback={
 					<div className="flex flex-wrap gap-1 max-sm:justify-center">

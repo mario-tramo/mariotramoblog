@@ -35,15 +35,6 @@ export default defineType({
 			group: 'content',
 		}),
 		defineField({
-			name: 'filteredCategory',
-			title: 'Filtra per categoria (legacy)',
-			description: 'Deprecato: usa i filtri configurabili qui sotto',
-			type: 'reference',
-			to: [{ type: 'blog.category' }],
-			group: 'content',
-			hidden: ({ parent }) => !!parent?.filters?.length,
-		}),
-		defineField({
 			name: 'filters',
 			title: 'Filtri configurabili',
 			description:
@@ -56,13 +47,10 @@ export default defineType({
 	preview: {
 		select: {
 			limit: 'limit',
-			category: 'filteredCategory.title',
 		},
-		prepare: ({ limit, category }) => ({
+		prepare: ({ limit }) => ({
 			title: 'Carosello articoli',
-			subtitle: category
-				? `${limit || 5} articoli — ${category}`
-				: `${limit || 5} articoli`,
+			subtitle: `${limit || 5} articoli`,
 		}),
 	},
 })

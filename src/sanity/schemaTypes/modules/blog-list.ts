@@ -80,7 +80,6 @@ export default defineType({
 			type: 'boolean',
 			initialValue: false,
 			group: 'filtering',
-			hidden: ({ parent }) => !!parent.filteredCategory,
 		}),
 		defineField({
 			name: 'limit',
@@ -90,15 +89,6 @@ export default defineType({
 			initialValue: 6,
 			validation: (Rule) => Rule.min(1).integer(),
 			group: 'filtering',
-		}),
-		defineField({
-			name: 'filteredCategory',
-			title: 'Filtra i post per categoria (legacy)',
-			description: 'Deprecato: usa i filtri configurabili qui sotto',
-			type: 'reference',
-			to: [{ type: 'blog.category' }],
-			group: 'filtering',
-			hidden: ({ parent }) => !!parent?.filters?.length,
 		}),
 		defineField({
 			name: 'filters',
