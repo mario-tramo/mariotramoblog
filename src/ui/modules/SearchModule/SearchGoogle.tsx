@@ -1,4 +1,3 @@
-import { BLOG_DIR } from '@/lib/env'
 import type { SearchScope } from './store'
 
 export default function SearchGoogle({
@@ -15,9 +14,7 @@ export default function SearchGoogle({
 		`site:${process.env.NEXT_PUBLIC_BASE_URL}`,
 		scope === 'path' && path
 			? `/${path.replace(/\/?\*$/, '')}`
-			: scope === 'blog posts'
-				? `/${BLOG_DIR}`
-				: '',
+			: '',
 	].join('')
 
 	return (

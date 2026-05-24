@@ -2,8 +2,6 @@
 
 import { useFormValue } from 'sanity'
 import { Card, Stack, Text, Box } from '@sanity/ui'
-import { BLOG_DIR } from '@/lib/env'
-
 const domain = process.env.NEXT_PUBLIC_BASE_URL?.replace(/https?:\/\//, '') || 'mariotramo.com'
 
 export default function SocialPreview() {
@@ -11,8 +9,11 @@ export default function SocialPreview() {
 	const description = useFormValue(['metadata', 'description']) as string | undefined
 	const slug = useFormValue(['metadata', 'slug', 'current']) as string | undefined
 	const docType = useFormValue(['_type']) as string | undefined
+	const firstCategorySlug = useFormValue(['categories', 0, 'slug', 'current']) as string | undefined
 
-	const path = docType === 'blog.post' ? `${BLOG_DIR}/${slug || ''}` : slug || ''
+	const path = docType === 'blog.post'
+		? `${firstCategorySlug || 'categoria'}/${slug || ''}`
+		: slug || ''
 	const displayUrl = `${domain}/${path}`
 
 	if (!title && !description) return null

@@ -2,7 +2,6 @@ import { structureTool } from 'sanity/structure'
 import type { StructureBuilder, ListItemBuilder } from 'sanity/structure'
 import { Iframe } from 'sanity-plugin-iframe-pane'
 import { singleton, group } from './lib/builders'
-import { BLOG_DIR } from '@/lib/env'
 import { VscFiles, VscServerProcess, VscInfo, VscFileMedia, VscLaw, VscSymbolColor, VscPin } from 'react-icons/vsc'
 import { PiFlowArrow } from 'react-icons/pi'
 import InfoBanner from './ui/InfoBanner'
@@ -46,7 +45,7 @@ function resolvePreviewUrl(doc: Record<string, unknown>): string {
 	const current = slug?.current as string | undefined
 	const type = doc?._type as string | undefined
 
-	if (type === 'blog.post' && current) return `/${BLOG_DIR}/${current}`
+	if (type === 'blog.post' && current) return `/blog/${current}`
 	if (type === 'legal' && current) return `/legal/${current}`
 	if (current === 'index') return '/'
 	if (current) return `/${current}`

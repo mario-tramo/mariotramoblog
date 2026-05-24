@@ -1,123 +1,37 @@
-import { notFound } from 'next/navigation'
-import Modules from '@/ui/modules'
-import ViewTracker from '@/ui/ViewTracker'
-import processMetadata from '@/lib/processMetadata'
-import { blogPostingJsonLd, breadcrumbJsonLd, personJsonLd } from '@/lib/jsonLd'
-import { client } from '@/sanity/lib/client'
+import { notFound, permanentRedirect } from 'next/navigation'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
-import { BASE_URL, BLOG_DIR } from '@/lib/env'
-import {
-	IMAGE_QUERY,
-	MODULES_QUERY,
-	TRANSLATIONS_QUERY,
-} from '@/sanity/lib/queries'
 import { processSlug } from '@/lib/processSlug'
 
+/**
+ * Legacy /blog/[slug] route — permanently redirects to /[category]/[slug]
+ */
 export default async function Page({ params }: Props) {
-	const post = await getPost(await params)
-	if (!post) notFound()
-	return (
-		<>
-			<script
-				type="application/ld+json"
-				dangerouslySetInnerHTML={{
-					__html: JSON.stringify(blogPostingJsonLd(post)),
-				}}
-			/>
-			<script
-				type="application/ld+json"
-				dangerouslySetInnerHTML={{
-					__html: JSON.stringify(
-						breadcrumbJsonLd([
-							{ name: 'Home', url: BASE_URL },
-							{ name: 'Blog', url: `${BASE_URL}/${BLOG_DIR}` },
-							{
-								name: post.title,
-								url: `${BASE_URL}/${BLOG_DIR}/${post.metadata.slug.current}`,
-							},
-						]),
-					),
-				}}
-			/>
-			{post.authors?.map((author) => (
-				<script
-					key={author._id}
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd(author)) }}
-				/>
-			))}
-			<ViewTracker slug={post.metadata.slug.current} />
-			<Modules modules={post.modules} post={post} />
-		</>
-	)
-}
+	const { slug } = processSlug(await params)
 
-export async function generateMetadata({ params }: Props) {
-	const post = await getPost(await params)
-	if (!post) notFound()
-	return processMetadata(post)
-}
-
-export async function generateStaticParams() {
-	const slugs = await client.fetch<string[]>(
-		groq`*[_type == 'blog.post' && defined(metadata.slug.current)].metadata.slug.current`,
-	)
-
-	return slugs.map((slug) => ({ slug: slug.split('/') }))
-}
-
-async function getPost(params: Params) {
-	const { slug, lang } = processSlug(params)
-
-	return await fetchSanityLive<Sanity.BlogPost & { modules: Sanity.Module[] }>({
+	const post = await fetchSanityLive<{
+		slug: string
+		categorySlug: string | null
+	}>({
 		query: groq`*[
 			_type == 'blog.post'
 			&& metadata.slug.current == $slug
-			${lang ? `&& language == '${lang}'` : ''}
 		][0]{
-			...,
-			'title': coalesce(title, metadata.title),
-			body[]{
-				...,
-				_type == 'image' => {
-					${IMAGE_QUERY},
-					asset->
-				}
-			},
-			'readTime': round(length(pt::text(body)) / 5 / 180),
-			'headings': body[style in ['h2', 'h3']]{
-				style,
-				'text': pt::text(@)
-			},
-			'categories': categories[@->title != null]->{ ... },
-			'tags': tags[@->title != null]->{ ... },
-			'authors': select(defined(author) => [author->{
-				...,
-				'articleCount': count(*[_type == 'blog.post' && author._ref == ^._id])
-			}], null),
-			metadata {
-				...,
-				'ogimage': image.asset->url + '?w=1200'
-			},
-			'modules': (
-				// global modules (before)
-				*[_type == 'global-module' && path == '*'].before[]{ ${MODULES_QUERY} }
-				// path modules (before)
-				+ *[_type == 'global-module' && path == '${BLOG_DIR}/'].before[]{ ${MODULES_QUERY} }
-				// path modules (after)
-				+ *[_type == 'global-module' && path == '${BLOG_DIR}/'].after[]{ ${MODULES_QUERY} }
-				// global modules (after)
-				+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
-			)[defined(_type)],
-			${TRANSLATIONS_QUERY},
+			'slug': metadata.slug.current,
+			'categorySlug': categories[0]->slug.current,
 		}`,
 		params: { slug },
 	})
+
+	if (!post) notFound()
+
+	const destination = post.categorySlug
+		? `/${post.categorySlug}/${post.slug}`
+		: `/${post.slug}`
+
+	permanentRedirect(destination)
 }
 
-type Params = { slug: string[] }
-
 type Props = {
-	params: Promise<Params>
+	params: Promise<{ slug: string[] }>
 }

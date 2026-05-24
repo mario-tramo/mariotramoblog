@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Img } from '@/ui/primitives/Img'
 import { User } from 'lucide-react'
-import { BLOG_DIR } from '@/lib/env'
 import { cn } from '@/lib/utils'
 
 export default function Authors({
@@ -63,7 +62,7 @@ function Author({
 			{linked ? (
 				<Link
 					href={{
-						pathname: `/${BLOG_DIR}`,
+						pathname: '/blog',
 						query: { author: author?.slug?.current },
 					}}
 					{...props}

@@ -81,13 +81,14 @@ export default defineType({
 			_type: 'internal._type',
 			title: 'internal.title',
 			internal: 'internal.metadata.slug.current',
+			postCategorySlug: 'internal.categories.0.slug.current',
 			categorySlug: 'internal.slug.current',
 			params: 'params',
 			external: 'external',
 		},
-		prepare: ({ label, title, _type, internal, categorySlug, params, external }) => ({
+		prepare: ({ label, title, _type, internal, postCategorySlug, categorySlug, params, external }) => ({
 			title: label || title,
-			subtitle: resolveSlug({ _type, internal: internal || categorySlug, params, external }),
+			subtitle: resolveSlug({ _type, internal: internal || categorySlug, params, external, categorySlug: postCategorySlug }),
 		}),
 	},
 })

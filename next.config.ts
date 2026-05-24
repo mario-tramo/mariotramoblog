@@ -1,7 +1,6 @@
 import { createClient, groq } from 'next-sanity'
 import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
 // import { token } from '@/lib/sanity/token'
-import { BLOG_DIR } from '@/lib/env'
 import { supportedLanguages } from '@/lib/i18n'
 import type { NextConfig } from 'next'
 
@@ -61,7 +60,10 @@ export default {
 			'destination': select(
 				destination.type == 'internal' =>
 					select(
-						destination.internal->._type == 'blog.post' => '/${BLOG_DIR}/',
+						destination.internal->._type == 'blog.post' =>
+							'/' + coalesce(destination.internal->.categories[0]->slug.current, '') + '/',
+						destination.internal->._type == 'blog.category' =>
+							'/',
 						'/'
 					) + destination.internal->.metadata.slug.current,
 				destination.external
@@ -73,12 +75,7 @@ export default {
 	async rewrites() {
 		if (!supportedLanguages?.length) return []
 
-		return [
-			{
-				source: `/:lang/${BLOG_DIR}/:slug`,
-				destination: `/${BLOG_DIR}/:lang/:slug`,
-			},
-		]
+		return []
 	},
 
 	env: {

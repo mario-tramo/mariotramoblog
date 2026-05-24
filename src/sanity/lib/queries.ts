@@ -1,7 +1,6 @@
 import { fetchSanityLive } from './fetch'
 import { groq } from 'next-sanity'
 import errors from '@/lib/errors'
-import { BLOG_DIR } from '@/lib/env'
 
 export const LINK_QUERY = groq`
 	...,
@@ -9,7 +8,8 @@ export const LINK_QUERY = groq`
 		_type,
 		title,
 		metadata,
-		slug
+		slug,
+		'categories': categories[]->{ title, slug }
 	}
 `
 
@@ -132,19 +132,16 @@ export async function getTranslations() {
 	return await fetchSanityLive<Sanity.Translation[]>({
 		query: groq`*[_type in ['page', 'blog.post'] && defined(language)]{
 			'slug': '/' + select(
-				_type == 'blog.post' => '${BLOG_DIR}/' + metadata.slug.current,
+				_type == 'blog.post' => coalesce(categories[0]->slug.current + '/', '') + metadata.slug.current,
 				metadata.slug.current != 'index' => metadata.slug.current,
 				''
 			),
 			'translations': *[_type == 'translation.metadata' && references(^._id)].translations[].value->{
 				'slug': '/' + select(
-					_type == 'blog.post' => '${BLOG_DIR}/' + language + '/' + metadata.slug.current,
+					_type == 'blog.post' => language + '/' + coalesce(categories[0]->slug.current + '/', '') + metadata.slug.current,
 					metadata.slug.current != 'index' => language + '/' + metadata.slug.current,
 					language
 				),
-				_type == 'blog.post' => {
-					'slugBlogAlt': '/' + language + '/${BLOG_DIR}/' + metadata.slug.current
-				},
 				language
 			}
 		}`,

@@ -1,16 +1,24 @@
 import { notFound } from 'next/navigation'
 import Modules from '@/ui/modules'
+import ViewTracker from '@/ui/ViewTracker'
 import processMetadata from '@/lib/processMetadata'
-import { webPageJsonLd, collectionPageJsonLd, breadcrumbJsonLd } from '@/lib/jsonLd'
+import {
+	webPageJsonLd,
+	collectionPageJsonLd,
+	breadcrumbJsonLd,
+	blogPostingJsonLd,
+	personJsonLd,
+} from '@/lib/jsonLd'
 import resolveUrl from '@/lib/resolveUrl'
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import {
+	IMAGE_QUERY,
 	MODULES_QUERY,
 	TRANSLATIONS_QUERY,
 } from '@/sanity/lib/queries'
-import { BASE_URL, BLOG_DIR } from '@/lib/env'
+import { BASE_URL } from '@/lib/env'
 import { processSlug } from '@/lib/processSlug'
 import errors from '@/lib/errors'
 
@@ -18,7 +26,7 @@ export default async function Page({ params, searchParams }: Props) {
 	const resolvedParams = await params
 	const resolvedSearchParams = await searchParams
 
-	// Try page first, then category
+	// Try page first, then category, then blog post (category/slug)
 	const page = await getPage(resolvedParams)
 	if (page) {
 		return (
@@ -75,7 +83,6 @@ export default async function Page({ params, searchParams }: Props) {
 						__html: JSON.stringify(
 							breadcrumbJsonLd([
 								{ name: 'Home', url: BASE_URL },
-								{ name: 'Blog', url: `${BASE_URL}/${BLOG_DIR}` },
 								{
 									name: category.title,
 									url: `${BASE_URL}/${category.metadata.slug.current}`,
@@ -93,6 +100,53 @@ export default async function Page({ params, searchParams }: Props) {
 		)
 	}
 
+	// Try blog post: /[category-slug]/[post-slug]
+	const post = await getPost(resolvedParams)
+	if (post) {
+		const catSlug = post.categories?.[0]?.slug?.current
+		return (
+			<>
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{
+						__html: JSON.stringify(blogPostingJsonLd(post)),
+					}}
+				/>
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{
+						__html: JSON.stringify(
+							breadcrumbJsonLd([
+								{ name: 'Home', url: BASE_URL },
+								...(catSlug
+									? [
+											{
+												name: post.categories[0].title,
+												url: `${BASE_URL}/${catSlug}`,
+											},
+										]
+									: []),
+								{
+									name: post.title,
+									url: resolveUrl(post),
+								},
+							]),
+						),
+					}}
+				/>
+				{post.authors?.map((author) => (
+					<script
+						key={author._id}
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd(author)) }}
+					/>
+				))}
+				<ViewTracker slug={post.metadata.slug.current} />
+				<Modules modules={post.modules} post={post} />
+			</>
+		)
+	}
+
 	notFound()
 }
 
@@ -102,11 +156,13 @@ export async function generateMetadata({ params }: Props) {
 	if (page) return processMetadata(page)
 	const category = await getCategory(resolvedParams)
 	if (category) return processMetadata(category)
+	const post = await getPost(resolvedParams)
+	if (post) return processMetadata(post)
 	notFound()
 }
 
 export async function generateStaticParams() {
-	const [pageSlugs, categorySlugs] = await Promise.all([
+	const [pageSlugs, categorySlugs, postSlugs] = await Promise.all([
 		client.fetch<{ slug: string }[]>(
 			groq`*[
 				_type == 'page'
@@ -120,15 +176,35 @@ export async function generateStaticParams() {
 				&& defined(slug.current)
 			]{ 'slug': slug.current }`,
 		),
+		client.fetch<{ slug: string; categories: string[] }[]>(
+			groq`*[
+				_type == 'blog.post'
+				&& defined(metadata.slug.current)
+			]{
+				'slug': metadata.slug.current,
+				'categories': categories[]->slug.current
+			}`,
+		),
 	])
 
-	return [...pageSlugs, ...categorySlugs].map(({ slug }) => ({
+	// Generate all category/post-slug combinations
+	const postParams = postSlugs.flatMap(({ slug, categories }) =>
+		categories
+			?.filter(Boolean)
+			.map((cat) => ({ slug: `${cat}/${slug}` })) ?? [],
+	)
+
+	return [...pageSlugs, ...categorySlugs, ...postParams].map(({ slug }) => ({
 		slug: slug.split('/'),
 	}))
 }
 
 async function getPage(params: Params) {
 	const { slug, lang } = processSlug(params)
+
+	// Don't try to resolve multi-segment slugs as pages (except lang prefixed)
+	if (params.slug && params.slug.length > 1 && !lang) return null
+	if (params.slug && lang && params.slug.length > 2) return null
 
 	const page = await fetchSanityLive<Sanity.Page>({
 		query: groq`*[
@@ -154,6 +230,9 @@ async function getPage(params: Params) {
 
 async function getCategory(params: Params) {
 	const { slug } = processSlug(params)
+
+	// Categories are single-segment only
+	if (params.slug && params.slug.length > 1) return null
 
 	const raw = await fetchSanityLive<Sanity.BlogCategory>({
 		query: groq`*[
@@ -183,6 +262,54 @@ async function getCategory(params: Params) {
 			...raw.metadata,
 		} satisfies Sanity.Metadata,
 	}
+}
+
+async function getPost(params: Params) {
+	// Blog posts require exactly 2 segments: [category-slug, post-slug]
+	if (!params.slug || params.slug.length !== 2) return null
+
+	const [categorySlug, postSlug] = params.slug
+
+	return await fetchSanityLive<Sanity.BlogPost & { modules: Sanity.Module[] }>({
+		query: groq`*[
+			_type == 'blog.post'
+			&& metadata.slug.current == $postSlug
+			&& $categorySlug in categories[]->slug.current
+		][0]{
+			...,
+			'title': coalesce(title, metadata.title),
+			body[]{
+				...,
+				_type == 'image' => {
+					${IMAGE_QUERY},
+					asset->
+				}
+			},
+			'readTime': round(length(pt::text(body)) / 5 / 180),
+			'headings': body[style in ['h2', 'h3']]{
+				style,
+				'text': pt::text(@)
+			},
+			'categories': categories[@->title != null]->{ ... },
+			'tags': tags[@->title != null]->{ ... },
+			'authors': select(defined(author) => [author->{
+				...,
+				'articleCount': count(*[_type == 'blog.post' && author._ref == ^._id])
+			}], null),
+			metadata {
+				...,
+				'ogimage': image.asset->url + '?w=1200'
+			},
+			'modules': (
+				*[_type == 'global-module' && path == '*'].before[]{ ${MODULES_QUERY} }
+				+ *[_type == 'global-module' && path == $categorySlug + '/'].before[]{ ${MODULES_QUERY} }
+				+ *[_type == 'global-module' && path == $categorySlug + '/'].after[]{ ${MODULES_QUERY} }
+				+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
+			)[defined(_type)],
+			${TRANSLATIONS_QUERY},
+		}`,
+		params: { postSlug, categorySlug },
+	})
 }
 
 type Params = { slug?: string[] }

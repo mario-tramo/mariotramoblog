@@ -1,7 +1,6 @@
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
 import { DEFAULT_LANG } from '@/lib/i18n'
-import { BLOG_DIR } from '@/lib/env'
 import type { MetadataRoute } from 'next'
 
 const BASE = process.env.NEXT_PUBLIC_BASE_URL!.replace(/\/+$/, '') + '/'
@@ -28,12 +27,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				'lastModified': _updatedAt,
 				'priority': select(
 					metadata.slug.current == 'index' => 1,
-					metadata.slug.current == '${BLOG_DIR}' => 0.9,
+					metadata.slug.current == 'blog' => 0.9,
 					0.6
 				),
 				'changeFrequency': select(
 					metadata.slug.current == 'index' => 'daily',
-					metadata.slug.current == '${BLOG_DIR}' => 'daily',
+					metadata.slug.current == 'blog' => 'daily',
 					'weekly'
 				),
 			},
@@ -41,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				'url': (
 					$base
 					+ select(defined(language) && language != $defaultLang => language + '/', '')
-					+ '${BLOG_DIR}/'
+					+ select(defined(categories[0]->slug.current) => categories[0]->slug.current + '/', '')
 					+ metadata.slug.current
 				),
 				'lastModified': _updatedAt,

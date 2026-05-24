@@ -1,10 +1,9 @@
-import { BLOG_DIR } from '@/lib/env'
-
 export default function resolveSlug({
 	_type,
 	internal,
 	params,
 	external,
+	categorySlug,
 }: {
 	// internal
 	_type?: string
@@ -12,6 +11,8 @@ export default function resolveSlug({
 	params?: string
 	// external
 	external?: string
+	// category slug for blog posts
+	categorySlug?: string
 }) {
 	if (external) return external
 
@@ -20,12 +21,13 @@ export default function resolveSlug({
 			return `/${internal}`
 		}
 
-		const segment =
-			_type === 'blog.post'
-				? `/${BLOG_DIR}/`
-				: _type === 'legal'
-					? '/legal/'
-					: '/'
+		if (_type === 'blog.post') {
+			const segment = categorySlug ? `/${categorySlug}/` : '/'
+			const path = internal === 'index' ? null : internal
+			return [segment, path, params].filter(Boolean).join('')
+		}
+
+		const segment = _type === 'legal' ? '/legal/' : '/'
 		const path = internal === 'index' ? null : internal
 
 		return [segment, path, params].filter(Boolean).join('')

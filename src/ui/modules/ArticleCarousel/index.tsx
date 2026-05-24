@@ -2,7 +2,6 @@ import { cookies } from 'next/headers'
 import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
-import { BLOG_DIR } from '@/lib/env'
 import Carousel from './Carousel'
 import {
 	type CollectionFilter,
@@ -69,7 +68,7 @@ export default async function ArticleCarousel({
 				_id,
 				'title': coalesce(title, metadata.title),
 				'description': metadata.description,
-				'slug': '/${BLOG_DIR}/' + metadata.slug.current,
+				'slug': '/' + coalesce(categories[0]->slug.current, '') + '/' + metadata.slug.current,
 				publishDate,
 				'imageUrl': metadata.image.asset->url,
 				'lqip': metadata.image.asset->metadata.lqip,

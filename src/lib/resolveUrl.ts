@@ -1,4 +1,4 @@
-import { BASE_URL, BLOG_DIR } from './env'
+import { BASE_URL } from './env'
 import { DEFAULT_LANG } from './i18n'
 import { stegaClean } from 'next-sanity'
 
@@ -20,21 +20,26 @@ export default function resolveUrl(
 		return [
 			base && BASE_URL,
 			lang_,
-			catSlug ? `/${catSlug}` : `/${BLOG_DIR}`,
+			catSlug ? `/${catSlug}` : '/',
 		]
 			.filter(Boolean)
 			.join('')
 	}
 
-	const segment =
-		page?._type === 'blog.post'
-			? `/${BLOG_DIR}/`
-			: page?._type === 'legal'
-				? '/legal/'
-				: '/'
 	const lang = language && language !== DEFAULT_LANG ? `/${language}` : ''
 	const slug = page?.metadata?.slug?.current
 	const path = slug === 'index' ? null : slug
+
+	if (page?._type === 'blog.post') {
+		const post = page as unknown as Sanity.BlogPost
+		const catSlug = post.categories?.[0]?.slug?.current
+		const segment = catSlug ? `/${catSlug}/` : '/'
+		return [base && BASE_URL, lang, segment, path, stegaClean(params)]
+			.filter(Boolean)
+			.join('')
+	}
+
+	const segment = page?._type === 'legal' ? '/legal/' : '/'
 
 	return [
 		base && BASE_URL,

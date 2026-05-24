@@ -1,5 +1,5 @@
 import resolveUrl from './resolveUrl'
-import { BASE_URL, BLOG_DIR, vercelPreview } from './env'
+import { BASE_URL, vercelPreview } from './env'
 import type { Metadata } from 'next'
 import { DEFAULT_LANG } from './i18n'
 
@@ -78,7 +78,7 @@ export default async function processMetadata(
 					]) || [],
 			),
 			types: {
-				'application/rss+xml': `/${BLOG_DIR}/rss.xml`,
+				'application/rss+xml': '/blog/rss.xml',
 			},
 		},
 	}

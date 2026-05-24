@@ -1,4 +1,4 @@
-import { BASE_URL, BLOG_DIR } from './env'
+import { BASE_URL } from './env'
 
 const PUBLISHER = {
 	'@type': 'Organization',
@@ -33,7 +33,10 @@ export function websiteJsonLd(siteTitle: string, description?: string) {
 }
 
 export function blogPostingJsonLd(post: Sanity.BlogPost) {
-	const url = `${BASE_URL}/${BLOG_DIR}/${post.metadata.slug.current}`
+	const catSlug = post.categories?.[0]?.slug?.current
+	const url = catSlug
+		? `${BASE_URL}/${catSlug}/${post.metadata.slug.current}`
+		: `${BASE_URL}/${post.metadata.slug.current}`
 	const image = post.metadata.ogimage || post.metadata.image
 	const tagNames = post.tags?.filter(Boolean).map((t) => t.title) || []
 	const categoryNames = post.categories?.filter(Boolean).map((c) => c.title) || []
@@ -89,7 +92,7 @@ export function collectionPageJsonLd(
 		'@context': 'https://schema.org',
 		'@type': 'CollectionPage',
 		name: title,
-		url: url || `${BASE_URL}/${BLOG_DIR}`,
+		url: url || BASE_URL,
 		inLanguage: 'it',
 		...(description && { description }),
 		isPartOf: {
