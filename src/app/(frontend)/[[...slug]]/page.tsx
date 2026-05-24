@@ -302,8 +302,8 @@ async function getPost(params: Params) {
 			},
 			'modules': (
 				*[_type == 'global-module' && path == '*'].before[]{ ${MODULES_QUERY} }
-				+ *[_type == 'global-module' && path == $categorySlug + '/'].before[]{ ${MODULES_QUERY} }
-				+ *[_type == 'global-module' && path == $categorySlug + '/'].after[]{ ${MODULES_QUERY} }
+				+ *[_type == 'global-module' && path == 'blog/'].before[]{ ${MODULES_QUERY} }
+				+ *[_type == 'global-module' && path == 'blog/'].after[]{ ${MODULES_QUERY} }
 				+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
 			)[defined(_type)],
 			${TRANSLATIONS_QUERY},
