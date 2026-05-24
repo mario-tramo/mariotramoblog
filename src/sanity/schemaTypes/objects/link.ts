@@ -7,9 +7,6 @@ export default defineType({
 	title: 'Link',
 	icon: VscLink,
 	type: 'object',
-	options: {
-		columns: 1,
-	},
 	fields: [
 		defineField({
 			name: 'label',
