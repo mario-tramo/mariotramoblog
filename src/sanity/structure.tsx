@@ -115,6 +115,18 @@ export const structure = structureTool({
 				group(S, 'Template', [
 					documentTypeWithInfo(
 						S,
+						'article-template',
+						'Articolo',
+						VscSymbolColor,
+						{
+							description:
+								'Il template articolo definisce il layout di default per tutti gli articoli del blog. Aggiungi qui il modulo "Contenuto articolo" e altri moduli (correlati, newsletter, ecc.) che appariranno su ogni articolo.',
+							example:
+								'Configuri qui "Contenuto articolo" + "Lista articoli" (correlati) → ogni articolo mostrerà il testo e sotto gli articoli della stessa categoria.',
+						},
+					),
+					documentTypeWithInfo(
+						S,
 						'category-template',
 						'Categoria',
 						VscSymbolColor,
@@ -143,7 +155,7 @@ export const structure = structureTool({
 					},
 				),
 
-	
+
 				documentTypeWithInfo(
 					S,
 					'announcement',

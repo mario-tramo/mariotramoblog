@@ -270,7 +270,7 @@ async function getPost(params: Params) {
 
 	const [categorySlug, postSlug] = params.slug
 
-	return await fetchSanityLive<Sanity.BlogPost & { modules: Sanity.Module[] }>({
+	const post = await fetchSanityLive<Sanity.BlogPost>({
 		query: groq`*[
 			_type == 'blog.post'
 			&& metadata.slug.current == $postSlug
@@ -300,16 +300,16 @@ async function getPost(params: Params) {
 				...,
 				'ogimage': image.asset->url + '?w=1200'
 			},
-			'modules': (
-				*[_type == 'global-module' && path == '*'].before[]{ ${MODULES_QUERY} }
-				+ *[_type == 'global-module' && path == 'blog/'].before[]{ ${MODULES_QUERY} }
-				+ *[_type == 'global-module' && path == 'blog/'].after[]{ ${MODULES_QUERY} }
-				+ *[_type == 'global-module' && path == '*'].after[]{ ${MODULES_QUERY} }
-			)[defined(_type)],
 			${TRANSLATIONS_QUERY},
 		}`,
 		params: { postSlug, categorySlug },
 	})
+
+	if (!post) return null
+
+	const modules = await getArticleTemplate()
+
+	return { ...post, modules } as Sanity.BlogPost & { modules: Sanity.Module[] }
 }
 
 type Params = { slug?: string[] }
@@ -317,6 +317,16 @@ type Params = { slug?: string[] }
 type Props = {
 	params: Promise<Params>
 	searchParams: Promise<Record<string, string | string[] | undefined>>
+}
+
+async function getArticleTemplate(): Promise<Sanity.Module[]> {
+	const template = await fetchSanityLive<{ modules?: Sanity.Module[] }>({
+		query: groq`*[_type == 'article-template'][0]{
+			modules[]{ ${MODULES_QUERY} }
+		}`,
+	})
+
+	return template?.modules ?? []
 }
 
 async function getCategoryTemplate(): Promise<Sanity.Module[]> {
