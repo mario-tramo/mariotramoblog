@@ -5,18 +5,18 @@ export default function SectionTitle({
 	children,
 	showDot,
 	...props
-}: { showDot?: boolean } & React.ComponentProps<'h3'>) {
+}: { showDot?: boolean } & React.ComponentProps<'h2'>) {
 	if (!children) return null
 
 	return (
 		<div className={cn('flex items-center gap-2', className)}>
 			<span className="text-sm text-brand" aria-hidden="true">✦</span>
-			<h3
+			<h2
 				className="text-xs font-bold tracking-widest text-ink"
 				{...props}
 			>
 				{children}
-			</h3>
+			</h2>
 		</div>
 	)
 }

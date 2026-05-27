@@ -57,6 +57,8 @@ export default async function RootLayout({
 	return (
 		<Root>
 			{/* <GoogleTagManager gtmId="" /> */}
+			<link rel="preconnect" href="https://cdn.sanity.io" />
+			<link rel="dns-prefetch" href="https://cdn.sanity.io" />
 			<body className="flex min-h-svh flex-col bg-canvas text-ink antialiased">
 				<script
 					type="application/ld+json"

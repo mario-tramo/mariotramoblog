@@ -221,9 +221,9 @@ export default function PostContent({
 
 					{/* Scritto da */}
 					<div className="mt-10">
-						<h3 className="mb-4 text-xl font-extrabold text-ink sm:text-2xl">
+						<h2 className="mb-4 text-xl font-extrabold text-ink sm:text-2xl">
 							Scritto da
-						</h3>
+						</h2>
 						<div className="rounded-xl border border-line bg-surface p-5 shadow-[0_10px_30px_rgba(0,0,0,0.35)] sm:p-6">
 							<div className="flex gap-4">
 								<span className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full bg-brand text-lg font-bold text-brand-foreground sm:size-20">
