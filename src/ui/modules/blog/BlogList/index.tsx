@@ -12,6 +12,7 @@ import PostPreview from '../PostPreview'
 import List from './List'
 import { cn } from '@/lib/utils'
 import ScrollCarousel from '@/ui/primitives/ScrollCarousel'
+import NoArticlesFound from '../NoArticlesFound'
 import type { PortableTextBlock } from '@portabletext/react'
 import {
 	type CollectionFilter,
@@ -107,6 +108,15 @@ export default async function BlogList({
 			limit: limit ?? 0,
 		},
 	})
+
+	// Show rich empty state when a category page has no posts
+	if (posts.length === 0 && (urlCategoria || legacyCategorySlug)) {
+		return (
+			<section className={cn(!nested && 'section', 'space-y-8')} {...moduleProps(props)}>
+				<NoArticlesFound />
+			</section>
+		)
+	}
 
 	const cleanCardSize = stegaClean(cardSize) || 'standard'
 	const isLarge = cleanCardSize === 'large'

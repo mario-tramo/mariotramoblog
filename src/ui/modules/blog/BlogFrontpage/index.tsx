@@ -19,6 +19,7 @@ import {
 	buildGroqFilterConditions,
 	buildGroqFilterParams,
 } from '@/lib/resolveCollectionFilters'
+import NoArticlesFound from '../NoArticlesFound'
 
 export default async function BlogFrontpage({
 	slides,
@@ -85,6 +86,15 @@ export default async function BlogFrontpage({
 			...(urlCategoria ? { urlCategoria } : {}),
 		},
 	})
+
+	// Show rich empty state when a category page has no posts
+	if (posts.length === 0 && urlCategoria) {
+		return (
+			<section className="section space-y-8">
+				<NoArticlesFound />
+			</section>
+		)
+	}
 
 	const sorted =
 		stegaClean(mainPost) === 'featured'

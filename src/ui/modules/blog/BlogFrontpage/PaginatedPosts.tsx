@@ -27,7 +27,14 @@ export default function PaginatedPosts({
 						</li>
 					))
 				) : (
-					<li>Nessun articolo trovato...</li>
+					<li className="col-span-full flex flex-col items-center justify-center py-16 text-center">
+						<p className="text-3xl font-extrabold tracking-tight">
+							Nessun articolo trovato
+						</p>
+						<p className="mt-2 text-muted">
+							Non ci sono ancora articoli in questa sezione.
+						</p>
+					</li>
 				)}
 			</ul>
 

@@ -14,7 +14,16 @@ export default function List({
 	const filtered = filterPosts(posts)
 
 	if (!filtered.length) {
-		return <div>Nessun articolo trovato...</div>
+		return (
+			<div className="flex flex-col items-center justify-center py-16 text-center">
+				<p className="text-3xl font-extrabold tracking-tight">
+					Nessun articolo trovato
+				</p>
+				<p className="mt-2 text-muted">
+					Prova a selezionare un&apos;altra categoria.
+				</p>
+			</div>
+		)
 	}
 
 	return (
