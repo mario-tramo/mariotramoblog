@@ -127,7 +127,7 @@ export default function SearchOverlay({
 								Ricerca in corso...
 							</div>
 						) : results.length > 0 ? (
-							<ul className="divide-y divide-ink/5 py-1">
+							<ul className="divide-y divide-line-soft py-1">
 								{results.map((result) => (
 									<li key={result._id}>
 										<Link

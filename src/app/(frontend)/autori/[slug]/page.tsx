@@ -166,7 +166,7 @@ export default async function AuthorPage({ params }: Props) {
 									href={author.socialLink}
 									target="_blank"
 									rel="noopener noreferrer"
-									className="inline-grid size-9 place-items-center rounded-full border border-ink/10 text-muted transition hover:border-brand hover:text-brand"
+									className="inline-grid size-9 place-items-center rounded-full border border-line text-muted transition hover:border-brand hover:text-brand"
 									aria-label="Profilo social"
 								>
 									<AuthorSocialIcon url={author.socialLink} />

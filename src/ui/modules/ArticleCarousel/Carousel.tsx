@@ -47,7 +47,7 @@ function Slide({ post, active, isFirst }: { post: Post; active: boolean; isFirst
 				<div className="absolute inset-0 bg-surface" />
 			)}
 
-			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/95 via-black/60 via-40% to-transparent sm:h-[60%] lg:h-[70%]" />
+			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/90 via-black/70 via-60% to-transparent sm:h-[60%] lg:h-[70%]" />
 
 			<div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-5 sm:gap-3 sm:p-8 lg:gap-4 lg:p-12">
 				{post.categories?.[0] && (
@@ -132,7 +132,7 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 	// Auto-advance
 	useEffect(() => {
 		if (!isCarousel || paused) return
-		const interval = setInterval(next, 6000)
+		const interval = setInterval(next, 6000000)
 		return () => clearInterval(interval)
 	}, [isCarousel, next, paused])
 
@@ -141,7 +141,7 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 		if ((e.target as HTMLElement).closest('a, button')) return
 		dragX.current = e.clientX
 		dragDx.current = 0
-		;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+			; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
 		setPaused(true)
 	}, [])
 
@@ -156,8 +156,8 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 		dragX.current = null
 		dragDx.current = 0
 		try {
-			;(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
-		} catch {}
+			; (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
+		} catch { }
 		setPaused(false)
 		if (Math.abs(dx) > 50) (dx < 0 ? next : prev)()
 	}, [next, prev])
@@ -174,14 +174,14 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 
 	return (
 		<div
-			className="relative overflow-hidden"
+			className="relative"
 			aria-roledescription={isCarousel ? 'carousel' : undefined}
 			aria-label={isCarousel ? 'Articoli in evidenza' : undefined}
 			onMouseEnter={() => setPaused(true)}
 			onMouseLeave={() => setPaused(false)}
 		>
 			<div
-				className="touch-pan-y select-none overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-brand"
+				className="touch-pan-y select-none outline-none focus-visible:ring-2 focus-visible:ring-brand"
 				tabIndex={0}
 				onKeyDown={onKeyDown}
 				onPointerDown={isCarousel ? onPointerDown : undefined}
@@ -221,20 +221,6 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 					})}
 				</div>
 			</div>
-
-			{/* Edge fade overlays */}
-			{isCarousel && (
-				<>
-					<div
-						className="pointer-events-none absolute inset-y-0 left-0 z-[5] hidden w-[12%] sm:block"
-						style={{ background: 'linear-gradient(to right, var(--color-surface), transparent)' }}
-					/>
-					<div
-						className="pointer-events-none absolute inset-y-0 right-0 z-[5] hidden w-[12%] sm:block"
-						style={{ background: 'linear-gradient(to left, var(--color-surface), transparent)' }}
-					/>
-				</>
-			)}
 
 			{/* Navigation arrows — visible on all devices */}
 			{isCarousel && (

@@ -23,7 +23,7 @@ export default function PostContentSkeleton() {
 						<div className="skeleton-2 max-w-xl" />
 
 						{/* Author bar */}
-						<div className="flex items-center gap-3 border-y border-ink/5 py-4">
+						<div className="flex items-center gap-3 border-y border-line-soft py-4">
 							<div className="size-9 rounded-full bg-ink/3" />
 							<div className="space-y-1">
 								<div className="skeleton h-4 w-28" />

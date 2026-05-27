@@ -29,7 +29,7 @@ export default function DevColorSwitcher() {
 		try {
 			const saved = localStorage.getItem(STORAGE_KEY)
 			if (saved) setColor(saved)
-		} catch {}
+		} catch { }
 	}, [])
 
 	useEffect(() => {
@@ -61,7 +61,7 @@ export default function DevColorSwitcher() {
 
 			{open && (
 				<div
-					className="w-72 rounded-xl border border-border bg-surface p-4 shadow-2xl"
+					className="w-72 rounded-xl border border-line bg-surface p-4 shadow-2xl"
 					style={{ fontFamily: 'system-ui, sans-serif' }}
 				>
 					<div className="mb-3 flex items-center justify-between">
@@ -88,13 +88,13 @@ export default function DevColorSwitcher() {
 							type="color"
 							value={color}
 							onChange={(e) => setColor(e.target.value)}
-							className="size-8 cursor-pointer rounded border border-border bg-transparent"
+							className="size-8 cursor-pointer rounded border border-line bg-transparent"
 						/>
 						<input
 							type="text"
 							value={color}
 							onChange={(e) => setColor(e.target.value)}
-							className="min-w-0 flex-1 rounded-lg border border-border bg-canvas px-2 py-1.5 text-xs text-ink"
+							className="min-w-0 flex-1 rounded-lg border border-line bg-canvas px-2 py-1.5 text-xs text-ink"
 							spellCheck={false}
 						/>
 					</div>
@@ -122,7 +122,7 @@ export default function DevColorSwitcher() {
 					</div>
 
 					{/* Preview */}
-					<div className="mb-3 rounded-lg border border-border bg-canvas p-3">
+					<div className="mb-3 rounded-lg border border-line bg-canvas p-3">
 						<p className="text-lg font-bold leading-tight" style={{ color }}>
 							TM Sport
 						</p>
@@ -134,7 +134,7 @@ export default function DevColorSwitcher() {
 
 					<button
 						onClick={reset}
-						className="w-full rounded-lg border border-border py-1.5 text-xs font-medium text-muted transition hover:text-ink"
+						className="w-full rounded-lg border border-line py-1.5 text-xs font-medium text-muted transition hover:text-ink"
 					>
 						Reset
 					</button>

@@ -59,7 +59,7 @@ export default function AccordionList({
 			<div className="mx-auto w-full max-w-screen-md">
 				{items?.map(({ _key, summary, content, open }) => (
 					<details
-						className="accordion border-ink/10 border-b"
+						className="accordion border-line border-b"
 						name={connect ? props._key : undefined}
 						open={open}
 						{...(generateSchema && {

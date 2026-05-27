@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 
 function Section({ title, children, wide }: { title: string; children: React.ReactNode; wide?: boolean }) {
 	return (
-		<section className={`rounded-2xl border border-border/50 bg-surface/50 p-6 sm:p-8 ${wide ? 'space-y-6' : 'mx-auto max-w-screen-md space-y-6'}`}>
+		<section className={`rounded-2xl border border-line-soft bg-surface/50 p-6 sm:p-8 ${wide ? 'space-y-6' : 'mx-auto max-w-screen-md space-y-6'}`}>
 			<h2 className="border-b-2 border-brand pb-3 text-2xl font-black uppercase tracking-tight text-ink">
 				{title}
 			</h2>
@@ -521,8 +521,8 @@ export default function ShowcasePage() {
 				<p className="text-sm text-muted-foreground">
 					Blocco HTML/CSS libero — per widget, embed custom, o contenuti speciali.
 				</p>
-				<div className="rounded-xl border border-border overflow-hidden">
-					<div className="bg-muted/50 px-4 py-3 text-xs font-mono text-muted-foreground border-b border-border">
+				<div className="rounded-xl border border-line overflow-hidden">
+					<div className="bg-muted/50 px-4 py-3 text-xs font-mono text-muted-foreground border-b border-line">
 						custom-html
 					</div>
 					<div className="p-4">

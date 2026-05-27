@@ -12,10 +12,10 @@ export default function StandingsSkeleton() {
 				</header>
 
 				{/* Table */}
-				<div className="overflow-x-auto rounded-lg border border-white/10">
+				<div className="overflow-x-auto rounded-lg border border-line">
 					<table className="w-full text-left text-sm">
 						<thead>
-							<tr className="bg-surface border-b border-white/10 text-xs uppercase tracking-wider text-white/60">
+							<tr className="bg-surface border-b border-line text-xs uppercase tracking-wider text-white/60">
 								<th className="px-3 py-3 text-center">#</th>
 								<th className="px-3 py-3">Squadra</th>
 								<th className="px-3 py-3 text-center">Pt</th>
@@ -30,7 +30,7 @@ export default function StandingsSkeleton() {
 						</thead>
 						<tbody>
 							{Array.from({ length: 10 }).map((_, i) => (
-								<tr key={i} className="border-b border-white/5">
+								<tr key={i} className="border-b border-line-soft">
 									<td className="px-3 py-2.5 text-center">
 										<div className="mx-auto h-4 w-4 rounded bg-ink/3" />
 									</td>

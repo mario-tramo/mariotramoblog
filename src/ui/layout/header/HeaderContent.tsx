@@ -113,7 +113,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 						<motion.ul
 							ref={menuRef}
 							role="menu"
-							className="absolute top-full left-0 z-50 mt-1 min-w-[180px] rounded-lg border border-ink/8 bg-surface-light py-1 shadow-xl shadow-black/20"
+							className="absolute top-full left-0 z-50 mt-1 min-w-[180px] rounded-lg border border-line bg-surface-light py-1 shadow-xl shadow-black/20"
 							initial={{ opacity: 0, y: -6 }}
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -6 }}
@@ -207,7 +207,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 	return (
 		<>
 			<header
-				className="sticky top-0 z-40 border-b border-ink/8 bg-canvas/95 backdrop-blur-md"
+				className="sticky top-0 z-40 border-b border-line bg-canvas/95 backdrop-blur-md"
 			>
 				<div className="mx-auto flex h-12 max-w-screen-2xl items-center justify-between gap-4 px-3 sm:h-14 sm:px-6">
 					{/* Logo */}
@@ -302,7 +302,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 							{navItems.map((item) => (
 								<div
 									key={item.label}
-									className="border-b border-ink/5"
+									className="border-b border-line-soft"
 								>
 									{item.children?.length ? (
 										<>

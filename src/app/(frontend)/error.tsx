@@ -25,7 +25,7 @@ export default function Error({
 				</button>
 				<Link
 					href="/"
-					className="rounded border border-ink/10 px-8 py-3 text-base font-medium transition-colors hover:bg-surface"
+					className="rounded border border-line px-8 py-3 text-base font-medium transition-colors hover:bg-surface"
 				>
 					Torna alla Home
 				</Link>

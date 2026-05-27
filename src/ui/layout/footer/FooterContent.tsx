@@ -56,7 +56,7 @@ export default function FooterContent({
 			{copyright && (
 				<div className="bg-surface">
 					<div
-						className="mx-auto max-w-screen-2xl border-t border-ink/8 px-3 pb-8 sm:px-6"
+						className="mx-auto max-w-screen-2xl border-t border-line px-3 pb-8 sm:px-6"
 					>
 						<div className="pt-5 text-center text-[10px] uppercase tracking-widest text-muted/60">
 							<PortableText value={copyright} />

@@ -101,7 +101,7 @@ export default function PostContent({
 						)}
 
 						{/* Author bar + share */}
-						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-ink/5 py-4 text-sm text-muted">
+						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-line py-4 text-sm text-muted">
 							<div className="flex items-center gap-2">
 								{firstAuthor ? (
 									<>
@@ -178,7 +178,7 @@ export default function PostContent({
 					{/* Mobile: collapsible TOC */}
 					<div className="mt-6 space-y-3 lg:hidden">
 						{showTOC && (
-							<details className="group rounded-xl border border-ink/8 bg-surface">
+							<details className="group rounded-xl border border-line bg-surface">
 								<summary className="flex cursor-pointer items-center justify-between px-4 py-3 text-sm font-bold uppercase tracking-wider text-brand">
 									Indice dei contenuti
 									<ChevronIcon
@@ -187,7 +187,7 @@ export default function PostContent({
 									/>
 								</summary>
 								<div className="px-4 pb-4">
-									<hr className="mb-3 border-ink/8" />
+									<hr className="mb-3 border-line" />
 									<TableOfContents headings={post.headings} />
 								</div>
 							</details>
@@ -211,7 +211,7 @@ export default function PostContent({
 								<Link
 									key={tag._id}
 									href={`/?tag=${tag.slug.current}`}
-									className="inline-flex items-center rounded-full border border-ink/10 bg-surface px-3 py-1 text-xs font-medium text-muted transition hover:border-brand hover:text-brand"
+									className="inline-flex items-center rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted transition hover:border-brand hover:text-brand"
 								>
 									#{tag.title}
 								</Link>
@@ -224,7 +224,7 @@ export default function PostContent({
 						<h3 className="mb-4 text-xl font-extrabold text-ink sm:text-2xl">
 							Scritto da
 						</h3>
-						<div className="rounded-xl border border-ink/5 bg-surface p-5 sm:p-6">
+						<div className="rounded-xl border border-line bg-surface p-5 shadow-[0_10px_30px_rgba(0,0,0,0.35)] sm:p-6">
 							<div className="flex gap-4">
 								<span className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full bg-brand text-lg font-bold text-brand-foreground sm:size-20">
 									{firstAuthor?.image ? (
@@ -261,7 +261,7 @@ export default function PostContent({
 											href={firstAuthor.socialLink}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="mt-2 inline-grid size-8 place-items-center rounded border border-ink/10 text-muted transition hover:border-accent hover:text-accent"
+											className="mt-2 inline-grid size-8 place-items-center rounded border border-line text-muted transition hover:border-accent hover:text-accent"
 											aria-label="Profilo social"
 										>
 											<AuthorSocialIcon url={firstAuthor.socialLink} />
@@ -286,7 +286,7 @@ export default function PostContent({
 
 					{/* Footer nav */}
 					{post.categories?.[0] && (
-						<div className="mt-10 flex items-center border-t border-ink/5 pt-6">
+						<div className="mt-10 flex items-center border-t border-line pt-6">
 							<Link
 								href={`/${post.categories[0].slug.current}`}
 								className="inline-flex items-center gap-2 text-sm text-brand hover:underline"

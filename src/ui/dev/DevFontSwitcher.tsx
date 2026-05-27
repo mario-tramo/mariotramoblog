@@ -66,7 +66,7 @@ export default function DevFontSwitcher() {
 			if (saved.extraFonts) {
 				setExtraFonts(saved.extraFonts)
 			}
-		} catch {}
+		} catch { }
 	}, [])
 
 	// Apply font globally
@@ -122,7 +122,7 @@ export default function DevFontSwitcher() {
 
 			{open && (
 				<div
-					className="w-72 rounded-xl border border-border bg-surface p-4 shadow-2xl"
+					className="w-72 rounded-xl border border-line bg-surface p-4 shadow-2xl"
 					style={{ fontFamily: 'system-ui, sans-serif' }}
 				>
 					<div className="mb-3 flex items-center justify-between">
@@ -144,7 +144,7 @@ export default function DevFontSwitcher() {
 					<select
 						value={font}
 						onChange={(e) => applyFont(e.target.value)}
-						className="mb-3 w-full rounded-lg border border-border bg-canvas px-2 py-1.5 text-xs text-ink"
+						className="mb-3 w-full rounded-lg border border-line bg-canvas px-2 py-1.5 text-xs text-ink"
 					>
 						<option value="">Default</option>
 						{allFonts.map((f) => (
@@ -165,7 +165,7 @@ export default function DevFontSwitcher() {
 							onChange={(e) => setCustomFont(e.target.value)}
 							onKeyDown={(e) => e.key === 'Enter' && addCustomFont()}
 							placeholder="es. Poppins"
-							className="min-w-0 flex-1 rounded-lg border border-border bg-canvas px-2 py-1.5 text-xs text-ink placeholder:text-muted"
+							className="min-w-0 flex-1 rounded-lg border border-line bg-canvas px-2 py-1.5 text-xs text-ink placeholder:text-muted"
 						/>
 						<button
 							onClick={addCustomFont}
@@ -176,7 +176,7 @@ export default function DevFontSwitcher() {
 					</div>
 
 					{/* Preview */}
-					<div className="mb-3 rounded-lg border border-border bg-canvas p-3">
+					<div className="mb-3 rounded-lg border border-line bg-canvas p-3">
 						<p
 							className="text-lg font-bold leading-tight"
 							style={{ fontFamily: font ? `"${font}", sans-serif` : undefined }}
@@ -199,7 +199,7 @@ export default function DevFontSwitcher() {
 
 					<button
 						onClick={() => applyFont('')}
-						className="w-full rounded-lg border border-border py-1.5 text-xs font-medium text-muted transition hover:text-ink"
+						className="w-full rounded-lg border border-line py-1.5 text-xs font-medium text-muted transition hover:text-ink"
 					>
 						Reset
 					</button>

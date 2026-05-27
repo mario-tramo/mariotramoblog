@@ -9,7 +9,7 @@ interface Toast {
 	message: string
 }
 
-const ToastContext = createContext<(message: string) => void>(() => {})
+const ToastContext = createContext<(message: string) => void>(() => { })
 
 export function useToast() {
 	return useContext(ToastContext)
@@ -37,7 +37,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 					<div
 						key={toast.id}
 						className={cn(
-							'flex items-center gap-2 rounded-full border border-white/10 bg-surface-light px-4 py-2 text-sm font-medium text-ink shadow-xl shadow-black/30 backdrop-blur-xl',
+							'flex items-center gap-2 rounded-full border border-line bg-surface-light px-4 py-2 text-sm font-medium text-ink shadow-xl shadow-black/30 backdrop-blur-xl',
 							'animate-in fade-in slide-in-from-bottom-2 duration-200',
 						)}
 					>

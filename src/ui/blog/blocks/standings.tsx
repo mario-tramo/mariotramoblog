@@ -55,15 +55,15 @@ export function Standings({ value }: StandingsProps) {
 	const isCompact = compact || rows.every((r) => r.won === undefined)
 
 	return (
-		<div className="my-4 overflow-hidden rounded-lg border border-white/10">
+		<div className="my-4 overflow-hidden rounded-lg border border-line">
 			{title && (
-				<div className="border-b border-white/10 bg-surface px-4 py-3">
+				<div className="border-b border-line bg-surface px-4 py-3">
 					<h3 className="text-sm font-semibold">{title}</h3>
 				</div>
 			)}
 
 			{zones && zones.length > 0 && (
-				<div className="flex flex-wrap gap-3 border-b border-white/10 px-4 py-2">
+				<div className="flex flex-wrap gap-3 border-b border-line px-4 py-2">
 					{zones.map((zone) => (
 						<span
 							key={zone.label}
@@ -86,7 +86,7 @@ export function Standings({ value }: StandingsProps) {
 			<div className="overflow-x-auto">
 				<table className="w-full text-left text-sm">
 					<thead>
-						<tr className="border-b border-white/10 text-xs uppercase tracking-wider text-white/60">
+						<tr className="border-b border-line text-xs uppercase tracking-wider text-white/60">
 							<th className="px-3 py-2 text-center">#</th>
 							<th className="px-3 py-2">Squadra</th>
 							<th className="px-3 py-2 text-center">Pt</th>
@@ -115,9 +115,8 @@ export function Standings({ value }: StandingsProps) {
 							return (
 								<tr
 									key={`${row.position}-${row.team}`}
-									className={`border-b border-white/5 transition-colors hover:bg-white/5 ${
-										zone ? `border-l-2 ${zoneColors[zone.color] || ''}` : ''
-									} ${isHighlighted ? 'bg-white/5 font-medium' : ''}`}
+									className={`border-b border-line-soft transition-colors hover:bg-white/5 ${zone ? `border-l-2 ${zoneColors[zone.color] || ''}` : ''
+										} ${isHighlighted ? 'bg-white/5 font-medium' : ''}`}
 								>
 									<td className="px-3 py-2 text-center font-medium">
 										{row.position}

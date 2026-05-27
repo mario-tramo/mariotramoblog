@@ -111,7 +111,7 @@ export default function StayInTheGame({
 							<CTA
 								key={i}
 								link={link}
-								className="group grid size-10 place-items-center rounded-full border border-ink/10 text-muted transition-all duration-300 hover:border-brand/30 hover:text-brand hover:shadow-[0_0_12px_var(--color-brand-glow)]"
+								className="group grid size-10 place-items-center rounded-full border border-line text-muted transition-all duration-300 hover:border-brand/30 hover:text-brand hover:shadow-[0_0_12px_var(--color-brand-glow)]"
 							>
 								<SocialIcon
 									url={link.external}

@@ -2,15 +2,19 @@
 @import './fonts.css';
 
 @theme {
-	--color-canvas: #0B1220;
+	--color-canvas: #07111F;
 	--color-ink: #E2E8F0;
 	--color-accent: #c62828;
 
-	--color-surface: #111827;
+	--color-surface: #0D1B2E;
+	--color-surface-soft: #101F36;
+	--color-surface-contrast: #040A14;
 	--color-surface-light: #1E293B;
 	--color-surface-2: #283548;
 	--color-muted: #94A3B8;
-	--color-border: rgba(255, 255, 255, 0.08);
+	--color-border: rgba(0, 209, 255, 0.12);
+	--color-line: rgba(0, 209, 255, 0.12);
+	--color-line-soft: rgba(0, 209, 255, 0.06);
 	--color-brand: #c62828;
 	--color-brand-foreground: #ffffff;
 
@@ -118,7 +122,7 @@
 	}
 
 	hr {
-		@apply border-ink/10;
+		@apply border-line;
 	}
 
 	/* Global smooth transitions for interactive elements */
@@ -288,7 +292,7 @@
 /* --- Input glow on focus --- */
 
 @utility input {
-	@apply border-ink/10 rounded border p-[.25em] text-start;
+	@apply border-line rounded border p-[.25em] text-start;
 	transition: border-color 200ms, box-shadow 200ms;
 
 	&:focus {
@@ -686,7 +690,7 @@
 /* layout */
 
 @utility section {
-	@apply mx-auto max-w-screen-2xl p-8 max-md:px-3 md:py-20;
+	@apply mx-auto max-w-screen-2xl p-8 max-md:px-4 md:py-20;
 }
 
 /* richtext */

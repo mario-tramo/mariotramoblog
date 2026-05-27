@@ -72,8 +72,8 @@ export default async function BlogList({
 	const rawCategoria = searchParams?.categoria
 	const urlCategoria =
 		!hasExplicitCategoryFilter &&
-		typeof rawCategoria === 'string' &&
-		rawCategoria !== 'All'
+			typeof rawCategoria === 'string' &&
+			rawCategoria !== 'All'
 			? rawCategoria
 			: undefined
 
@@ -126,15 +126,15 @@ export default async function BlogList({
 		'items-stretch gap-x-10 gap-y-12',
 		!isCarousel
 			? cn(
-					'grid',
-					isLarge
-						? 'md:grid-cols-[repeat(auto-fill,minmax(min(400px,100%),1fr))]'
-						: 'md:grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))]',
-				)
+				'grid',
+				isLarge
+					? 'md:grid-cols-[repeat(auto-fill,minmax(min(400px,100%),1fr))]'
+					: 'md:grid-cols-[repeat(auto-fill,minmax(min(300px,100%),1fr))]',
+			)
 			: cn(
-					'carousel max-xl:full-bleed md:overflow-fade-r pb-4 max-xl:px-4',
-					isLarge ? '[--size:min(600px,45vw)]' : '[--size:320px]',
-				),
+				'carousel max-xl:full-bleed pb-4 max-xl:px-4',
+				isLarge ? '[--size:min(600px,45vw)]' : '[--size:320px]',
+			),
 	)
 
 	const CarouselWrapper = isCarousel ? ScrollCarousel : 'div'
@@ -142,10 +142,10 @@ export default async function BlogList({
 	return (
 		<section className={cn(!nested && 'section', 'space-y-8')} {...moduleProps(props)}>
 			{(pretitle || intro) && (
-				<header className={cn(intro ? 'richtext' : 'flex items-end justify-between border-b-2 border-ink/10 pb-3')}>
+				<header className={cn(intro ? 'richtext' : 'flex items-end justify-between border-b-2 border-line pb-3')}>
 					{pretitle && !intro ? (
 						<>
-							<h2 className="text-2xl font-extrabold tracking-tight">{pretitle}</h2>
+							<h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">{pretitle}</h2>
 						</>
 					) : (
 						<>
@@ -157,18 +157,18 @@ export default async function BlogList({
 			)}
 
 			{displayFilters && !urlCategoria && (
-			<Suspense
-				fallback={
-					<div className="flex flex-wrap gap-1 max-sm:justify-center">
-						{Array.from({ length: 6 }).map((_, i) => (
-							<div key={i} className="h-8 w-20 rounded-full bg-ink/3" />
-						))}
-					</div>
-				}
-			>
-				<FilterList />
-			</Suspense>
-		)}
+				<Suspense
+					fallback={
+						<div className="flex flex-wrap gap-1 max-sm:justify-center">
+							{Array.from({ length: 6 }).map((_, i) => (
+								<div key={i} className="h-8 w-20 rounded-full bg-ink/3" />
+							))}
+						</div>
+					}
+				>
+					<FilterList />
+				</Suspense>
+			)}
 
 			<CarouselWrapper>
 				<Suspense

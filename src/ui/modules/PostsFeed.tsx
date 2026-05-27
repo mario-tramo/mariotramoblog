@@ -86,8 +86,8 @@ export default async function PostsFeed({
 				{...moduleProps(props)}
 			>
 				{title && (
-					<header className="border-b-2 border-ink/10 pb-3">
-						<h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">
+					<header className="border-b-2 border-line pb-3">
+						<h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
 							{title}
 						</h2>
 					</header>
@@ -107,12 +107,12 @@ export default async function PostsFeed({
 	// Carousel layout (default)
 	return (
 		<section
-			className={cn(!nested && 'section', 'space-y-6')}
+			className={cn(!nested && 'section', 'space-y-6 overflow-hidden')}
 			{...moduleProps(props)}
 		>
 			{title && (
-				<header className="border-b-2 border-ink/10 pb-3">
-					<h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">
+				<header className="border-b-2 border-line pb-3">
+					<h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
 						{title}
 					</h2>
 				</header>
@@ -121,7 +121,7 @@ export default async function PostsFeed({
 			<ScrollCarousel>
 				<Suspense
 					fallback={
-						<ul className="carousel max-xl:full-bleed md:overflow-fade-r pb-4 max-xl:px-4 [--size:320px]">
+						<ul className="carousel max-xl:full-bleed justify-center pb-4 max-xl:px-4 [--size:320px]">
 							{Array.from({ length: cleanLimit }).map((_, i) => (
 								<li key={i}>
 									<PostPreview skeleton />
@@ -130,7 +130,7 @@ export default async function PostsFeed({
 						</ul>
 					}
 				>
-					<ul className="carousel max-xl:full-bleed md:overflow-fade-r pb-4 max-xl:px-4 gap-4 [--size:320px]">
+					<ul className="carousel max-xl:full-bleed justify-center pb-4 max-xl:px-4 gap-4 [--size:320px]">
 						{posts.map((post) => (
 							<li key={post._id} className="anim-fade">
 								<PostPreview post={post} />

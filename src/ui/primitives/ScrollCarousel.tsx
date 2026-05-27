@@ -102,7 +102,7 @@ export default function ScrollCarousel({
 					<button
 						onClick={() => scroll('left')}
 						className={cn(
-							'absolute top-1/2 left-1 z-10 hidden -translate-y-1/2 place-items-center rounded-full border border-border bg-surface text-ink shadow-lg transition hover:bg-brand hover:text-brand-foreground sm:grid',
+							'absolute top-1/2 left-1 z-10 hidden -translate-y-1/2 place-items-center rounded-full border border-line bg-surface text-ink shadow-lg transition hover:bg-brand hover:text-brand-foreground sm:grid',
 							'size-10',
 							canScrollLeft ? 'opacity-100' : 'pointer-events-none opacity-0',
 						)}
@@ -113,7 +113,7 @@ export default function ScrollCarousel({
 					<button
 						onClick={() => scroll('right')}
 						className={cn(
-							'absolute top-1/2 right-1 z-10 hidden -translate-y-1/2 place-items-center rounded-full border border-border bg-surface text-ink shadow-lg transition hover:bg-brand hover:text-brand-foreground sm:grid',
+							'absolute top-1/2 right-1 z-10 hidden -translate-y-1/2 place-items-center rounded-full border border-line bg-surface text-ink shadow-lg transition hover:bg-brand hover:text-brand-foreground sm:grid',
 							'size-10',
 							canScrollRight ? 'opacity-100' : 'pointer-events-none opacity-0',
 						)}

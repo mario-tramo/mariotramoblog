@@ -257,7 +257,7 @@ export default function PostListWidget({
 			{viewAllHref && effectiveCtaStyle === 'link' && (
 				<Link
 					href={viewAllHref}
-					className="mt-6 flex w-full items-center justify-between border-t border-ink/5 pt-4 text-xs font-semibold text-muted transition hover:text-ink"
+					className="mt-6 flex w-full items-center justify-between border-t border-line-soft pt-4 text-xs font-semibold text-muted transition hover:text-ink"
 				>
 					{viewAllLabel}
 					<ChevronIcon className="size-3.5" />

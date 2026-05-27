@@ -135,7 +135,7 @@ export default function Modules({
 					return (
 						<div
 							key={module._key}
-							className={cn(bgClass, 'py-1')}
+							className={cn(bgClass, 'section')}
 							style={style}
 						>
 							{rendered}
@@ -147,7 +147,7 @@ export default function Modules({
 					<div
 						key={module._key}
 						className={cn(
-							'mx-auto max-w-screen-2xl',
+							'section',
 							bgClass,
 							'rounded-2xl',
 						)}

@@ -60,7 +60,7 @@ export default function TableOfContents({
 				Indice dei contenuti
 			</h3>
 
-			<hr className="mt-3 border-ink/10" />
+			<hr className="mt-3 border-line" />
 
 			<ol className="mt-4 space-y-5">
 				{headings?.map(({ text }, key) => (

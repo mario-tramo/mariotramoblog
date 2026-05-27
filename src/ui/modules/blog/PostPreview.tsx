@@ -70,7 +70,7 @@ export default function PostPreview({
 
 	return (
 		<article
-			className="group relative isolate flex h-full flex-col overflow-hidden rounded-xl border border-ink/5 bg-surface transition"
+			className="group relative isolate flex h-full flex-col overflow-hidden rounded-xl border border-line bg-surface shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition"
 		>
 			<figure className="relative aspect-[16/9] overflow-hidden bg-ink/3">
 				<Img

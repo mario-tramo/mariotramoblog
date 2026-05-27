@@ -7,7 +7,9 @@ import { VscCheck, VscCopy } from 'react-icons/vsc'
 
 const BACKGROUND_OPTIONS = [
 	{ title: 'Nessuno', value: 'none' },
-	{ title: 'Superficie', value: 'surface' },
+	{ title: 'Superficie (cards)', value: 'surface' },
+	{ title: 'Soft (respiro)', value: 'soft' },
+	{ title: 'Contrasto (quasi nero)', value: 'contrast' },
 	{ title: 'Accento', value: 'accent' },
 	{ title: 'Scuro', value: 'dark' },
 	{ title: 'Personalizzato', value: 'custom' },

@@ -87,10 +87,10 @@ export default async function Standings({
 				</div>
 			</header>
 
-			<div className={`overflow-x-auto rounded-lg border border-white/10 ${inline ? 'no-scrollbar' : ''}`}>
+			<div className={`overflow-x-auto rounded-lg border border-line ${inline ? 'no-scrollbar' : ''}`}>
 				<table className="w-full text-left text-sm">
 					<thead>
-						<tr className="bg-surface border-b border-white/10 text-xs uppercase tracking-wider text-white/60">
+						<tr className="bg-surface border-b border-line text-xs uppercase tracking-wider text-white/60">
 							<th className="px-2 py-2 text-center sm:px-3 sm:py-3">
 								#
 							</th>
@@ -127,7 +127,7 @@ export default async function Standings({
 						{standings.map((row, i) => (
 							<tr
 								key={row.team.id}
-								className={`border-b border-white/5 transition-colors hover:bg-white/5 ${getRowVisibilityClass(i, mobileRows, desktopRows)}`}
+								className={`border-b border-line-soft transition-colors hover:bg-white/5 ${getRowVisibilityClass(i, mobileRows, desktopRows)}`}
 							>
 								<td className="px-2 py-2 text-center font-medium sm:px-3 sm:py-2.5">
 									{row.position}

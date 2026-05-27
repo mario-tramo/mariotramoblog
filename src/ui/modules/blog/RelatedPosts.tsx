@@ -60,13 +60,13 @@ export default async function RelatedPosts({
 
 	if (variant === 'mobile-collapsible') {
 		return (
-			<details className="group rounded-2xl border border-ink/10 bg-surface-light">
+			<details className="group rounded-2xl border border-line bg-surface-light">
 				<summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-black uppercase tracking-wider text-brand">
 					Articoli correlati
 					<ChevronRight className="size-5 rotate-90 text-brand transition-transform group-open:rotate-270" />
 				</summary>
 				<div className="px-5 pb-5">
-					<hr className="mb-4 border-ink/10" />
+					<hr className="mb-4 border-line" />
 					<ul className="space-y-5">
 						{related.map((r) => (
 							<li key={r._id} className="group/item relative">
@@ -110,7 +110,7 @@ export default async function RelatedPosts({
 		const small = related.slice(2)
 
 		return (
-			<SectionCard className="border-ink/12 bg-surface-light/40 p-5 backdrop-blur-2xl backdrop-saturate-150 sm:p-6">
+			<SectionCard className="border-line bg-surface-light/40 p-5 backdrop-blur-2xl backdrop-saturate-150 sm:p-6">
 				<h3 className="mb-5 text-sm font-extrabold uppercase tracking-widest text-ink">
 					<span className="mr-2 text-brand" aria-hidden="true">✦</span>
 					Articoli Correlati

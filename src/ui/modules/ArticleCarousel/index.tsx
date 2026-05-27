@@ -37,8 +37,8 @@ export default async function ArticleCarousel({
 	const rawCategoria = searchParams?.categoria
 	const urlCategoria =
 		!hasExplicitCategoryFilter &&
-		typeof rawCategoria === 'string' &&
-		rawCategoria !== 'All'
+			typeof rawCategoria === 'string' &&
+			rawCategoria !== 'All'
 			? rawCategoria
 			: undefined
 
@@ -85,7 +85,7 @@ export default async function ArticleCarousel({
 	if (!posts?.length) return null
 
 	return (
-		<section className="section !py-4 md:!py-8">
+		<section className="section !py-4 md:!py-8 overflow-hidden">
 			<Carousel posts={posts} />
 		</section>
 	)

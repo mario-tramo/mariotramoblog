@@ -90,7 +90,7 @@ export function PostPreviewSkeleton() {
 				<div className="size-6 rounded-full bg-ink/3" />
 				<div className="skeleton w-24" />
 			</div>
-			<div className="flex gap-4 border-t border-ink/5 pt-3">
+			<div className="flex gap-4 border-t border-line-soft pt-3">
 				<div className="skeleton w-20" />
 				<div className="skeleton w-16" />
 			</div>

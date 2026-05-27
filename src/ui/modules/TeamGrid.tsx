@@ -26,7 +26,7 @@ export default async function TeamGrid(props: Sanity.Module) {
 								? `/autori/${author.slug.current}`
 								: '#'
 						}
-						className="group flex gap-4 rounded-2xl border border-ink/8 bg-surface/50 p-5 transition hover:border-brand/30 hover:shadow-lg"
+						className="group flex gap-4 rounded-2xl border border-line bg-surface p-5 transition shadow-[0_10px_30px_rgba(0,0,0,0.35)] hover:border-brand/30 hover:shadow-lg"
 					>
 						<span className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full bg-brand text-lg font-bold text-brand-foreground">
 							{author.image ? (

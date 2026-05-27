@@ -8,7 +8,7 @@ export default function SectionCard({
 	return (
 		<div
 			className={cn(
-				'rounded-xl border border-ink/8 bg-surface',
+				'rounded-xl border border-line bg-surface shadow-[0_10px_30px_rgba(0,0,0,0.35)]',
 				className,
 			)}
 			{...props}
