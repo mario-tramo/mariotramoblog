@@ -183,9 +183,6 @@ export default function PostContent({
 							</details>
 						)}
 
-						<Suspense fallback={<RelatedPostsSkeleton />}>
-							<RelatedPosts post={post} variant="mobile-collapsible" />
-						</Suspense>
 					</div>
 
 					{/* Body */}
@@ -260,6 +257,13 @@ export default function PostContent({
 								</p>
 							)}
 						</div>
+					</div>
+
+					{/* Mobile: Related posts */}
+					<div className="mt-10 lg:hidden">
+						<Suspense fallback={<RelatedPostsSkeleton />}>
+							<RelatedPosts post={post} variant="full" />
+						</Suspense>
 					</div>
 
 					{/* Footer nav */}
