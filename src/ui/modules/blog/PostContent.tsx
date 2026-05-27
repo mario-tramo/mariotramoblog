@@ -10,6 +10,7 @@ import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
 import Content from '@/ui/modules/RichtextModule/Content'
 import RelatedPosts from './RelatedPosts'
 import ChevronIcon from '@/ui/icons/ChevronIcon'
+import SectionCard from '@/ui/primitives/SectionCard'
 import { cn, getInitials } from '@/lib/utils'
 import { FaLinkedinIn, FaInstagram, FaXTwitter } from 'react-icons/fa6'
 import { IoIosLink } from 'react-icons/io'
@@ -75,7 +76,7 @@ export default function PostContent({
 			</nav>
 
 			{/* 2-column layout */}
-			<div className="mx-auto grid max-w-screen-2xl gap-10 px-4 pt-8 pb-16 sm:px-6 sm:pb-20 lg:grid-cols-[1fr_320px]">
+			<div className="mx-auto grid max-w-screen-2xl gap-10 px-4 pt-8 pb-16 sm:px-6 sm:pb-20 lg:grid-cols-[1fr_380px]">
 				{/* Main content */}
 				<div className="min-w-0">
 					{/* Header */}
@@ -164,19 +165,31 @@ export default function PostContent({
 						</figure>
 					)}
 
-					{/* Body */}
-					<div
-						className={cn(
-							'mt-10 grid gap-10',
-							showTOC && 'lg:grid-cols-[1fr_auto]',
-						)}
-					>
+					{/* Mobile: collapsible TOC + Related */}
+					<div className="mt-6 space-y-3 lg:hidden">
 						{showTOC && (
-							<aside className="lg:sticky-below-header mx-auto w-full max-w-lg self-start [--offset:1rem] lg:order-1 lg:w-3xs">
-								<TableOfContents headings={post.headings} />
-							</aside>
+							<details className="group rounded-2xl border border-ink/10 bg-surface-light/60 backdrop-blur-xl">
+								<summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-base font-black uppercase tracking-wider text-brand">
+									Indice dei contenuti
+									<ChevronIcon
+										direction="right"
+										className="size-5 rotate-90 text-brand transition-transform group-open:rotate-270"
+									/>
+								</summary>
+								<div className="px-5 pb-5">
+									<hr className="mb-4 border-ink/10" />
+									<TableOfContents headings={post.headings} />
+								</div>
+							</details>
 						)}
 
+						<Suspense fallback={<RelatedPostsSkeleton />}>
+							<RelatedPosts post={post} variant="mobile-collapsible" />
+						</Suspense>
+					</div>
+
+					{/* Body */}
+					<div className="mt-10">
 						<Content
 							value={post.body}
 							className={cn(css.body, 'grid')}
@@ -263,9 +276,14 @@ export default function PostContent({
 					)}
 				</div>
 
-				{/* Sidebar */}
-				<aside className="space-y-6 max-lg:order-last lg:sticky-below-header lg:self-start lg:[--offset:1rem]">
-					{/* Related stories */}
+				{/* Sidebar (desktop only) */}
+				<aside className="hidden space-y-6 lg:sticky-below-header lg:block lg:self-start lg:[--offset:1rem]">
+					{showTOC && (
+						<SectionCard className="bg-surface-light/60 p-5 backdrop-blur-xl sm:p-6">
+							<TableOfContents headings={post.headings} />
+						</SectionCard>
+					)}
+
 					<Suspense fallback={<RelatedPostsSkeleton />}>
 						<RelatedPosts post={post} variant="sidebar" />
 					</Suspense>

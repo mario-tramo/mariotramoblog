@@ -15,6 +15,9 @@ import {
 } from '@/ui/blog/blocks'
 import Admonition from '@/ui/modules/RichtextModule/Admonition'
 import AnchoredHeading from '@/ui/modules/RichtextModule/AnchoredHeading'
+import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
+import RelatedPosts from '@/ui/modules/blog/RelatedPosts'
+import SectionCard from '@/ui/primitives/SectionCard'
 import Hero from '@/ui/modules/Hero'
 import NewsletterSubscribe from '@/ui/features/newsletter'
 import CardList from '@/ui/modules/CardList'
@@ -387,6 +390,48 @@ export default function ShowcasePage() {
 					Separatore visuale tra sezioni.
 				</p>
 				<Divider />
+			</Section>
+
+			{/* ── TABLE OF CONTENTS (sidebar) ── */}
+			<Section title="Table of Contents (Sidebar)">
+				<p className="text-sm text-muted-foreground">
+					Indice dei contenuti — versione sidebar con card bordata. Usato nella pagina articolo.
+				</p>
+				<div className="max-w-xs">
+					<SectionCard className="bg-surface-light p-5 sm:p-6">
+						<TableOfContents
+							headings={[
+								{ text: 'Cronaca del match', style: 'h2' },
+								{ text: 'Primo tempo', style: 'h3' },
+								{ text: 'Secondo tempo', style: 'h3' },
+								{ text: 'Le formazioni', style: 'h2' },
+								{ text: 'Le pagelle', style: 'h2' },
+								{ text: 'I migliori in campo', style: 'h3' },
+								{ text: 'I peggiori in campo', style: 'h3' },
+								{ text: 'Cosa ne pensiamo', style: 'h2' },
+							]}
+						/>
+					</SectionCard>
+				</div>
+			</Section>
+
+			{/* ── RELATED POSTS (sidebar) ── */}
+			<Section title="Articoli Correlati (Sidebar)">
+				<p className="text-sm text-muted-foreground">
+					Card sidebar articoli correlati — immagine, tag categoria, titolo, tempo lettura. Dati live dal CMS.
+				</p>
+				<div className="w-[380px] max-w-full">
+					<Suspense fallback={<div className="h-48 animate-pulse rounded-xl bg-muted" />}>
+						<RelatedPosts
+							post={{
+								_id: 'showcase-mock',
+								categories: [],
+								tags: [{ _id: 'any-tag', slug: { current: 'calcio' } } as any],
+							} as any}
+							variant="sidebar"
+						/>
+					</Suspense>
+				</div>
 			</Section>
 
 			{/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

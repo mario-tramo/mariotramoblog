@@ -1,8 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import { cn, slug } from '@/lib/utils'
-import { stegaClean } from 'next-sanity'
+import { slug } from '@/lib/utils'
 import css from './TableOfContents.module.css'
 
 export default function TableOfContents({
@@ -56,30 +55,21 @@ export default function TableOfContents({
 	}, [headings])
 
 	return (
-		<details
-			className={cn(css.root, 'group accordion max-lg:bg-ink/3 max-lg:p-3')}
-			open
-		>
-			<summary className="font-bold lg:group-open:after:invisible">
+		<nav className={css.root}>
+			<h3 className="text-base font-black uppercase tracking-wider text-brand">
 				Indice dei contenuti
-			</summary>
+			</h3>
 
-			<ol className="anim-fade-to-b mt-2 leading-tight">
-				{headings?.map(({ text, style }, key) => (
+			<hr className="mt-3 border-ink/10" />
+
+			<ol className="mt-4 space-y-5">
+				{headings?.map(({ text }, key) => (
 					<li
-						className="border-ink/10 border-s transition-all"
 						data-toc-item={slug(text)}
 						key={key}
 					>
 						<a
-							className={cn(
-								'block py-1 hover:underline',
-								stegaClean(style) == 'h2' && 'ps-4',
-								stegaClean(style) == 'h3' && 'ps-6',
-								stegaClean(style) == 'h4' && 'ps-8',
-								stegaClean(style) == 'h5' && 'ps-10',
-								stegaClean(style) == 'h6' && 'ps-12',
-							)}
+							className="block text-[15px] font-medium text-ink/80 transition-colors hover:text-brand"
 							href={`#${slug(text)}`}
 						>
 							{text}
@@ -87,6 +77,6 @@ export default function TableOfContents({
 					</li>
 				))}
 			</ol>
-		</details>
+		</nav>
 	)
 }
