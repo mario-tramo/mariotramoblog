@@ -14,7 +14,7 @@ function Slide({ post, active }: { post: Sanity.BlogPost; active: boolean }) {
 			href={resolveUrl(post, { base: false })}
 			className={cn(
 				'group relative block overflow-hidden rounded-xl transition-opacity duration-500',
-				'aspect-[4/3] sm:aspect-[16/10]',
+				'aspect-[16/9] sm:aspect-[2/1]',
 				active ? 'opacity-100' : 'opacity-0',
 			)}
 			tabIndex={active ? 0 : -1}

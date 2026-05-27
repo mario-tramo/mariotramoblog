@@ -175,24 +175,23 @@ export default function PostContent({
 						</figure>
 					)}
 
-					{/* Mobile: collapsible TOC + Related */}
+					{/* Mobile: collapsible TOC */}
 					<div className="mt-6 space-y-3 lg:hidden">
 						{showTOC && (
-							<details className="group rounded-2xl border border-ink/12 bg-surface-light/40 backdrop-blur-2xl backdrop-saturate-150">
-								<summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-base font-black uppercase tracking-wider text-brand">
+							<details className="group rounded-xl border border-ink/8 bg-surface">
+								<summary className="flex cursor-pointer items-center justify-between px-4 py-3 text-sm font-bold uppercase tracking-wider text-brand">
 									Indice dei contenuti
 									<ChevronIcon
 										direction="right"
-										className="size-5 rotate-90 text-brand transition-transform group-open:rotate-270"
+										className="size-4 rotate-90 text-brand transition-transform group-open:rotate-270"
 									/>
 								</summary>
-								<div className="px-5 pb-5">
-									<hr className="mb-4 border-ink/10" />
+								<div className="px-4 pb-4">
+									<hr className="mb-3 border-ink/8" />
 									<TableOfContents headings={post.headings} />
 								</div>
 							</details>
 						)}
-
 					</div>
 
 					{/* Body */}
@@ -302,7 +301,7 @@ export default function PostContent({
 				{/* Sidebar (desktop only) */}
 				<aside className="hidden space-y-6 lg:sticky-below-header lg:block lg:self-start lg:[--offset:1rem]">
 					{showTOC && (
-						<SectionCard className="border-ink/12 bg-surface-light/40 p-5 backdrop-blur-2xl backdrop-saturate-150 sm:p-6">
+						<SectionCard className="p-5 sm:p-6">
 							<TableOfContents headings={post.headings} />
 						</SectionCard>
 					)}

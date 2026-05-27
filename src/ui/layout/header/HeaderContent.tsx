@@ -91,16 +91,13 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 			onMouseLeave={handleLeave}
 			onKeyDown={handleKeyDown}
 		>
-			<motion.button
+			<button
 				ref={triggerRef}
-				className="flex items-center gap-1 rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-wide text-muted transition-colors hover:bg-surface hover:text-ink"
+				className="flex items-center gap-1 rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted transition-colors hover:bg-surface hover:text-ink"
 				onClick={() => setOpen((v) => !v)}
 				aria-expanded={open}
 				aria-haspopup="true"
 				aria-label={`${item.label}, sottomenu`}
-				whileHover={{ y: -1 }}
-				whileTap={{ scale: 0.98 }}
-				transition={{ duration: 0.15 }}
 			>
 				{item.label}
 				<ChevronDown
@@ -108,7 +105,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 					className={`transition-transform ${open ? 'rotate-180' : ''}`}
 					aria-hidden="true"
 				/>
-			</motion.button>
+			</button>
 
 			<AnimatePresence>
 				{open && (
@@ -116,28 +113,23 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 						<motion.ul
 							ref={menuRef}
 							role="menu"
-							className="absolute top-full left-0 z-50 mt-2 min-w-[180px] rounded-xl bg-surface-light py-2 shadow-2xl shadow-black/30 backdrop-blur-xl"
-							initial={{ opacity: 0, y: -8, scale: 0.97 }}
-							animate={{ opacity: 1, y: 0, scale: 1 }}
-							exit={{ opacity: 0, y: -8, scale: 0.97 }}
-							transition={{ duration: 0.18, ease: 'easeOut' }}
+							className="absolute top-full left-0 z-50 mt-1 min-w-[180px] rounded-lg border border-ink/8 bg-surface-light py-1 shadow-xl shadow-black/20"
+							initial={{ opacity: 0, y: -6 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -6 }}
+							transition={{ duration: 0.15, ease: 'easeOut' }}
 						>
 							{item.children?.map((child) => (
-								<motion.li
-									key={child.href}
-									role="none"
-									whileHover={{ x: 2 }}
-									transition={{ duration: 0.15 }}
-								>
+								<li key={child.href} role="none">
 									<Link
 										href={child.href}
 										role="menuitem"
-										className="block px-4 py-2 text-sm text-muted transition-colors hover:bg-surface-light hover:text-ink"
+										className="block px-4 py-2 text-sm text-muted transition-colors hover:bg-ink/5 hover:text-ink"
 										onClick={() => setOpen(false)}
 									>
 										{child.label}
 									</Link>
-								</motion.li>
+								</li>
 							))}
 						</motion.ul>
 						<button
@@ -214,92 +206,63 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 
 	return (
 		<>
-			<motion.header
-				initial={{ opacity: 0, y: -12 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.45, ease: 'easeOut' }}
-				className="sticky top-0 z-40 border-b border-white/5 bg-canvas/95 backdrop-blur-xl"
+			<header
+				className="sticky top-0 z-40 border-b border-ink/8 bg-canvas/95 backdrop-blur-md"
 			>
-				<div className="mx-auto flex h-14 max-w-screen-2xl items-center justify-between gap-4 px-3 sm:h-16 sm:px-6">
+				<div className="mx-auto flex h-12 max-w-screen-2xl items-center justify-between gap-4 px-3 sm:h-14 sm:px-6">
 					{/* Logo */}
-					<motion.div
-						whileHover={{ y: -1, scale: 1.02 }}
-						whileTap={{ scale: 0.98 }}
-						transition={{ duration: 0.18 }}
-						className="flex items-center gap-0.5"
-					>
-						<Link href="/" className="flex items-center gap-0.5">
-							<Logo logoUrl={logoUrl} siteTitle={siteTitle} />
-						</Link>
-					</motion.div>
+					<Link href="/" className="flex items-center gap-0.5">
+						<Logo logoUrl={logoUrl} siteTitle={siteTitle} />
+					</Link>
 
 					{/* Desktop Navigation */}
-					<nav className="hidden items-center gap-2 lg:flex">
+					<nav className="hidden items-center gap-1 lg:flex">
 						{navItems.map((item) =>
 							item.children?.length ? (
 								<DesktopDropdown key={item.label} item={item} />
 							) : (
-								<motion.div
+								<Link
 									key={item.label}
-									whileHover={{ y: -1 }}
-									whileTap={{ scale: 0.98 }}
-									transition={{ duration: 0.15 }}
+									href={item.href}
+									className="rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted transition-colors hover:bg-surface hover:text-ink"
 								>
-									<Link
-										href={item.href}
-										className="rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-wide text-muted transition-colors hover:bg-surface hover:text-ink"
-									>
-										{item.label}
-									</Link>
-								</motion.div>
+									{item.label}
+								</Link>
 							),
 						)}
 					</nav>
 
 					{/* Right Actions */}
 					<div className="flex items-center gap-1 sm:gap-2">
-						<motion.button
+						<button
 							onClick={() => setSearchOpen(true)}
 							className="flex items-center gap-2 rounded-full px-2 py-1.5 text-sm text-muted transition hover:bg-surface sm:px-3"
-							whileHover={{ y: -1 }}
-							whileTap={{ scale: 0.98 }}
-							transition={{ duration: 0.15 }}
 							aria-label="Cerca notizie"
 						>
 							<Search size={16} />
-							<span className="hidden sm:inline">Cerca notizie</span>
-						</motion.button>
+							<span className="hidden sm:inline">Cerca</span>
+						</button>
 
 						{ctas?.map((cta, i) => (
-							<motion.div
+							<Link
 								key={i}
-								whileHover={{ y: -1 }}
-								whileTap={{ scale: 0.98 }}
-								transition={{ duration: 0.15 }}
-								className="hidden md:block"
+								href={cta.href}
+								className="hidden rounded border border-brand px-4 py-1.5 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-brand-foreground md:block"
 							>
-								<Link
-									href={cta.href}
-									className="rounded-lg border border-brand px-5 py-1.5 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-brand-foreground"
-								>
-									{cta.label}
-								</Link>
-							</motion.div>
+								{cta.label}
+							</Link>
 						))}
 
-						<motion.button
+						<button
 							className="grid size-9 place-items-center rounded-full transition hover:bg-surface lg:hidden"
-							whileHover={{ y: -1 }}
-							whileTap={{ scale: 0.98 }}
-							transition={{ duration: 0.15 }}
 							onClick={() => setMobileMenuOpen(true)}
 							aria-label="Menu"
 						>
 							<Menu size={20} />
-						</motion.button>
+						</button>
 					</div>
 				</div>
-			</motion.header>
+			</header>
 
 			{/* Search overlay */}
 			<SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
@@ -316,9 +279,9 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
-						transition={{ duration: 0.18, ease: 'easeOut' }}
+						transition={{ duration: 0.15, ease: 'easeOut' }}
 					>
-						<div className="flex h-14 items-center justify-between px-4">
+						<div className="flex h-12 items-center justify-between px-4">
 							<Link
 								href="/"
 								className="flex items-center gap-0.5"

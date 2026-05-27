@@ -121,7 +121,7 @@ export default function Hero({
 
 	return (
 		<section
-			className="group relative aspect-[4/3] max-h-[500px] touch-pan-y select-none overflow-hidden rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[2/1] md:aspect-[5/2]"
+			className="group relative aspect-[16/9] max-h-[380px] touch-pan-y select-none overflow-hidden rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[21/9] md:aspect-[3/1]"
 			aria-roledescription={isCarousel ? 'carousel' : undefined}
 			aria-label={isCarousel ? 'Hero slides' : undefined}
 			tabIndex={0}
@@ -142,9 +142,8 @@ export default function Hero({
 				<Slide key={slide._key} slide={slide} active={i === current} isFirst={i === 0} />
 			))}
 
-			{/* Gradient overlays */}
-			<div className="absolute inset-0 bg-gradient-to-t from-black via-black/75 to-black/20" />
-			<div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
+			{/* Gradient overlays — editorial: lighter, let image breathe */}
+			<div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
 			{/* Full-slide clickable overlay */}
 			{slideHref && (
@@ -153,54 +152,51 @@ export default function Hero({
 				</Link>
 			)}
 
-			{/* Content */}
-			<div className="relative z-[2] flex h-full flex-col justify-end p-6 pointer-events-none sm:p-8">
-				{/* Bottom content */}
+			{/* Content — compact editorial layout */}
+			<div className="relative z-[2] flex h-full flex-col justify-end p-4 pointer-events-none sm:p-6">
 				<div>
-					<h2 className="font-heading text-3xl uppercase leading-none text-white drop-shadow sm:text-4xl md:text-5xl">
+					<h2 className="font-heading text-2xl uppercase leading-none text-white sm:text-3xl md:text-4xl">
 						{s.title}
 					</h2>
 
 					{s.description && (
-						<p className="mt-4 max-w-xl text-sm text-white/85">
+						<p className="mt-2 max-w-lg text-sm text-white/80 line-clamp-2">
 							{s.description}
 						</p>
 					)}
 
-					{/* Author info */}
-					{s.author && (
-						<div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white/75">
-							<div className="flex items-center gap-2">
-								<span className="grid size-7 place-items-center rounded-full bg-brand text-[10px] font-bold text-brand-foreground">
-									{getInitials(s.author.name)}
-								</span>
-								Di {s.author.name}
-							</div>
+					{/* Author + navigation row */}
+					<div className="mt-3 flex items-center justify-between gap-3">
+						<div className="flex items-center gap-3">
+							{s.author && (
+								<div className="flex items-center gap-2 text-xs text-white/70">
+									<span className="grid size-6 place-items-center rounded-full bg-brand text-[9px] font-bold text-brand-foreground">
+										{getInitials(s.author.name)}
+									</span>
+									{s.author.name}
+								</div>
+							)}
+							<CTAList
+								ctas={[s.cta]}
+								className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:rounded [&_a]:bg-brand [&_a]:px-4 [&_a]:py-1.5 [&_a]:text-xs [&_a]:font-semibold [&_a]:text-white [&_a]:transition [&_a]:hover:opacity-90"
+							/>
 						</div>
-					)}
-
-					{/* Actions + navigation */}
-					<div className="mt-6 flex items-center justify-between gap-3">
-						<CTAList
-							ctas={[s.cta]}
-							className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-2 [&_a]:rounded-full [&_a]:border [&_a]:border-brand [&_a]:px-5 [&_a]:py-2.5 [&_a]:text-sm [&_a]:font-semibold [&_a]:text-brand [&_a]:transition [&_a]:hover:bg-brand [&_a]:hover:text-brand-foreground sm:[&_a]:px-6"
-						/>
 
 						{isCarousel && (
-							<div className="pointer-events-auto flex items-center gap-2">
+							<div className="pointer-events-auto flex items-center gap-1.5">
 								<button
 									onClick={prev}
-									className="grid size-9 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20"
+									className="grid size-8 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
 									aria-label="Slide precedente"
 								>
-									<ChevronLeft className="size-4" />
+									<ChevronLeft className="size-3.5" />
 								</button>
 								<button
 									onClick={next}
-									className="grid size-9 place-items-center rounded-full bg-white/10 text-white backdrop-blur transition hover:bg-white/20"
+									className="grid size-8 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
 									aria-label="Slide successiva"
 								>
-									<ChevronRight className="size-4" />
+									<ChevronRight className="size-3.5" />
 								</button>
 							</div>
 						)}
@@ -209,7 +205,7 @@ export default function Hero({
 					{/* Dots */}
 					{isCarousel && (
 						<div
-							className="pointer-events-auto mt-5 flex items-center gap-1.5"
+							className="pointer-events-auto mt-3 flex items-center gap-1"
 							role="group"
 							aria-label="Seleziona slide"
 						>
@@ -218,10 +214,10 @@ export default function Hero({
 									key={slide._key}
 									onClick={() => setCurrent(i)}
 									className={cn(
-										'h-1.5 rounded-full transition-all',
+										'h-1 rounded-full transition-all',
 										i === current
-											? 'w-8 bg-brand'
-											: 'w-1.5 bg-white/40 hover:bg-white/70',
+											? 'w-6 bg-brand'
+											: 'w-1.5 bg-white/40 hover:bg-white/60',
 									)}
 									aria-label={`Vai alla slide ${i + 1} di ${count}`}
 									aria-current={

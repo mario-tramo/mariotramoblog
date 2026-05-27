@@ -2,14 +2,14 @@
 @import './fonts.css';
 
 @theme {
-	--color-canvas: #0a0a14;
-	--color-ink: #e8e8f0;
+	--color-canvas: #0B1220;
+	--color-ink: #E2E8F0;
 	--color-accent: #c62828;
 
-	--color-surface: #12121e;
-	--color-surface-light: #1a1a2a;
-	--color-surface-2: #222236;
-	--color-muted: #8888a0;
+	--color-surface: #111827;
+	--color-surface-light: #1E293B;
+	--color-surface-2: #283548;
+	--color-muted: #94A3B8;
 	--color-border: rgba(255, 255, 255, 0.08);
 	--color-brand: #c62828;
 	--color-brand-foreground: #ffffff;
@@ -17,13 +17,13 @@
 	--font-heading: var(--font-bebas-neue), system-ui, sans-serif;
 	--font-body: var(--font-inter), system-ui, sans-serif;
 
-	--header-height: 3.5rem;
+	--header-height: 3rem;
 	--max-height-fold: calc(100svh - var(--header-height));
 }
 
 @media (min-width: 640px) {
 	:root {
-		--header-height: 4rem;
+		--header-height: 3.5rem;
 	}
 }
 
@@ -134,12 +134,11 @@
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	/* Focus ring glow */
+	/* Focus ring */
 	:focus-visible {
 		outline: none;
 		box-shadow: 0 0 0 2px var(--color-canvas),
-			0 0 0 4px var(--color-brand),
-			0 0 12px color-mix(in oklab, var(--color-brand) 30%, transparent);
+			0 0 0 4px var(--color-brand);
 		border-radius: 4px;
 	}
 
@@ -232,34 +231,13 @@
 	transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
 		box-shadow 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
-	/* Shine sweep on hover */
-	&::before {
-		content: '';
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(
-			105deg,
-			transparent 40%,
-			rgba(255, 255, 255, 0.25) 45%,
-			rgba(255, 255, 255, 0.25) 55%,
-			transparent 60%
-		);
-		translate: -100% 0;
-		transition: translate 500ms cubic-bezier(0.4, 0, 0.2, 1);
-	}
-
-	&:hover::before {
-		translate: 100% 0;
-	}
-
 	&:hover {
-		box-shadow: 0 0 20px color-mix(in oklab, var(--color-accent) 40%, transparent);
+		opacity: 0.9;
 		transform: translateY(-1px);
 	}
 
 	&:active {
-		transform: translateY(0) scale(0.97);
-		box-shadow: none;
+		transform: translateY(0) scale(0.98);
 	}
 }
 
@@ -315,8 +293,7 @@
 
 	&:focus {
 		border-color: var(--color-accent);
-		box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 15%, transparent),
-			0 0 12px color-mix(in oklab, var(--color-accent) 10%, transparent);
+		box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 15%, transparent);
 	}
 }
 
@@ -364,15 +341,14 @@
 /* --- Card hover effects (PostPreview, SectionCard) --- */
 
 @layer base {
-	/* Cards get subtle lift + top-border glow on hover */
+	/* Cards get subtle lift on hover */
 	.group:has(> figure) {
-		transition: box-shadow 300ms, transform 300ms, border-color 300ms;
+		transition: box-shadow 300ms, transform 300ms;
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
 		&:hover {
-			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35),
-				0 0 0 1px rgba(255, 255, 255, 0.04);
-			transform: translateY(-3px);
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+			transform: translateY(-1px);
 		}
 	}
 
@@ -381,19 +357,12 @@
 		overflow: hidden;
 
 		& img {
-			transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1),
-				filter 500ms cubic-bezier(0.4, 0, 0.2, 1);
+			transition: transform 500ms cubic-bezier(0.4, 0, 0.2, 1);
 		}
 	}
 
 	.group:hover figure img {
-		transform: scale(1.05);
-		filter: brightness(1.1);
-	}
-
-	/* Subtle inner glow on cards with top border */
-	[style*='border-top'] {
-		transition: box-shadow 300ms ease;
+		transform: scale(1.03);
 	}
 }
 
@@ -419,10 +388,6 @@
 	[role='tab'] {
 		position: relative;
 
-		&[aria-selected='true'] {
-			text-shadow: 0 0 10px color-mix(in oklab, var(--color-accent) 40%, transparent);
-		}
-
 		&::after {
 			content: '';
 			position: absolute;
@@ -434,7 +399,6 @@
 			transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
 			translate: -50% 0;
 			border-radius: 1px;
-			box-shadow: 0 0 8px var(--color-accent);
 		}
 
 		&[aria-selected='true']::after {
@@ -463,38 +427,17 @@
 		}
 	}
 
-	/* Inline code hover glow */
+	/* Inline code hover */
 	.richtext :not(pre) > code {
-		transition: background-color 200ms, box-shadow 200ms;
+		transition: background-color 200ms;
 
 		&:hover {
 			background-color: color-mix(in oklab, var(--color-ink) 15%, transparent);
-			box-shadow: 0 0 8px color-mix(in oklab, var(--color-accent) 10%, transparent);
-		}
-	}
-
-	/* Code block hover border */
-	[data-module='code'] {
-		transition: box-shadow 300ms;
-
-		&:hover {
-			box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-accent) 20%, transparent),
-				0 4px 16px color-mix(in oklab, var(--color-accent) 8%, transparent);
 		}
 	}
 }
 
-/* --- Admonition left border pulse --- */
-
-@layer base {
-	dl.border-s-2 {
-		transition: box-shadow 300ms;
-
-		&:hover {
-			box-shadow: inset 3px 0 12px -4px currentColor;
-		}
-	}
-}
+/* --- Admonition left border --- */
 
 /* --- Cookie banner slide-up entrance --- */
 
@@ -542,31 +485,7 @@
 	}
 }
 
-/* --- SectionTitle dot pulse --- */
-
-@layer base {
-	.bg-brand.rounded-full.size-2 {
-		animation: dot-pulse 2s ease-in-out infinite;
-	}
-
-	@keyframes dot-pulse {
-		0%,
-		100% {
-			box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-brand) 40%, transparent);
-		}
-		50% {
-			box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-brand) 0%, transparent);
-		}
-	}
-}
-
-/* --- Hero dots glow for active --- */
-
-@layer base {
-	.bg-brand.rounded-full.w-8 {
-		box-shadow: 0 0 8px color-mix(in oklab, var(--color-brand) 50%, transparent);
-	}
-}
+/* --- SectionTitle dot --- */
 
 /* --- Dropdown menu items --- */
 
@@ -592,25 +511,7 @@
 	}
 }
 
-/* --- Callout subtle glow --- */
-
-@layer base {
-	.bg-accent\/3.rounded {
-		transition: box-shadow 300ms;
-
-		&:hover {
-			box-shadow: 0 0 30px color-mix(in oklab, var(--color-accent) 8%, transparent);
-		}
-	}
-}
-
 /* --- "In evidenza" featured badge --- */
-
-@layer base {
-	.bg-brand.shadow-md {
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-	}
-}
 
 /* --- Footer link hover indent --- */
 
@@ -624,37 +525,15 @@
 	}
 }
 
-/* --- Micro motion utilities --- */
+/* --- Micro motion utilities (deprecated, kept for compat) --- */
 
 @layer base {
 	.premium-float {
-		animation: float-soft 6s ease-in-out infinite;
+		/* removed: floating animation too distracting for editorial */
 	}
 
 	.premium-glow {
-		animation: glow-soft 5s ease-in-out infinite;
-	}
-
-	@keyframes float-soft {
-		0%,
-		100% {
-			transform: translateY(0);
-		}
-
-		50% {
-			transform: translateY(-3px);
-		}
-	}
-
-	@keyframes glow-soft {
-		0%,
-		100% {
-			box-shadow: 0 0 0px rgba(0, 200, 255, 0.2);
-		}
-
-		50% {
-			box-shadow: 0 0 18px rgba(0, 200, 255, 0.18);
-		}
+		/* removed: glow too distracting for editorial */
 	}
 }
 

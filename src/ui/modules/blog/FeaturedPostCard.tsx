@@ -43,7 +43,7 @@ export default function FeaturedPostCard({
 						{post.categories[0].title}
 					</span>
 				)}
-				<div className="aspect-[4/3]">
+				<div className="aspect-[16/9]">
 					<Img
 						className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
 						image={post.metadata.image}
