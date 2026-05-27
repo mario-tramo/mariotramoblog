@@ -6,7 +6,14 @@ export default defineType({
 	title: 'Griglia Team',
 	icon: HiOutlineUserGroup,
 	type: 'object',
-	fields: [],
+	fields: [
+		{
+			name: 'title',
+			title: 'Titolo sezione',
+			type: 'string',
+			initialValue: 'La Redazione',
+		},
+	],
 	preview: {
 		prepare: () => ({
 			title: 'Griglia Team (autori)',
