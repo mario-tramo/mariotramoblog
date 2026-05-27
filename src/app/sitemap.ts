@@ -1,6 +1,5 @@
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
-import { DEFAULT_LANG } from '@/lib/i18n'
 import type { MetadataRoute } from 'next'
 
 const BASE = process.env.NEXT_PUBLIC_BASE_URL!.replace(/\/+$/, '') + '/'
@@ -18,7 +17,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			]|order(metadata.slug.current){
 				'url': (
 					$base
-					+ select(defined(language) && language != $defaultLang => language + '/', '')
 					+ select(
 						metadata.slug.current == 'index' => '',
 						metadata.slug.current
@@ -39,7 +37,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			'blog': *[_type == 'blog.post' && metadata.noIndex != true]|order(publishDate desc){
 				'url': (
 					$base
-					+ select(defined(language) && language != $defaultLang => language + '/', '')
 					+ select(defined(categories[0]->slug.current) => categories[0]->slug.current + '/', '')
 					+ metadata.slug.current
 				),
@@ -50,7 +47,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			'legal': *[_type == 'legal' && metadata.noIndex != true]|order(metadata.slug.current){
 				'url': (
 					$base
-					+ select(defined(language) && language != $defaultLang => language + '/', '')
 					+ 'legal/'
 					+ metadata.slug.current
 				),
@@ -67,7 +63,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		}`,
 		params: {
 			base: BASE,
-			defaultLang: DEFAULT_LANG,
 			recentThreshold: RECENT_THRESHOLD,
 		},
 	})
