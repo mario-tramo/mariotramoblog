@@ -123,7 +123,7 @@ export function PortableTextCharCount(props: ArrayOfObjectsInputProps) {
 	}
 
 	return (
-		<div ref={anchorRef}>
+		<div ref={anchorRef} lang="it" spellCheck>
 			{props.renderDefault(props)}
 			<div style={barStyle}>
 				<div style={statStyle}>
