@@ -8,6 +8,7 @@ import {
 	breadcrumbJsonLd,
 	blogPostingJsonLd,
 	personJsonLd,
+	organizationJsonLd,
 } from '@/lib/jsonLd'
 import resolveUrl from '@/lib/resolveUrl'
 import { client } from '@/sanity/lib/client'
@@ -29,6 +30,8 @@ export default async function Page({ params, searchParams }: Props) {
 	// Try page first, then category, then blog post (category/slug)
 	const page = await getPage(resolvedParams)
 	if (page) {
+		const isAboutPage = page.metadata.slug?.current === 'chi-siamo'
+
 		return (
 			<>
 				<script
@@ -44,6 +47,14 @@ export default async function Page({ params, searchParams }: Props) {
 						),
 					}}
 				/>
+				{isAboutPage && (
+					<script
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{
+							__html: JSON.stringify(organizationJsonLd()),
+						}}
+					/>
+				)}
 				<Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
 			</>
 		)
@@ -294,6 +305,7 @@ async function getPost(params: Params) {
 			'tags': tags[@->title != null]->{ ... },
 			'authors': select(defined(author) => [author->{
 				...,
+				slug,
 				'articleCount': count(*[_type == 'blog.post' && author._ref == ^._id])
 			}], null),
 			metadata {

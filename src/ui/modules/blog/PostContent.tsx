@@ -119,7 +119,17 @@ export default function PostContent({
 										</span>
 										<div className="leading-tight">
 											<p className="text-sm font-semibold text-ink">
-												Di {firstAuthor.name}
+												Di{' '}
+												{firstAuthor.slug?.current ? (
+													<Link
+														href={`/autori/${firstAuthor.slug.current}`}
+														className="hover:text-brand hover:underline"
+													>
+														{firstAuthor.name}
+													</Link>
+												) : (
+													firstAuthor.name
+												)}
 											</p>
 											<p className="text-xs">
 												<Date value={post.publishDate} />
@@ -231,7 +241,16 @@ export default function PostContent({
 								</span>
 								<div className="min-w-0">
 									<p className="text-lg font-bold text-ink">
-										{firstAuthor?.name ?? 'Redazione'}
+										{firstAuthor?.slug?.current ? (
+											<Link
+												href={`/autori/${firstAuthor.slug.current}`}
+												className="hover:text-brand hover:underline"
+											>
+												{firstAuthor.name}
+											</Link>
+										) : (
+											firstAuthor?.name ?? 'Redazione'
+										)}
 									</p>
 									{firstAuthor?.articleCount && firstAuthor.articleCount > 0 && (
 										<p className="mt-0.5 text-sm font-medium text-accent">

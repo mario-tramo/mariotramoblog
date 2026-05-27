@@ -57,6 +57,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				'lastModified': _updatedAt,
 				'priority': 0.2,
 				'changeFrequency': 'yearly',
+			},
+			'authors': *[_type == 'person' && defined(slug.current)]|order(name){
+				'url': $base + 'autori/' + slug.current,
+				'lastModified': _updatedAt,
+				'priority': 0.6,
+				'changeFrequency': 'monthly',
 			}
 		}`,
 		params: {

@@ -67,7 +67,9 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 		author: post.authors?.map((author) => ({
 			'@type': 'Person',
 			name: author.name,
-			url: `${BASE_URL}/blog?author=${encodeURIComponent(author.name)}`,
+			url: author.slug?.current
+				? `${BASE_URL}/autori/${author.slug.current}`
+				: `${BASE_URL}/blog?author=${encodeURIComponent(author.name)}`,
 		})),
 		publisher: PUBLISHER,
 		mainEntityOfPage: {
@@ -140,11 +142,38 @@ export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
 	}
 }
 
-export function personJsonLd(author: Sanity.Person & { slug?: { current: string } }) {
+export function personJsonLd(author: Sanity.Person) {
+	const authorUrl = author.slug?.current
+		? `${BASE_URL}/autori/${author.slug.current}`
+		: `${BASE_URL}/blog?author=${encodeURIComponent(author.name)}`
+
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'Person',
 		name: author.name,
-		url: `${BASE_URL}/blog?author=${encodeURIComponent(author.name)}`,
+		url: authorUrl,
+		...(author.bio && { description: author.bio }),
+		...(author.socialLink && { sameAs: [author.socialLink] }),
+		worksFor: {
+			'@type': 'Organization',
+			name: 'Trm Sport',
+			url: BASE_URL,
+		},
+	}
+}
+
+export function organizationJsonLd() {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Organization',
+		name: 'TRM Sport',
+		url: BASE_URL,
+		logo: {
+			'@type': 'ImageObject',
+			url: `${BASE_URL}/logo.png`,
+			width: 512,
+			height: 512,
+		},
+		publisher: PUBLISHER,
 	}
 }

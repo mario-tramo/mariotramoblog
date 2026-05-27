@@ -18,8 +18,9 @@ export default async function RelatedPosts({
 }) {
 	const categoryIds = post.categories?.map((c) => c._id) ?? []
 	const tagIds = post.tags?.map((t) => t._id) ?? []
+	const authorId = post.authors?.[0]?._id ?? null
 
-	if (!categoryIds.length && !tagIds.length) return null
+	if (!categoryIds.length && !tagIds.length && !authorId) return null
 
 	const limit = variant === 'sidebar' || variant === 'mobile-collapsible' ? 4 : 3
 
@@ -31,6 +32,7 @@ export default async function RelatedPosts({
 				&& (
 					count(categories[@._ref in $categoryIds]) > 0
 					|| count(tags[@._ref in $tagIds]) > 0
+					${authorId ? '|| author._ref == $authorId' : ''}
 				)
 			]|order(
 				count(tags[@._ref in $tagIds]) desc,
@@ -42,14 +44,14 @@ export default async function RelatedPosts({
 				'title': coalesce(title, metadata.title),
 				publishDate,
 				'readTime': round(length(pt::text(body)) / 5 / 180),
-				categories[]->{ _id, title, slug },
+				categories[]->{ _id, title, slug, color },
 				metadata {
 					...,
 					image { ${IMAGE_QUERY} }
 				},
 			}
 		`,
-		params: { postId: post._id, categoryIds, tagIds },
+		params: { postId: post._id, categoryIds, tagIds, ...(authorId ? { authorId } : {}) },
 	})
 
 	if (!related?.length) return null

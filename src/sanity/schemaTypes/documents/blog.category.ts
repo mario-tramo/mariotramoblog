@@ -33,6 +33,14 @@ export default defineType({
 			group: 'content',
 		}),
 		defineField({
+			name: 'color',
+			title: 'Colore',
+			type: 'string',
+			description:
+				'Colore della categoria (es. #c62828). Usato per badge, bordi e accenti.',
+			group: 'content',
+		}),
+		defineField({
 			...modules,
 			description:
 				'Sezioni della pagina categoria. I moduli blog (Lista articoli, Carosello) filtreranno automaticamente per questa categoria.',

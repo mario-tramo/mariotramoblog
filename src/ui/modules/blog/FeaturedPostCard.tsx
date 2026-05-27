@@ -4,6 +4,7 @@ import SectionCard from '@/ui/primitives/SectionCard'
 import SectionTitle from '@/ui/primitives/SectionTitle'
 import resolveUrl from '@/lib/resolveUrl'
 import { getInitials } from '@/lib/utils'
+import { getCategoryColor } from '@/lib/categoryColors'
 
 interface FeaturedPostCardProps {
 	post?: Sanity.BlogPost
@@ -22,6 +23,8 @@ export default function FeaturedPostCard({
 
 	const author = post.authors?.[0]
 
+	const catColor = getCategoryColor(post.categories?.[0])
+
 	return (
 		<SectionCard className="overflow-hidden">
 			<div className="p-4 pb-3 sm:p-5 sm:pb-3">
@@ -32,6 +35,14 @@ export default function FeaturedPostCard({
 				href={resolveUrl(post, { base: false })}
 				className="group block"
 			>
+				{post.categories?.[0] && (
+					<span
+						className="mx-4 mb-2 inline-block rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white sm:mx-5"
+						style={{ backgroundColor: catColor }}
+					>
+						{post.categories[0].title}
+					</span>
+				)}
 				<div className="aspect-[4/3]">
 					<Img
 						className="size-full object-cover transition-transform duration-300 group-hover:scale-105"

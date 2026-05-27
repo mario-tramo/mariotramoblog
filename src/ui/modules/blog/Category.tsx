@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import { getCategoryColor } from '@/lib/categoryColors'
 
 export default function Category({
 	value,
@@ -10,12 +11,18 @@ export default function Category({
 	label?: string
 	linked?: boolean
 }) {
+	const color = getCategoryColor(value)
+
 	const props = {
 		className: cn(
-			'inline-block rounded-full border border-ink/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-muted',
-			linked && 'relative z-10 hover:text-ink hover:border-ink/25 transition-colors',
+			'inline-block rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-widest transition-colors',
+			linked && 'relative z-10 hover:brightness-125',
 			!linked && 'pointer-events-none',
 		),
+		style: {
+			borderColor: `${color}40`,
+			color: color,
+		},
 		children: <span>{label || value?.title}</span>,
 	}
 

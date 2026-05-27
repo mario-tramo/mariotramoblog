@@ -93,7 +93,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 		>
 			<motion.button
 				ref={triggerRef}
-				className="flex items-center gap-1 rounded-lg px-4 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-ink"
+				className="flex items-center gap-1 rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-wide text-muted transition-colors hover:bg-surface hover:text-ink"
 				onClick={() => setOpen((v) => !v)}
 				aria-expanded={open}
 				aria-haspopup="true"
@@ -169,14 +169,14 @@ function Logo({ logoUrl, siteTitle }: { logoUrl?: string; siteTitle?: string }) 
 	}
 
 	return (
-		<>
-			<span className="text-xl font-extrabold italic tracking-tight text-brand">
-				TM
+		<div className="flex flex-col leading-none">
+			<span className="font-heading text-lg uppercase tracking-wide text-ink sm:text-xl">
+				MARIO TRAMO
 			</span>
-			<span className="text-xl font-light italic tracking-tight text-ink">
-				SPORT
+			<span className="text-[8px] font-bold uppercase tracking-[0.2em] text-brand sm:text-[9px]">
+				STAY IN THE GAME
 			</span>
-		</>
+		</div>
 	)
 }
 
@@ -218,7 +218,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 				initial={{ opacity: 0, y: -12 }}
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.45, ease: 'easeOut' }}
-				className="sticky top-0 z-40 border-b border-white/5 bg-canvas/90 backdrop-blur-xl"
+				className="sticky top-0 z-40 border-b border-white/5 bg-canvas/95 backdrop-blur-xl"
 			>
 				<div className="mx-auto flex h-14 max-w-screen-2xl items-center justify-between gap-4 px-3 sm:h-16 sm:px-6">
 					{/* Logo */}
@@ -226,7 +226,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 						whileHover={{ y: -1, scale: 1.02 }}
 						whileTap={{ scale: 0.98 }}
 						transition={{ duration: 0.18 }}
-						className="flex items-center gap-0.5 premium-float"
+						className="flex items-center gap-0.5"
 					>
 						<Link href="/" className="flex items-center gap-0.5">
 							<Logo logoUrl={logoUrl} siteTitle={siteTitle} />
@@ -247,7 +247,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 								>
 									<Link
 										href={item.href}
-										className="rounded-lg px-4 py-2 text-sm text-muted transition-colors hover:bg-surface hover:text-ink"
+										className="rounded-lg px-4 py-2 text-xs font-semibold uppercase tracking-wide text-muted transition-colors hover:bg-surface hover:text-ink"
 									>
 										{item.label}
 									</Link>
@@ -280,7 +280,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 							>
 								<Link
 									href={cta.href}
-									className="rounded-lg bg-brand px-5 py-1.5 text-sm font-semibold text-brand-foreground transition-colors hover:bg-brand/90"
+									className="rounded-lg border border-brand px-5 py-1.5 text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-brand-foreground"
 								>
 									{cta.label}
 								</Link>
@@ -397,7 +397,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 								<Link
 									key={i}
 									href={cta.href}
-									className="mt-4 mb-2 block w-full rounded-lg bg-brand px-5 py-2 text-center text-sm font-semibold text-brand-foreground transition-colors hover:bg-brand/90"
+									className="mt-4 mb-2 block w-full rounded-lg border border-brand px-5 py-2 text-center text-sm font-semibold text-brand transition-colors hover:bg-brand hover:text-brand-foreground"
 									onClick={() => setMobileMenuOpen(false)}
 								>
 									{cta.label}

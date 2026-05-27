@@ -5,6 +5,7 @@ import Authors from './Authors'
 import Date from '@/ui/primitives/Date'
 import Categories from './Categories'
 import { cn } from '@/lib/utils'
+import { getCategoryColor } from '@/lib/categoryColors'
 
 export default function PostPreview({
 	post,
@@ -41,7 +42,10 @@ export default function PostPreview({
 					{/* Content overlaid on image */}
 					<div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-5">
 						{post?.categories?.[0] && (
-							<span className="w-fit rounded bg-brand px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-foreground">
+							<span
+								className="w-fit rounded px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
+								style={{ backgroundColor: getCategoryColor(post.categories[0]) }}
+							>
 								{post.categories[0].title}
 							</span>
 						)}
@@ -61,8 +65,13 @@ export default function PostPreview({
 		)
 	}
 
+	const catColor = getCategoryColor(post?.categories?.[0])
+
 	return (
-		<div className="group relative isolate flex h-full flex-col gap-2 rounded-2xl bg-surface p-4 transition">
+		<div
+			className="group relative isolate flex h-full flex-col gap-2 overflow-hidden rounded-2xl bg-surface p-4 transition"
+			style={{ borderTop: `3px solid ${catColor}` }}
+		>
 			<figure className="relative aspect-video overflow-hidden rounded-lg border border-white/10 bg-ink/3">
 				<Img
 					className="aspect-video w-full object-cover transition-all group-hover:scale-105 group-hover:brightness-110"
@@ -79,7 +88,10 @@ export default function PostPreview({
 			</figure>
 
 			{post?.categories?.[0] && (
-				<p className="text-[10px] font-bold tracking-widest text-brand">
+				<p
+					className="text-[10px] font-bold tracking-widest"
+					style={{ color: getCategoryColor(post.categories[0]) }}
+				>
 					{post.categories[0].title.toUpperCase()}
 				</p>
 			)}
@@ -121,7 +133,7 @@ export default function PostPreview({
 				)}
 			</div>
 
-			<div className="space-y-2 border-t border-ink/5 pt-2 text-sm empty:skeleton">
+			<div className="flex flex-col space-y-2 border-t gap-1 border-ink/5 pt-2 text-sm empty:skeleton">
 				<Date value={post?.publishDate} />
 				<Categories
 					className="relative z-10 flex flex-wrap gap-x-2"

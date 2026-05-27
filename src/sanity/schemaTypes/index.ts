@@ -49,6 +49,7 @@ import newsletterBlock from './modules/newsletter-block'
 import layoutBlock from './modules/layout-block'
 import standings from './modules/standings'
 import postsFeed from './modules/posts-feed'
+import teamGrid from './modules/team-grid'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
 	// documents
@@ -102,4 +103,5 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	newsletterBlock,
 	standings,
 	postsFeed,
+	teamGrid,
 ]

@@ -5,6 +5,7 @@ import SectionTitle from '@/ui/primitives/SectionTitle'
 import ChevronIcon from '@/ui/icons/ChevronIcon'
 import resolveUrl from '@/lib/resolveUrl'
 import ReadTime from './ReadTime'
+import { getCategoryColor } from '@/lib/categoryColors'
 
 export type PostListVariant =
 	| 'sidebar-thumbs'
@@ -63,7 +64,10 @@ function SidebarThumbs({
 							/>
 						</figure>
 						<div className="min-w-0">
-							<p className="mb-1 text-[11px] font-medium text-brand">
+							<p
+								className="mb-1 text-[11px] font-medium"
+								style={{ color: getCategoryColor(post.categories?.[0]) }}
+							>
 								{timeAgo(post.publishDate)}
 							</p>
 							<p className="line-clamp-2 text-sm font-medium leading-snug group-hover:underline">
@@ -93,7 +97,10 @@ function SidebarNumbered({
 						href={resolveUrl(post, { base: false })}
 						className="flex gap-3"
 					>
-						<span className="grid size-7 flex-shrink-0 place-items-center rounded-md bg-brand text-xs font-bold text-brand-foreground">
+						<span
+							className="grid size-7 flex-shrink-0 place-items-center rounded-md text-xs font-bold text-white"
+							style={{ backgroundColor: getCategoryColor(post.categories?.[0]) }}
+						>
 							{i + 1}
 						</span>
 						<div>
@@ -131,7 +138,10 @@ function Grid({
 					</div>
 
 					{post.categories?.[0] && (
-						<p className="text-[10px] font-bold tracking-widest text-brand">
+						<p
+							className="text-[10px] font-bold tracking-widest"
+							style={{ color: getCategoryColor(post.categories[0]) }}
+						>
 							{post.categories[0].title.toUpperCase()}
 						</p>
 					)}

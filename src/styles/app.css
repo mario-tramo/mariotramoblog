@@ -4,15 +4,15 @@
 @theme {
 	--color-canvas: #0a0a14;
 	--color-ink: #e8e8f0;
-	--color-accent: #00c8ff;
+	--color-accent: #c62828;
 
 	--color-surface: #12121e;
 	--color-surface-light: #1a1a2a;
 	--color-surface-2: #222236;
 	--color-muted: #8888a0;
 	--color-border: rgba(255, 255, 255, 0.08);
-	--color-brand: #00c8ff;
-	--color-brand-foreground: #0a0a14;
+	--color-brand: #c62828;
+	--color-brand-foreground: #ffffff;
 
 	--font-heading: var(--font-bebas-neue), system-ui, sans-serif;
 	--font-body: var(--font-inter), system-ui, sans-serif;
@@ -138,8 +138,8 @@
 	:focus-visible {
 		outline: none;
 		box-shadow: 0 0 0 2px var(--color-canvas),
-			0 0 0 4px var(--color-accent),
-			0 0 12px color-mix(in oklab, var(--color-accent) 30%, transparent);
+			0 0 0 4px var(--color-brand),
+			0 0 12px color-mix(in oklab, var(--color-brand) 30%, transparent);
 		border-radius: 4px;
 	}
 
@@ -148,7 +148,7 @@
 	html,
 	body {
 		scrollbar-width: thin;
-		scrollbar-color: var(--color-accent) transparent;
+		scrollbar-color: var(--color-muted) transparent;
 	}
 
 	*::-webkit-scrollbar {
@@ -161,12 +161,12 @@
 	}
 
 	*::-webkit-scrollbar-thumb {
-		background: var(--color-accent);
+		background: var(--color-muted);
 		border-radius: 9999px;
 	}
 
 	*::-webkit-scrollbar-thumb:hover {
-		background: color-mix(in oklab, var(--color-accent) 80%, white);
+		background: color-mix(in oklab, var(--color-muted) 80%, white);
 	}
 }
 
@@ -226,7 +226,7 @@
 /* --- CTA & Button micro-interactions --- */
 
 @utility action {
-	@apply action-base bg-accent rounded border border-transparent text-balance text-canvas;
+	@apply action-base bg-accent rounded border border-transparent text-balance text-white;
 	position: relative;
 	overflow: hidden;
 	transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -364,14 +364,15 @@
 /* --- Card hover effects (PostPreview, SectionCard) --- */
 
 @layer base {
-	/* Cards get subtle lift on hover */
+	/* Cards get subtle lift + top-border glow on hover */
 	.group:has(> figure) {
-		transition: box-shadow 300ms, transform 300ms;
+		transition: box-shadow 300ms, transform 300ms, border-color 300ms;
 		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
 		&:hover {
-			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-			transform: translateY(-2px);
+			box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35),
+				0 0 0 1px rgba(255, 255, 255, 0.04);
+			transform: translateY(-3px);
 		}
 	}
 
@@ -388,6 +389,11 @@
 	.group:hover figure img {
 		transform: scale(1.05);
 		filter: brightness(1.1);
+	}
+
+	/* Subtle inner glow on cards with top border */
+	[style*='border-top'] {
+		transition: box-shadow 300ms ease;
 	}
 }
 
@@ -736,7 +742,7 @@
 }
 
 @utility text-gradient {
-	@apply from-accent to-accent/70 bg-linear-to-br bg-clip-text text-transparent;
+	@apply from-accent to-accent/60 bg-linear-to-br bg-clip-text text-transparent;
 }
 
 /* ctas, links */

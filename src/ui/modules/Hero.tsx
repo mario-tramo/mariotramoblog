@@ -121,7 +121,7 @@ export default function Hero({
 
 	return (
 		<section
-			className="group relative aspect-[4/3] max-h-[420px] touch-pan-y select-none overflow-hidden rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[2/1] md:aspect-[5/2]"
+			className="group relative aspect-[4/3] max-h-[500px] touch-pan-y select-none overflow-hidden rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[2/1] md:aspect-[5/2]"
 			aria-roledescription={isCarousel ? 'carousel' : undefined}
 			aria-label={isCarousel ? 'Hero slides' : undefined}
 			tabIndex={0}
@@ -157,7 +157,7 @@ export default function Hero({
 			<div className="relative z-[2] flex h-full flex-col justify-end p-6 pointer-events-none sm:p-8">
 				{/* Bottom content */}
 				<div>
-					<h2 className="text-2xl font-extrabold leading-tight text-white drop-shadow sm:text-3xl md:text-4xl">
+					<h2 className="font-heading text-3xl uppercase leading-none text-white drop-shadow sm:text-4xl md:text-5xl">
 						{s.title}
 					</h2>
 
@@ -183,7 +183,7 @@ export default function Hero({
 					<div className="mt-6 flex items-center justify-between gap-3">
 						<CTAList
 							ctas={[s.cta]}
-							className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-2 [&_a]:rounded [&_a]:bg-brand [&_a]:px-4 [&_a]:py-2.5 [&_a]:text-sm [&_a]:font-semibold [&_a]:text-brand-foreground [&_a]:transition [&_a]:hover:opacity-90 sm:[&_a]:px-5"
+							className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-2 [&_a]:rounded-full [&_a]:border [&_a]:border-brand [&_a]:px-5 [&_a]:py-2.5 [&_a]:text-sm [&_a]:font-semibold [&_a]:text-brand [&_a]:transition [&_a]:hover:bg-brand [&_a]:hover:text-brand-foreground sm:[&_a]:px-6"
 						/>
 
 						{isCarousel && (

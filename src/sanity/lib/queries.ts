@@ -9,7 +9,7 @@ export const LINK_QUERY = groq`
 		title,
 		metadata,
 		slug,
-		'categories': categories[]->{ title, slug }
+		'categories': categories[]->{ title, slug, color }
 	}
 `
 

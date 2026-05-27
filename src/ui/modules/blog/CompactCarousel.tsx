@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getCategoryColor } from '@/lib/categoryColors'
 import Link from 'next/link'
 import resolveUrl from '@/lib/resolveUrl'
 import { Img } from '@/ui/primitives/Img'
@@ -30,7 +31,10 @@ function Slide({ post, active }: { post: Sanity.BlogPost; active: boolean }) {
 
 			<div className="absolute inset-x-0 bottom-0 flex flex-col gap-1.5 p-4 sm:gap-2 sm:p-5">
 				{post.categories?.[0] && (
-					<span className="w-fit rounded bg-brand px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-brand-foreground">
+					<span
+						className="w-fit rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
+						style={{ backgroundColor: getCategoryColor(post.categories[0]) }}
+					>
 						{post.categories[0].title}
 					</span>
 				)}

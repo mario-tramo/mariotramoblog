@@ -7,8 +7,7 @@ import { IMAGE_QUERY } from '@/sanity/lib/queries'
 import { stegaClean } from 'next-sanity'
 import sortFeaturedPosts from './sortFeaturedPosts'
 import FilterList from '../BlogList/FilterList'
-import Pagination from './Pagination'
-import PostPreview from '../PostPreview'
+import PaginatedPosts from './PaginatedPosts'
 import NewsletterSubscribe from '@/ui/features/newsletter'
 import PostListWidget from '../PostListWidget'
 import FeaturedPostCard from '../FeaturedPostCard'
@@ -117,6 +116,10 @@ export default async function BlogFrontpage({
 
 	return (
 		<section className="section space-y-8">
+			<h1 className="sr-only">
+				TRM Sport — Notizie di Calcio, Formula 1, Tennis e Sport
+			</h1>
+
 			{/* 3-column newspaper layout */}
 			<div className="grid grid-cols-12 gap-6 sm:gap-8">
 				{/* LEFT SIDEBAR */}
@@ -183,29 +186,13 @@ export default async function BlogFrontpage({
 				</div>
 			)}
 
-			<div className="relative space-y-12">
-				<ul
-					id="blog-list"
-					className="grid scroll-mt-[calc(var(--header-height)+1rem)] gap-x-8 gap-y-12 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"
-				>
-					{paginatedPosts.length > 0 ? (
-						paginatedPosts.map((post) => (
-							<li className="anim-fade" key={post._id}>
-								<PostPreview post={post} />
-							</li>
-						))
-					) : (
-						<li>Nessun articolo trovato...</li>
-					)}
-				</ul>
-
-				<Pagination
-					currentPage={safePage}
-					totalPages={totalPages}
-					basePath={basePath ?? '/'}
-					searchParams={searchParams}
-				/>
-			</div>
+			<PaginatedPosts
+				posts={paginatedPosts}
+				currentPage={safePage}
+				totalPages={totalPages}
+				basePath={basePath ?? '/'}
+				searchParams={searchParams}
+			/>
 		</section>
 	)
 }

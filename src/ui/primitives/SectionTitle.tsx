@@ -10,9 +10,9 @@ export default function SectionTitle({
 
 	return (
 		<div className={cn('flex items-center gap-2', className)}>
-			{showDot && <span className="size-2 rounded-full bg-brand" />}
+			<span className="text-sm text-brand" aria-hidden="true">✦</span>
 			<h3
-				className="text-xs font-bold tracking-widest text-brand"
+				className="text-xs font-bold tracking-widest text-ink"
 				{...props}
 			>
 				{children}

@@ -70,6 +70,7 @@ declare global {
 		interface BlogCategory extends SanityDocument {
 			title: string
 			slug: { current: string }
+			color?: string
 			metadata?: Metadata
 			modules?: Module[]
 		}
@@ -90,6 +91,7 @@ declare global {
 
 		interface Person extends SanityDocument {
 			name: string
+			slug?: { current: string }
 			image?: Image
 			bio?: string
 			socialLink?: string

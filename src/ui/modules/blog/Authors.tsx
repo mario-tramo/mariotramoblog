@@ -59,12 +59,9 @@ function Author({
 	}
 	return (
 		<li>
-			{linked ? (
+			{linked && author?.slug?.current ? (
 				<Link
-					href={{
-						pathname: '/blog',
-						query: { author: author?.slug?.current },
-					}}
+					href={`/autori/${author.slug.current}`}
 					{...props}
 				/>
 			) : (

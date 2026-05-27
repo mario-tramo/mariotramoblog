@@ -8,7 +8,7 @@ export default function SectionCard({
 	return (
 		<div
 			className={cn(
-				'rounded-2xl border border-ink/10',
+				'rounded-2xl border border-ink/8 bg-surface/50',
 				className,
 			)}
 			{...props}

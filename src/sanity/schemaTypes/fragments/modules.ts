@@ -23,6 +23,7 @@ export default defineField({
 		{ type: 'custom-html' },
 		{ type: 'posts-feed' },
 		{ type: 'divider' },
+		{ type: 'team-grid' },
 	],
 	options: {
 		insertMenu: {
@@ -53,7 +54,7 @@ export default defineField({
 				{
 					name: 'altro',
 					title: 'Altro',
-					of: ['newsletter-block', 'search-module', 'standings'],
+					of: ['newsletter-block', 'search-module', 'standings', 'team-grid'],
 				},
 			],
 		},

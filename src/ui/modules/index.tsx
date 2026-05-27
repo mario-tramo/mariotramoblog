@@ -13,6 +13,7 @@ import NewsletterBlock from './NewsletterBlock'
 import RichtextModule from './RichtextModule'
 import LayoutBlock from './LayoutBlock'
 import PostsFeed from './PostsFeed'
+import TeamGrid from './TeamGrid'
 
 // Heavy modules — lazy loaded
 const CustomHTML = dynamic(() => import('./CustomHTML'))
@@ -42,6 +43,7 @@ const MODULE_MAP = {
 	standings: Standings,
 	'latest-news': PostsFeed, // backward compat — replaced by posts-feed
 	'posts-feed': PostsFeed,
+	'team-grid': TeamGrid,
 } as const
 
 export default function Modules({
