@@ -15,13 +15,12 @@ export default function Category({
 
 	const props = {
 		className: cn(
-			'inline-block rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-widest transition-colors',
+			'inline-block rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-widest text-white transition-colors',
 			linked && 'relative z-10 hover:brightness-125',
 			!linked && 'pointer-events-none',
 		),
 		style: {
-			borderColor: `${color}40`,
-			color: color,
+			backgroundColor: color,
 		},
 		children: <span>{label || value?.title}</span>,
 	}

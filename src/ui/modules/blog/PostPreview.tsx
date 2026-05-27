@@ -65,12 +65,9 @@ export default function PostPreview({
 		)
 	}
 
-	const catColor = getCategoryColor(post?.categories?.[0])
-
 	return (
 		<div
 			className="group relative isolate flex h-full flex-col gap-2 overflow-hidden rounded-2xl bg-surface p-4 transition"
-			style={{ borderTop: `3px solid ${catColor}` }}
 		>
 			<figure className="relative aspect-video overflow-hidden rounded-lg border border-white/10 bg-ink/3">
 				<Img

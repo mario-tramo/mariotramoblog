@@ -110,8 +110,11 @@ export default async function RelatedPosts({
 		const small = related.slice(2)
 
 		return (
-			<SectionCard className="bg-surface-light p-5 sm:p-6">
-				<SectionTitle className="mb-5">ARTICOLI CORRELATI</SectionTitle>
+			<SectionCard className="border-ink/12 bg-surface-light/40 p-5 backdrop-blur-2xl backdrop-saturate-150 sm:p-6">
+				<h3 className="mb-5 text-sm font-extrabold uppercase tracking-widest text-ink">
+					<span className="mr-2 text-brand" aria-hidden="true">✦</span>
+					Articoli Correlati
+				</h3>
 				<ul className="space-y-5">
 					{/* Big cards — vertical image + text */}
 					{big.map((r) => (
