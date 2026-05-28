@@ -10,6 +10,8 @@ import resolveUrl from '@/lib/resolveUrl'
 import { stegaClean } from 'next-sanity'
 import Link from 'next/link'
 
+const AUTOPLAY_MS = 6000
+
 function Slide({
 	slide,
 	active,
@@ -22,8 +24,8 @@ function Slide({
 	return (
 		<div
 			className={cn(
-				'absolute inset-0 transition-opacity duration-700',
-				active ? 'opacity-100' : 'opacity-0',
+				'absolute inset-0 transition-all duration-1000',
+				active ? 'opacity-100 scale-100' : 'opacity-0 scale-105',
 			)}
 			aria-hidden={!active}
 		>
@@ -33,7 +35,10 @@ function Slide({
 					alt={slide.title ?? ''}
 					fill
 					sizes="100vw"
-					className="object-cover"
+					className={cn(
+						'object-cover',
+						active && 'animate-ken-burns',
+					)}
 					priority={isFirst}
 				/>
 			)}
@@ -49,24 +54,44 @@ export default function Hero({
 } & Sanity.Module) {
 	const [current, setCurrent] = useState(0)
 	const [paused, setPaused] = useState(false)
+	const [progress, setProgress] = useState(0)
 	const count = slides?.length ?? 0
 	const isCarousel = count > 1
 	const dragX = useRef<number | null>(null)
 	const dragDx = useRef(0)
+	const rafRef = useRef<number>(0)
+	const startRef = useRef<number>(0)
 
 	const next = useCallback(() => {
+		setProgress(0)
 		setCurrent((prev) => (prev + 1) % count)
 	}, [count])
 
 	const prev = useCallback(() => {
+		setProgress(0)
 		setCurrent((prev) => (prev - 1 + count) % count)
 	}, [count])
 
+	// Autoplay with progress bar
 	useEffect(() => {
-		if (!isCarousel || paused) return
-		const interval = setInterval(next, 6000)
-		return () => clearInterval(interval)
-	}, [isCarousel, next, paused])
+		if (!isCarousel || paused) {
+			cancelAnimationFrame(rafRef.current)
+			return
+		}
+		startRef.current = performance.now()
+		const tick = (now: number) => {
+			const elapsed = now - startRef.current
+			const pct = Math.min(elapsed / AUTOPLAY_MS, 1)
+			setProgress(pct)
+			if (pct >= 1) {
+				next()
+			} else {
+				rafRef.current = requestAnimationFrame(tick)
+			}
+		}
+		rafRef.current = requestAnimationFrame(tick)
+		return () => cancelAnimationFrame(rafRef.current)
+	}, [isCarousel, paused, current, next])
 
 	const onPointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
 		if ((e.target as HTMLElement).closest('a, button')) return
@@ -112,7 +137,6 @@ export default function Hero({
 
 	const s = slides[current]
 
-	// Extract URL from CTA for full-slide clickability
 	const slideHref = s.cta?.link?.type === 'internal' && s.cta.link.internal
 		? resolveUrl(s.cta.link.internal, { base: false, params: s.cta.link.params })
 		: s.cta?.link?.type === 'external' && s.cta.link.external
@@ -121,7 +145,7 @@ export default function Hero({
 
 	return (
 		<section
-			className="group relative aspect-[16/9] max-h-[380px] touch-pan-y select-none overflow-hidden rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[21/9] md:aspect-[3/1]"
+			className="group relative aspect-[16/9] max-h-[520px] touch-pan-y select-none overflow-hidden rounded-2xl outline-none focus-visible:ring-2 focus-visible:ring-brand sm:aspect-[21/9] md:max-h-[560px]"
 			aria-roledescription={isCarousel ? 'carousel' : undefined}
 			aria-label={isCarousel ? 'Hero slides' : undefined}
 			tabIndex={0}
@@ -142,8 +166,9 @@ export default function Hero({
 				<Slide key={slide._key} slide={slide} active={i === current} isFirst={i === 0} />
 			))}
 
-			{/* Gradient overlays — editorial: lighter, let image breathe */}
-			<div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+			{/* Gradient overlays — cinematic depth */}
+			<div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 via-40% to-transparent" />
+			<div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
 
 			{/* Full-slide clickable overlay */}
 			{slideHref && (
@@ -152,82 +177,88 @@ export default function Hero({
 				</Link>
 			)}
 
-			{/* Content — compact editorial layout */}
-			<div className="relative z-[2] flex h-full flex-col justify-end p-4 pointer-events-none sm:p-6">
-				<div>
-					<h2 className="font-heading text-2xl uppercase leading-none text-white sm:text-3xl md:text-4xl">
+			{/* Content — cinematic editorial layout */}
+			<div className="pointer-events-none relative z-[2] flex h-full flex-col justify-end p-5 sm:p-8 md:p-12">
+				<div className="max-w-3xl space-y-3 md:space-y-4">
+					{/* Category label */}
+					{s.cta?.link?.label && (
+						<span className="inline-block rounded bg-brand px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white sm:text-xs">
+							{s.cta.link.label === 'Leggi di più' ? '' : s.cta.link.label}
+						</span>
+					)}
+
+					<h2 className="font-heading text-4xl uppercase leading-[0.92] tracking-tight text-white drop-shadow-lg sm:text-6xl md:text-7xl lg:text-8xl">
 						{s.title}
 					</h2>
 
 					{s.description && (
-						<p className="mt-2 max-w-lg text-sm text-white/80 line-clamp-2">
+						<p className="line-clamp-2 max-w-xl text-sm leading-relaxed text-white/70 sm:text-base md:text-lg">
 							{s.description}
 						</p>
 					)}
 
-					{/* Author + navigation row */}
-					<div className="mt-3 flex items-center justify-between gap-3">
-						<div className="flex items-center gap-3">
-							{s.author && (
-								<div className="flex items-center gap-2 text-xs text-white/70">
-									<span className="grid size-6 place-items-center rounded-full bg-brand text-[9px] font-bold text-brand-foreground">
-										{getInitials(s.author.name)}
-									</span>
-									{s.author.name}
-								</div>
-							)}
-							<CTAList
-								ctas={[s.cta]}
-								className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:rounded [&_a]:bg-brand [&_a]:px-4 [&_a]:py-1.5 [&_a]:text-xs [&_a]:font-semibold [&_a]:text-white [&_a]:transition [&_a]:hover:opacity-90"
-							/>
-						</div>
-
-						{isCarousel && (
-							<div className="pointer-events-auto flex items-center gap-1.5">
-								<button
-									onClick={prev}
-									className="grid size-8 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
-									aria-label="Slide precedente"
-								>
-									<ChevronLeft className="size-3.5" />
-								</button>
-								<button
-									onClick={next}
-									className="grid size-8 place-items-center rounded-full bg-white/10 text-white transition hover:bg-white/20"
-									aria-label="Slide successiva"
-								>
-									<ChevronRight className="size-3.5" />
-								</button>
+					{/* Author + CTA row */}
+					<div className="flex items-center gap-4 pt-1">
+						{s.author && (
+							<div className="flex items-center gap-2 text-xs text-white/60 sm:text-sm">
+								<span className="grid size-7 place-items-center rounded-full bg-white/15 text-[10px] font-bold text-white">
+									{getInitials(s.author.name)}
+								</span>
+								{s.author.name}
 							</div>
 						)}
+						<CTAList
+							ctas={[s.cta]}
+							className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:rounded-lg [&_a]:bg-brand [&_a]:px-5 [&_a]:py-2 [&_a]:text-xs [&_a]:font-bold [&_a]:uppercase [&_a]:tracking-wide [&_a]:text-white [&_a]:transition [&_a]:hover:opacity-90 sm:[&_a]:text-sm"
+						/>
 					</div>
+				</div>
 
-					{/* Dots */}
-					{isCarousel && (
+				{/* Navigation + progress */}
+				{isCarousel && (
+					<div className="pointer-events-auto mt-6 flex items-center gap-3 sm:mt-8">
+						<button
+							onClick={prev}
+							className="grid size-9 place-items-center rounded-full border border-white/20 text-white transition hover:border-white/40 hover:bg-white/10 sm:size-10"
+							aria-label="Slide precedente"
+						>
+							<ChevronLeft className="size-4" />
+						</button>
+						<button
+							onClick={next}
+							className="grid size-9 place-items-center rounded-full border border-white/20 text-white transition hover:border-white/40 hover:bg-white/10 sm:size-10"
+							aria-label="Slide successiva"
+						>
+							<ChevronRight className="size-4" />
+						</button>
+
+						{/* Progress indicators */}
 						<div
-							className="pointer-events-auto mt-3 flex items-center gap-1"
+							className="ml-2 flex items-center gap-1.5"
 							role="group"
 							aria-label="Seleziona slide"
 						>
 							{slides.map((slide, i) => (
 								<button
 									key={slide._key}
-									onClick={() => setCurrent(i)}
-									className={cn(
-										'h-1 rounded-full transition-all',
-										i === current
-											? 'w-6 bg-brand'
-											: 'w-1.5 bg-white/40 hover:bg-white/60',
-									)}
+									onClick={() => { setProgress(0); setCurrent(i) }}
+									className="relative h-1 overflow-hidden rounded-full transition-all"
+									style={{ width: i === current ? 48 : 8 }}
 									aria-label={`Vai alla slide ${i + 1} di ${count}`}
-									aria-current={
-										i === current ? 'true' : undefined
-									}
-								/>
+									aria-current={i === current ? 'true' : undefined}
+								>
+									<span className="absolute inset-0 bg-white/25" />
+									{i === current && (
+										<span
+											className="absolute inset-y-0 left-0 bg-brand transition-none"
+											style={{ width: `${progress * 100}%` }}
+										/>
+									)}
+								</button>
 							))}
 						</div>
-					)}
-				</div>
+					</div>
+				)}
 			</div>
 		</section>
 	)

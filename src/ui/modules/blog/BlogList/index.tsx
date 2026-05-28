@@ -142,10 +142,10 @@ export default async function BlogList({
 	return (
 		<section className={cn(!nested && 'section', 'space-y-8')} {...moduleProps(props)}>
 			{(pretitle || intro) && (
-				<header className={cn(intro ? 'richtext' : 'flex items-end justify-between border-b-2 border-line pb-3')}>
+				<header className={cn(intro ? 'richtext' : 'flex items-end justify-between border-b border-line-soft pb-4')}>
 					{pretitle && !intro ? (
 						<>
-							<h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">{pretitle}</h2>
+							<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">{pretitle}</h2>
 						</>
 					) : (
 						<>

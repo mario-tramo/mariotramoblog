@@ -87,7 +87,7 @@ export default async function PostsFeed({
 			>
 				{title && (
 					<header className="border-b-2 border-line pb-3">
-						<h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+						<h2 className="font-heading text-4xl uppercase tracking-tight md:text-5xl">
 							{title}
 						</h2>
 					</header>
@@ -111,8 +111,8 @@ export default async function PostsFeed({
 			{...moduleProps(props)}
 		>
 			{title && (
-				<header className="border-b-2 border-line pb-3">
-					<h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+				<header className="border-b border-line-soft pb-4">
+					<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">
 						{title}
 					</h2>
 				</header>

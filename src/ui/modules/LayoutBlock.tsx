@@ -29,9 +29,9 @@ const gapClasses: Record<string, string> = {
 
 const paddingYClasses: Record<string, string> = {
 	none: 'py-0',
-	small: 'py-4 md:py-8',
-	medium: 'py-8 md:py-20',
-	large: 'py-12 md:py-28',
+	small: 'py-6 md:py-10',
+	medium: 'py-10 md:py-24',
+	large: 'py-16 md:py-32',
 }
 
 export default function LayoutBlock({
