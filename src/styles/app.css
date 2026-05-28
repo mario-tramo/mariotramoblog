@@ -11,6 +11,23 @@
 	--color-surface-contrast: #040A14;
 	--color-surface-light: #1E293B;
 	--color-surface-2: #283548;
+
+	/* gradient endpoints */
+	--color-surface-grad-from: #0D1B2E;
+	--color-surface-grad-to: #142640;
+	--color-soft-grad-from: #101F36;
+	--color-soft-grad-to: #0A1628;
+	--color-contrast-grad-from: #040A14;
+	--color-contrast-grad-to: #0B1220;
+	--color-accent-grad-from: color-mix(in oklab, #c62828 8%, #07111F);
+	--color-accent-grad-to: color-mix(in oklab, #c62828 3%, #07111F);
+	--color-dark-grad-from: #0F172A;
+	--color-dark-grad-to: #020617;
+	--color-warm-grad-from: color-mix(in oklab, #c62828 6%, #0D1B2E);
+	--color-warm-grad-to: #0D1B2E;
+	--color-ocean-grad-from: #071B2E;
+	--color-ocean-grad-to: #0D2847;
+
 	--color-muted: #94A3B8;
 	--color-border: rgba(0, 209, 255, 0.12);
 	--color-line: rgba(0, 209, 255, 0.12);

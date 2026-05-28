@@ -29,6 +29,7 @@ import BlogList from '@/ui/modules/blog/BlogList'
 import PostsFeed from '@/ui/modules/PostsFeed'
 import StandingsModule from '@/ui/modules/Standings'
 import Breadcrumbs from '@/ui/modules/Breadcrumbs'
+import { bgClasses } from '@/lib/bgClasses'
 
 export const metadata: Metadata = {
 	title: 'Showcase Componenti',
@@ -980,6 +981,89 @@ export default function ShowcasePage() {
 					}}
 				/>
 			</Section>
+
+			{/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+			    SFONDI — TUTTE LE VARIANTI
+			    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */}
+
+			<div className="mx-auto max-w-screen-md">
+				<h2 className="text-lg font-bold uppercase tracking-widest text-muted-foreground">
+					Sfondi modulo
+				</h2>
+				<p className="text-sm text-muted-foreground">
+					Tutte le opzioni di sfondo disponibili per i moduli — tinte piatte e gradienti.
+				</p>
+			</div>
+
+			<Section title="Background Options" wide>
+				<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+					{Object.entries(bgClasses)
+						.filter(([key]) => key !== 'none')
+						.map(([key, classes]) => (
+						<div
+							key={key}
+							className={`relative overflow-hidden rounded-xl border border-line-soft p-6 ${classes}`}
+						>
+							<div className="space-y-3">
+								<span className="inline-block rounded-md bg-white/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white/60">
+									{key}
+								</span>
+								<h3 className="text-lg font-bold text-ink">Titolo Sezione</h3>
+								<p className="text-sm leading-relaxed text-ink/70">
+									Testo di esempio per vedere come appare il contenuto su questo sfondo.
+								</p>
+								<div className="flex gap-2">
+									<span className="rounded-full bg-accent px-3 py-1 text-xs font-bold text-white">
+										Serie A
+									</span>
+									<span className="rounded-full bg-white/10 px-3 py-1 text-xs text-white/80">
+										Calcio
+									</span>
+								</div>
+							</div>
+						</div>
+					))}
+				</div>
+			</Section>
+
+			{/* Full-width background strips */}
+			<div className="mx-auto max-w-screen-md">
+				<h2 className="text-lg font-bold uppercase tracking-widest text-muted-foreground">
+					Sfondi full-bleed
+				</h2>
+				<p className="text-sm text-muted-foreground">
+					Come appaiono a tutta larghezza — simulazione sezione con contenuto reale.
+				</p>
+			</div>
+
+			{Object.entries(bgClasses)
+				.filter(([key]) => key !== 'none')
+				.map(([key, classes]) => (
+				<div key={key} className={`-mx-4 px-4 py-10 sm:-mx-8 sm:px-8 ${classes}`}>
+					<div className="mx-auto max-w-screen-lg">
+						<div className="flex items-center justify-between">
+							<div>
+								<span className="text-[10px] font-bold uppercase tracking-widest text-white/40">
+									background: &quot;{key}&quot;
+								</span>
+								<h3 className="mt-1 text-2xl font-black uppercase tracking-tight text-ink">
+									Sezione di esempio
+								</h3>
+							</div>
+							<span className="text-sm font-bold text-accent">Vedi tutte &rarr;</span>
+						</div>
+						<div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+							{[1, 2, 3, 4].map((i) => (
+								<div key={i} className="space-y-2">
+									<div className="aspect-video rounded-lg bg-white/5" />
+									<div className="h-3 w-3/4 rounded bg-white/10" />
+									<div className="h-2 w-1/2 rounded bg-white/5" />
+								</div>
+							))}
+						</div>
+					</div>
+				</div>
+			))}
 		</div>
 	)
 }

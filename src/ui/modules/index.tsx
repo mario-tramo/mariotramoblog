@@ -135,10 +135,12 @@ export default function Modules({
 					return (
 						<div
 							key={module._key}
-							className={cn(bgClass, 'section')}
+							className={cn(bgClass)}
 							style={style}
 						>
-							{rendered}
+							<div className="section">
+								{rendered}
+							</div>
 						</div>
 					)
 				}

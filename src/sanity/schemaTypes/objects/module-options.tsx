@@ -12,6 +12,13 @@ const BACKGROUND_OPTIONS = [
 	{ title: 'Contrasto (quasi nero)', value: 'contrast' },
 	{ title: 'Accento', value: 'accent' },
 	{ title: 'Scuro', value: 'dark' },
+	{ title: '🌊 Superficie gradiente', value: 'surface-gradient' },
+	{ title: '🌊 Soft gradiente', value: 'soft-gradient' },
+	{ title: '🌊 Contrasto gradiente', value: 'contrast-gradient' },
+	{ title: '🌊 Accento gradiente', value: 'accent-gradient' },
+	{ title: '🌊 Scuro gradiente', value: 'dark-gradient' },
+	{ title: '🌊 Warm (brand)', value: 'warm-gradient' },
+	{ title: '🌊 Ocean (blu)', value: 'ocean-gradient' },
 	{ title: 'Personalizzato', value: 'custom' },
 ]
 

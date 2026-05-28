@@ -200,7 +200,7 @@ declare global {
 			options?: {
 				hidden?: boolean
 				uid?: string
-				background?: 'none' | 'surface' | 'accent' | 'dark' | 'custom'
+				background?: 'none' | 'surface' | 'soft' | 'contrast' | 'accent' | 'dark' | 'surface-gradient' | 'soft-gradient' | 'contrast-gradient' | 'accent-gradient' | 'dark-gradient' | 'warm-gradient' | 'ocean-gradient' | 'custom'
 				customBgColor?: string
 				fullBleed?: boolean
 			}
