@@ -117,6 +117,13 @@ export default defineType({
 			initialValue: false,
 		}),
 		defineField({
+			name: 'preferredSourceBanner',
+			title: 'Google Preferred Source',
+			description: 'Banner per aggiungere TRMsport tra le fonti preferite di Google',
+			type: 'preferredSourceBanner',
+			group: 'options',
+		}),
+		defineField({
 			name: 'metadata',
 			type: 'metadata',
 			group: 'metadata',

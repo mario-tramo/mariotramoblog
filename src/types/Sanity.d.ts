@@ -65,6 +65,12 @@ declare global {
 			publishDate: string
 			publishAt?: string
 			tags?: BlogTag[]
+			preferredSourceBanner?: PreferredSourceBanner
+		}
+
+		interface PreferredSourceBanner {
+			enabled?: boolean
+			position?: 'firstParagraph' | 'middle' | 'end'
 		}
 
 		interface BlogCategory extends SanityDocument {

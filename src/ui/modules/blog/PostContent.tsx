@@ -16,6 +16,7 @@ import { cn, getInitials } from '@/lib/utils'
 import { FaLinkedinIn, FaInstagram, FaXTwitter } from 'react-icons/fa6'
 import { IoIosLink } from 'react-icons/io'
 import { RelatedPostsSkeleton } from '@/ui/skeletons/PostContentSkeleton'
+import GooglePreferredSourceBanner from './GooglePreferredSourceBanner'
 import css from './PostContent.module.css'
 
 function AuthorSocialIcon({ url }: { url: string }) {
@@ -197,12 +198,7 @@ export default function PostContent({
 
 					{/* Body */}
 					<div className="mt-10">
-						<Content
-							value={post.body}
-							className={cn(css.body, 'grid')}
-						>
-							<hr />
-						</Content>
+						<PostBody post={post} />
 					</div>
 
 					{/* Tag */}
@@ -316,5 +312,46 @@ export default function PostContent({
 				</aside>
 			</div>
 		</article>
+	)
+}
+
+function getBannerInsertIndex(
+	body: Sanity.BlogPost['body'],
+	position: Sanity.PreferredSourceBanner['position'],
+): number {
+	if (position === 'end') return body.length
+	if (position === 'middle') return Math.floor(body.length / 2)
+
+	// Default: after first paragraph block
+	const idx = body.findIndex(
+		(b) => b._type === 'block' && (!b.style || b.style === 'normal'),
+	)
+	return idx === -1 ? 1 : idx + 1
+}
+
+function PostBody({ post }: { post: Sanity.BlogPost }) {
+	const banner = post.preferredSourceBanner
+	const showBanner = banner?.enabled !== false
+
+	if (!showBanner) {
+		return (
+			<Content value={post.body} className={cn(css.body, 'grid')}>
+				<hr />
+			</Content>
+		)
+	}
+
+	const insertAt = getBannerInsertIndex(post.body, banner?.position)
+	const before = post.body.slice(0, insertAt)
+	const after = post.body.slice(insertAt)
+
+	return (
+		<>
+			<Content value={before} className={cn(css.body, 'grid')} />
+			<GooglePreferredSourceBanner />
+			<Content value={after} className={cn(css.body, 'grid')}>
+				<hr />
+			</Content>
+		</>
 	)
 }

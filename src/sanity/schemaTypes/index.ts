@@ -27,6 +27,7 @@ import metadata from './objects/metadata'
 import heroSlide from './objects/hero-slide'
 import moduleOptions from './objects/module-options'
 import collectionFilter from './objects/collection-filter'
+import preferredSourceBanner from './objects/preferred-source-banner'
 
 // blocks
 import { quoteBlock, videoEmbed, socialEmbed } from './blocks'
@@ -79,6 +80,7 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	metadata,
 	moduleOptions,
 	collectionFilter,
+	preferredSourceBanner,
 
 	// blocks
 	quoteBlock,
