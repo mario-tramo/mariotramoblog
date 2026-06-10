@@ -6,6 +6,7 @@ import Date from '@/ui/primitives/Date'
 import Categories from './Categories'
 import ReadTime from './ReadTime'
 import ShareBar from './ShareBar'
+import ShareBarFooter from './ShareBarFooter'
 import TableOfContents from '@/ui/modules/RichtextModule/TableOfContents'
 import Content from '@/ui/modules/RichtextModule/Content'
 import RelatedPosts from './RelatedPosts'
@@ -218,6 +219,9 @@ export default function PostContent({
 							))}
 						</div>
 					)}
+
+					{/* Share footer */}
+					<ShareBarFooter title={post.title} />
 
 					{/* Scritto da */}
 					<div className="mt-10">
