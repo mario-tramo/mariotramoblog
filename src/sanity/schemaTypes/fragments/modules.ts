@@ -24,6 +24,7 @@ export default defineField({
 		{ type: 'posts-feed' },
 		{ type: 'divider' },
 		{ type: 'team-grid' },
+		{ type: 'trust-bar' },
 	],
 	options: {
 		insertMenu: {
@@ -54,7 +55,7 @@ export default defineField({
 				{
 					name: 'altro',
 					title: 'Altro',
-					of: ['newsletter-block', 'search-module', 'standings', 'team-grid'],
+					of: ['newsletter-block', 'search-module', 'standings', 'team-grid', 'trust-bar'],
 				},
 			],
 		},

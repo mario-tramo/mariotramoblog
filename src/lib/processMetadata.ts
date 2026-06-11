@@ -1,5 +1,6 @@
 import resolveUrl from './resolveUrl'
 import { BASE_URL, vercelPreview } from './env'
+import { urlFor } from '@/sanity/lib/image'
 import type { Metadata } from 'next'
 import { DEFAULT_LANG } from './i18n'
 
@@ -17,7 +18,7 @@ export default async function processMetadata(
 	},
 ): Promise<Metadata> {
 	const url = resolveUrl(page)
-	const { description, ogimage, noIndex, keywords, canonicalUrl } = page.metadata
+	const { description, noIndex, keywords, canonicalUrl } = page.metadata
 	const title = page.metadata.title || page.title || ''
 	const isBlogPost = page._type === 'blog.post'
 
@@ -25,14 +26,17 @@ export default async function processMetadata(
 	const baseKeywords = keywords ?? page.categories?.filter(Boolean).map((c) => c.title) ?? []
 	const seoKeywords = [...baseKeywords, ...tagNames]
 
+	// Prefer the editorial featured image, cropped hotspot-aware to the 1.91:1
+	// ratio that social platforms expect; otherwise fall back to the generated
+	// branded OG card.
 	const ogParams = new URLSearchParams({ title })
 	if (isBlogPost && page.categories?.[0]) ogParams.set('category', page.categories[0].title)
 	if (isBlogPost && page.publishDate) ogParams.set('date', page.publishDate)
-	if (isBlogPost && !ogimage && page.metadata.image) {
-		const imgUrl = (page.metadata.image as Sanity.Image & { asset?: { url?: string } })?.asset?.url
-		if (imgUrl) ogParams.set('image', imgUrl + '?w=420&h=630&fit=crop')
-	}
-	const image = ogimage || `${BASE_URL}/api/og?${ogParams.toString()}`
+
+	const featured = page.metadata.image
+	const image = featured?.asset
+		? urlFor(featured).width(1200).height(630).fit('crop').url()
+		: `${BASE_URL}/api/og?${ogParams.toString()}`
 
 	return {
 		metadataBase: new URL(BASE_URL),

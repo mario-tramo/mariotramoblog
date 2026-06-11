@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn, getInitials } from '@/lib/utils'
 import Link from 'next/link'
+import Image from 'next/image'
 
 type Post = {
 	_id: string
@@ -13,6 +14,7 @@ type Post = {
 	publishDate: string
 	imageUrl: string | null
 	lqip: string | null
+	hotspot: { x: number; y: number } | null
 	authors: { name: string }[] | null
 	categories: { title: string }[]
 }
@@ -30,18 +32,22 @@ function Slide({ post, active, isFirst }: { post: Post; active: boolean; isFirst
 			aria-hidden={!active}
 		>
 			{post.imageUrl ? (
-				<img
-					src={post.imageUrl + '?w=1200&auto=format'}
+				<Image
+					src={post.imageUrl}
 					alt={post.title}
-					className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-					loading={isFirst ? 'eager' : 'lazy'}
-					fetchPriority={isFirst ? 'high' : undefined}
-					{...(post.lqip && {
-						style: {
-							backgroundImage: `url(${post.lqip})`,
-							backgroundSize: 'cover',
-						},
-					})}
+					fill
+					// Full-bleed on mobile, ~78% of the viewport inside the carousel on desktop.
+					sizes="(min-width: 640px) 78vw, 100vw"
+					className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+					priority={isFirst}
+					{...(post.lqip && { placeholder: 'blur', blurDataURL: post.lqip })}
+					style={
+						// Keep the focal point (hotspot) framed across the responsive
+						// crops (3:4 → 2:1 → 21:9) instead of always centering.
+						post.hotspot
+							? { objectPosition: `${post.hotspot.x * 100}% ${post.hotspot.y * 100}%` }
+							: undefined
+					}
 				/>
 			) : (
 				<div className="absolute inset-0 bg-surface" />

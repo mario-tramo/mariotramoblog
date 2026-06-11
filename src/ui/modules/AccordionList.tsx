@@ -38,10 +38,6 @@ export default function AccordionList({
 				!nested && 'section',
 				layout === 'horizontal' ? 'grid gap-8 md:grid-cols-2' : 'space-y-8',
 			)}
-			{...(generateSchema && {
-				itemScope: true,
-				itemType: 'https://schema.org/FAQPage',
-			})}
 			{...moduleProps(props)}
 		>
 			<header
@@ -62,34 +58,12 @@ export default function AccordionList({
 						className="accordion border-line border-b"
 						name={connect ? props._key : undefined}
 						open={open}
-						{...(generateSchema && {
-							itemScope: true,
-							itemProp: 'mainEntity',
-							itemType: 'https://schema.org/Question',
-						})}
 						key={_key}
 					>
-						<summary
-							className="py-4 font-bold"
-							{...(generateSchema && { itemProp: 'name' })}
-						>
-							{summary}
-						</summary>
+						<summary className="py-4 font-bold">{summary}</summary>
 
-						<div
-							className="anim-fade-to-b pb-4"
-							{...(generateSchema && {
-								itemScope: true,
-								itemProp: 'acceptedAnswer',
-								itemType: 'https://schema.org/Answer',
-							})}
-						>
-							<div
-								className="richtext"
-								{...(generateSchema && {
-									itemProp: 'text',
-								})}
-							>
+						<div className="anim-fade-to-b pb-4">
+							<div className="richtext">
 								<PortableText
 									value={content}
 									components={{

@@ -89,8 +89,8 @@ export default defineType({
 		// --- CONDIVISIONE ---
 		defineField({
 			name: 'image',
-			title: 'Immagine di condivisione',
-			description: 'Immagine mostrata quando condividi il link su WhatsApp, Facebook, Twitter ecc. Dimensione consigliata: 1200x630px. Se non impostata, viene generata automaticamente.',
+			title: 'Immagine in evidenza',
+			description: 'Usata per le anteprime social (WhatsApp, Facebook, X) e per Google Discover / News. Carica un\'immagine orizzontale di almeno 1200px di larghezza — consigliato 1600x1067px (3:2). Imposta il punto focale (hotspot) sul soggetto: i ritagli 16:9, 4:3 e 1:1 vengono generati in automatico. Se non impostata, viene generata una card automatica.',
 			type: 'image',
 			fieldset: 'sharing',
 			options: {

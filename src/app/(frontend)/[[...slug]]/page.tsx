@@ -6,11 +6,13 @@ import {
 	webPageJsonLd,
 	collectionPageJsonLd,
 	breadcrumbJsonLd,
+	faqPageJsonLd,
 	newsArticleJsonLd,
 	personJsonLd,
 	organizationJsonLd,
 	newsMediaOrganizationJsonLd,
 } from '@/lib/jsonLd'
+import { getBlockText } from '@/lib/utils'
 import resolveUrl from '@/lib/resolveUrl'
 import { client } from '@/sanity/lib/client'
 import { groq } from 'next-sanity'
@@ -37,6 +39,7 @@ export default async function Page({ params, searchParams }: Props) {
 		const socialLinks = isHomepage || isAboutPage
 			? await getSocialLinks()
 			: undefined
+		const faqItems = collectFaqItems(page.modules)
 
 		return (
 			<>
@@ -53,6 +56,14 @@ export default async function Page({ params, searchParams }: Props) {
 						),
 					}}
 				/>
+				{faqItems.length > 0 && (
+					<script
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{
+							__html: JSON.stringify(faqPageJsonLd(faqItems)),
+						}}
+					/>
+				)}
 				{(isHomepage || isAboutPage) && (
 					<>
 						<script
@@ -88,9 +99,18 @@ export default async function Page({ params, searchParams }: Props) {
 			category.modules.length > 0
 				? category.modules
 				: await getCategoryTemplate()
+		const faqItems = collectFaqItems(modules)
 
 		return (
 			<>
+				{faqItems.length > 0 && (
+					<script
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{
+							__html: JSON.stringify(faqPageJsonLd(faqItems)),
+						}}
+					/>
+				)}
 				<script
 					type="application/ld+json"
 					dangerouslySetInnerHTML={{
@@ -130,6 +150,7 @@ export default async function Page({ params, searchParams }: Props) {
 	const post = await getPost(resolvedParams)
 	if (post) {
 		const catSlug = post.categories?.[0]?.slug?.current
+		const faqItems = collectFaqItems(post.modules)
 		return (
 			<>
 				<script
@@ -138,6 +159,14 @@ export default async function Page({ params, searchParams }: Props) {
 						__html: JSON.stringify(newsArticleJsonLd(post)),
 					}}
 				/>
+				{faqItems.length > 0 && (
+					<script
+						type="application/ld+json"
+						dangerouslySetInnerHTML={{
+							__html: JSON.stringify(faqPageJsonLd(faqItems)),
+						}}
+					/>
+				)}
 				<script
 					type="application/ld+json"
 					dangerouslySetInnerHTML={{
@@ -375,4 +404,52 @@ async function getCategoryTemplate(): Promise<Sanity.Module[]> {
 	})
 
 	return template?.modules ?? []
+}
+
+type AccordionFaqModule = Sanity.Module & {
+	generateSchema?: boolean
+	items?: { summary?: string; content?: Parameters<typeof getBlockText>[0] }[]
+}
+
+type LayoutBlockModule = Sanity.Module & {
+	column1?: Sanity.Module[]
+	column2?: Sanity.Module[]
+	column3?: Sanity.Module[]
+}
+
+/**
+ * Walks the module tree (descending into layout-block columns) and collects
+ * FAQ question/answer pairs from accordion-list modules that opted into schema
+ * markup. Used to emit a single, centralized FAQPage JSON-LD per page.
+ */
+function collectFaqItems(
+	modules?: Sanity.Module[],
+): { question: string; answer: string }[] {
+	if (!modules) return []
+
+	return modules.flatMap((module) => {
+		if (!module) return []
+
+		if (module._type === 'accordion-list') {
+			const accordion = module as AccordionFaqModule
+			if (!accordion.generateSchema || !accordion.items) return []
+			return accordion.items
+				.filter((item) => item?.summary)
+				.map((item) => ({
+					question: item.summary as string,
+					answer: getBlockText(item.content, ' ').trim(),
+				}))
+		}
+
+		if (module._type === 'layout-block') {
+			const block = module as LayoutBlockModule
+			return collectFaqItems([
+				...(block.column1 ?? []),
+				...(block.column2 ?? []),
+				...(block.column3 ?? []),
+			])
+		}
+
+		return []
+	})
 }

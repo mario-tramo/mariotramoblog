@@ -14,6 +14,7 @@ import RichtextModule from './RichtextModule'
 import LayoutBlock from './LayoutBlock'
 import PostsFeed from './PostsFeed'
 import TeamGrid from './TeamGrid'
+import TrustBar from './TrustBar'
 
 // Heavy modules — lazy loaded
 const CustomHTML = dynamic(() => import('./CustomHTML'))
@@ -44,6 +45,7 @@ const MODULE_MAP = {
 	'latest-news': PostsFeed, // backward compat — replaced by posts-feed
 	'posts-feed': PostsFeed,
 	'team-grid': TeamGrid,
+	'trust-bar': TrustBar,
 } as const
 
 export default function Modules({

@@ -34,6 +34,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 					'weekly'
 				),
 			},
+			'categories': *[
+				_type == 'blog.category' &&
+				defined(slug.current) &&
+				metadata.noIndex != true
+			]|order(slug.current){
+				'url': $base + slug.current,
+				'lastModified': _updatedAt,
+				'priority': 0.7,
+				'changeFrequency': 'weekly',
+			},
 			'blog': *[_type == 'blog.post' && metadata.noIndex != true]|order(publishDate desc){
 				'url': (
 					$base

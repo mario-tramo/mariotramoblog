@@ -51,6 +51,7 @@ import layoutBlock from './modules/layout-block'
 import standings from './modules/standings'
 import postsFeed from './modules/posts-feed'
 import teamGrid from './modules/team-grid'
+import trustBar from './modules/trust-bar'
 
 export const schemaTypes: SchemaTypeDefinition[] = [
 	// documents
@@ -106,4 +107,5 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	standings,
 	postsFeed,
 	teamGrid,
+	trustBar,
 ]

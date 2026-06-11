@@ -10,6 +10,7 @@ import {
 	FaTiktok,
 } from 'react-icons/fa6'
 import { IoIosLink } from 'react-icons/io'
+import type { IconType } from 'react-icons'
 import type { PortableTextBlock } from '@portabletext/react'
 
 interface StayInTheGameProps {
@@ -19,21 +20,22 @@ interface StayInTheGameProps {
 	siteTitle?: string
 }
 
+// Single source of truth for supported social platforms.
+// To add a platform: append one entry. To disable one: remove its entry
+// (links pointing to it then fall back to the generic link icon).
+const SOCIAL_PLATFORMS: { test: RegExp; icon: IconType; label: string }[] = [
+	{ test: /(?:x\.com|twitter\.com)/, icon: FaXTwitter, label: 'X' },
+	{ test: /instagram\.com/, icon: FaInstagram, label: 'Instagram' },
+	{ test: /facebook\.com|fb\.com/, icon: FaFacebookF, label: 'Facebook' },
+	{ test: /youtube\.com|youtu\.be/, icon: FaYoutube, label: 'YouTube' },
+	{ test: /tiktok\.com/, icon: FaTiktok, label: 'TikTok' },
+]
+
 function SocialIcon({ url, ...props }: { url?: string } & React.ComponentProps<'svg'>) {
 	if (!url) return null
 
-	if (url.includes('x.com') || url.includes('twitter.com'))
-		return <FaXTwitter className="size-3.5" {...props} />
-	if (url.includes('instagram.com'))
-		return <FaInstagram className="size-3.5" {...props} />
-	if (url.includes('youtube.com'))
-		return <FaYoutube className="size-3.5" {...props} />
-	if (url.includes('tiktok.com'))
-		return <FaTiktok className="size-3.5" {...props} />
-	if (url.includes('facebook.com'))
-		return <FaFacebookF className="size-3.5" {...props} />
-
-	return <IoIosLink className="size-3.5" {...props} />
+	const Icon = SOCIAL_PLATFORMS.find(({ test }) => test.test(url))?.icon ?? IoIosLink
+	return <Icon className="size-3.5" {...props} />
 }
 
 export default function StayInTheGame({

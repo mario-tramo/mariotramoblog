@@ -1,4 +1,25 @@
 import { BASE_URL } from './env'
+import { urlFor } from '@/sanity/lib/image'
+
+/**
+ * Google Discover / News recommend representative images at >=1200px wide,
+ * ideally in 16:9, 4:3 and 1:1. We generate hotspot-aware crops from the
+ * article's featured image so the subject stays framed in every ratio.
+ */
+function articleImages(post: Sanity.BlogPost): string[] {
+	const img = post.metadata.image
+	if (img?.asset) {
+		return [
+			urlFor(img).width(1200).height(675).fit('crop').url(), // 16:9
+			urlFor(img).width(1200).height(900).fit('crop').url(), // 4:3
+			urlFor(img).width(1200).height(1200).fit('crop').url(), // 1:1
+		]
+	}
+	if (post.metadata.ogimage) return [post.metadata.ogimage]
+	return [
+		`${BASE_URL}/api/og?title=${encodeURIComponent(post.title || post.metadata.title)}`,
+	]
+}
 
 const PUBLISHER = {
 	'@type': 'Organization',
@@ -49,7 +70,6 @@ export function newsArticleJsonLd(post: Sanity.BlogPost) {
 	const url = catSlug
 		? `${BASE_URL}/${catSlug}/${post.metadata.slug.current}`
 		: `${BASE_URL}/${post.metadata.slug.current}`
-	const image = post.metadata.ogimage || post.metadata.image
 	const tagNames = post.tags?.filter(Boolean).map((t) => t.title) || []
 	const categoryNames = post.categories?.filter(Boolean).map((c) => c.title) || []
 	const keywords = post.metadata.keywords?.length
@@ -68,14 +88,7 @@ export function newsArticleJsonLd(post: Sanity.BlogPost) {
 		...(post.readTime && {
 			wordCount: Math.round(post.readTime * 200),
 		}),
-		...(image && {
-			image: {
-				'@type': 'ImageObject',
-				url: typeof image === 'string' ? image : `${BASE_URL}/api/og?title=${encodeURIComponent(post.title || post.metadata.title)}`,
-				width: 1200,
-				height: 630,
-			},
-		}),
+		image: articleImages(post),
 		author: post.authors?.map((author) => ({
 			'@type': 'Person',
 			name: author.name,
@@ -141,6 +154,21 @@ export function webPageJsonLd(page: {
 			url: BASE_URL,
 		},
 		publisher: PUBLISHER,
+	}
+}
+
+export function faqPageJsonLd(items: { question: string; answer: string }[]) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'FAQPage',
+		mainEntity: items.map((item) => ({
+			'@type': 'Question',
+			name: item.question,
+			acceptedAnswer: {
+				'@type': 'Answer',
+				text: item.answer,
+			},
+		})),
 	}
 }
 
