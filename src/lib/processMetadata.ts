@@ -40,6 +40,8 @@ export default async function processMetadata(
 		ogParams.set('image', urlFor(featured).width(1200).height(630).fit('crop').url())
 	}
 	const image = `${BASE_URL}/api/og?${ogParams.toString()}`
+	// Describe the share image for screen readers / accessibility.
+	const imageAlt = featured?.alt || title || SITE_NAME
 
 	return {
 		metadataBase: new URL(BASE_URL),
@@ -52,7 +54,7 @@ export default async function processMetadata(
 			url,
 			title,
 			description,
-			images: [{ url: image, width: 1200, height: 630, alt: title }],
+			images: [{ url: image, width: 1200, height: 630, alt: imageAlt }],
 			siteName: SITE_NAME,
 			locale: 'it_IT',
 			...(isBlogPost && {
@@ -65,9 +67,11 @@ export default async function processMetadata(
 		},
 		twitter: {
 			card: 'summary_large_image',
+			site: '@TRMSPORT',
+			creator: '@TRMSPORT',
 			title,
 			description,
-			images: [image],
+			images: [{ url: image, alt: imageAlt }],
 		},
 		robots: noIndex || vercelPreview
 			? { index: false, follow: false }

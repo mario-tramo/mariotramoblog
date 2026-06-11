@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 		locale: 'it_IT',
 		type: 'website',
 	},
-	twitter: { card: 'summary_large_image' },
+	twitter: { card: 'summary_large_image', site: '@TRMSPORT', creator: '@TRMSPORT' },
 	icons: {
 		icon: [
 			{ url: '/favicon.ico', sizes: '16x16 32x32' },
