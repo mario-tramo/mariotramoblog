@@ -39,6 +39,16 @@ export default defineType({
 		}),
 
 		defineField({
+			name: 'intro',
+			title: 'Introduzione',
+			type: 'array',
+			description:
+				'Breve testo editoriale mostrato sotto il titolo (50-120 parole). Utile per SEO e contestualizzazione.',
+			of: [{ type: 'block' }],
+			group: 'content',
+		}),
+
+		defineField({
 			name: 'source',
 			title: 'Fonte dati',
 			type: 'string',

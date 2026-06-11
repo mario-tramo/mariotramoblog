@@ -201,20 +201,34 @@ export default function PostContent({
 						<PostBody post={post} />
 					</div>
 
-					{/* Tag */}
-					{post.tags && post.tags.length > 0 && (
-						<div className="mt-8 flex flex-wrap gap-2">
-							{post.tags.map((tag) => (
-								<Link
-									key={tag._id}
-									href={`/?tag=${tag.slug.current}`}
-									className="inline-flex items-center rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted transition hover:border-brand hover:text-brand"
-								>
-									#{tag.title}
-								</Link>
-							))}
-						</div>
-					)}
+					{/* Related Topics: categories + tags */}
+					{(post.categories?.length || post.tags?.length) ? (
+						<nav aria-label="Argomenti correlati" className="mt-8 space-y-3">
+							<h2 className="text-xs font-bold uppercase tracking-widest text-muted">
+								Argomenti correlati
+							</h2>
+							<div className="flex flex-wrap gap-2">
+								{post.categories?.map((cat) => (
+									<Link
+										key={cat._id}
+										href={`/${cat.slug.current}`}
+										className="inline-flex items-center rounded-full border border-brand/30 bg-brand/5 px-3 py-1 text-xs font-semibold text-brand transition hover:bg-brand/10"
+									>
+										{cat.title}
+									</Link>
+								))}
+								{post.tags?.map((tag) => (
+									<Link
+										key={tag._id}
+										href={`/?tag=${tag.slug.current}`}
+										className="inline-flex items-center rounded-full border border-line bg-surface px-3 py-1 text-xs font-medium text-muted transition hover:border-brand hover:text-brand"
+									>
+										#{tag.title}
+									</Link>
+								))}
+							</div>
+						</nav>
+					) : null}
 
 					{/* Share footer */}
 					<ShareBarFooter title={post.title} />
@@ -335,7 +349,7 @@ function PostBody({ post }: { post: Sanity.BlogPost }) {
 
 	if (!showBanner) {
 		return (
-			<Content value={post.body} className={cn(css.body, 'grid')}>
+			<Content value={post.body} className={cn(css.body, 'grid')} autoLink>
 				<hr />
 			</Content>
 		)
@@ -347,9 +361,9 @@ function PostBody({ post }: { post: Sanity.BlogPost }) {
 
 	return (
 		<>
-			<Content value={before} className={cn(css.body, 'grid')} />
+			<Content value={before} className={cn(css.body, 'grid')} autoLink />
 			<GooglePreferredSourceBanner />
-			<Content value={after} className={cn(css.body, 'grid')}>
+			<Content value={after} className={cn(css.body, 'grid')} autoLink>
 				<hr />
 			</Content>
 		</>

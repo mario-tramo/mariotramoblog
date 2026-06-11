@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import { stegaClean } from 'next-sanity'
+import { PortableText, stegaClean } from 'next-sanity'
 import { cn } from '@/lib/utils'
 import moduleProps from '@/lib/moduleProps'
 import { getPostsFeed, type PostsFeedSource } from '@/lib/getPostsFeed'
@@ -7,11 +7,13 @@ import { type CollectionFilter } from '@/lib/resolveCollectionFilters'
 import PostPreview from './blog/PostPreview'
 import PostListWidget from './blog/PostListWidget'
 import ScrollCarousel from '@/ui/primitives/ScrollCarousel'
+import type { PortableTextBlock } from '@portabletext/react'
 
 type PostsFeedLayout = 'carousel' | 'grid' | 'list' | 'numbered' | 'thumbs'
 
 export default async function PostsFeed({
 	title,
+	intro,
 	source = 'latest',
 	layout = 'carousel',
 	limit = 6,
@@ -24,6 +26,7 @@ export default async function PostsFeed({
 	...props
 }: Partial<{
 	title: string
+	intro: PortableTextBlock[]
 	source: PostsFeedSource
 	layout: PostsFeedLayout
 	limit: number
@@ -85,11 +88,18 @@ export default async function PostsFeed({
 				className={cn(!nested && 'section', 'space-y-6')}
 				{...moduleProps(props)}
 			>
-				{title && (
-					<header className="border-b-2 border-line pb-3">
-						<h2 className="font-heading text-4xl uppercase tracking-tight md:text-5xl">
-							{title}
-						</h2>
+				{(title || intro) && (
+					<header className={cn(intro ? 'space-y-2 border-b-2 border-line pb-3' : 'border-b-2 border-line pb-3')}>
+						{title && (
+							<h2 className="font-heading text-4xl uppercase tracking-tight md:text-5xl">
+								{title}
+							</h2>
+						)}
+						{intro && (
+							<div className="text-sm leading-relaxed text-muted">
+								<PortableText value={intro} />
+							</div>
+						)}
 					</header>
 				)}
 
@@ -110,11 +120,18 @@ export default async function PostsFeed({
 			className={cn(!nested && 'section', 'space-y-6 overflow-hidden')}
 			{...moduleProps(props)}
 		>
-			{title && (
-				<header className="border-b border-line-soft pb-4">
-					<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">
-						{title}
-					</h2>
+			{(title || intro) && (
+				<header className={cn(intro ? 'space-y-2 border-b border-line-soft pb-4' : 'border-b border-line-soft pb-4')}>
+					{title && (
+						<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">
+							{title}
+						</h2>
+					)}
+					{intro && (
+						<div className="text-sm leading-relaxed text-muted">
+							<PortableText value={intro} />
+						</div>
+					)}
 				</header>
 			)}
 

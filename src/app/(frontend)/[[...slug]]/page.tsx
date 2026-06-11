@@ -6,9 +6,10 @@ import {
 	webPageJsonLd,
 	collectionPageJsonLd,
 	breadcrumbJsonLd,
-	blogPostingJsonLd,
+	newsArticleJsonLd,
 	personJsonLd,
 	organizationJsonLd,
+	newsMediaOrganizationJsonLd,
 } from '@/lib/jsonLd'
 import resolveUrl from '@/lib/resolveUrl'
 import { client } from '@/sanity/lib/client'
@@ -22,6 +23,7 @@ import {
 import { BASE_URL } from '@/lib/env'
 import { processSlug } from '@/lib/processSlug'
 import errors from '@/lib/errors'
+import { HomepageH1 } from '@/ui/modules/HomepageSeo'
 
 export default async function Page({ params, searchParams }: Props) {
 	const resolvedParams = await params
@@ -30,7 +32,11 @@ export default async function Page({ params, searchParams }: Props) {
 	// Try page first, then category, then blog post (category/slug)
 	const page = await getPage(resolvedParams)
 	if (page) {
+		const isHomepage = page.metadata.slug?.current === 'index'
 		const isAboutPage = page.metadata.slug?.current === 'chi-siamo'
+		const socialLinks = isHomepage || isAboutPage
+			? await getSocialLinks()
+			: undefined
 
 		return (
 			<>
@@ -47,14 +53,23 @@ export default async function Page({ params, searchParams }: Props) {
 						),
 					}}
 				/>
-				{isAboutPage && (
-					<script
-						type="application/ld+json"
-						dangerouslySetInnerHTML={{
-							__html: JSON.stringify(organizationJsonLd()),
-						}}
-					/>
+				{(isHomepage || isAboutPage) && (
+					<>
+						<script
+							type="application/ld+json"
+							dangerouslySetInnerHTML={{
+								__html: JSON.stringify(organizationJsonLd(socialLinks)),
+							}}
+						/>
+						<script
+							type="application/ld+json"
+							dangerouslySetInnerHTML={{
+								__html: JSON.stringify(newsMediaOrganizationJsonLd(socialLinks)),
+							}}
+						/>
+					</>
 				)}
+				{isHomepage && <HomepageH1 />}
 				<Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
 			</>
 		)
@@ -120,7 +135,7 @@ export default async function Page({ params, searchParams }: Props) {
 				<script
 					type="application/ld+json"
 					dangerouslySetInnerHTML={{
-						__html: JSON.stringify(blogPostingJsonLd(post)),
+						__html: JSON.stringify(newsArticleJsonLd(post)),
 					}}
 				/>
 				<script
@@ -329,6 +344,17 @@ type Params = { slug?: string[] }
 type Props = {
 	params: Promise<Params>
 	searchParams: Promise<Record<string, string | string[] | undefined>>
+}
+
+async function getSocialLinks(): Promise<string[]> {
+	const site = await fetchSanityLive<{ socialLinks?: { external?: string }[] }>({
+		query: groq`*[_id == 'site'][0]{ socialLinks[]{ external } }`,
+	})
+	return (
+		site?.socialLinks
+			?.map((l) => l.external)
+			.filter((url): url is string => !!url) ?? []
+	)
 }
 
 async function getArticleTemplate(): Promise<Sanity.Module[]> {

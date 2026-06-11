@@ -12,6 +12,18 @@ const PUBLISHER = {
 	},
 } as const
 
+const NEWS_MEDIA_PUBLISHER = {
+	'@type': 'NewsMediaOrganization',
+	name: 'TRM Sport',
+	url: BASE_URL,
+	logo: {
+		'@type': 'ImageObject',
+		url: `${BASE_URL}/logo.png`,
+		width: 512,
+		height: 512,
+	},
+} as const
+
 export function websiteJsonLd(siteTitle: string, description?: string) {
 	return {
 		'@context': 'https://schema.org',
@@ -32,7 +44,7 @@ export function websiteJsonLd(siteTitle: string, description?: string) {
 	}
 }
 
-export function blogPostingJsonLd(post: Sanity.BlogPost) {
+export function newsArticleJsonLd(post: Sanity.BlogPost) {
 	const catSlug = post.categories?.[0]?.slug?.current
 	const url = catSlug
 		? `${BASE_URL}/${catSlug}/${post.metadata.slug.current}`
@@ -46,7 +58,7 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 
 	return {
 		'@context': 'https://schema.org',
-		'@type': 'BlogPosting',
+		'@type': 'NewsArticle',
 		headline: post.title || post.metadata.title,
 		description: post.metadata.description,
 		url,
@@ -71,7 +83,7 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 				? `${BASE_URL}/autori/${author.slug.current}`
 				: `${BASE_URL}/blog?author=${encodeURIComponent(author.name)}`,
 		})),
-		publisher: PUBLISHER,
+		publisher: NEWS_MEDIA_PUBLISHER,
 		mainEntityOfPage: {
 			'@type': 'WebPage',
 			'@id': url,
@@ -84,6 +96,9 @@ export function blogPostingJsonLd(post: Sanity.BlogPost) {
 		}),
 	}
 }
+
+/** @deprecated Use newsArticleJsonLd instead */
+export const blogPostingJsonLd = newsArticleJsonLd
 
 export function collectionPageJsonLd(
 	title: string,
@@ -162,7 +177,7 @@ export function personJsonLd(author: Sanity.Person) {
 	}
 }
 
-export function organizationJsonLd() {
+export function organizationJsonLd(socialLinks?: string[]) {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'Organization',
@@ -174,6 +189,22 @@ export function organizationJsonLd() {
 			width: 512,
 			height: 512,
 		},
-		publisher: PUBLISHER,
+		...(socialLinks?.length && { sameAs: socialLinks }),
+	}
+}
+
+export function newsMediaOrganizationJsonLd(socialLinks?: string[]) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'NewsMediaOrganization',
+		name: 'TRM Sport',
+		url: BASE_URL,
+		logo: {
+			'@type': 'ImageObject',
+			url: `${BASE_URL}/logo.png`,
+			width: 512,
+			height: 512,
+		},
+		...(socialLinks?.length && { sameAs: socialLinks }),
 	}
 }

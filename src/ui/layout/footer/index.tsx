@@ -3,6 +3,7 @@ import { getSite } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import FooterContent from './FooterContent'
 import StayInTheGame from './StayInTheGame'
+import { HomepageSeoFooter } from '@/ui/modules/HomepageSeo'
 
 const HIDE_STAY_IN_GAME_SLUGS = ['/contatti']
 
@@ -11,6 +12,7 @@ export default async function Footer() {
 		await Promise.all([getSite(), headers()])
 
 	const pathname = hdrs.get('x-pathname') ?? ''
+	const isHomepage = pathname === '' || pathname === '/'
 	const hideStayInGame = HIDE_STAY_IN_GAME_SLUGS.some((s) => pathname === s)
 
 	const logoUrl = logo?.asset ? urlFor(logo).height(128).url() : undefined
@@ -30,6 +32,7 @@ export default async function Footer() {
 				footerLinks={footerLinks}
 				showNewsletter={false}
 			/>
+			{isHomepage && <HomepageSeoFooter />}
 		</>
 	)
 }
