@@ -1,6 +1,10 @@
 import { getSite } from '@/sanity/lib/queries'
 import { ImageResponse } from 'next/og'
+import sharp from 'sharp'
 import type { NextRequest } from 'next/server'
+
+// sharp is a native (Node) module — keep this handler off the edge runtime.
+export const runtime = 'nodejs'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!
 const domain = BASE_URL?.replace(/https?:\/\//, '').replace(/\/+$/, '')
@@ -34,7 +38,7 @@ export async function GET(request: NextRequest) {
 		? safeDate(date)
 		: undefined
 
-	return new ImageResponse(
+	const png = new ImageResponse(
 		(
 			<div
 				style={{
@@ -193,6 +197,20 @@ export async function GET(request: NextRequest) {
 			...(fonts.length > 0 && { fonts }),
 		},
 	)
+
+	// next/og only emits PNG. A 1200×630 photo as lossless PNG is ~1–1.5 MB,
+	// which exceeds the link-preview image budget on WhatsApp/Telegram (they
+	// silently drop the large preview). Re-encode to JPEG (~120–180 KB).
+	const jpeg = await sharp(Buffer.from(await png.arrayBuffer()))
+		.jpeg({ quality: 82, mozjpeg: true })
+		.toBuffer()
+
+	return new Response(new Uint8Array(jpeg), {
+		headers: {
+			'Content-Type': 'image/jpeg',
+			'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800',
+		},
+	})
 }
 
 function truncate(value: string | undefined, max: number): string | undefined {
