@@ -66,6 +66,8 @@ declare global {
 			publishAt?: string
 			tags?: BlogTag[]
 			preferredSourceBanner?: PreferredSourceBanner
+			/** Next article in the same (primary) category, older by publishDate. */
+			nextPost?: { title: string; slug: string } | null
 		}
 
 		interface PreferredSourceBanner {

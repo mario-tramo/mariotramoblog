@@ -25,7 +25,6 @@ import {
 import { BASE_URL } from '@/lib/env'
 import { processSlug } from '@/lib/processSlug'
 import errors from '@/lib/errors'
-import { HomepageH1 } from '@/ui/modules/HomepageSeo'
 
 export default async function Page({ params, searchParams }: Props) {
 	const resolvedParams = await params
@@ -346,6 +345,17 @@ async function getPost(params: Params) {
 			},
 			'categories': categories[@->title != null]->{ ... },
 			'tags': tags[@->title != null]->{ ... },
+			// Next article to read in the same primary category: the closest
+			// older post by publishDate. Null when this is the oldest in category.
+			'nextPost': *[
+				_type == 'blog.post'
+				&& metadata.slug.current != $postSlug
+				&& $categorySlug in categories[]->slug.current
+				&& publishDate < ^.publishDate
+			] | order(publishDate desc)[0]{
+				'title': coalesce(title, metadata.title),
+				'slug': metadata.slug.current
+			},
 			'authors': select(defined(author) => [author->{
 				...,
 				slug,

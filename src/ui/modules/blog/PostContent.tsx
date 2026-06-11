@@ -300,7 +300,7 @@ export default function PostContent({
 
 					{/* Footer nav */}
 					{post.categories?.[0] && (
-						<div className="mt-10 flex items-center border-t border-line pt-6">
+						<div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
 							<Link
 								href={`/${post.categories[0].slug.current}`}
 								className="inline-flex items-center gap-2 text-sm text-brand hover:underline"
@@ -308,6 +308,23 @@ export default function PostContent({
 								<ChevronIcon direction="left" />
 								{post.categories[0].title}
 							</Link>
+
+							{post.nextPost && (
+								<Link
+									href={`/${post.categories[0].slug.current}/${post.nextPost.slug}`}
+									className="group inline-flex max-w-full items-center gap-2 text-right text-sm text-brand hover:underline"
+								>
+									<span className="min-w-0">
+										<span className="block text-xs font-semibold uppercase tracking-wider text-muted">
+											Articolo successivo
+										</span>
+										<span className="block truncate font-medium">
+											{post.nextPost.title}
+										</span>
+									</span>
+									<ChevronIcon direction="right" className="shrink-0" />
+								</Link>
+							)}
 						</div>
 					)}
 				</div>
