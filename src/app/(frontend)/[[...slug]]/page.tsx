@@ -80,7 +80,6 @@ export default async function Page({ params, searchParams }: Props) {
 						/>
 					</>
 				)}
-				{isHomepage && <HomepageH1 />}
 				<Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
 			</>
 		)
@@ -175,11 +174,11 @@ export default async function Page({ params, searchParams }: Props) {
 								{ name: 'Home', url: BASE_URL },
 								...(catSlug
 									? [
-											{
-												name: post.categories[0].title,
-												url: `${BASE_URL}/${catSlug}`,
-											},
-										]
+										{
+											name: post.categories[0].title,
+											url: `${BASE_URL}/${catSlug}`,
+										},
+									]
 									: []),
 								{
 									name: post.title,
