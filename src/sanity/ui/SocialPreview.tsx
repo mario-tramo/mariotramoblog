@@ -2,19 +2,40 @@
 
 import { useFormValue } from 'sanity'
 import { Card, Stack, Text, Box } from '@sanity/ui'
-const domain = process.env.NEXT_PUBLIC_BASE_URL?.replace(/https?:\/\//, '') || 'mariotramo.com'
+import { urlFor } from '@/sanity/lib/image'
+
+const BASE = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/+$/, '') || 'http://localhost:3000'
+const domain = BASE.replace(/https?:\/\//, '')
 
 export default function SocialPreview() {
-	const title = useFormValue(['metadata', 'title']) as string | undefined
+	const docTitle = useFormValue(['title']) as string | undefined
+	const seoTitle = useFormValue(['metadata', 'title']) as string | undefined
 	const description = useFormValue(['metadata', 'description']) as string | undefined
 	const slug = useFormValue(['metadata', 'slug', 'current']) as string | undefined
 	const docType = useFormValue(['_type']) as string | undefined
+	const publishDate = useFormValue(['publishDate']) as string | undefined
+	const image = useFormValue(['metadata', 'image']) as
+		| (Sanity.Image & { asset?: { _ref?: string } })
+		| undefined
 	const firstCategorySlug = useFormValue(['categories', 0, 'slug', 'current']) as string | undefined
 
-	const path = docType === 'blog.post'
-		? `${firstCategorySlug || 'categoria'}/${slug || ''}`
-		: slug || ''
+	const title = seoTitle || docTitle
+	const path =
+		docType === 'blog.post'
+			? `${firstCategorySlug || 'categoria'}/${slug || ''}`
+			: slug || ''
 	const displayUrl = `${domain}/${path}`
+
+	// Build the EXACT same OG card URL the site emits, so the editor preview
+	// matches what actually gets shared on social.
+	const params = new URLSearchParams()
+	if (title) params.set('title', title)
+	if (description) params.set('description', description)
+	if (publishDate) params.set('date', publishDate)
+	if (image?.asset?._ref) {
+		params.set('image', urlFor(image).width(1200).height(630).fit('crop').url())
+	}
+	const ogUrl = `${BASE}/api/og?${params.toString()}`
 
 	if (!title && !description) return null
 
@@ -25,7 +46,6 @@ export default function SocialPreview() {
 					Anteprima condivisione social
 				</Text>
 
-				{/* Twitter / X style card */}
 				<Card
 					radius={3}
 					style={{
@@ -33,7 +53,6 @@ export default function SocialPreview() {
 						overflow: 'hidden',
 					}}
 				>
-					{/* OG Image preview */}
 					<Box
 						style={{
 							aspectRatio: '1200 / 630',
@@ -42,8 +61,9 @@ export default function SocialPreview() {
 							position: 'relative',
 						}}
 					>
+						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img
-							src={`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/og?title=${encodeURIComponent(title ?? '')}`}
+							src={ogUrl}
 							alt="OG Preview"
 							style={{
 								width: '100%',
@@ -54,27 +74,34 @@ export default function SocialPreview() {
 						/>
 					</Box>
 
-					{/* Card body */}
 					<Box padding={3}>
 						<Stack space={2}>
 							<Text size={0} muted style={{ textTransform: 'lowercase' }}>
 								{displayUrl}
 							</Text>
-							<Text size={1} weight="bold" style={{
-								display: '-webkit-box',
-								WebkitLineClamp: 2,
-								WebkitBoxOrient: 'vertical',
-								overflow: 'hidden',
-							}}>
-								{title || 'Titolo della pagina'}
-							</Text>
-							{description && (
-								<Text size={1} muted style={{
+							<Text
+								size={1}
+								weight="bold"
+								style={{
 									display: '-webkit-box',
 									WebkitLineClamp: 2,
 									WebkitBoxOrient: 'vertical',
 									overflow: 'hidden',
-								}}>
+								}}
+							>
+								{title || 'Titolo della pagina'}
+							</Text>
+							{description && (
+								<Text
+									size={1}
+									muted
+									style={{
+										display: '-webkit-box',
+										WebkitLineClamp: 2,
+										WebkitBoxOrient: 'vertical',
+										overflow: 'hidden',
+									}}
+								>
 									{description}
 								</Text>
 							)}
@@ -83,7 +110,8 @@ export default function SocialPreview() {
 				</Card>
 
 				<Text size={0} muted>
-					L&apos;aspetto finale potrebbe variare leggermente a seconda della piattaforma (X, Facebook, LinkedIn, WhatsApp).
+					Per provare l&apos;anteprima su tutti i social (X, Facebook, WhatsApp,
+					LinkedIn, Discord, Google) apri <code>/og-playground</code>.
 				</Text>
 			</Stack>
 		</Card>

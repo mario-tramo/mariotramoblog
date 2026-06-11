@@ -26,17 +26,20 @@ export default async function processMetadata(
 	const baseKeywords = keywords ?? page.categories?.filter(Boolean).map((c) => c.title) ?? []
 	const seoKeywords = [...baseKeywords, ...tagNames]
 
-	// Prefer the editorial featured image, cropped hotspot-aware to the 1.91:1
-	// ratio that social platforms expect; otherwise fall back to the generated
-	// branded OG card.
+	// Social previews (FB / X / LinkedIn / WhatsApp) use a single branded card:
+	// the featured photo full-bleed + category + title overlay. This keeps the
+	// preview consistent everywhere and readable in-feed (better for clicks).
+	// The clean, un-overlaid photo lives in the JSON-LD `image` (Discover/News).
 	const ogParams = new URLSearchParams({ title })
+	if (description) ogParams.set('description', description)
 	if (isBlogPost && page.categories?.[0]) ogParams.set('category', page.categories[0].title)
 	if (isBlogPost && page.publishDate) ogParams.set('date', page.publishDate)
 
 	const featured = page.metadata.image
-	const image = featured?.asset
-		? urlFor(featured).width(1200).height(630).fit('crop').url()
-		: `${BASE_URL}/api/og?${ogParams.toString()}`
+	if (featured?.asset) {
+		ogParams.set('image', urlFor(featured).width(1200).height(630).fit('crop').url())
+	}
+	const image = `${BASE_URL}/api/og?${ogParams.toString()}`
 
 	return {
 		metadataBase: new URL(BASE_URL),
