@@ -27,7 +27,7 @@ function resolveLink(link?: Sanity.Link): { label: string; href: string } | null
 export default async function Header() {
 	const { headerLinks, ctas, logo, title } = await getSite()
 
-	const logoUrl = logo?.asset ? urlFor(logo).height(128).url() : undefined
+	const logoUrl = logo?.asset ? urlFor(logo).height(160).url() : undefined
 
 	const navItems: NavItem[] = (headerLinks ?? []).flatMap((item) => {
 		if (item._type === 'link') {

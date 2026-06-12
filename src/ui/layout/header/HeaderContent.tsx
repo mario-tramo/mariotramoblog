@@ -152,20 +152,20 @@ function Logo({ logoUrl, siteTitle }: { logoUrl?: string; siteTitle?: string }) 
 			<Image
 				src={logoUrl}
 				alt={siteTitle || 'Logo'}
-				width={140}
-				height={40}
-				className="h-8 w-auto sm:h-9"
+				width={245}
+				height={70}
+				className="h-[70px] w-auto"
 				priority
 			/>
 		)
 	}
 
 	return (
-		<div className="flex flex-col leading-none">
-			<span className="font-heading text-lg uppercase tracking-wide text-ink sm:text-xl">
+		<div className="flex flex-col justify-center gap-1 leading-none">
+			<span className="font-heading text-2xl uppercase tracking-wide text-ink sm:text-3xl">
 				MARIO TRAMO
 			</span>
-			<span className="text-[8px] font-bold uppercase tracking-[0.2em] text-brand sm:text-[9px]">
+			<span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand sm:text-xs">
 				STAY IN THE GAME
 			</span>
 		</div>
@@ -209,7 +209,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 			<header
 				className="sticky top-0 z-40 border-b border-line bg-canvas/95 backdrop-blur-md"
 			>
-				<div className="mx-auto flex h-12 max-w-screen-2xl items-center justify-between gap-4 px-3 sm:h-14 sm:px-6">
+				<div className="mx-auto flex h-18 max-w-screen-2xl items-center justify-between gap-4 px-3 sm:px-6">
 					{/* Logo */}
 					<Link href="/" className="flex items-center gap-0.5">
 						<Logo logoUrl={logoUrl} siteTitle={siteTitle} />
@@ -281,7 +281,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 						exit={{ opacity: 0 }}
 						transition={{ duration: 0.15, ease: 'easeOut' }}
 					>
-						<div className="flex h-12 items-center justify-between px-4">
+						<div className="flex h-24 items-center justify-between px-3 sm:px-6">
 							<Link
 								href="/"
 								className="flex items-center gap-0.5"
