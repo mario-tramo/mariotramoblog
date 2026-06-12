@@ -10,6 +10,34 @@ import { QuoteBlock } from '@/ui/blog/blocks/quote-block'
 import { SocialEmbed } from '@/ui/blog/blocks/social-embed'
 import type { PortableTextBlock } from '@portabletext/react'
 import { autoLinkText } from '@/lib/autoLink'
+import { BASE_URL } from '@/lib/env'
+
+/** Render a hyperlink annotation from the rich-text body. */
+function LinkMark({
+	value,
+	children,
+}: {
+	value?: { href?: string }
+	children: React.ReactNode
+}) {
+	const href = value?.href ?? ''
+	if (!href) return <>{children}</>
+
+	const isSpecial = /^(mailto:|tel:|#)/i.test(href)
+	const isAbsolute = /^https?:\/\//i.test(href)
+	const isInternal =
+		!isAbsolute || href.startsWith(BASE_URL) || href.includes('trmsport.com')
+	const openInNewTab = isAbsolute && !isInternal && !isSpecial
+
+	return (
+		<a
+			href={href}
+			{...(openInNewTab && { target: '_blank', rel: 'noopener noreferrer' })}
+		>
+			{children}
+		</a>
+	)
+}
 
 /**
  * Recursively walk React children and auto-link plain text strings.
@@ -54,6 +82,9 @@ export default function Content({
 			<PortableText
 				value={value}
 				components={{
+					marks: {
+						link: LinkMark,
+					},
 					block: {
 						normal: autoLink
 							? ({ children: c }) => <p>{autoLinkChildren(c, used)}</p>
