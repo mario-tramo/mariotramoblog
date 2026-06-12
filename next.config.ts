@@ -32,17 +32,7 @@ export default {
 	async headers() {
 		return [
 			{
-				source: '/((?!admin|api|_next).*)',
-				headers: [
-					...securityHeaders,
-					{
-						key: 'Vercel-CDN-Cache-Control',
-						value: 'public, s-maxage=3600, stale-while-revalidate=86400',
-					},
-				],
-			},
-			{
-				source: '/(admin|api|_next)(.*)',
+				source: '/(.*)',
 				headers: securityHeaders,
 			},
 		]
