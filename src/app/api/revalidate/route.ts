@@ -24,7 +24,10 @@ export async function POST(request: NextRequest) {
 
 	console.log('[revalidate] received', JSON.stringify(body))
 
-	revalidateTag('sanity')
+	// `{ expire: 0 }` forces immediate expiration (full revalidation), which is
+	// required in Next 16 — `revalidateTag(tag)` alone is deprecated, and the
+	// `'max'` profile only does stale-while-revalidate (no immediate purge).
+	revalidateTag('sanity', { expire: 0 })
 	revalidatePath('/', 'layout')
 
 	const paths = [body.path, ...(body.paths ?? [])].filter(
