@@ -27,7 +27,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run scheduled publish
-        run: pnpm dlx tsx scripts/publishScheduled.ts
+        run: pnpm exec tsx scripts/publishScheduled.ts
         env:
           SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
           SANITY_DATASET: ${{ secrets.SANITY_DATASET }}

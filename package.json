@@ -38,6 +38,7 @@
     "zustand": "^5.0.9"
   },
   "devDependencies": {
+    "@sanity/client": "^7.22.1",
     "@sanity/eslint-config-studio": "^5.0.2",
     "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
@@ -47,6 +48,7 @@
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18",
+    "tsx": "^4.22.4",
     "typescript": "^5.9.3"
   },
   "author": "nuotsu <mitchell@nuotsu.dev> (https://nuotsu.dev)",
