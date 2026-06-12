@@ -790,6 +790,9 @@
 
 	& a:not(:is(.action, .action-outline, .ghost)) {
 		@apply link;
+		/* Body links stay visibly coloured (not only on hover) so they read as links */
+		color: var(--color-accent);
+		font-weight: 500;
 	}
 
 	& :not(pre) > code {
