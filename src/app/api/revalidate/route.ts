@@ -7,6 +7,10 @@ export async function POST(request: NextRequest) {
 		request.nextUrl.searchParams.get('secret')
 
 	if (secret !== process.env.REVALIDATE_SECRET) {
+		console.warn('[revalidate] rejected: invalid secret', {
+			hasHeader: request.headers.has('x-revalidate-secret'),
+			hasQuery: request.nextUrl.searchParams.has('secret'),
+		})
 		return NextResponse.json({ error: 'Invalid secret' }, { status: 401 })
 	}
 
@@ -18,7 +22,9 @@ export async function POST(request: NextRequest) {
 		// Sanity webhooks may be configured without a JSON body.
 	}
 
-	revalidateTag('sanity', { expire: 0 })
+	console.log('[revalidate] received', JSON.stringify(body))
+
+	revalidateTag('sanity')
 	revalidatePath('/', 'layout')
 
 	const paths = [body.path, ...(body.paths ?? [])].filter(
@@ -29,10 +35,14 @@ export async function POST(request: NextRequest) {
 		revalidatePath(path)
 	}
 
-	return NextResponse.json({
+	const result = {
 		revalidated: true,
 		paths: ['/', ...paths],
 		tags: ['sanity'],
 		now: Date.now(),
-	})
+	}
+
+	console.log('[revalidate] done', JSON.stringify(result))
+
+	return NextResponse.json(result)
 }
