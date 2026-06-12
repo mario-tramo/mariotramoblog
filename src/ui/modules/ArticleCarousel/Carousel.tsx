@@ -39,7 +39,12 @@ function Slide({ post, active, isFirst }: { post: Post; active: boolean; isFirst
 					// Full-bleed on mobile, ~78% of the viewport inside the carousel on desktop.
 					sizes="(min-width: 640px) 78vw, 100vw"
 					className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-					priority={isFirst}
+					// First slide is the LCP candidate: eager + high fetch priority.
+					// `priority` is deprecated in Next 16 and no longer emits
+					// fetchpriority=high; `preload` is discouraged for carousels (multiple
+					// possible LCP images), so set the attributes explicitly.
+					loading={isFirst ? 'eager' : undefined}
+					fetchPriority={isFirst ? 'high' : undefined}
 					{...(post.lqip && { placeholder: 'blur', blurDataURL: post.lqip })}
 					style={
 						// Keep the focal point (hotspot) framed across the responsive

@@ -39,7 +39,10 @@ function Slide({
 						'object-cover',
 						active && 'animate-ken-burns',
 					)}
-					priority={isFirst}
+					// First slide is the LCP candidate: eager + high fetch priority
+					// (`priority` is deprecated in Next 16 and drops fetchpriority=high).
+					loading={isFirst ? 'eager' : undefined}
+					fetchPriority={isFirst ? 'high' : undefined}
 				/>
 			)}
 		</div>

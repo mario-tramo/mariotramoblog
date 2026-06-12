@@ -8,7 +8,15 @@ import Link from 'next/link'
 import resolveUrl from '@/lib/resolveUrl'
 import { Img } from '@/ui/primitives/Img'
 
-function Slide({ post, active }: { post: Sanity.BlogPost; active: boolean }) {
+function Slide({
+	post,
+	active,
+	eager,
+}: {
+	post: Sanity.BlogPost
+	active: boolean
+	eager?: boolean
+}) {
 	return (
 		<Link
 			href={resolveUrl(post, { base: false })}
@@ -24,7 +32,13 @@ function Slide({ post, active }: { post: Sanity.BlogPost; active: boolean }) {
 				className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
 				image={post.metadata?.image}
 				width={800}
+				sizes="(min-width: 1024px) 50vw, 100vw"
 				alt={post.title}
+				// The first slide is the hero / LCP candidate: load it eagerly at high
+				// priority instead of Next's default lazy loading. `preload` is wrong here
+				// because a carousel has several possible LCP images per the Next docs.
+				loading={eager ? 'eager' : undefined}
+				fetchPriority={eager ? 'high' : undefined}
 			/>
 
 			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
@@ -53,7 +67,7 @@ export default function CompactCarousel({
 }) {
 	const count = posts.length
 	if (count === 0) return null
-	if (count === 1) return <Slide post={posts[0]} active />
+	if (count === 1) return <Slide post={posts[0]} active eager />
 
 	const [index, setIndex] = useState(0)
 	const [paused, setPaused] = useState(false)
@@ -124,7 +138,7 @@ export default function CompactCarousel({
 							i === index ? 'z-10 opacity-100' : 'z-0 opacity-0',
 						)}
 					>
-						<Slide post={post} active={i === index} />
+						<Slide post={post} active={i === index} eager={i === 0} />
 					</div>
 				))}
 			</div>

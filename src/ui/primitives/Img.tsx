@@ -29,6 +29,9 @@ export function Img({
 			fetchPriority={loading === 'eager' ? 'high' : undefined}
 			placeholder={image.lqip ? 'blur' : undefined}
 			blurDataURL={image.lqip}
+			// Caller-supplied props (e.g. an LCP hero passing loading="eager" +
+			// fetchPriority="high") intentionally override the Sanity-derived
+			// defaults above.
 			{...props}
 		/>
 	)
