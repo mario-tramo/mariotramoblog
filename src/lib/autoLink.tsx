@@ -67,7 +67,6 @@ export function autoLinkText(
 			<Link
 				key={`${earliestMatch.href}-${earliestMatch.index}`}
 				href={earliestMatch.href}
-				className="text-brand/80 no-underline hover:underline"
 			>
 				{earliestMatch.matched}
 			</Link>,
