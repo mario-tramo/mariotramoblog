@@ -12,7 +12,7 @@ const writeClient = createClient({
 	projectId,
 	dataset,
 	apiVersion,
-	token: process.env.SANITY_API_TOKEN,
+	token: process.env.SANITY_API_WRITE_TOKEN,
 	useCdn: false,
 	perspective: 'raw',
 })
@@ -80,7 +80,7 @@ export async function GET(request: NextRequest) {
 		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 	}
 
-	if (!projectId || !process.env.SANITY_API_TOKEN) {
+	if (!projectId || !process.env.SANITY_API_WRITE_TOKEN) {
 		return NextResponse.json(
 			{ error: 'Missing Sanity project id or API token' },
 			{ status: 500 },
