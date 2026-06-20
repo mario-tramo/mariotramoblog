@@ -1,3 +1,5 @@
+'use client'
+
 import { Children, isValidElement } from 'react'
 import { PortableText } from 'next-sanity'
 import AnchoredHeading from './AnchoredHeading'

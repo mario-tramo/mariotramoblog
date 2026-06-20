@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import {
 	FaFacebookF,
 	FaXTwitter,
@@ -54,7 +55,8 @@ const btnClass =
 	'grid size-11 place-items-center rounded border border-line bg-surface text-ink transition hover:bg-ink hover:text-canvas'
 
 export default function ShareBarFooter({ title }: { title?: string }) {
-	const url = typeof window !== 'undefined' ? window.location.href : ''
+	const [url, setUrl] = useState('')
+	useEffect(() => { setUrl(window.location.href) }, [])
 	const t = title || ''
 
 	return (
