@@ -106,7 +106,7 @@ export default defineType({
 			description: 'Metti in risalto questo articolo nella homepage del blog (verrà mostrato per primo)',
 			type: 'boolean',
 			group: 'options',
-			initialValue: false,
+			initialValue: true,
 		}),
 		defineField({
 			name: 'hideTableOfContents',

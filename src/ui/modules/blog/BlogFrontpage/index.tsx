@@ -62,6 +62,7 @@ export default async function BlogFrontpage({
 		query: groq`
 			*[
 				_type == 'blog.post'
+				&& metadata.noIndex != true
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
 				${filterConditions}
 				${urlCategoria ? `&& $urlCategoria in categories[]->.slug.current` : ''}

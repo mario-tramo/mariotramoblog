@@ -41,8 +41,8 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export async function generateStaticParams() {
-	const slugs = await client.fetch<string[]>(
-		groq`*[_type == 'legal' && defined(metadata.slug.current)].metadata.slug.current`,
+		const slugs = await client.fetch<string[]>(
+		groq`*[_type == 'legal' && defined(metadata.slug.current) && metadata.noIndex != true].metadata.slug.current`,
 	)
 
 	return slugs.map((slug) => ({ slug }))

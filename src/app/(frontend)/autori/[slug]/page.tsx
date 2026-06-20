@@ -65,6 +65,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		metadataBase: new URL(BASE_URL),
 		title,
 		description,
+		robots: { index: true, follow: true },
 		openGraph: {
 			type: 'profile',
 			url,

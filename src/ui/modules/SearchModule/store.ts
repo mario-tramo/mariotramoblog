@@ -28,15 +28,17 @@ export const searchStore = create<{
 }))
 
 const SCOPE_MAP = {
-	pages: groq`_type == 'page'`,
+	pages: groq`_type == 'page' && metadata.noIndex != true`,
 	path: groq`
 		_type == 'page' &&
+		metadata.noIndex != true &&
 		metadata.slug.current match $path &&
 		!(metadata.slug.current in ['404'])
 	`,
-	'blog posts': groq`_type == 'blog.post'`,
+	'blog posts': groq`_type == 'blog.post' && metadata.noIndex != true`,
 	all: groq`
 		_type in ['page', 'blog.post'] &&
+		metadata.noIndex != true &&
 		!(metadata.slug.current in ['404'])
 	`,
 } as const

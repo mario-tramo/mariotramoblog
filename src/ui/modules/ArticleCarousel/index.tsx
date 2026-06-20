@@ -59,6 +59,7 @@ export default async function ArticleCarousel({
 		query: groq`
 			*[
 				_type == 'blog.post'
+				&& metadata.noIndex != true
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
 				${filterConditions}
 				${urlCategoria ? `&& $urlCategoria in categories[]->.slug.current` : ''}

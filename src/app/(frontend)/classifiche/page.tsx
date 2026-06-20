@@ -7,6 +7,9 @@ import type { CompetitionCode } from '@/lib/football-data'
 export const metadata: Metadata = {
 	title: 'Classifiche',
 	description: 'Classifiche aggiornate dei principali campionati di calcio europei',
+	alternates: {
+		canonical: '/classifiche',
+	},
 }
 
 const COMPETITIONS: CompetitionCode[] = ['SA', 'PL', 'PD', 'BL1', 'FL1']

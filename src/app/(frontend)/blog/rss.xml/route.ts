@@ -19,7 +19,7 @@ export async function GET() {
 				metadata,
 				'image': metadata.image.asset->url,
 			},
-			'posts': *[_type == 'blog.post']{
+			'posts': *[_type == 'blog.post' && metadata.noIndex != true]{
 				_type,
 				'title': coalesce(title, metadata.title),
 				body,

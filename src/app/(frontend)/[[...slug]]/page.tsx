@@ -221,18 +221,21 @@ export async function generateStaticParams() {
 				_type == 'page'
 				&& defined(metadata.slug.current)
 				&& !(metadata.slug.current in ['index'])
+				&& metadata.noIndex != true
 			]{ 'slug': metadata.slug.current }`,
 		),
 		client.fetch<{ slug: string }[]>(
 			groq`*[
 				_type == 'blog.category'
 				&& defined(slug.current)
+				&& metadata.noIndex != true
 			]{ 'slug': slug.current }`,
 		),
 		client.fetch<{ slug: string; categories: string[] }[]>(
 			groq`*[
 				_type == 'blog.post'
 				&& defined(metadata.slug.current)
+				&& metadata.noIndex != true
 			]{
 				'slug': metadata.slug.current,
 				'categories': categories[]->slug.current

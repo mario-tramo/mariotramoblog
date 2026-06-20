@@ -75,6 +75,7 @@ async function getLatestPosts(
 		query: groq`
 			*[
 				_type == 'blog.post'
+				&& metadata.noIndex != true
 				${langCondition(lang)}
 				${filterConditions}
 			]|order(publishDate desc)[0...${limit}]${POST_PROJECTION}
@@ -105,6 +106,7 @@ async function getTrendingPosts(
 			*[
 				_type == 'blog.post'
 				&& metadata.slug.current in $topSlugs
+				&& metadata.noIndex != true
 				${langCondition(lang)}
 				${filterConditions}
 			]${POST_PROJECTION}
@@ -127,7 +129,7 @@ async function getManualPosts(
 
 	const posts = await fetchSanityLive<Sanity.BlogPost[]>({
 		query: groq`
-			*[_type == 'blog.post' && _id in $ids]${POST_PROJECTION}
+			*[_type == 'blog.post' && _id in $ids && metadata.noIndex != true]${POST_PROJECTION}
 		`,
 		params: { ids },
 	})

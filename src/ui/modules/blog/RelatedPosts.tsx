@@ -28,6 +28,7 @@ export default async function RelatedPosts({
 		query: groq`
 			*[
 				_type == 'blog.post'
+				&& metadata.noIndex != true
 				&& _id != $postId
 				&& (
 					count(categories[@._ref in $categoryIds]) > 0
