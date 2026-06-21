@@ -177,9 +177,7 @@ export default function Hero({
 
 			{/* Full-slide clickable overlay */}
 			{slideHref && (
-				<Link href={slideHref} className="absolute inset-0 z-[1]" aria-label={s.title}>
-					<span className="sr-only">{s.title}</span>
-				</Link>
+				<Link href={slideHref} className="absolute inset-0 z-[1]" aria-label={s.title} />
 			)}
 
 			{/* Content — cinematic editorial layout */}

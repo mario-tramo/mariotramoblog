@@ -4,6 +4,7 @@ import { useState } from 'react'
 
 export function useNewsletterForm() {
 	const [email, setEmail] = useState('')
+	const [privacyConsent, setPrivacyConsent] = useState(false)
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [isSuccess, setIsSuccess] = useState(false)
 	const [error, setError] = useState<string | null>(null)
@@ -12,6 +13,10 @@ export function useNewsletterForm() {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		if (!email) return
+		if (!privacyConsent) {
+			setError('Devi accettare il trattamento dei dati personali')
+			return
+		}
 
 		setIsSubmitting(true)
 		setError(null)
@@ -45,6 +50,8 @@ export function useNewsletterForm() {
 	return {
 		email,
 		setEmail,
+		privacyConsent,
+		setPrivacyConsent,
 		isSubmitting,
 		isSuccess,
 		error,

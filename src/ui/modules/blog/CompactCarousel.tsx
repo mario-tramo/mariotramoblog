@@ -26,7 +26,7 @@ function Slide({
 				active ? 'opacity-100' : 'opacity-0',
 			)}
 			tabIndex={active ? 0 : -1}
-			aria-hidden={!active}
+			{...(active ? {} : { inert: true as boolean })}
 		>
 			<Img
 				className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"

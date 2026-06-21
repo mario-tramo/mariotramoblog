@@ -113,12 +113,12 @@ export default function StayInTheGame({
 							<CTA
 								key={i}
 								link={link}
+								aria-label={link.label}
 								className="group grid size-10 place-items-center rounded-full border border-line text-muted transition-all duration-300 hover:border-brand/30 hover:text-brand hover:shadow-[0_0_12px_var(--color-brand-glow)]"
 							>
 								<SocialIcon
 									url={link.external}
 									className="!size-4 transition-transform duration-300 group-hover:scale-110"
-									aria-label={link.label}
 								/>
 							</CTA>
 						))}

@@ -32,7 +32,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
 		<ToastContext value={show}>
 			{children}
 
-			<div className="fixed bottom-6 left-1/2 z-[100] flex -translate-x-1/2 flex-col items-center gap-2">
+			<div className="fixed bottom-6 left-1/2 z-[100] flex -translate-x-1/2 flex-col items-center gap-2" role="status" aria-live="polite" aria-atomic="true">
 				{toasts.map((toast) => (
 					<div
 						key={toast.id}

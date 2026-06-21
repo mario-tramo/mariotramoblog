@@ -33,6 +33,11 @@ export function ImageGallery({ value }: ImageGalleryProps) {
     setActiveIndex((i) => (i - 1 + count) % count);
   }, [count]);
 
+  const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'ArrowLeft') { e.preventDefault(); goPrev() }
+    else if (e.key === 'ArrowRight') { e.preventDefault(); goNext() }
+  }, [goNext, goPrev]);
+
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     dragX.current = e.clientX;
     dragDx.current = 0;
@@ -96,21 +101,32 @@ export function ImageGallery({ value }: ImageGalleryProps) {
         <figcaption className="font-bold text-sm mb-3">{value.title}</figcaption>
       )}
       <div
-        className="relative rounded-xl overflow-hidden bg-muted aspect-video select-none touch-pan-y"
+        className="relative rounded-xl overflow-hidden bg-muted aspect-video select-none touch-pan-y outline-none focus-visible:ring-2 focus-visible:ring-brand"
+        role={isMultiple ? "region" : undefined}
+        aria-roledescription={isMultiple ? "carousel" : undefined}
+        aria-label={value.title || `Galleria di ${count} immagini`}
+        tabIndex={isMultiple ? 0 : undefined}
+        onKeyDown={isMultiple ? onKeyDown : undefined}
         onPointerDown={isMultiple ? onPointerDown : undefined}
         onPointerMove={isMultiple ? onPointerMove : undefined}
         onPointerUp={isMultiple ? onPointerUp : undefined}
         onPointerCancel={isMultiple ? onPointerUp : undefined}
       >
+        {isMultiple && (
+          <div aria-live="polite" aria-atomic="true" className="sr-only">
+            {`Immagine ${activeIndex + 1} di ${count}`}
+          </div>
+        )}
+
         {current.imageUrl ? (
           <Image src={current.imageUrl} alt={current.caption || `Immagine ${activeIndex + 1}`} fill className="object-cover" sizes="100vw" priority={activeIndex === 0} />
         ) : current.asset?._ref ? (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-            [Immagine {activeIndex + 1} di {value.images.length}]
+            {`Immagine ${activeIndex + 1} di ${value.images.length}`}
           </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground">
-            [Immagine {activeIndex + 1} di {value.images.length}]
+            {`Immagine ${activeIndex + 1} di ${value.images.length}`}
           </div>
         )}
 
@@ -149,6 +165,7 @@ export function ImageGallery({ value }: ImageGalleryProps) {
               onClick={() => setActiveIndex(i)}
               className={`w-2 h-2 rounded-full transition-colors ${i === activeIndex ? "bg-foreground" : "bg-border"}`}
               aria-label={`Vai a immagine ${i + 1}`}
+              aria-current={i === activeIndex ? "true" : undefined}
             />
           ))}
         </div>

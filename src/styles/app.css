@@ -166,6 +166,10 @@
 		border-radius: 4px;
 	}
 
+	#main-content:focus {
+		outline: none;
+	}
+
 	/* Custom scrollbar */
 	*,
 	html,

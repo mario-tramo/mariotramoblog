@@ -113,7 +113,6 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 					<>
 						<motion.ul
 							ref={menuRef}
-							role="menu"
 							className="absolute top-full left-0 z-50 mt-1 min-w-[180px] rounded-lg border border-line bg-surface-light py-1 shadow-xl shadow-black/20"
 							initial={{ opacity: 0, y: -6 }}
 							animate={{ opacity: 1, y: 0 }}
@@ -121,10 +120,9 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 							transition={{ duration: 0.15, ease: 'easeOut' }}
 						>
 							{item.children?.map((child) => (
-								<li key={child.href} role="none">
+								<li key={child.href}>
 									<Link
 										href={child.href}
-										role="menuitem"
 										className="block px-4 py-2 text-sm text-muted transition-colors hover:bg-ink/5 hover:text-ink"
 										onClick={() => setOpen(false)}
 									>

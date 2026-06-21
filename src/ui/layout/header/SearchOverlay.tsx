@@ -126,7 +126,7 @@ export default function SearchOverlay({
 			{/* Modal container */}
 			<div className="relative mx-auto flex w-full max-w-2xl flex-col px-4 pt-[15vh] sm:pt-[20vh]">
 				{/* Search input area */}
-				<div className="animate-in fade-in slide-in-from-top-4 duration-200" role="combobox" aria-expanded={!!(query.trim() && results.length > 0)} aria-haspopup="listbox" aria-controls={listboxId}>
+				<div className="animate-in fade-in slide-in-from-top-4 duration-200" role="combobox" aria-expanded={query.trim() && results.length > 0 ? true : false} aria-haspopup="listbox" aria-controls={listboxId}>
 					<div className="flex items-center gap-3 rounded-2xl bg-surface-light px-4 py-3 shadow-2xl shadow-black/30">
 						{loading ? (
 							<Loader2

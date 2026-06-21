@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNewsletterForm } from './useNewsletterForm'
 import { SuccessState, SubscribeButton } from './shared'
@@ -9,7 +10,7 @@ export default function CompactNewsletter({
 	title,
 	description,
 }: NewsletterVariantProps) {
-	const { email, setEmail, isSubmitting, isSuccess, error, setIsFocused, handleSubmit } =
+	const { email, setEmail, privacyConsent, setPrivacyConsent, isSubmitting, isSuccess, error, setIsFocused, handleSubmit } =
 		useNewsletterForm()
 
 	const displayTitle = title || 'Newsletter'
@@ -66,11 +67,26 @@ export default function CompactNewsletter({
 							<SuccessState />
 						)}
 					</AnimatePresence>
+
+					{!isSuccess && (
+						<label className="mt-2 flex items-start gap-2">
+							<input
+								type="checkbox"
+								checked={privacyConsent}
+								onChange={(e) => setPrivacyConsent(e.target.checked)}
+								className="mt-0.5 size-3 shrink-0 accent-brand"
+							/>
+							<span className="text-[10px] leading-snug text-muted/50">
+								Accetto il trattamento dei dati personali secondo la{' '}
+								<Link href="/legal/privacy-policy" className="underline">Privacy Policy</Link>
+							</span>
+						</label>
+					)}
 				</form>
 
-				{error && (
-					<p className="mt-2 text-xs text-red-500">{error}</p>
-				)}
+			{error && (
+				<p className="mt-2 text-xs text-red-500" role="alert">{error}</p>
+			)}
 
 				<p className="mt-3 text-[10px] text-muted/50">Nessuno spam. Cancellati quando vuoi.</p>
 			</div>

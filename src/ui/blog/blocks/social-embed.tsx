@@ -186,60 +186,49 @@ function FallbackLink({
   );
 }
 
-function ConsentGate({ children, platform }: { children: React.ReactNode; platform: string | null }) {
-	const { consent, accept } = useCookieConsent();
-
-	if (consent === "accepted") return <>{children}</>;
-
-	return (
-		<div className="my-6 rounded-xl border border-line bg-surface/50 p-8 text-center">
-			<p className="mb-3 text-sm text-muted">
-				Il contenuto {platform ? `${platformLabels[platform] || platform} ` : ""}è bloccato. Per visualizzarlo, accetta i cookie analitici.
-			</p>
-			<button onClick={accept} className="action text-sm">
-				Accetta cookie
-			</button>
-		</div>
-	);
-}
-
 export function SocialEmbed({ value }: SocialEmbedProps) {
   const platform = (value.platform as Platform) || detectPlatform(value.url);
   const size: EmbedSize = { width: value.width, height: value.height };
-  const { consent } = useCookieConsent();
+  const { consent, accept } = useCookieConsent();
 
-  const embedMap: Record<string, React.ReactNode> = {
-    tiktok: <TikTokEmbed key={`tw-${consent}`} url={value.url} size={size} />,
-    instagram: <InstagramEmbed key={`ig-${consent}`} url={value.url} size={size} />,
-    twitter: <TwitterEmbed key={`x-${consent}`} url={value.url} size={size} />,
-    facebook: <FacebookEmbed key={`fb-${consent}`} url={value.url} size={size} />,
-    threads: <ThreadsEmbed key={`th-${consent}`} url={value.url} size={size} />,
-  };
+  if (consent !== "accepted") {
+    return (
+      <div className="my-6 rounded-xl border border-line bg-surface/50 p-8 text-center">
+        <p className="mb-3 text-sm text-muted">
+          Il contenuto {platform ? `${platformLabels[platform] || platform} ` : ""}è bloccato. Per visualizzarlo, accetta i cookie analitici.
+        </p>
+        <button onClick={accept} className="action text-sm">
+          Accetta cookie
+        </button>
+      </div>
+    );
+  }
+
+  const embed = platform === 'tiktok' ? <TikTokEmbed url={value.url} size={size} />
+    : platform === 'instagram' ? <InstagramEmbed url={value.url} size={size} />
+    : platform === 'twitter' ? <TwitterEmbed url={value.url} size={size} />
+    : platform === 'facebook' ? <FacebookEmbed url={value.url} size={size} />
+    : platform === 'threads' ? <ThreadsEmbed url={value.url} size={size} />
+    : <FallbackLink url={value.url} platform={platform} />;
 
   return (
-    <ConsentGate platform={platform}>
-      <figure className="my-6">
-        {platform && embedMap[platform] ? (
-          embedMap[platform]
-        ) : (
-          <FallbackLink url={value.url} platform={platform} />
-        )}
-        {value.description && (
-          <p className="mt-3 text-sm text-muted-foreground text-center italic">
-            {value.description}
-          </p>
-        )}
-        {value.caption && (
-          <figcaption className="mt-2 text-sm text-muted-foreground text-center">
-            {platform && (
-              <span className="inline-block bg-muted text-muted-foreground text-xs px-2 py-0.5 rounded mr-2">
-                {platformLabels[platform] || platform}
-              </span>
-            )}
-            {value.caption}
-          </figcaption>
-        )}
-      </figure>
-    </ConsentGate>
+    <figure className="my-6">
+      {embed}
+      {value.description && (
+        <p className="mt-3 text-sm text-muted-foreground text-center italic">
+          {value.description}
+        </p>
+      )}
+      {value.caption && (
+        <figcaption className="mt-2 text-sm text-muted-foreground text-center">
+          {platform && (
+            <span className="inline-block bg-muted text-muted-foreground text-xs px-2 py-0.5 rounded mr-2">
+              {platformLabels[platform] || platform}
+            </span>
+          )}
+          {value.caption}
+        </figcaption>
+      )}
+    </figure>
   );
 }

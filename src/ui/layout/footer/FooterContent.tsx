@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import CTA from '@/ui/primitives/CTA'
 import NewsletterSubscribe from '@/ui/features/newsletter'
 import { useCookieConsent } from '@/ui/features/CookieConsent'
@@ -64,10 +65,24 @@ export default function FooterContent({
 						<div className="pt-5 text-center text-[10px] uppercase tracking-widest text-muted/60">
 							<PortableText value={copyright} />
 						</div>
-						<div className="mt-2 text-center">
+						<div className="mt-2 flex items-center justify-center gap-3 text-[10px] uppercase tracking-widest">
+							<Link
+								href="/legal/cookie-policy"
+								className="text-muted/40 transition hover:text-muted/60"
+							>
+								Cookie Policy
+							</Link>
+							<span className="text-muted/20">·</span>
+							<Link
+								href="/legal/privacy-policy"
+								className="text-muted/40 transition hover:text-muted/60"
+							>
+								Privacy Policy
+							</Link>
+							<span className="text-muted/20">·</span>
 							<button
 								onClick={requestReconsideration}
-								className="text-[10px] uppercase tracking-widest text-muted/40 transition hover:text-muted/60"
+								className="text-muted/40 transition hover:text-muted/60"
 							>
 								Preferenze cookie
 							</button>

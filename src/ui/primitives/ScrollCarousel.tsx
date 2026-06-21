@@ -138,6 +138,7 @@ export default function ScrollCarousel({
 									: 'w-1.5 bg-ink/20 hover:bg-ink/40',
 							)}
 							aria-label={`Vai a pagina ${i + 1}`}
+							aria-current={i === currentPage ? 'true' : undefined}
 						/>
 					))}
 				</div>

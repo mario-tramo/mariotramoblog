@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNewsletterForm } from './useNewsletterForm'
 import { SuccessState, SubscribeButton, AvatarRow } from './shared'
@@ -9,7 +10,7 @@ export default function InlineNewsletter({
 	title,
 	description,
 }: NewsletterVariantProps) {
-	const { email, setEmail, isSubmitting, isSuccess, error, handleSubmit } =
+	const { email, setEmail, privacyConsent, setPrivacyConsent, isSubmitting, isSuccess, error, handleSubmit } =
 		useNewsletterForm()
 
 	const displayTitle = title || 'Calcio Quotidiano Nella Tua Inbox'
@@ -79,10 +80,25 @@ export default function InlineNewsletter({
 								<SuccessState inline />
 							)}
 						</AnimatePresence>
+
+						{!isSuccess && (
+							<label className="mt-2 flex items-start gap-2">
+								<input
+									type="checkbox"
+									checked={privacyConsent}
+									onChange={(e) => setPrivacyConsent(e.target.checked)}
+									className="mt-0.5 size-3 shrink-0 accent-brand"
+								/>
+								<span className="text-[10px] leading-snug text-muted/50">
+									Accetto il trattamento dei dati personali secondo la{' '}
+									<Link href="/legal/privacy-policy" className="underline">Privacy Policy</Link>
+								</span>
+							</label>
+						)}
 					</form>
 
 					{error && (
-						<p className="text-xs text-red-500">{error}</p>
+						<p className="text-xs text-red-500" role="alert">{error}</p>
 					)}
 
 					<AvatarRow borderColor="var(--color-canvas)" size={24} />

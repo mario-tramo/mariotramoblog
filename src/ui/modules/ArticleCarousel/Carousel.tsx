@@ -48,7 +48,7 @@ function Slide({ post, active, eager }: { post: Post; active: boolean; eager: bo
 				active ? 'opacity-100' : 'opacity-40',
 			)}
 			tabIndex={active ? 0 : -1}
-			aria-hidden={!active}
+			{...(active ? {} : { inert: true as boolean })}
 		>
 			{post.imageUrl ? (
 				<Image
@@ -237,7 +237,7 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 				onPointerUp={isCarousel ? onPointerUp : undefined}
 				onPointerCancel={isCarousel ? onPointerUp : undefined}
 			>
-				<div aria-live="polite" aria-atomic="true" className="sr-only">
+				<div aria-live="off" aria-atomic="true" className="sr-only">
 					{`Articolo ${realIndex + 1} di ${count}`}
 				</div>
 
