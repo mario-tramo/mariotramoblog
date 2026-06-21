@@ -89,6 +89,11 @@ export default function CompactCarousel({
 		return () => clearInterval(id)
 	}, [next, paused])
 
+	const onKeyDown = useCallback((e: React.KeyboardEvent<HTMLDivElement>) => {
+		if (e.key === 'ArrowLeft') { e.preventDefault(); prev() }
+		else if (e.key === 'ArrowRight') { e.preventDefault(); next() }
+	}, [prev, next])
+
 	const onPointerDown = useCallback((e: React.PointerEvent) => {
 		dragX.current = e.clientX
 		dragDx.current = 0
@@ -125,12 +130,17 @@ export default function CompactCarousel({
 			onMouseLeave={() => setPaused(false)}
 		>
 			<div
-				className="relative touch-pan-y select-none overflow-hidden rounded-xl"
+				className="relative touch-pan-y select-none overflow-hidden rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-brand"
+				tabIndex={0}
+				onKeyDown={onKeyDown}
 				onPointerDown={onPointerDown}
 				onPointerMove={onPointerMove}
 				onPointerUp={onPointerUp}
 				onPointerCancel={onPointerUp}
 			>
+				<div aria-live="off" aria-atomic="true" className="sr-only">
+					{`Articolo ${index + 1} di ${count}`}
+				</div>
 				{posts.map((post, i) => (
 					<div
 						key={post._id}

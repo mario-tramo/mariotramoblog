@@ -110,9 +110,8 @@ export default async function NoArticlesFound() {
 					</h1>
 
 					<p
-						className="mx-auto"
+						className="mx-auto text-muted"
 						style={{
-							color: '#999',
 							fontSize: '1rem',
 							lineHeight: 1.65,
 							maxWidth: 500,
@@ -181,13 +180,12 @@ export default async function NoArticlesFound() {
 				>
 					<div className="mx-auto max-w-[1100px] px-6">
 						<h2
-							className="mb-10 text-center uppercase"
+							className="mb-10 text-center uppercase text-muted"
 							style={{
 								fontFamily: "'Barlow Condensed', sans-serif",
 								fontSize: '1.25rem',
 								fontWeight: 700,
 								letterSpacing: '0.12em',
-								color: '#bbb',
 							}}
 						>
 							Esplora le Categorie
@@ -243,9 +241,9 @@ export default async function NoArticlesFound() {
 										<div
 											style={{
 												fontSize: '0.71rem',
-												color: '#666',
 												lineHeight: 1.3,
 											}}
+											className="text-muted/80"
 										>
 											{meta.subtitle}
 										</div>
@@ -289,10 +287,9 @@ export default async function NoArticlesFound() {
 							</div>
 							<Link
 								href="/"
-								className="flex items-center gap-1"
+								className="flex items-center gap-1 text-muted/80"
 								style={{
 									fontSize: '0.82rem',
-									color: '#777',
 									textDecoration: 'none',
 								}}
 							>

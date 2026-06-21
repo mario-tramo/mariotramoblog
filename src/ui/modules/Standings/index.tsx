@@ -91,34 +91,34 @@ export default async function Standings({
 				<table className="w-full text-left text-sm">
 					<thead>
 						<tr className="bg-surface border-b border-line text-xs uppercase tracking-wider text-white/60">
-							<th className="px-2 py-2 text-center sm:px-3 sm:py-3">
+							<th scope="col" className="px-2 py-2 text-center sm:px-3 sm:py-3">
 								#
 							</th>
-							<th className="px-2 py-2 sm:px-3 sm:py-3">
+							<th scope="col" className="px-2 py-2 sm:px-3 sm:py-3">
 								Squadra
 							</th>
-							<th className="px-2 py-2 text-center sm:px-3 sm:py-3">
+							<th scope="col" className="px-2 py-2 text-center sm:px-3 sm:py-3">
 								Pt
 							</th>
-							<th className={`px-3 py-3 text-center ${secondaryColClass}`}>
+							<th scope="col" className={`px-3 py-3 text-center ${secondaryColClass}`}>
 								G
 							</th>
-							<th className={`px-3 py-3 text-center ${secondaryColClass}`}>
+							<th scope="col" className={`px-3 py-3 text-center ${secondaryColClass}`}>
 								V
 							</th>
-							<th className={`px-3 py-3 text-center ${secondaryColClass}`}>
+							<th scope="col" className={`px-3 py-3 text-center ${secondaryColClass}`}>
 								N
 							</th>
-							<th className={`px-3 py-3 text-center ${secondaryColClass}`}>
+							<th scope="col" className={`px-3 py-3 text-center ${secondaryColClass}`}>
 								S
 							</th>
-							<th className={`px-3 py-3 text-center ${tertiaryColClass}`}>
+							<th scope="col" className={`px-3 py-3 text-center ${tertiaryColClass}`}>
 								GF
 							</th>
-							<th className={`px-3 py-3 text-center ${tertiaryColClass}`}>
+							<th scope="col" className={`px-3 py-3 text-center ${tertiaryColClass}`}>
 								GS
 							</th>
-							<th className={`px-3 py-3 text-center ${tertiaryColClass}`}>
+							<th scope="col" className={`px-3 py-3 text-center ${tertiaryColClass}`}>
 								DR
 							</th>
 						</tr>

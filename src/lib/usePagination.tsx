@@ -41,8 +41,8 @@ export function usePagination<T extends unknown>({
 		buttonClassName,
 		prevClassName,
 		nextClassName,
-		prev = 'Prev',
-		next = 'Next',
+		prev = 'Precedente',
+		next = 'Successiva',
 		hidePage,
 		onClick = () => {},
 		...props
@@ -64,7 +64,7 @@ export function usePagination<T extends unknown>({
 
 				{!hidePage && (
 					<span>
-						{currentPage} of {totalPages}
+						{currentPage} di {totalPages}
 					</span>
 				)}
 

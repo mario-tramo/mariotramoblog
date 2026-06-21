@@ -32,7 +32,7 @@ export default function ClickToCopy({
 				toast(toastMessage)
 				setTimeout(() => setCopied(false), 1000)
 			}}
-			title="Click to copy"
+			title="Copia negli appunti"
 			aria-label="Copia negli appunti"
 			{...props}
 		>
