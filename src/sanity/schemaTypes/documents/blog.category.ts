@@ -37,7 +37,7 @@ export default defineType({
 			title: 'Colore',
 			type: 'string',
 			description:
-				'Colore della categoria (es. #c62828). Usato per badge, bordi e accenti.',
+				'Colore della categoria (es. #0ea5e9). Usato per badge, bordi e accenti.',
 			group: 'content',
 		}),
 		defineField({
