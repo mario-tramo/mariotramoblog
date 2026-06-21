@@ -273,14 +273,14 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 				<>
 					<button
 						onClick={prev}
-						className="absolute top-1/2 left-2 z-10 grid size-10 -translate-y-1/2 place-items-center rounded-full border-2 border-brand bg-white text-brand shadow-xl transition hover:bg-brand hover:text-white focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:left-[calc(var(--peek)-1.5rem)] sm:size-12"
+						className="absolute top-1/2 left-2 z-10 hidden size-10 -translate-y-1/2 place-items-center rounded-full border-2 border-brand bg-white text-brand shadow-xl transition hover:bg-brand hover:text-white focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:left-[calc(var(--peek)-1.5rem)] sm:grid sm:size-12"
 						aria-label="Articolo precedente"
 					>
 						<ChevronLeft className="size-5 sm:size-6" strokeWidth={2.5} />
 					</button>
 					<button
 						onClick={next}
-						className="absolute top-1/2 right-2 z-10 grid size-10 -translate-y-1/2 place-items-center rounded-full border-2 border-brand bg-white text-brand shadow-xl transition hover:bg-brand hover:text-white focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:right-[calc(var(--peek)-1.5rem)] sm:size-12"
+						className="absolute top-1/2 right-2 z-10 hidden size-10 -translate-y-1/2 place-items-center rounded-full border-2 border-brand bg-white text-brand shadow-xl transition hover:bg-brand hover:text-white focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:right-[calc(var(--peek)-1.5rem)] sm:grid sm:size-12"
 						aria-label="Articolo successivo"
 					>
 						<ChevronRight className="size-5 sm:size-6" strokeWidth={2.5} />
