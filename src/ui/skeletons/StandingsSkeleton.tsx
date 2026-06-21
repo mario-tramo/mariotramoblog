@@ -16,16 +16,16 @@ export default function StandingsSkeleton() {
 					<table className="w-full text-left text-sm">
 						<thead>
 							<tr className="bg-surface border-b border-line text-xs uppercase tracking-wider text-white/60">
-								<th className="px-3 py-3 text-center">#</th>
-								<th className="px-3 py-3">Squadra</th>
-								<th className="px-3 py-3 text-center">Pt</th>
-								<th className="hidden px-3 py-3 text-center sm:table-cell">G</th>
-								<th className="hidden px-3 py-3 text-center sm:table-cell">V</th>
-								<th className="hidden px-3 py-3 text-center sm:table-cell">N</th>
-								<th className="hidden px-3 py-3 text-center sm:table-cell">S</th>
-								<th className="hidden px-3 py-3 text-center md:table-cell">GF</th>
-								<th className="hidden px-3 py-3 text-center md:table-cell">GS</th>
-								<th className="hidden px-3 py-3 text-center md:table-cell">DR</th>
+								<th scope="col" className="px-3 py-3 text-center">#</th>
+								<th scope="col" className="px-3 py-3">Squadra</th>
+								<th scope="col" className="px-3 py-3 text-center">Pt</th>
+								<th scope="col" className="hidden px-3 py-3 text-center sm:table-cell">G</th>
+								<th scope="col" className="hidden px-3 py-3 text-center sm:table-cell">V</th>
+								<th scope="col" className="hidden px-3 py-3 text-center sm:table-cell">N</th>
+								<th scope="col" className="hidden px-3 py-3 text-center sm:table-cell">S</th>
+								<th scope="col" className="hidden px-3 py-3 text-center md:table-cell">GF</th>
+								<th scope="col" className="hidden px-3 py-3 text-center md:table-cell">GS</th>
+								<th scope="col" className="hidden px-3 py-3 text-center md:table-cell">DR</th>
 							</tr>
 						</thead>
 						<tbody>

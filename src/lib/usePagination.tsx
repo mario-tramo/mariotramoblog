@@ -50,7 +50,7 @@ export function usePagination<T extends unknown>({
 		if ((atStart && atEnd) || !paginatedItems?.length) return null
 
 		return (
-			<nav {...props}>
+			<nav aria-label="Paginazione" {...props}>
 				<button
 					className={prevClassName || buttonClassName}
 					onClick={() => {
@@ -58,12 +58,13 @@ export function usePagination<T extends unknown>({
 						onClick()
 					}}
 					disabled={atStart}
+					aria-label="Pagina precedente"
 				>
 					{prev}
 				</button>
 
 				{!hidePage && (
-					<span>
+					<span aria-current="page">
 						{currentPage} di {totalPages}
 					</span>
 				)}
@@ -75,6 +76,7 @@ export function usePagination<T extends unknown>({
 						onClick()
 					}}
 					disabled={atEnd}
+					aria-label="Pagina successiva"
 				>
 					{next}
 				</button>
