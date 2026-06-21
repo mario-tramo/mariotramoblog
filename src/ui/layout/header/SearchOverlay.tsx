@@ -24,12 +24,17 @@ export default function SearchOverlay({
 	const inputRef = useRef<HTMLInputElement>(null)
 	const trapRef = useFocusTrap<HTMLDivElement>(open)
 	const [query, setQueryLocal] = useState('')
+	const [activeIndex, setActiveIndex] = useState(-1)
+	const listRef = useRef<HTMLUListElement>(null)
 	const { loading, results, setLoading, setResults } = searchStore()
+
+	const listboxId = 'search-results-listbox'
 
 	useEffect(() => {
 		if (!open) {
 			setQueryLocal('')
 			setResults([])
+			setActiveIndex(-1)
 		} else {
 			setTimeout(() => inputRef.current?.focus(), 50)
 		}
@@ -52,6 +57,7 @@ export default function SearchOverlay({
 	function onChange(e: React.ChangeEvent<HTMLInputElement>) {
 		const value = e.target.value
 		setQueryLocal(value)
+		setActiveIndex(-1)
 		if (!value.trim()) {
 			setResults([])
 			return
@@ -63,6 +69,47 @@ export default function SearchOverlay({
 		window.scrollTo(0, 0)
 		onClose()
 	}
+
+	function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+		if (!results.length) return
+
+		switch (e.key) {
+			case 'ArrowDown': {
+				e.preventDefault()
+				setActiveIndex((prev) => (prev < results.length - 1 ? prev + 1 : 0))
+				break
+			}
+			case 'ArrowUp': {
+				e.preventDefault()
+				setActiveIndex((prev) => (prev > 0 ? prev - 1 : results.length - 1))
+				break
+			}
+			case 'Enter': {
+				e.preventDefault()
+				if (activeIndex >= 0 && activeIndex < results.length) {
+					const link = listRef.current?.querySelectorAll<HTMLAnchorElement>('a')[activeIndex]
+					link?.click()
+				}
+				break
+			}
+			case 'Home': {
+				e.preventDefault()
+				setActiveIndex(0)
+				break
+			}
+			case 'End': {
+				e.preventDefault()
+				setActiveIndex(results.length - 1)
+				break
+			}
+		}
+	}
+
+	useEffect(() => {
+		if (activeIndex < 0 || !listRef.current) return
+		const links = listRef.current.querySelectorAll<HTMLAnchorElement>('a')
+		links[activeIndex]?.focus()
+	}, [activeIndex])
 
 	if (!open) return null
 
@@ -79,7 +126,7 @@ export default function SearchOverlay({
 			{/* Modal container */}
 			<div className="relative mx-auto flex w-full max-w-2xl flex-col px-4 pt-[15vh] sm:pt-[20vh]">
 				{/* Search input area */}
-				<div className="animate-in fade-in slide-in-from-top-4 duration-200">
+				<div className="animate-in fade-in slide-in-from-top-4 duration-200" role="combobox" aria-expanded={!!(query.trim() && results.length > 0)} aria-haspopup="listbox" aria-controls={listboxId}>
 					<div className="flex items-center gap-3 rounded-2xl bg-surface-light px-4 py-3 shadow-2xl shadow-black/30">
 						{loading ? (
 							<Loader2
@@ -96,9 +143,13 @@ export default function SearchOverlay({
 							type="search"
 							value={query}
 							onChange={onChange}
+							onKeyDown={onKeyDown}
 							placeholder="Cerca articoli, pagine..."
 							className="min-w-0 flex-1 bg-transparent text-lg text-ink outline-none placeholder:text-muted/60"
 							aria-label="Cerca"
+							aria-autocomplete="list"
+							aria-controls={listboxId}
+							aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}
 						/>
 
 						<button
@@ -127,14 +178,15 @@ export default function SearchOverlay({
 								Ricerca in corso...
 							</div>
 						) : results.length > 0 ? (
-							<ul className="divide-y divide-line-soft py-1">
-								{results.map((result) => (
-									<li key={result._id}>
+							<ul ref={listRef} id={listboxId} role="listbox" aria-label="Risultati di ricerca" className="divide-y divide-line-soft py-1">
+								{results.map((result, i) => (
+									<li key={result._id} id={`search-result-${i}`} role="option" aria-selected={i === activeIndex}>
 										<Link
 											href={resolveUrl(result, { base: false })}
 											scroll={true}
 											onClick={handleResultClick}
 											className="flex items-center gap-3 px-4 py-3 transition-colors hover:bg-canvas"
+											tabIndex={-1}
 										>
 											<div className="min-w-0 flex-1">
 												<p className="truncate text-sm font-medium text-ink">

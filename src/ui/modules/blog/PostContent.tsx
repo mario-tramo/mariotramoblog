@@ -49,7 +49,7 @@ export default function PostContent({
 						</Link>
 						<meta itemProp="position" content="1" />
 					</li>
-					<li aria-hidden="true">&gt;</li>
+					<span aria-hidden="true" className="text-muted">&gt;</span>
 					<li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
 						<Link
 							href="/"
@@ -62,7 +62,7 @@ export default function PostContent({
 					</li>
 					{post.categories?.[0] && (
 						<>
-							<li aria-hidden="true">&gt;</li>
+							<span aria-hidden="true" className="text-muted">&gt;</span>
 							<li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
 								<Link
 									href={`/${post.categories[0].slug.current}`}
@@ -75,7 +75,7 @@ export default function PostContent({
 							</li>
 						</>
 					)}
-					<li aria-hidden="true">&gt;</li>
+					<span aria-hidden="true" className="text-muted">&gt;</span>
 					<li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" className="truncate text-brand">
 						<span itemProp="name">{post.title}</span>
 						<meta itemProp="position" content={String(post.categories?.[0] ? 4 : 3)} />

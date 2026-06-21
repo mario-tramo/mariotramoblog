@@ -1,45 +1,20 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useCookieConsent } from './CookieConsent'
+import { useFocusTrap } from '@/lib/useFocusTrap'
 
 export default function CookieBanner() {
 	const { consent, accept, reject } = useCookieConsent()
-	const bannerRef = useRef<HTMLDivElement>(null)
+	const bannerRef = useFocusTrap<HTMLDivElement>(consent === 'pending')
 
 	useEffect(() => {
 		if (consent !== 'pending') return
 
-		const banner = bannerRef.current
-		if (!banner) return
-
-		const focusableEls = banner.querySelectorAll<HTMLElement>(
-			'a[href], button:not([disabled])',
-		)
-		const firstFocusable = focusableEls[0]
-		const lastFocusable = focusableEls[focusableEls.length - 1]
-
-		firstFocusable?.focus()
-
 		function onKeyDown(e: KeyboardEvent) {
 			if (e.key === 'Escape') {
 				reject()
-				return
-			}
-
-			if (e.key !== 'Tab') return
-
-			if (e.shiftKey) {
-				if (document.activeElement === firstFocusable) {
-					e.preventDefault()
-					lastFocusable?.focus()
-				}
-			} else {
-				if (document.activeElement === lastFocusable) {
-					e.preventDefault()
-					firstFocusable?.focus()
-				}
 			}
 		}
 

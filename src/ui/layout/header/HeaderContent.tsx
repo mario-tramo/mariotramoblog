@@ -6,6 +6,7 @@ import { Search, Menu, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useFocusTrap } from '@/lib/useFocusTrap'
+import { usePathname } from 'next/navigation'
 import SearchOverlay from './SearchOverlay'
 
 export interface NavItem {
@@ -174,6 +175,7 @@ function Logo({ logoUrl, siteTitle }: { logoUrl?: string; siteTitle?: string }) 
 
 export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: HeaderContentProps) {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+	const pathname = usePathname()
 	const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
 	const [searchOpen, setSearchOpen] = useState(false)
 	const mobileDrawerRef = useFocusTrap<HTMLDivElement>(mobileMenuOpen)
@@ -216,7 +218,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 					</Link>
 
 					{/* Desktop Navigation */}
-					<nav className="hidden items-center gap-1 lg:flex">
+					<nav className="hidden items-center gap-1 lg:flex" aria-label="Navigazione principale">
 						{navItems.map((item) =>
 							item.children?.length ? (
 								<DesktopDropdown key={item.label} item={item} />
@@ -224,6 +226,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 								<Link
 									key={item.label}
 									href={item.href}
+									aria-current={pathname === item.href ? 'page' : undefined}
 									className="rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted transition-colors hover:bg-surface hover:text-ink"
 								>
 									{item.label}
@@ -298,7 +301,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 							</button>
 						</div>
 
-						<nav className="flex-1 overflow-y-auto px-2 py-3">
+						<nav className="flex-1 overflow-y-auto px-2 py-3" aria-label="Navigazione mobile">
 							{navItems.map((item) => (
 								<div
 									key={item.label}
@@ -334,6 +337,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 														<li key={child.href}>
 															<Link
 																href={child.href}
+																aria-current={pathname === child.href ? 'page' : undefined}
 																className="block rounded-md px-3 py-2 text-sm text-muted hover:bg-surface hover:text-ink"
 																onClick={() => setMobileMenuOpen(false)}
 															>
@@ -347,6 +351,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 									) : (
 										<Link
 											href={item.href}
+											aria-current={pathname === item.href ? 'page' : undefined}
 											className="block px-3 py-4 text-base font-semibold"
 											onClick={() => setMobileMenuOpen(false)}
 										>

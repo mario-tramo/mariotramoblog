@@ -187,20 +187,25 @@ function FallbackLink({
 }
 
 function ConsentGate({ children, platform }: { children: React.ReactNode; platform: string | null }) {
-  const { consent, accept } = useCookieConsent();
+	const { consent, accept } = useCookieConsent();
+	const renderKey = useRef(0);
 
-  if (consent === "accepted") return <>{children}</>;
+	useEffect(() => {
+		if (consent === 'accepted') renderKey.current += 1;
+	}, [consent]);
 
-  return (
-    <div className="my-6 rounded-xl border border-line bg-surface/50 p-8 text-center">
-      <p className="mb-3 text-sm text-muted">
-        Il contenuto {platform ? `${platformLabels[platform] || platform} ` : ""}è bloccato. Per visualizzarlo, accetta i cookie analitici.
-      </p>
-      <button onClick={accept} className="action text-sm">
-        Accetta cookie
-      </button>
-    </div>
-  );
+	if (consent === "accepted") return <div key={renderKey.current}>{children}</div>;
+
+	return (
+		<div className="my-6 rounded-xl border border-line bg-surface/50 p-8 text-center">
+			<p className="mb-3 text-sm text-muted">
+				Il contenuto {platform ? `${platformLabels[platform] || platform} ` : ""}è bloccato. Per visualizzarlo, accetta i cookie analitici.
+			</p>
+			<button onClick={accept} className="action text-sm">
+				Accetta cookie
+			</button>
+		</div>
+	);
 }
 
 export function SocialEmbed({ value }: SocialEmbedProps) {

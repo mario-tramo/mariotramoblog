@@ -9,8 +9,36 @@ export default function TabList({
 }: React.ComponentProps<typeof TabbedContent>) {
 	const { active, setActive } = tabbedContentStore()
 
+	function onKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+		const tabsLen = tabs?.length ?? 0
+		if (tabsLen < 2) return
+
+		switch (e.key) {
+			case 'ArrowLeft': {
+				e.preventDefault()
+				setActive(active > 0 ? active - 1 : tabsLen - 1)
+				break
+			}
+			case 'ArrowRight': {
+				e.preventDefault()
+				setActive(active < tabsLen - 1 ? active + 1 : 0)
+				break
+			}
+			case 'Home': {
+				e.preventDefault()
+				setActive(0)
+				break
+			}
+			case 'End': {
+				e.preventDefault()
+				setActive(tabsLen - 1)
+				break
+			}
+		}
+	}
+
 	return (
-		<div className="max-md:full-bleed no-scrollbar flex overflow-x-auto" role="tablist">
+		<div className="max-md:full-bleed no-scrollbar flex overflow-x-auto" role="tablist" onKeyDown={onKeyDown}>
 			{tabs?.map((tab, key) => (
 				<button
 					className={cn(
@@ -25,6 +53,7 @@ export default function TabList({
 					aria-selected={key === active}
 					aria-controls={`tabpanel-${key}`}
 					id={`tab-${key}`}
+					tabIndex={key === active ? 0 : -1}
 				>
 					{tab.label}
 				</button>

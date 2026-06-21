@@ -5,6 +5,7 @@ import { getSite } from '@/sanity/lib/queries'
 import { websiteJsonLd } from '@/lib/jsonLd'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import SkipToContent from '@/ui/layout/SkipToContent'
+import FocusOnNavigate from '@/ui/layout/FocusOnNavigate'
 import Announcement from '@/ui/layout/Announcement'
 import Header from '@/ui/layout/header'
 import Footer from '@/ui/layout/footer'
@@ -68,6 +69,7 @@ export default async function RootLayout({
 					<CookieConsentProvider>
 					<ToastProvider>
 					<SkipToContent />
+					<FocusOnNavigate />
 					<Announcement />
 					<Header />
 					<main id="main-content" role="main" tabIndex={-1} className="flex-1">
