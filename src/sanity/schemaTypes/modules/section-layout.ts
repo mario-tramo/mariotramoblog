@@ -43,7 +43,6 @@ function columnModules() {
 		{ type: 'blog-list' },
 		{ type: 'card-list' },
 		{ type: 'richtext-module' },
-		{ type: 'newsletter-block' },
 		{ type: 'standings' },
 		{ type: 'accordion-list' },
 		{ type: 'callout' },

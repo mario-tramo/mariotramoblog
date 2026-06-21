@@ -46,7 +46,6 @@ import divider from './modules/divider'
 import hero from './modules/hero'
 import richtextModule from './modules/richtext-module'
 import searchModule from './modules/search-module'
-import newsletterBlock from './modules/newsletter-block'
 import layoutBlock from './modules/layout-block'
 import standings from './modules/standings'
 import postsFeed from './modules/posts-feed'
@@ -103,7 +102,6 @@ export const schemaTypes: SchemaTypeDefinition[] = [
 	richtextModule,
 	layoutBlock,
 	searchModule,
-	newsletterBlock,
 	standings,
 	postsFeed,
 	teamGrid,

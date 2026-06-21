@@ -14,3 +14,10 @@ export const BASE_URL = (dev
 ).replace(/\/+$/, '')
 
 export const BLOG_DIR = 'blog'
+
+export const CONTACT_NAME =
+	process.env.NEXT_PUBLIC_CONTACT_NAME || 'Trm Sport'
+export const CONTACT_ADDRESS =
+	process.env.NEXT_PUBLIC_CONTACT_ADDRESS || 'Via dello Sport, 1 — 00100 Roma (RM)'
+export const CONTACT_EMAIL =
+	process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'info@trmsport.it'

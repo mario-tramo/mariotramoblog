@@ -15,6 +15,7 @@ interface CookieConsentCtx {
 	consent: ConsentStatus
 	accept: () => void
 	reject: () => void
+	requestReconsideration: () => void
 }
 
 const STORAGE_KEY = 'cookie-consent'
@@ -24,6 +25,7 @@ const CookieConsentContext = createContext<CookieConsentCtx>({
 	consent: 'pending',
 	accept: () => {},
 	reject: () => {},
+	requestReconsideration: () => {},
 })
 
 export function CookieConsentProvider({ children }: { children: ReactNode }) {
@@ -58,9 +60,13 @@ export function CookieConsentProvider({ children }: { children: ReactNode }) {
 
 	const accept = useCallback(() => persist('accepted'), [persist])
 	const reject = useCallback(() => persist('rejected'), [persist])
+	const requestReconsideration = useCallback(() => {
+		localStorage.removeItem(STORAGE_KEY)
+		setConsent('pending')
+	}, [])
 
 	return (
-		<CookieConsentContext.Provider value={{ consent, accept, reject }}>
+		<CookieConsentContext.Provider value={{ consent, accept, reject, requestReconsideration }}>
 			{children}
 		</CookieConsentContext.Provider>
 	)

@@ -9,7 +9,6 @@ import Callout from './Callout'
 import CardList from './CardList'
 import Divider from './Divider'
 import Hero from './Hero'
-import NewsletterBlock from './NewsletterBlock'
 import RichtextModule from './RichtextModule'
 import LayoutBlock from './LayoutBlock'
 import PostsFeed from './PostsFeed'
@@ -38,7 +37,6 @@ const MODULE_MAP = {
 	divider: Divider,
 	hero: Hero,
 	'layout-block': LayoutBlock,
-	'newsletter-block': NewsletterBlock,
 	'richtext-module': RichtextModule,
 	'search-module': SearchModule,
 	standings: Standings,

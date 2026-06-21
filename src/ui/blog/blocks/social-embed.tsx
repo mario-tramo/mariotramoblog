@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { useCookieConsent } from "@/ui/features/CookieConsent";
 
 interface SocialEmbedProps {
   value: {
@@ -185,6 +186,23 @@ function FallbackLink({
   );
 }
 
+function ConsentGate({ children, platform }: { children: React.ReactNode; platform: string | null }) {
+  const { consent, accept } = useCookieConsent();
+
+  if (consent === "accepted") return <>{children}</>;
+
+  return (
+    <div className="my-6 rounded-xl border border-line bg-surface/50 p-8 text-center">
+      <p className="mb-3 text-sm text-muted">
+        Il contenuto {platform ? `${platformLabels[platform] || platform} ` : ""}è bloccato. Per visualizzarlo, accetta i cookie analitici.
+      </p>
+      <button onClick={accept} className="action text-sm">
+        Accetta cookie
+      </button>
+    </div>
+  );
+}
+
 export function SocialEmbed({ value }: SocialEmbedProps) {
   const platform = (value.platform as Platform) || detectPlatform(value.url);
   const size: EmbedSize = { width: value.width, height: value.height };
@@ -198,27 +216,29 @@ export function SocialEmbed({ value }: SocialEmbedProps) {
   };
 
   return (
-    <figure className="my-6">
-      {platform && embedMap[platform] ? (
-        embedMap[platform]
-      ) : (
-        <FallbackLink url={value.url} platform={platform} />
-      )}
-      {value.description && (
-        <p className="mt-3 text-sm text-muted-foreground text-center italic">
-          {value.description}
-        </p>
-      )}
-      {value.caption && (
-        <figcaption className="mt-2 text-sm text-muted-foreground text-center">
-          {platform && (
-            <span className="inline-block bg-muted text-muted-foreground text-xs px-2 py-0.5 rounded mr-2">
-              {platformLabels[platform] || platform}
-            </span>
-          )}
-          {value.caption}
-        </figcaption>
-      )}
-    </figure>
+    <ConsentGate platform={platform}>
+      <figure className="my-6">
+        {platform && embedMap[platform] ? (
+          embedMap[platform]
+        ) : (
+          <FallbackLink url={value.url} platform={platform} />
+        )}
+        {value.description && (
+          <p className="mt-3 text-sm text-muted-foreground text-center italic">
+            {value.description}
+          </p>
+        )}
+        {value.caption && (
+          <figcaption className="mt-2 text-sm text-muted-foreground text-center">
+            {platform && (
+              <span className="inline-block bg-muted text-muted-foreground text-xs px-2 py-0.5 rounded mr-2">
+                {platformLabels[platform] || platform}
+              </span>
+            )}
+            {value.caption}
+          </figcaption>
+        )}
+      </figure>
+    </ConsentGate>
   );
 }

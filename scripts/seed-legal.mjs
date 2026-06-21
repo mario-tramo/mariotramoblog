@@ -1,16 +1,26 @@
 #!/usr/bin/env node
-// Uso: SANITY_WRITE_TOKEN=sk... node scripts/seed-legal.mjs
-// Crea un token Editor su https://sanity.io/manage
+// Uso: node scripts/seed-legal.mjs
+// Il token viene letto da SANITY_API_WRITE_TOKEN in .env.local
 
 import { createClient } from '@sanity/client'
+import { config } from 'dotenv'
+import { resolve, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+config({ path: resolve(__dirname, '../.env.local') })
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'geqdctr3'
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
-const token = process.env.SANITY_WRITE_TOKEN
+const token = process.env.SANITY_API_WRITE_TOKEN
+
+const contactName = process.env.NEXT_PUBLIC_CONTACT_NAME || 'Trm Sport'
+const contactAddress = process.env.NEXT_PUBLIC_CONTACT_ADDRESS || '[indirizzo]'
+const contactEmail = process.env.NEXT_PUBLIC_CONTACT_EMAIL || '[email]'
 
 if (!token) {
-	console.error('❌  Imposta SANITY_WRITE_TOKEN prima di eseguire lo script')
-	console.error('   Crea un token Editor su https://sanity.io/manage')
+	console.error('❌  SANITY_API_WRITE_TOKEN non trovato in .env.local')
+	console.error('   Assicurati che .env.local contenga SANITY_API_WRITE_TOKEN')
 	process.exit(1)
 }
 
@@ -54,7 +64,7 @@ const docs = [
 		},
 		body: [
 			block('h2', 'Titolare del trattamento'),
-			block('normal', 'Trm Sport – [inserire indirizzo e contatto email]'),
+			block('normal', `${contactName} – ${contactAddress} – ${contactEmail}`),
 			block('h2', 'Dati raccolti'),
 			block(
 				'normal',
@@ -75,7 +85,7 @@ const docs = [
 			block('h2', "Diritti dell'interessato"),
 			block(
 				'normal',
-				"Hai diritto di accesso, rettifica, cancellazione, limitazione, portabilità e opposizione. Scrivici a [inserire email].",
+				`Hai diritto di accesso, rettifica, cancellazione, limitazione, portabilità e opposizione. Scrivici a ${contactEmail}.`,
 			),
 			block('h2', 'Reclami'),
 			block(

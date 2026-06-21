@@ -16,7 +16,6 @@ export default defineField({
 		{ type: 'blog-frontpage' },
 		{ type: 'blog-list' },
 		{ type: 'blog-post-content' },
-		{ type: 'newsletter-block' },
 		{ type: 'search-module' },
 		{ type: 'standings' },
 		{ type: 'breadcrumbs' },
@@ -55,7 +54,7 @@ export default defineField({
 				{
 					name: 'altro',
 					title: 'Altro',
-					of: ['newsletter-block', 'search-module', 'standings', 'team-grid', 'trust-bar'],
+					of: ['search-module', 'standings', 'team-grid', 'trust-bar'],
 				},
 			],
 		},

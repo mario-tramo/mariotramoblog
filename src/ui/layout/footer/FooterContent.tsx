@@ -2,6 +2,7 @@
 
 import CTA from '@/ui/primitives/CTA'
 import NewsletterSubscribe from '@/ui/features/newsletter'
+import { useCookieConsent } from '@/ui/features/CookieConsent'
 import { PortableText, stegaClean } from 'next-sanity'
 import type { PortableTextBlock } from '@portabletext/react'
 
@@ -16,6 +17,8 @@ export default function FooterContent({
 	footerLinks,
 	showNewsletter = true,
 }: FooterContentProps) {
+	const { requestReconsideration } = useCookieConsent()
+
 	return (
 		<footer>
 			{/* Footer links */}
@@ -60,6 +63,14 @@ export default function FooterContent({
 					>
 						<div className="pt-5 text-center text-[10px] uppercase tracking-widest text-muted/60">
 							<PortableText value={copyright} />
+						</div>
+						<div className="mt-2 text-center">
+							<button
+								onClick={requestReconsideration}
+								className="text-[10px] uppercase tracking-widest text-muted/40 transition hover:text-muted/60"
+							>
+								Preferenze cookie
+							</button>
 						</div>
 					</div>
 				</div>

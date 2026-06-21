@@ -1,4 +1,3 @@
-// import { GoogleTagManager } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import Root from '@/ui/layout/Root'
 import JsonLd from '@/ui/primitives/JsonLd'
@@ -61,7 +60,6 @@ export default async function RootLayout({
 
 	return (
 		<Root>
-			{/* <GoogleTagManager gtmId="" /> */}
 			<link rel="preconnect" href="https://cdn.sanity.io" />
 			<link rel="dns-prefetch" href="https://cdn.sanity.io" />
 			<body className="flex min-h-svh flex-col bg-canvas text-ink antialiased">
