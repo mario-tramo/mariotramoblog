@@ -188,13 +188,8 @@ function FallbackLink({
 
 function ConsentGate({ children, platform }: { children: React.ReactNode; platform: string | null }) {
 	const { consent, accept } = useCookieConsent();
-	const renderKey = useRef(0);
 
-	useEffect(() => {
-		if (consent === 'accepted') renderKey.current += 1;
-	}, [consent]);
-
-	if (consent === "accepted") return <div key={renderKey.current}>{children}</div>;
+	if (consent === "accepted") return <>{children}</>;
 
 	return (
 		<div className="my-6 rounded-xl border border-line bg-surface/50 p-8 text-center">
@@ -211,13 +206,14 @@ function ConsentGate({ children, platform }: { children: React.ReactNode; platfo
 export function SocialEmbed({ value }: SocialEmbedProps) {
   const platform = (value.platform as Platform) || detectPlatform(value.url);
   const size: EmbedSize = { width: value.width, height: value.height };
+  const { consent } = useCookieConsent();
 
   const embedMap: Record<string, React.ReactNode> = {
-    tiktok: <TikTokEmbed url={value.url} size={size} />,
-    instagram: <InstagramEmbed url={value.url} size={size} />,
-    twitter: <TwitterEmbed url={value.url} size={size} />,
-    facebook: <FacebookEmbed url={value.url} size={size} />,
-    threads: <ThreadsEmbed url={value.url} size={size} />,
+    tiktok: <TikTokEmbed key={`tw-${consent}`} url={value.url} size={size} />,
+    instagram: <InstagramEmbed key={`ig-${consent}`} url={value.url} size={size} />,
+    twitter: <TwitterEmbed key={`x-${consent}`} url={value.url} size={size} />,
+    facebook: <FacebookEmbed key={`fb-${consent}`} url={value.url} size={size} />,
+    threads: <ThreadsEmbed key={`th-${consent}`} url={value.url} size={size} />,
   };
 
   return (
