@@ -24,6 +24,8 @@ export default function WithScript({
 			const sanitized = DOMPurify.sanitize(code, {
 				ADD_TAGS: ['script'],
 				ADD_ATTR: ['src', 'async', 'defer', 'type'],
+				ALLOWED_URI_REGEXP: /^https?:\/\//i,
+				ALLOW_DATA_ATTR: false,
 				FORCE_BODY: true,
 			})
 			const parsed = document

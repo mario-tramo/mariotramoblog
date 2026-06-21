@@ -54,7 +54,6 @@ export async function fetchSanity<T = unknown>({
 export const { sanityFetch, SanityLive } = defineLive({
 	client,
 	serverToken: token,
-	browserToken: token,
 })
 
 export async function fetchSanityLive<T = unknown>(

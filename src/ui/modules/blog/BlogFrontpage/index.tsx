@@ -8,7 +8,6 @@ import { stegaClean } from 'next-sanity'
 import sortFeaturedPosts from './sortFeaturedPosts'
 import FilterList from '../BlogList/FilterList'
 import PaginatedPosts from './PaginatedPosts'
-import NewsletterSubscribe from '@/ui/features/newsletter'
 import PostListWidget from '../PostListWidget'
 import FeaturedPostCard from '../FeaturedPostCard'
 import Hero from '@/ui/modules/Hero'
@@ -143,7 +142,6 @@ export default async function BlogFrontpage({
 						viewAllHref="/"
 						viewAllLabel="Vedi tutte le notizie"
 					/>
-					<NewsletterSubscribe variant="compact" />
 				</aside>
 
 				{/* CENTER CONTENT */}

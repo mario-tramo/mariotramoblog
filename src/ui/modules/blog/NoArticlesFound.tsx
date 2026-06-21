@@ -3,7 +3,6 @@ import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
 import PostPreview from './PostPreview'
-import NewsletterSubscribe from '@/ui/features/newsletter'
 
 export default async function NoArticlesFound() {
 	const [categories, latestPosts] = await Promise.all([
@@ -319,10 +318,6 @@ export default async function NoArticlesFound() {
 				</section>
 			)}
 
-			{/* ── Newsletter ── */}
-			<div className="mx-auto max-w-[1100px] px-6 pt-4">
-				<NewsletterSubscribe variant="inline" />
-			</div>
 		</div>
 	)
 }
