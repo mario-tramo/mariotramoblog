@@ -118,7 +118,9 @@ export default function Hero({
 			;(e.currentTarget as HTMLDivElement).releasePointerCapture(
 				e.pointerId,
 			)
-		} catch {}
+		} catch (err) {
+			console.error('[Hero] releasePointerCapture failed:', err)
+		}
 		setPaused(false)
 		if (Math.abs(dx) > 50) (dx < 0 ? next : prev)()
 	}, [next, prev])

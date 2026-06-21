@@ -1,17 +1,60 @@
 'use client'
 
 import Link from 'next/link'
+import { useEffect, useRef } from 'react'
 import { useCookieConsent } from './CookieConsent'
 
 export default function CookieBanner() {
 	const { consent, accept, reject } = useCookieConsent()
+	const bannerRef = useRef<HTMLDivElement>(null)
+
+	useEffect(() => {
+		if (consent !== 'pending') return
+
+		const banner = bannerRef.current
+		if (!banner) return
+
+		const focusableEls = banner.querySelectorAll<HTMLElement>(
+			'a[href], button:not([disabled])',
+		)
+		const firstFocusable = focusableEls[0]
+		const lastFocusable = focusableEls[focusableEls.length - 1]
+
+		firstFocusable?.focus()
+
+		function onKeyDown(e: KeyboardEvent) {
+			if (e.key === 'Escape') {
+				reject()
+				return
+			}
+
+			if (e.key !== 'Tab') return
+
+			if (e.shiftKey) {
+				if (document.activeElement === firstFocusable) {
+					e.preventDefault()
+					lastFocusable?.focus()
+				}
+			} else {
+				if (document.activeElement === lastFocusable) {
+					e.preventDefault()
+					firstFocusable?.focus()
+				}
+			}
+		}
+
+		document.addEventListener('keydown', onKeyDown)
+		return () => document.removeEventListener('keydown', onKeyDown)
+	}, [consent, reject])
 
 	if (consent !== 'pending') return null
 
 	return (
 		<div
+			ref={bannerRef}
 			role="dialog"
 			aria-label="Consenso cookie"
+			aria-modal="true"
 			className="fixed bottom-0 left-0 right-0 z-50 bg-surface-light p-4 shadow-2xl shadow-black/40"
 		>
 			<div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between gap-4">

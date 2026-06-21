@@ -1,14 +1,12 @@
 import type { Language } from '@sanity/document-internationalization'
 
 export const supportedLanguages = [
-	// { id: 'en', title: 'English' },
-	// { id: 'fr', title: 'Français' },
-	// { id: 'ja', title: '日本語' },
+	{ id: 'it', title: 'Italiano' },
 ] as const as Language[]
 
 export const languages = supportedLanguages.map((lang) => lang?.id)
 
-export const DEFAULT_LANG = languages[0] ?? 'en'
+export const DEFAULT_LANG = 'it'
 
 export type Lang = (typeof languages)[number]
 

@@ -18,31 +18,37 @@ export async function fetchSanity<T = unknown>({
 }) {
 	const preview = dev || (await draftMode()).isEnabled
 
-	return client.fetch<T>(
-		query,
-		params,
-		preview
-			? {
-					stega: true,
-					perspective: 'drafts',
-					useCdn: false,
-					token,
-					next: {
-						revalidate: 0,
-						...next,
-						tags: ['sanity', ...(next?.tags ?? [])],
+	try {
+		return await client.fetch<T>(
+			query,
+			params,
+			preview
+				? {
+						stega: true,
+						perspective: 'drafts',
+						useCdn: false,
+						token,
+						next: {
+							revalidate: 0,
+							...next,
+							tags: ['sanity', ...(next?.tags ?? [])],
+						},
+					}
+				: {
+						perspective: 'published',
+						useCdn: true,
+						next: {
+							revalidate: 3600,
+							...next,
+							tags: ['sanity', ...(next?.tags ?? [])],
+						},
 					},
-				}
-			: {
-					perspective: 'published',
-					useCdn: true,
-					next: {
-						revalidate: 3600, // every hour
-						...next,
-						tags: ['sanity', ...(next?.tags ?? [])],
-					},
-				},
-	)
+		)
+	} catch (err) {
+		const previewLabel = preview ? ' (preview)' : ''
+		console.error(`[fetchSanity${previewLabel}] query failed:`, err)
+		throw err
+	}
 }
 
 export const { sanityFetch, SanityLive } = defineLive({
@@ -56,11 +62,17 @@ export async function fetchSanityLive<T = unknown>(
 ) {
 	const preview = dev || (await draftMode()).isEnabled
 
-	const { data } = await sanityFetch({
-		...args,
-		perspective: preview ? 'drafts' : 'published',
-		tags: ['sanity', ...(args.tags ?? [])],
-	})
+	try {
+		const { data } = await sanityFetch({
+			...args,
+			perspective: preview ? 'drafts' : 'published',
+			tags: ['sanity', ...(args.tags ?? [])],
+		})
 
-	return data as T
+		return data as T
+	} catch (err) {
+		const previewLabel = preview ? ' (preview)' : ''
+		console.error(`[fetchSanityLive${previewLabel}] query failed:`, err)
+		throw err
+	}
 }

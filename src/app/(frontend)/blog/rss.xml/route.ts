@@ -4,7 +4,7 @@ import resolveUrl from '@/lib/resolveUrl'
 import { Feed } from 'feed'
 import { escapeHTML, toHTML } from '@portabletext/to-html'
 import { urlFor } from '@/sanity/lib/image'
-import { DEFAULT_LANG } from '@/lib/i18n'
+// use 'it' hardcoded below
 
 export async function GET() {
 	const { blog, posts, copyright } = await fetchSanityLive<{
@@ -51,7 +51,7 @@ export async function GET() {
 		id: url,
 		copyright,
 		favicon: process.env.NEXT_PUBLIC_BASE_URL + '/favicon.ico',
-		language: DEFAULT_LANG,
+		language: 'it',
 		generator: 'https://sanitypress.dev',
 	})
 

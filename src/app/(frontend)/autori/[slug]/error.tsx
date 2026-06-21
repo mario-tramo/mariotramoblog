@@ -1,7 +1,7 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect } from 'react'
+import Link from 'next/link'
 
 export default function Error({
 	error,
@@ -11,16 +11,17 @@ export default function Error({
 	reset: () => void
 }) {
 	useEffect(() => {
-		console.error('[ErrorBoundary]', error)
+		console.error('[AutoriPage Error]', error)
 	}, [error])
 
 	return (
 		<section className="flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center px-4 text-center">
-			<h1 className="mb-4 text-3xl font-bold sm:text-4xl">
-				<span className="text-accent">Errore</span> imprevisto
-			</h1>
+			<h1 className="sr-only">Errore</h1>
+			<h2 className="mb-4 text-3xl font-bold sm:text-4xl">
+				<span className="text-accent">Errore</span> durante il caricamento
+			</h2>
 			<p className="mb-8 max-w-md text-lg text-muted">
-				Qualcosa è andato storto. Riprova o torna alla home.
+				Impossibile caricare la pagina dell'autore. Riprova o torna alla home.
 			</p>
 			<div className="flex gap-4">
 				<button

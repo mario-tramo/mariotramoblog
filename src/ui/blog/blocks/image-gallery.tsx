@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useCallback } from "react";
+import Image from "next/image";
 
 interface GalleryImage {
   asset?: { _ref: string };
@@ -66,7 +67,7 @@ export function ImageGallery({ value }: ImageGalleryProps) {
           {value.images.map((img, i) => (
             <div key={i} className="relative rounded-xl overflow-hidden bg-muted aspect-video">
               {img.imageUrl ? (
-                <img src={img.imageUrl} alt={img.caption || `Immagine ${i + 1}`} className="w-full h-full object-cover" />
+                <Image src={img.imageUrl} alt={img.caption || `Immagine ${i + 1}`} fill className="object-cover" sizes="(max-width: 768px) 50vw, 33vw" />
               ) : img.asset?._ref ? (
                 <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
                   [Immagine {i + 1}]
@@ -102,7 +103,11 @@ export function ImageGallery({ value }: ImageGalleryProps) {
         onPointerCancel={isMultiple ? onPointerUp : undefined}
       >
         {current.imageUrl ? (
-          <img src={current.imageUrl} alt={current.caption || `Immagine ${activeIndex + 1}`} className="w-full h-full object-cover" />
+          <Image src={current.imageUrl} alt={current.caption || `Immagine ${activeIndex + 1}`} fill className="object-cover" sizes="100vw" priority={activeIndex === 0} />
+        ) : current.asset?._ref ? (
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+            [Immagine {activeIndex + 1} di {value.images.length}]
+          </div>
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground">
             [Immagine {activeIndex + 1} di {value.images.length}]

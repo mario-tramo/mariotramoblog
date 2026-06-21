@@ -1,6 +1,7 @@
 // import { GoogleTagManager } from '@next/third-parties/google'
 import type { Metadata } from 'next'
 import Root from '@/ui/layout/Root'
+import JsonLd from '@/ui/primitives/JsonLd'
 import { getSite } from '@/sanity/lib/queries'
 import { websiteJsonLd } from '@/lib/jsonLd'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
@@ -17,6 +18,10 @@ import VisualEditingControls from '@/ui/dev/VisualEditingControls'
 import DevColorSwitcher from '@/ui/dev/DevColorSwitcher'
 import { BASE_URL } from '@/lib/env'
 import '@/styles/app.css'
+
+export const viewport = {
+	themeColor: '#07111F',
+}
 
 export const metadata: Metadata = {
 	metadataBase: new URL(BASE_URL),
@@ -60,12 +65,7 @@ export default async function RootLayout({
 			<link rel="preconnect" href="https://cdn.sanity.io" />
 			<link rel="dns-prefetch" href="https://cdn.sanity.io" />
 			<body className="flex min-h-svh flex-col bg-canvas text-ink antialiased">
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{
-						__html: JSON.stringify(websiteJsonLd(title)),
-					}}
-				/>
+				<JsonLd data={websiteJsonLd(title)} />
 				<NuqsAdapter>
 					<CookieConsentProvider>
 					<ToastProvider>

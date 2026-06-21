@@ -1,6 +1,6 @@
 import { Img } from '@/ui/primitives/Img'
 import { stegaClean } from 'next-sanity'
-import { cn } from '@/lib/utils'
+import { cn, getBlockText } from '@/lib/utils'
 
 export default function Image({
 	value,
@@ -22,6 +22,7 @@ export default function Image({
 				className="bg-accent/3 mx-auto max-h-svh w-auto text-[0px]"
 				image={value}
 				width={1500}
+				alt={value.caption || value.alt || ''}
 			/>
 
 			{value.caption && (

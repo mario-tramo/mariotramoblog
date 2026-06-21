@@ -42,37 +42,43 @@ export default function PostContent({
 				aria-label="Navigazione breadcrumb"
 				className="mx-auto max-w-screen-2xl px-4 pt-4 sm:px-6"
 			>
-				<ol className="flex flex-wrap items-center gap-1 text-xs text-muted">
-					<li>
-						<Link href="/" className="transition hover:text-ink">
-							Home page
+				<ol className="flex flex-wrap items-center gap-1 text-xs text-muted" itemScope itemType="https://schema.org/BreadcrumbList">
+					<li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
+						<Link href="/" itemProp="item" itemScope itemType="https://schema.org/WebPage" className="transition hover:text-ink">
+							<span itemProp="name">Home page</span>
 						</Link>
+						<meta itemProp="position" content="1" />
 					</li>
 					<li aria-hidden="true">&gt;</li>
-					<li>
+					<li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
 						<Link
 							href="/"
+							itemProp="item" itemScope itemType="https://schema.org/WebPage"
 							className="transition hover:text-ink"
 						>
-							Notizie
+							<span itemProp="name">Notizie</span>
 						</Link>
+						<meta itemProp="position" content="2" />
 					</li>
 					{post.categories?.[0] && (
 						<>
 							<li aria-hidden="true">&gt;</li>
-							<li>
+							<li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
 								<Link
 									href={`/${post.categories[0].slug.current}`}
+									itemProp="item" itemScope itemType="https://schema.org/WebPage"
 									className="transition hover:text-ink"
 								>
-									{post.categories[0].title}
+									<span itemProp="name">{post.categories[0].title}</span>
 								</Link>
+								<meta itemProp="position" content="3" />
 							</li>
 						</>
 					)}
 					<li aria-hidden="true">&gt;</li>
-					<li className="truncate text-brand">
-						{post.title}
+					<li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem" className="truncate text-brand">
+						<span itemProp="name">{post.title}</span>
+						<meta itemProp="position" content={String(post.categories?.[0] ? 4 : 3)} />
 					</li>
 				</ol>
 			</nav>

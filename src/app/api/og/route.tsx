@@ -21,7 +21,10 @@ export async function GET(request: NextRequest) {
 	const title = (searchParams.get('title')?.replace(regex, '') || site.title).trim()
 	const category = searchParams.get('category')?.trim()
 	const date = searchParams.get('date')
-	const imageUrl = searchParams.get('image')
+	const rawImageUrl = searchParams.get('image')
+	const imageUrl = rawImageUrl && rawImageUrl.startsWith('https://cdn.sanity.io/')
+		? rawImageUrl
+		: null
 	const description = truncate(searchParams.get('description')?.trim(), 150)
 
 	// Scale the title down as it gets longer so it always fits the card.

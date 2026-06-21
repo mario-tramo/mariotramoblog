@@ -34,12 +34,12 @@ export default function PostPreview({
 				<figure className="relative aspect-[16/9] overflow-hidden">
 					<Img
 						className="size-full object-cover transition-transform duration-600 group-hover:scale-105"
-						image={post?.metadata.image}
-						width={800}
-						alt={post?.title}
-					/>
+					image={post?.metadata?.image}
+					width={800}
+					alt={post?.metadata?.image?.alt || post?.title || ''}
+				/>
 
-					{/* Cinematic gradient overlay */}
+				{/* Cinematic gradient overlay */}
 					<div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 via-40% to-transparent" />
 
 					{/* Content overlaid on image */}
@@ -63,9 +63,9 @@ export default function PostPreview({
 							</Link>
 						</h3>
 
-						{post?.metadata.description && (
+						{post?.metadata?.description && (
 							<p className="line-clamp-1 text-sm text-white/60">
-								{post.metadata.description}
+								{post?.metadata?.description}
 							</p>
 						)}
 					</div>
@@ -81,9 +81,9 @@ export default function PostPreview({
 			<figure className="relative aspect-[16/9] overflow-hidden bg-ink/3">
 				<Img
 					className="size-full object-cover transition-transform duration-600 group-hover:scale-105"
-					image={post?.metadata.image}
+					image={post?.metadata?.image}
 					width={700}
-					alt={post?.title}
+					alt={post?.metadata?.image?.alt || post?.title || ''}
 				/>
 
 				{post?.featured && (
@@ -103,7 +103,7 @@ export default function PostPreview({
 					</p>
 				)}
 
-				<h3 className={cn('text-sm font-semibold leading-snug', skeleton && 'skeleton-2')}>
+				<h3 className={cn('font-heading text-xl uppercase leading-tight tracking-tight', skeleton && 'skeleton-2')}>
 					<Link
 						className="group-hover:underline"
 						href={resolveUrl(post, { base: false })}
@@ -114,7 +114,7 @@ export default function PostPreview({
 				</h3>
 
 				<p className="line-clamp-2 text-[13px] leading-relaxed text-muted empty:hidden">
-					{post?.metadata.description}
+					{post?.metadata?.description}
 				</p>
 
 				<div className="mt-auto flex items-center justify-between border-t border-line-soft pt-3 text-[11px] text-muted">

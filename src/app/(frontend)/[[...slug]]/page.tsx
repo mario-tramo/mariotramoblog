@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import JsonLd from '@/ui/primitives/JsonLd'
 import Modules from '@/ui/modules'
 import ViewTracker from '@/ui/ViewTracker'
 import processMetadata from '@/lib/processMetadata'
@@ -42,41 +43,21 @@ export default async function Page({ params, searchParams }: Props) {
 
 		return (
 			<>
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{
-						__html: JSON.stringify(
-							webPageJsonLd({
-								title: page.metadata.title,
-								description: page.metadata.description,
-								url: resolveUrl(page),
-								dateModified: page._updatedAt,
-							}),
-						),
-					}}
+				<JsonLd
+					data={webPageJsonLd({
+						title: page.metadata.title,
+						description: page.metadata.description,
+						url: resolveUrl(page),
+						dateModified: page._updatedAt,
+					})}
 				/>
 				{faqItems.length > 0 && (
-					<script
-						type="application/ld+json"
-						dangerouslySetInnerHTML={{
-							__html: JSON.stringify(faqPageJsonLd(faqItems)),
-						}}
-					/>
+					<JsonLd data={faqPageJsonLd(faqItems)} />
 				)}
 				{(isHomepage || isAboutPage) && (
 					<>
-						<script
-							type="application/ld+json"
-							dangerouslySetInnerHTML={{
-								__html: JSON.stringify(organizationJsonLd(socialLinks)),
-							}}
-						/>
-						<script
-							type="application/ld+json"
-							dangerouslySetInnerHTML={{
-								__html: JSON.stringify(newsMediaOrganizationJsonLd(socialLinks)),
-							}}
-						/>
+						<JsonLd data={organizationJsonLd(socialLinks)} />
+						<JsonLd data={newsMediaOrganizationJsonLd(socialLinks)} />
 					</>
 				)}
 				<Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
@@ -102,38 +83,23 @@ export default async function Page({ params, searchParams }: Props) {
 		return (
 			<>
 				{faqItems.length > 0 && (
-					<script
-						type="application/ld+json"
-						dangerouslySetInnerHTML={{
-							__html: JSON.stringify(faqPageJsonLd(faqItems)),
-						}}
-					/>
+					<JsonLd data={faqPageJsonLd(faqItems)} />
 				)}
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{
-						__html: JSON.stringify(
-							collectionPageJsonLd(
-								category.metadata.title,
-								category.metadata.description,
-								`${BASE_URL}/${category.metadata.slug.current}`,
-							),
-						),
-					}}
+				<JsonLd
+					data={collectionPageJsonLd(
+						category.metadata.title,
+						category.metadata.description,
+						`${BASE_URL}/${category.metadata.slug.current}`,
+					)}
 				/>
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{
-						__html: JSON.stringify(
-							breadcrumbJsonLd([
-								{ name: 'Home', url: BASE_URL },
-								{
-									name: category.title,
-									url: `${BASE_URL}/${category.metadata.slug.current}`,
-								},
-							]),
-						),
-					}}
+				<JsonLd
+					data={breadcrumbJsonLd([
+						{ name: 'Home', url: BASE_URL },
+						{
+							name: category.title,
+							url: `${BASE_URL}/${category.metadata.slug.current}`,
+						},
+					])}
 				/>
 				<Modules
 					modules={modules}
@@ -151,48 +117,29 @@ export default async function Page({ params, searchParams }: Props) {
 		const faqItems = collectFaqItems(post.modules)
 		return (
 			<>
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{
-						__html: JSON.stringify(newsArticleJsonLd(post)),
-					}}
-				/>
+				<JsonLd data={newsArticleJsonLd(post)} />
 				{faqItems.length > 0 && (
-					<script
-						type="application/ld+json"
-						dangerouslySetInnerHTML={{
-							__html: JSON.stringify(faqPageJsonLd(faqItems)),
-						}}
-					/>
+					<JsonLd data={faqPageJsonLd(faqItems)} />
 				)}
-				<script
-					type="application/ld+json"
-					dangerouslySetInnerHTML={{
-						__html: JSON.stringify(
-							breadcrumbJsonLd([
-								{ name: 'Home', url: BASE_URL },
-								...(catSlug
-									? [
-										{
-											name: post.categories[0].title,
-											url: `${BASE_URL}/${catSlug}`,
-										},
-									]
-									: []),
+				<JsonLd
+					data={breadcrumbJsonLd([
+						{ name: 'Home', url: BASE_URL },
+						...(catSlug
+							? [
 								{
-									name: post.title,
-									url: resolveUrl(post),
+									name: post.categories[0].title,
+									url: `${BASE_URL}/${catSlug}`,
 								},
-							]),
-						),
-					}}
+							]
+							: []),
+						{
+							name: post.title,
+							url: resolveUrl(post),
+						},
+					])}
 				/>
 				{post.authors?.map((author) => (
-					<script
-						key={author._id}
-						type="application/ld+json"
-						dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd(author)) }}
-					/>
+					<JsonLd key={author._id} data={personJsonLd(author)} />
 				))}
 				<ViewTracker slug={post.metadata.slug.current} />
 				<Modules modules={post.modules} post={post} />

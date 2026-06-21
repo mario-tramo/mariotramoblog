@@ -18,8 +18,8 @@ export async function POST(request: NextRequest) {
 
 	try {
 		body = await request.json()
-	} catch {
-		// Sanity webhooks may be configured without a JSON body.
+	} catch (err) {
+		console.warn('[revalidate] no JSON body (expected for Sanity webhooks):', err)
 	}
 
 	console.log('[revalidate] received', JSON.stringify(body))

@@ -70,7 +70,7 @@ export default async function ArticleCarousel({
 				_id,
 				'title': coalesce(title, metadata.title),
 				'description': metadata.description,
-				'slug': '/' + coalesce(categories[0]->slug.current, '') + '/' + metadata.slug.current,
+				'slug': '/' + coalesce(categories[0]->slug.current, '') + '/' + coalesce(metadata.slug.current, ''),
 				publishDate,
 				'imageUrl': metadata.image.asset->url,
 				'lqip': metadata.image.asset->metadata.lqip,
@@ -88,7 +88,7 @@ export default async function ArticleCarousel({
 	if (!posts?.length) return null
 
 	return (
-		<section className="section !py-4 md:!py-8 overflow-hidden">
+		<section className="section !pt-2 !pb-4 md:!pt-2 md:!pb-8 overflow-hidden">
 			<Carousel posts={posts} />
 		</section>
 	)

@@ -1,5 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+	title: '404 — Pagina non trovata | Trm Sport',
+	description: 'La pagina che stai cercando non esiste o è stata spostata.',
+	robots: { index: false, follow: false },
+}
 
 export default function NotFound() {
 	return (
@@ -19,9 +26,9 @@ export default function NotFound() {
 			{/* Content */}
 			<div className="relative z-10 mx-auto w-full max-w-[1400px] px-5 sm:px-6 lg:flex lg:justify-end">
 				<div className="flex flex-col items-center text-center lg:w-1/2 lg:items-start lg:text-left">
-					<h2 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl mb-4">
+					<h1 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl mb-4">
 						<span className="text-accent">Oops!</span> Pagina non trovata.
-					</h2>
+					</h1>
 					<p className="mb-8 max-w-md text-lg text-white/70 sm:text-xl">
 						Sembra che tu sia finito in fuorigioco.
 						<br />

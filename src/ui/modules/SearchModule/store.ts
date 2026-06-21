@@ -43,6 +43,8 @@ const SCOPE_MAP = {
 	`,
 } as const
 
+let searchCounter = 0
+
 export async function handleSearch({
 	query,
 	scope,
@@ -58,7 +60,12 @@ export async function handleSearch({
 	setLoading: (loading: boolean) => void
 	setResults: (results: SearchResults) => void
 }) {
-	if (!query) setResults([])
+	if (!query) {
+		setResults([])
+		return
+	}
+
+	const id = ++searchCounter
 
 	setQuery(query)
 	setLoading(true)
@@ -91,6 +98,8 @@ export async function handleSearch({
 		} as Record<string, string>,
 	})
 
-	setLoading(false)
-	setResults(results)
+	if (id === searchCounter) {
+		setLoading(false)
+		setResults(results)
+	}
 }

@@ -109,7 +109,9 @@ export default function CompactCarousel({
 			dragDx.current = 0
 			try {
 				;(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
-			} catch {}
+			} catch (err) {
+				console.error('[CompactCarousel] releasePointerCapture failed:', err)
+			}
 			setPaused(false)
 			if (Math.abs(dx) > 50) (dx < 0 ? next : prev)()
 		},

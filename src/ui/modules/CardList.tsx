@@ -3,7 +3,7 @@ import Pretitle from '@/ui/primitives/Pretitle'
 import { PortableText, stegaClean } from 'next-sanity'
 import CTAList from '@/ui/primitives/CTAList'
 import { Img } from '@/ui/primitives/Img'
-import { cn } from '@/lib/utils'
+import { cn, getBlockText } from '@/lib/utils'
 import ScrollCarousel from '@/ui/primitives/ScrollCarousel'
 import type { PortableTextBlock } from '@portabletext/react'
 
@@ -81,6 +81,7 @@ export default function CardList({
 										className="aspect-video w-full object-cover"
 										image={card.image}
 										width={600}
+										alt={getBlockText(card.content as any)}
 									/>
 								</figure>
 							)}

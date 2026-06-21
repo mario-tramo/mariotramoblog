@@ -12,6 +12,11 @@ const subscribers =
 
 if (!globalThis.newsletterSubscribers) {
 	globalThis.newsletterSubscribers = subscribers
+	if (process.env.NODE_ENV !== 'production') {
+		console.warn(
+			'[newsletter-store] Using in-memory store. Data is lost on server restart. Add a database for production.',
+		)
+	}
 }
 
 export function addSubscriber(email: string) {
