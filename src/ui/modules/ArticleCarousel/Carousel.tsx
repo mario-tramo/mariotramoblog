@@ -72,7 +72,7 @@ function Slide({ post, active, eager }: { post: Post; active: boolean; eager: bo
 
 			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/90 via-black/70 via-60% to-transparent sm:h-[60%] lg:h-[70%]" />
 
-			<div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-5 sm:gap-3 sm:p-8 lg:gap-4 lg:p-12">
+			<div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 p-5 text-center sm:items-start sm:text-left sm:gap-3 sm:p-8 lg:gap-4 lg:p-12">
 				{post.categories?.[0] && (
 					<span className="w-fit rounded bg-brand px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-brand-foreground sm:px-3 sm:py-1.5 sm:text-sm lg:text-base">
 						{post.categories[0].title}
@@ -146,23 +146,23 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 	const step = px.card + px.gap
 
 	const next = useCallback(() => {
-		setBufferIndex((prev) => prev + 1)
-	}, [])
+		setBufferIndex((prev) => Math.min(prev + 1, count + 1))
+	}, [count])
 
 	const prev = useCallback(() => {
-		setBufferIndex((prev) => prev - 1)
+		setBufferIndex((prev) => Math.max(prev - 1, 0))
 	}, [])
 
 	const onTransitionEnd = useCallback((e: React.TransitionEvent<HTMLDivElement>) => {
 		if (e.target !== e.currentTarget || e.propertyName !== 'transform') return
 		if (!isCarousel) return
-		if (bufferIndex === 0) {
+		if (bufferIndex <= 0) {
 			setSnapping(true)
 			requestAnimationFrame(() => {
 				setBufferIndex(count)
 				requestAnimationFrame(() => setSnapping(false))
 			})
-		} else if (bufferIndex === count + 1) {
+		} else if (bufferIndex >= count + 1) {
 			setSnapping(true)
 			requestAnimationFrame(() => {
 				setBufferIndex(1)

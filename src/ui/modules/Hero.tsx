@@ -181,7 +181,7 @@ export default function Hero({
 			)}
 
 			{/* Content — cinematic editorial layout */}
-			<div className="pointer-events-none relative z-[2] flex h-full flex-col justify-end p-5 sm:p-8 md:p-12">
+			<div className="pointer-events-none relative z-[2] flex h-full flex-col items-center justify-end text-center sm:items-start sm:text-left p-5 sm:p-8 md:p-12">
 				<div className="max-w-3xl space-y-3 md:space-y-4">
 					{/* Category label */}
 					{s.cta?.link?.label && (

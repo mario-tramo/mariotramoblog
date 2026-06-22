@@ -23,14 +23,15 @@ export default async function Footer() {
 				<StayInTheGame
 					blurb={blurb}
 					socialLinks={socialLinks}
-					logoUrl={logoUrl}
-					siteTitle={title}
 				/>
 			)}
 			<FooterContent
 				copyright={copyright}
 				footerLinks={footerLinks}
 				showNewsletter={false}
+				logoUrl={logoUrl}
+				siteTitle={title}
+				socialLinks={socialLinks}
 			/>
 			{isHomepage && <HomepageSeoFooter />}
 		</>

@@ -43,7 +43,7 @@ export default function PostPreview({
 					<div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 via-40% to-transparent" />
 
 					{/* Content overlaid on image */}
-					<div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-5 sm:p-6">
+					<div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 text-center sm:items-start sm:text-left p-5 sm:p-6">
 						{post?.categories?.[0] && (
 							<span
 								className="w-fit rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white"

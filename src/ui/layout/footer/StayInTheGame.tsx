@@ -1,5 +1,3 @@
-import Link from 'next/link'
-import Image from 'next/image'
 import CTA from '@/ui/primitives/CTA'
 import { PortableText } from 'next-sanity'
 import {
@@ -16,8 +14,6 @@ import type { PortableTextBlock } from '@portabletext/react'
 interface StayInTheGameProps {
 	blurb?: PortableTextBlock[]
 	socialLinks?: Sanity.Link[]
-	logoUrl?: string
-	siteTitle?: string
 }
 
 // Single source of truth for supported social platforms.
@@ -41,8 +37,6 @@ function SocialIcon({ url, ...props }: { url?: string } & React.ComponentProps<'
 export default function StayInTheGame({
 	blurb,
 	socialLinks,
-	logoUrl,
-	siteTitle,
 }: StayInTheGameProps) {
 	return (
 		<section
@@ -69,23 +63,6 @@ export default function StayInTheGame({
 			/>
 
 			<div className="relative mx-auto flex max-w-screen-2xl flex-col items-center text-center">
-				{/* Logo */}
-				<Link href="/" className="mb-8">
-					{logoUrl ? (
-						<Image
-							src={logoUrl}
-							alt={siteTitle || 'Logo'}
-							width={400}
-							height={100}
-							className="h-10 w-auto sm:h-14"
-						/>
-					) : (
-						<span className="text-xl font-black uppercase italic tracking-tighter text-ink">
-							TRM<span className="text-brand">Sport</span>
-						</span>
-					)}
-				</Link>
-
 				{/* Heading */}
 				<h2 className="mb-6 text-4xl font-black uppercase leading-[0.9] tracking-wide text-ink sm:text-5xl md:text-6xl">
 					Stay in the{' '}

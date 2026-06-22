@@ -43,7 +43,7 @@ function Slide({
 
 			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
 
-			<div className="absolute inset-x-0 bottom-0 flex flex-col gap-1.5 p-4 sm:gap-2 sm:p-5">
+			<div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-1.5 text-center sm:items-start sm:text-left p-4 sm:gap-2 sm:p-5">
 				{post.categories?.[0] && (
 					<span
 						className="w-fit rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"

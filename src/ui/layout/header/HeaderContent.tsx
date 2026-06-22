@@ -237,7 +237,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 					<div className="flex items-center gap-1 sm:gap-2">
 						<button
 							onClick={() => setSearchOpen(true)}
-							className="flex items-center gap-2 rounded-full border border-line-soft px-3 py-1.5 text-sm text-ink/80 transition hover:border-ink/20 hover:bg-surface sm:px-4"
+							className="flex items-center gap-2 rounded-full border border-line-soft px-4 py-2 text-sm text-ink/80 transition hover:border-ink/20 hover:bg-surface sm:px-5"
 							aria-label="Cerca notizie"
 						>
 							<Search size={16} />
