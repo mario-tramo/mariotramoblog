@@ -33,7 +33,7 @@ export default async function RelatedPosts({
 				&& (
 					count(categories[@._ref in $categoryIds]) > 0
 					|| count(tags[@._ref in $tagIds]) > 0
-					${authorId ? '|| author._ref == $authorId' : ''}
+					${authorId ? '|| $authorId in authors[]._ref' : ''}
 				)
 			]|order(
 				count(tags[@._ref in $tagIds]) desc,

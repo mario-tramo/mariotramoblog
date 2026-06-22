@@ -306,11 +306,11 @@ async function getPost(params: Params) {
 				'title': coalesce(title, metadata.title),
 				'slug': metadata.slug.current
 			},
-			'authors': select(defined(author) => [author->{
+			'authors': authors[]->{
 				...,
 				slug,
-				'articleCount': count(*[_type == 'blog.post' && author._ref == ^._id])
-			}], null),
+				'articleCount': count(*[_type == 'blog.post' && ^._id in authors[]._ref])
+			},
 			metadata {
 				...,
 				'ogimage': image.asset->url + '?w=1200'

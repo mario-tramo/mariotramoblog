@@ -27,7 +27,7 @@ async function getAuthor(slug: string): Promise<AuthorWithPosts | null> {
 	return fetchSanityLive<AuthorWithPosts>({
 		query: groq`*[_type == 'person' && slug.current == $slug][0]{
 			...,
-			'posts': *[_type == 'blog.post' && author._ref == ^._id]|order(publishDate desc){
+			'posts': *[_type == 'blog.post' && ^._id in authors[]._ref]|order(publishDate desc){
 				_type,
 				_id,
 				'title': coalesce(title, metadata.title),

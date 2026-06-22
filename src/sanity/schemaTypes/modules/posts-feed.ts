@@ -13,6 +13,7 @@ const LAYOUT_OPTIONS = [
 	{ title: 'Lista compatta', value: 'list' },
 	{ title: 'Lista numerata', value: 'numbered' },
 	{ title: 'Lista con miniature', value: 'thumbs' },
+	{ title: 'Bytes (card video verticali)', value: 'bytes' },
 ] as const
 
 export default defineType({
@@ -135,7 +136,7 @@ export default defineType({
 			title: 'Layout',
 			type: 'string',
 			description:
-				'Carosello: scorrimento orizzontale. Griglia: card con immagine. Lista compatta: due colonne con miniature. Lista numerata: classifica con numero. Lista con miniature: sidebar con thumb.',
+				'Carosello: scorrimento orizzontale. Griglia: card con immagine. Lista compatta: due colonne con miniature. Lista numerata: classifica con numero. Lista con miniature: sidebar con thumb. Bytes: card verticali stile video con play.',
 			options: { list: [...LAYOUT_OPTIONS], layout: 'radio' },
 			initialValue: 'carousel',
 			group: 'options',

@@ -17,7 +17,7 @@ export type ResolvedFilter = {
 const FIELD_GROQ_MAP: Record<CollectionFilter['field'], string> = {
 	category: 'categories[]->.slug.current',
 	tag: 'tags[]->.slug.current',
-	author: 'author->.slug.current',
+	author: 'authors[]->.slug.current',
 }
 
 /**
@@ -67,11 +67,7 @@ export function buildGroqFilterConditions(
 	return resolvedFilters
 		.map((f) => {
 			const groqPath = FIELD_GROQ_MAP[f.field]
-			// For array fields (categories, tags) use `in`, for single ref (author) use `==`
-			if (f.field === 'category' || f.field === 'tag') {
-				return `&& $filter_${f.field} in ${groqPath}`
-			}
-			return `&& ${groqPath} == $filter_${f.field}`
+			return `&& $filter_${f.field} in ${groqPath}`
 		})
 		.join('\n')
 }

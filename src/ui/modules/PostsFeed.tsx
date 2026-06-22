@@ -5,11 +5,12 @@ import moduleProps from '@/lib/moduleProps'
 import { getPostsFeed, type PostsFeedSource } from '@/lib/getPostsFeed'
 import { type CollectionFilter } from '@/lib/resolveCollectionFilters'
 import PostPreview from './blog/PostPreview'
+import PostPreviewBytes from './blog/PostPreviewBytes'
 import PostListWidget from './blog/PostListWidget'
 import ScrollCarousel from '@/ui/primitives/ScrollCarousel'
 import type { PortableTextBlock } from '@portabletext/react'
 
-type PostsFeedLayout = 'carousel' | 'grid' | 'list' | 'numbered' | 'thumbs'
+type PostsFeedLayout = 'carousel' | 'grid' | 'list' | 'numbered' | 'thumbs' | 'bytes'
 
 export default async function PostsFeed({
 	title,
@@ -77,6 +78,53 @@ export default async function PostsFeed({
 					viewAllHref={viewAllHref}
 					viewAllLabel={viewAllLabel}
 				/>
+			</section>
+		)
+	}
+
+	// Bytes layout: tall video cards in a scroll carousel
+	if (cleanLayout === 'bytes') {
+		return (
+			<section
+				className={cn(!nested && 'section', 'space-y-6 overflow-hidden')}
+				{...moduleProps(props)}
+			>
+				{(title || intro) && (
+					<header className={cn(intro ? 'space-y-2 border-b border-line-soft pb-4' : 'border-b border-line-soft pb-4')}>
+						{title && (
+							<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">
+								{title}
+							</h2>
+						)}
+						{intro && (
+							<div className="text-sm leading-relaxed text-muted">
+								<PortableText value={intro} />
+							</div>
+						)}
+					</header>
+				)}
+
+				<ScrollCarousel>
+					<Suspense
+						fallback={
+							<ul className="flex gap-4 pb-4">
+								{Array.from({ length: cleanLimit }).map((_, i) => (
+									<li key={i}>
+										<PostPreviewBytes skeleton />
+									</li>
+								))}
+							</ul>
+						}
+					>
+						<ul className="flex gap-4 pb-4">
+							{posts.map((post) => (
+								<li key={post._id} className="anim-fade">
+									<PostPreviewBytes post={post} />
+								</li>
+							))}
+						</ul>
+					</Suspense>
+				</ScrollCarousel>
 			</section>
 		)
 	}

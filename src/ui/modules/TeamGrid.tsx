@@ -9,7 +9,7 @@ export default async function TeamGrid(props: Sanity.Module) {
 	const authors = await fetchSanityLive<Sanity.Person[]>({
 		query: groq`*[_type == 'person']|order(name){
 			...,
-			'articleCount': count(*[_type == 'blog.post' && author._ref == ^._id])
+			'articleCount': count(*[_type == 'blog.post' && ^._id in authors[]._ref])
 		}`,
 	})
 
