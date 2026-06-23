@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { cn, getInitials } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { getCategoryColor } from '@/lib/categoryColors'
 import Link from 'next/link'
 import resolveUrl from '@/lib/resolveUrl'
@@ -104,7 +104,7 @@ export default function CompactCarousel({
 		dragX.current = e.clientX
 		dragDx.current = 0
 		pointerTarget.current = e.target
-		;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+			; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
 		setPaused(true)
 	}, [])
 
@@ -122,7 +122,7 @@ export default function CompactCarousel({
 			const target = pointerTarget.current as HTMLElement | null
 			pointerTarget.current = null
 			try {
-				;(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
+				; (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
 			} catch (err) {
 				console.error('[CompactCarousel] releasePointerCapture failed:', err)
 			}
@@ -156,18 +156,18 @@ export default function CompactCarousel({
 				<div aria-live="off" aria-atomic="true" className="sr-only">
 					{`Articolo ${index + 1} di ${count}`}
 				</div>
-			{posts.map((post, i) => (
-				<div
-					key={post._id}
-					className={cn(
-						'transition-opacity duration-500',
-						i === 0 ? 'relative' : 'absolute inset-0',
-						i === index ? 'z-10 opacity-100 pointer-events-auto' : 'z-0 opacity-0 pointer-events-none',
-					)}
-				>
-					<Slide post={post} active={i === index} eager={i === 0} />
-				</div>
-			))}
+				{posts.map((post, i) => (
+					<div
+						key={post._id}
+						className={cn(
+							'transition-opacity duration-500',
+							i === 0 ? 'relative' : 'absolute inset-0',
+							i === index ? 'z-10 opacity-100 pointer-events-auto' : 'z-0 opacity-0 pointer-events-none',
+						)}
+					>
+						<Slide post={post} active={i === index} eager={i === 0} />
+					</div>
+				))}
 			</div>
 
 			{/* Dots */}
