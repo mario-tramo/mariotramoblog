@@ -2,7 +2,7 @@ import moduleProps from '@/lib/moduleProps'
 import TableOfContents from './TableOfContents'
 import Content from './Content'
 import { cn } from '@/lib/utils'
-import { stegaClean } from 'next-sanity'
+import { stegaClean } from '@sanity/client/stega'
 import type { PortableTextBlock } from '@portabletext/react'
 
 export default function RichtextModule({

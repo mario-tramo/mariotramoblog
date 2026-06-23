@@ -1,5 +1,5 @@
 import { fetchSanityLive } from '@/sanity/lib/fetch'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { Suspense } from 'react'
 import Filter from './Filter'
 import css from './FilterList.module.css'

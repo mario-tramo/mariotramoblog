@@ -16,7 +16,7 @@ import {
 import { getBlockText } from '@/lib/utils'
 import resolveUrl from '@/lib/resolveUrl'
 import { client } from '@/sanity/lib/client'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import {
 	IMAGE_QUERY,

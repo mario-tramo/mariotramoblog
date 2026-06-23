@@ -1,5 +1,5 @@
 import { Img } from '@/ui/primitives/Img'
-import { stegaClean } from 'next-sanity'
+import { stegaClean } from '@sanity/client/stega'
 import type { ComponentProps } from 'react'
 
 export default function Icon({

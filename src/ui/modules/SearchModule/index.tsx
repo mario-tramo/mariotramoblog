@@ -1,4 +1,4 @@
-import { stegaClean } from 'next-sanity'
+import { stegaClean } from '@sanity/client/stega'
 import { Suspense } from 'react'
 import SearchForm from './SearchForm'
 import type { SearchScope } from './store'

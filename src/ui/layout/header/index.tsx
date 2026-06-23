@@ -1,9 +1,11 @@
+import dynamic from 'next/dynamic'
 import { getSite } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import resolveUrl from '@/lib/resolveUrl'
-import { stegaClean } from 'next-sanity'
-import HeaderContent from './HeaderContent'
+import { stegaClean } from '@sanity/client/stega'
 import type { NavItem } from './HeaderContent'
+
+const HeaderContent = dynamic(() => import('./HeaderContent'))
 
 function resolveLink(link?: Sanity.Link): { label: string; href: string } | null {
 	if (!link) return null

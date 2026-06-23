@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import resolveUrl from '@/lib/resolveUrl'
-import { stegaClean } from 'next-sanity'
+import { stegaClean } from '@sanity/client/stega'
 import { cn } from '@/lib/utils'
 import type { ComponentProps } from 'react'
 

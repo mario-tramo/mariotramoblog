@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import ClickToCopy from '@/ui/features/ClickToCopy'
-import { FaXTwitter, FaFacebookF } from 'react-icons/fa6'
-import { VscLink } from 'react-icons/vsc'
+import { getIcon } from '@/ui/primitives/SocialIcons'
 
 const btnClass =
 	'grid size-9 place-items-center rounded-full bg-surface-light text-muted transition hover:text-brand'
@@ -13,6 +12,10 @@ export default function ShareBar({ title }: { title?: string }) {
 	useEffect(() => { setUrl(window.location.href) }, [])
 	const text = encodeURIComponent(title || '')
 	const encodedUrl = encodeURIComponent(url)
+
+	const XIcon = getIcon('x')!
+	const FacebookIcon = getIcon('facebook')!
+	const LinkIcon = getIcon('link')!
 
 	return (
 		<div className="ml-auto flex items-center gap-2">
@@ -24,7 +27,7 @@ export default function ShareBar({ title }: { title?: string }) {
 				className={btnClass}
 				aria-label="Condividi su X"
 			>
-				<FaXTwitter className="size-4" aria-hidden="true" />
+				<XIcon className="size-4" aria-hidden="true" />
 			</a>
 			<a
 				href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
@@ -33,14 +36,14 @@ export default function ShareBar({ title }: { title?: string }) {
 				className={btnClass}
 				aria-label="Condividi su Facebook"
 			>
-				<FaFacebookF className="size-4" aria-hidden="true" />
+				<FacebookIcon className="size-4" aria-hidden="true" />
 			</a>
 			<ClickToCopy
 				value={url}
 				className={btnClass}
 				aria-label="Copia link"
 			>
-				<VscLink className="size-4" />
+				<LinkIcon className="size-4" />
 			</ClickToCopy>
 		</div>
 	)

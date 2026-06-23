@@ -13,17 +13,14 @@ import RelatedPosts from './RelatedPosts'
 import ChevronIcon from '@/ui/icons/ChevronIcon'
 import SectionCard from '@/ui/primitives/SectionCard'
 import { cn, getInitials } from '@/lib/utils'
-import { FaLinkedinIn, FaInstagram, FaXTwitter } from 'react-icons/fa6'
-import { IoIosLink } from 'react-icons/io'
+import { getSocialIcon } from '@/ui/primitives/SocialIcons'
 import { RelatedPostsSkeleton } from '@/ui/skeletons/PostContentSkeleton'
 import GooglePreferredSourceBanner from './GooglePreferredSourceBanner'
 import css from './PostContent.module.css'
 
 function AuthorSocialIcon({ url }: { url: string }) {
-	if (url.includes('linkedin.com')) return <FaLinkedinIn className="size-3.5" />
-	if (url.includes('instagram.com')) return <FaInstagram className="size-3.5" />
-	if (url.includes('x.com') || url.includes('twitter.com')) return <FaXTwitter className="size-3.5" />
-	return <IoIosLink className="size-3.5" />
+	const Icon = getSocialIcon(url)
+	return <Icon className="size-3.5" />
 }
 
 export default function PostContent({

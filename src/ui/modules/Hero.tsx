@@ -7,7 +7,7 @@ import CTAList from '@/ui/primitives/CTAList'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { cn, getInitials } from '@/lib/utils'
 import resolveUrl from '@/lib/resolveUrl'
-import { stegaClean } from 'next-sanity'
+import { stegaClean } from '@sanity/client/stega'
 import Link from 'next/link'
 
 const AUTOPLAY_MS = 6000

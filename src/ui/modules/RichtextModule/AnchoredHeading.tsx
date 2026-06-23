@@ -1,5 +1,5 @@
 import { slug } from '@/lib/utils'
-import type { PortableTextBlock, PortableTextComponentProps } from 'next-sanity'
+import type { PortableTextBlock, PortableTextComponentProps } from '@portabletext/react'
 
 export default function AnchoredHeading({
 	as: Tag,

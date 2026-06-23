@@ -1,7 +1,7 @@
 import moduleProps from '@/lib/moduleProps'
 import CSS from './CSS'
 import WithScript from './WithScript'
-import { stegaClean } from 'next-sanity'
+import { stegaClean } from '@sanity/client/stega'
 import type { ComponentProps } from 'react'
 import DOMPurify from 'dompurify'
 

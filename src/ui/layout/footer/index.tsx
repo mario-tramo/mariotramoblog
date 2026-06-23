@@ -1,9 +1,11 @@
+import dynamic from 'next/dynamic'
 import { headers } from 'next/headers'
 import { getSite } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
-import FooterContent from './FooterContent'
-import StayInTheGame from './StayInTheGame'
 import { HomepageSeoFooter } from '@/ui/modules/HomepageSeo'
+
+const FooterContent = dynamic(() => import('./FooterContent'))
+const StayInTheGame = dynamic(() => import('./StayInTheGame'))
 
 const HIDE_STAY_IN_GAME_SLUGS = ['/contatti']
 

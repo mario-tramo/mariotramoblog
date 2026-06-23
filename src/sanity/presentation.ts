@@ -1,7 +1,7 @@
 'use client'
 
 import { defineLocations, presentationTool } from 'sanity/presentation'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 export const presentation = presentationTool({
 	name: 'editor',
 	title: 'Editor',

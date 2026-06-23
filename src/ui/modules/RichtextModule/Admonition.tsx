@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils'
-import { PortableText } from 'next-sanity'
+import { PortableText } from '@portabletext/react'
 import { Info, Lightbulb, AlertCircle, AlertTriangle } from 'lucide-react'
 import type { PortableTextBlock } from '@portabletext/react'
 

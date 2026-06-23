@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
-import { PortableText, stegaClean } from 'next-sanity'
+import { PortableText } from '@portabletext/react'
+import { stegaClean } from '@sanity/client/stega'
 import { cn } from '@/lib/utils'
 import moduleProps from '@/lib/moduleProps'
 import Section from '@/ui/primitives/Section'

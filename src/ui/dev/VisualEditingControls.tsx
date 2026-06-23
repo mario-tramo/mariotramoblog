@@ -1,19 +1,28 @@
-import { draftMode } from 'next/headers'
-import { SanityLive } from '@/sanity/lib/fetch'
-import { VisualEditing } from 'next-sanity/visual-editing'
-import DraftModeControls from './DraftModeControls'
+import dynamic from 'next/dynamic'
+
+const SanityLive = dynamic(() =>
+	import('@/sanity/lib/fetch').then((mod) => ({ default: mod.SanityLive })),
+)
+const DraftModeControls = dynamic(() => import('./DraftModeControls'))
 
 export default async function VisualEditingControls() {
+	const { draftMode } = await import('next/headers')
+	const isDraft = (await draftMode()).isEnabled
+
 	return (
 		<>
-			<SanityLive />
+			{isDraft && <SanityLive />}
 
-			{(await draftMode()).isEnabled && (
+			{isDraft && (
 				<>
-					<VisualEditing />
+					<DynamicVisualEditing />
 					<DraftModeControls />
 				</>
 			)}
 		</>
 	)
 }
+
+const DynamicVisualEditing = dynamic(() =>
+	import('next-sanity/visual-editing').then((mod) => ({ default: mod.VisualEditing })),
+)

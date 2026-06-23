@@ -1,5 +1,5 @@
 import Pretitle from '@/ui/primitives/Pretitle'
-import { PortableText } from 'next-sanity'
+import { PortableText } from '@portabletext/react'
 import CTAList from '@/ui/primitives/CTAList'
 import type { PortableTextBlock } from '@portabletext/react'
 import type { ComponentProps } from 'react'

@@ -4,14 +4,13 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import { ChevronDown } from 'lucide-react'
-import { FaFacebookF, FaInstagram, FaXTwitter, FaYoutube, FaTiktok } from 'react-icons/fa6'
-import { IoIosLink } from 'react-icons/io'
 import CTA from '@/ui/primitives/CTA'
 import NewsletterSubscribe from '@/ui/features/newsletter'
 import { useCookieConsent } from '@/ui/features/CookieConsent'
-import { PortableText, stegaClean } from 'next-sanity'
+import { PortableText } from '@portabletext/react'
+import { stegaClean } from '@sanity/client/stega'
+import { getSocialIcon } from '@/ui/primitives/SocialIcons'
 import type { PortableTextBlock } from '@portabletext/react'
-import type { IconType } from 'react-icons'
 
 interface FooterContentProps {
 	copyright?: PortableTextBlock[]
@@ -22,17 +21,9 @@ interface FooterContentProps {
 	socialLinks?: Sanity.Link[]
 }
 
-const SOCIAL_PLATFORMS: { test: RegExp; icon: IconType; label: string }[] = [
-	{ test: /(?:x\.com|twitter\.com)/, icon: FaXTwitter, label: 'X' },
-	{ test: /instagram\.com/, icon: FaInstagram, label: 'Instagram' },
-	{ test: /facebook\.com|fb\.com/, icon: FaFacebookF, label: 'Facebook' },
-	{ test: /youtube\.com|youtu\.be/, icon: FaYoutube, label: 'YouTube' },
-	{ test: /tiktok\.com/, icon: FaTiktok, label: 'TikTok' },
-]
-
-function SocialIcon({ url, ...props }: { url?: string } & React.ComponentProps<'svg'>) {
+function SocialIcon({ url, ...props }: { url?: string } & React.SVGProps<SVGSVGElement>) {
 	if (!url) return null
-	const Icon = SOCIAL_PLATFORMS.find(({ test }) => test.test(url))?.icon ?? IoIosLink
+	const Icon = getSocialIcon(url)
 	return <Icon className="size-4" {...props} />
 }
 

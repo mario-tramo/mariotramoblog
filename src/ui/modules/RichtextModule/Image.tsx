@@ -1,5 +1,5 @@
 import { Img } from '@/ui/primitives/Img'
-import { stegaClean } from 'next-sanity'
+import { stegaClean } from '@sanity/client/stega'
 import { cn, getBlockText } from '@/lib/utils'
 
 export default function Image({

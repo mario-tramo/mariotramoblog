@@ -2,7 +2,7 @@ import { preload } from 'react-dom'
 import { getImageDimensions } from '@sanity/asset-utils'
 import { urlFor } from '@/sanity/lib/image'
 import NextImage, { getImageProps, type ImageProps } from 'next/image'
-import { stegaClean } from 'next-sanity'
+import { stegaClean } from '@sanity/client/stega'
 import type { ComponentProps } from 'react'
 
 type ImgProps = { alt?: string } & Omit<ImageProps, 'src' | 'alt'>

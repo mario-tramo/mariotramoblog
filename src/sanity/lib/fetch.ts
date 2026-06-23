@@ -5,7 +5,7 @@ import { token } from '@/sanity/lib/token'
 import { dev } from '@/lib/env'
 import { draftMode } from 'next/headers'
 import { defineLive } from 'next-sanity/live'
-import { type QueryOptions, type QueryParams } from 'next-sanity'
+import type { QueryOptions, QueryParams } from '@sanity/client'
 
 export async function fetchSanity<T = unknown>({
 	query,

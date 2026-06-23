@@ -1,5 +1,5 @@
 import { fetchSanityLive } from './fetch'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import errors from '@/lib/errors'
 
 export const LINK_QUERY = groq`

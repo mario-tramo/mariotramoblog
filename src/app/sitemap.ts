@@ -1,5 +1,5 @@
 import { fetchSanityLive } from '@/sanity/lib/fetch'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import type { MetadataRoute } from 'next'
 
 const BASE = process.env.NEXT_PUBLIC_BASE_URL!.replace(/\/+$/, '') + '/'

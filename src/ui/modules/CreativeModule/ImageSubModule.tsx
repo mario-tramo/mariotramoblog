@@ -1,5 +1,5 @@
 import { Img } from '@/ui/primitives/Img'
-import { stegaClean } from 'next-sanity'
+import { stegaClean } from '@sanity/client/stega'
 
 export type ImageSubModuleType = Sanity.Module<'image'> &
 	Sanity.Image &

@@ -1,6 +1,6 @@
 import { notFound, permanentRedirect } from 'next/navigation'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { processSlug } from '@/lib/processSlug'
 import type { Metadata } from 'next'
 

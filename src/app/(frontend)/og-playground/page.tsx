@@ -1,5 +1,5 @@
 import { fetchSanityLive } from '@/sanity/lib/fetch'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { BASE_URL } from '@/lib/env'
 import OgPlayground, { type PlaygroundPost } from './OgPlayground'
 import type { Metadata } from 'next'

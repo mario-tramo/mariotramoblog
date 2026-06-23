@@ -1,14 +1,6 @@
 import CTA from '@/ui/primitives/CTA'
-import { PortableText } from 'next-sanity'
-import {
-	FaFacebookF,
-	FaInstagram,
-	FaXTwitter,
-	FaYoutube,
-	FaTiktok,
-} from 'react-icons/fa6'
-import { IoIosLink } from 'react-icons/io'
-import type { IconType } from 'react-icons'
+import { PortableText } from '@portabletext/react'
+import { getSocialIcon } from '@/ui/primitives/SocialIcons'
 import type { PortableTextBlock } from '@portabletext/react'
 
 interface StayInTheGameProps {
@@ -16,21 +8,9 @@ interface StayInTheGameProps {
 	socialLinks?: Sanity.Link[]
 }
 
-// Single source of truth for supported social platforms.
-// To add a platform: append one entry. To disable one: remove its entry
-// (links pointing to it then fall back to the generic link icon).
-const SOCIAL_PLATFORMS: { test: RegExp; icon: IconType; label: string }[] = [
-	{ test: /(?:x\.com|twitter\.com)/, icon: FaXTwitter, label: 'X' },
-	{ test: /instagram\.com/, icon: FaInstagram, label: 'Instagram' },
-	{ test: /facebook\.com|fb\.com/, icon: FaFacebookF, label: 'Facebook' },
-	{ test: /youtube\.com|youtu\.be/, icon: FaYoutube, label: 'YouTube' },
-	{ test: /tiktok\.com/, icon: FaTiktok, label: 'TikTok' },
-]
-
-function SocialIcon({ url, ...props }: { url?: string } & React.ComponentProps<'svg'>) {
+function SocialIcon({ url, ...props }: { url?: string } & React.SVGProps<SVGSVGElement>) {
 	if (!url) return null
-
-	const Icon = SOCIAL_PLATFORMS.find(({ test }) => test.test(url))?.icon ?? IoIosLink
+	const Icon = getSocialIcon(url)
 	return <Icon className="size-3.5" {...props} />
 }
 

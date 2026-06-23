@@ -1,6 +1,7 @@
 import moduleProps from '@/lib/moduleProps'
 import ModuleHeader from '@/ui/primitives/ModuleHeader'
-import { PortableText, stegaClean } from 'next-sanity'
+import { PortableText } from '@portabletext/react'
+import { stegaClean } from '@sanity/client/stega'
 import CTAList from '@/ui/primitives/CTAList'
 import { Img } from '@/ui/primitives/Img'
 import { cn, getBlockText } from '@/lib/utils'

@@ -1,4 +1,4 @@
-import { PortableText } from 'next-sanity'
+import { PortableText } from '@portabletext/react'
 import CTAList from '@/ui/primitives/CTAList'
 import { cn } from '@/lib/utils'
 import type { PortableTextBlock } from '@portabletext/react'

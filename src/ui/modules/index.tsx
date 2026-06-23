@@ -20,7 +20,7 @@ const CustomHTML = dynamic(() => import('./CustomHTML'))
 const SearchModule = dynamic(() => import('./SearchModule'))
 const Standings = dynamic(() => import('./Standings'))
 import { createDataAttribute } from 'next-sanity'
-import { stegaClean } from 'next-sanity'
+import { stegaClean } from '@sanity/client/stega'
 import { cn } from '@/lib/utils'
 import { bgClasses } from '@/lib/bgClasses'
 

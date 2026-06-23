@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { cn } from '@/lib/utils'
 import Section from '@/ui/primitives/Section'
 import Carousel from './Carousel'

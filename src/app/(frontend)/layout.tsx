@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import dynamic from 'next/dynamic'
 import Root from '@/ui/layout/Root'
 import JsonLd from '@/ui/primitives/JsonLd'
 import { getSite } from '@/sanity/lib/queries'
@@ -6,18 +7,18 @@ import { websiteJsonLd } from '@/lib/jsonLd'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import SkipToContent from '@/ui/layout/SkipToContent'
 import ScrollToTop from '@/ui/layout/FocusOnNavigate'
-import Announcement from '@/ui/layout/Announcement'
 import Header from '@/ui/layout/header'
 import Footer from '@/ui/layout/footer'
 import { CookieConsentProvider } from '@/ui/features/CookieConsent'
 import CookieBanner from '@/ui/features/CookieBanner'
 import ConsentAnalytics from '@/ui/features/ConsentAnalytics'
 import { ToastProvider } from '@/ui/features/Toast'
-import VisualEditingControls from '@/ui/dev/VisualEditingControls'
-// import DevFontSwitcher from '@/ui/dev/DevFontSwitcher'
-import DevColorSwitcher from '@/ui/dev/DevColorSwitcher'
 import { BASE_URL } from '@/lib/env'
+import DevColorSwitcher from '@/ui/dev/DevColorSwitcher'
 import '@/styles/app.css'
+
+const Announcement = dynamic(() => import('@/ui/layout/Announcement'))
+const VisualEditingControls = dynamic(() => import('@/ui/dev/VisualEditingControls'))
 
 export const viewport = {
 	themeColor: '#07111F',

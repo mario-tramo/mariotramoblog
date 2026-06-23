@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
 import PostPreview from './PostPreview'
 

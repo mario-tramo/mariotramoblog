@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { groq } from 'next-sanity'
+import groq from 'groq'
 import { client } from '@/sanity/lib/client'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
@@ -8,16 +8,12 @@ import { personJsonLd, breadcrumbJsonLd } from '@/lib/jsonLd'
 import { Img } from '@/ui/primitives/Img'
 import { urlFor } from '@/sanity/lib/image'
 import PostPreview from '@/ui/modules/blog/PostPreview'
-import { FaLinkedinIn, FaInstagram, FaXTwitter } from 'react-icons/fa6'
-import { IoIosLink } from 'react-icons/io'
+import { getSocialIcon } from '@/ui/primitives/SocialIcons'
 import type { Metadata } from 'next'
 
 function AuthorSocialIcon({ url }: { url: string }) {
-	if (url.includes('linkedin.com')) return <FaLinkedinIn className="size-4" />
-	if (url.includes('instagram.com')) return <FaInstagram className="size-4" />
-	if (url.includes('x.com') || url.includes('twitter.com'))
-		return <FaXTwitter className="size-4" />
-	return <IoIosLink className="size-4" />
+	const Icon = getSocialIcon(url)
+	return <Icon className="size-4" />
 }
 
 interface AuthorWithPosts extends Sanity.Person {

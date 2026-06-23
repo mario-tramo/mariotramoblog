@@ -1,5 +1,5 @@
 import Pretitle from '@/ui/primitives/Pretitle'
-import { PortableText } from 'next-sanity'
+import { PortableText } from '@portabletext/react'
 import TabList from './TabList'
 import Wrapper from './Wrapper'
 import CTAList from '@/ui/primitives/CTAList'
