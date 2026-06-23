@@ -3,18 +3,20 @@
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef } from 'react'
 
-export default function FocusOnNavigate() {
+export default function ScrollToTop() {
 	const pathname = usePathname()
-	const prevPath = useRef(pathname)
 
 	useEffect(() => {
-		if (pathname === prevPath.current) return
-		prevPath.current = pathname
+		history.scrollRestoration = 'manual'
+	}, [])
 
-		const main = document.querySelector<HTMLElement>('#main-content')
-		if (main) {
-			main.focus()
-		}
+	useEffect(() => {
+		const id = setTimeout(() => {
+			window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+			document.querySelector<HTMLElement>('#main-content')?.focus()
+		}, 0)
+
+		return () => clearTimeout(id)
 	}, [pathname])
 
 	return null

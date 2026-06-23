@@ -4,6 +4,7 @@ import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
 import moduleProps from '@/lib/moduleProps'
+import Section from '@/ui/primitives/Section'
 import Pretitle from '@/ui/primitives/Pretitle'
 import { PortableText, stegaClean } from 'next-sanity'
 import FilterList from '@/ui/modules/blog/BlogList/FilterList'
@@ -113,9 +114,9 @@ export default async function BlogList({
 	// Show rich empty state when a category page has no posts
 	if (posts.length === 0 && (urlCategoria || legacyCategorySlug)) {
 		return (
-			<section className={cn(!nested && 'section', 'space-y-8')} {...moduleProps(props)}>
+			<Section nested={nested} className="space-y-8" {...moduleProps(props)}>
 				<NoArticlesFound />
-			</section>
+			</Section>
 		)
 	}
 
@@ -141,7 +142,7 @@ export default async function BlogList({
 	const CarouselWrapper = isCarousel ? ScrollCarousel : 'div'
 
 	return (
-		<section className={cn(!nested && 'section', 'space-y-8')} {...moduleProps(props)}>
+		<Section nested={nested} className="space-y-8" {...moduleProps(props)}>
 			{(pretitle || intro) && (
 				<header className={cn(intro ? 'richtext' : 'flex items-end justify-between border-b border-line-soft pb-4')}>
 					{pretitle && !intro ? (
@@ -186,6 +187,6 @@ export default async function BlogList({
 					<List posts={posts} className={listClassName} cardSize={cleanCardSize} />
 				</Suspense>
 			</CarouselWrapper>
-		</section>
+		</Section>
 	)
 }

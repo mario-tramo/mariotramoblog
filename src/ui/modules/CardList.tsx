@@ -1,5 +1,5 @@
 import moduleProps from '@/lib/moduleProps'
-import Pretitle from '@/ui/primitives/Pretitle'
+import ModuleHeader from '@/ui/primitives/ModuleHeader'
 import { PortableText, stegaClean } from 'next-sanity'
 import CTAList from '@/ui/primitives/CTAList'
 import { Img } from '@/ui/primitives/Img'
@@ -38,13 +38,7 @@ export default function CardList({
 
 	return (
 		<Tag className={cn(!nested && 'section', 'space-y-12')} {...moduleProps(props)}>
-			{(pretitle || intro) && (
-				<header className="richtext text-center">
-					<Pretitle>{pretitle}</Pretitle>
-					<PortableText value={intro} />
-					<CTAList className="justify-center" ctas={ctas} />
-				</header>
-			)}
+			<ModuleHeader pretitle={pretitle} intro={intro} ctas={ctas} className="richtext text-center" />
 
 			<CarouselWrapper>
 				<div

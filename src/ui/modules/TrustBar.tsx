@@ -1,6 +1,5 @@
 import moduleProps from '@/lib/moduleProps'
-import Pretitle from '@/ui/primitives/Pretitle'
-import { PortableText } from 'next-sanity'
+import ModuleHeader from '@/ui/primitives/ModuleHeader'
 import { cn } from '@/lib/utils'
 import type { PortableTextBlock } from '@portabletext/react'
 
@@ -23,12 +22,7 @@ export default function TrustBar({
 
 	return (
 		<Tag className={cn(!nested && 'section', 'space-y-8')} {...moduleProps(props)}>
-			{(pretitle || intro) && (
-				<header className="richtext text-center">
-					<Pretitle>{pretitle}</Pretitle>
-					<PortableText value={intro} />
-				</header>
-			)}
+			<ModuleHeader pretitle={pretitle} intro={intro} className="richtext text-center" />
 
 			<dl className="mx-auto flex max-w-screen-lg flex-wrap items-start justify-center gap-x-10 gap-y-8 sm:gap-x-16">
 				{stats.map(({ _key, value, label }) => (

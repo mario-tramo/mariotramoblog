@@ -1,9 +1,9 @@
-import Pretitle from '@/ui/primitives/Pretitle'
-import { PortableText, stegaClean } from 'next-sanity'
+import { stegaClean } from 'next-sanity'
 import { Suspense } from 'react'
 import SearchForm from './SearchForm'
 import type { SearchScope } from './store'
 import CTAList from '@/ui/primitives/CTAList'
+import ModuleHeader from '@/ui/primitives/ModuleHeader'
 import moduleProps from '@/lib/moduleProps'
 import { cn } from '@/lib/utils'
 import type { PortableTextBlock } from '@portabletext/react'
@@ -28,12 +28,7 @@ export default function SearchModule({
 
 	return (
 		<Tag className={cn(!nested && 'section', 'space-y-8')} {...moduleProps(props)}>
-			{(pretitle || intro) && (
-				<header className="richtext text-center">
-					<Pretitle>{pretitle}</Pretitle>
-					<PortableText value={intro} />
-				</header>
-			)}
+			<ModuleHeader pretitle={pretitle} intro={intro} className="richtext text-center" />
 
 			<div className="mx-auto max-w-screen-sm">
 				<Suspense fallback={<div className="skeleton-[calc(1lh+.5rem+2px)]" />}>

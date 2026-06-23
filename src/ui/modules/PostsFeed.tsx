@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import { PortableText, stegaClean } from 'next-sanity'
 import { cn } from '@/lib/utils'
 import moduleProps from '@/lib/moduleProps'
+import Section from '@/ui/primitives/Section'
 import { getPostsFeed, type PostsFeedSource } from '@/lib/getPostsFeed'
 import { type CollectionFilter } from '@/lib/resolveCollectionFilters'
 import PostPreview from './blog/PostPreview'
@@ -66,8 +67,9 @@ export default async function PostsFeed({
 		} as const
 
 		return (
-			<section
-				className={cn(!nested && 'section', 'space-y-6')}
+			<Section
+				nested={nested}
+				className="space-y-6"
 				{...moduleProps(props)}
 			>
 				<PostListWidget
@@ -78,15 +80,16 @@ export default async function PostsFeed({
 					viewAllHref={viewAllHref}
 					viewAllLabel={viewAllLabel}
 				/>
-			</section>
+			</Section>
 		)
 	}
 
 	// Bytes layout: tall video cards in a scroll carousel
 	if (cleanLayout === 'bytes') {
 		return (
-			<section
-				className={cn(!nested && 'section', 'space-y-6 overflow-hidden')}
+			<Section
+				nested={nested}
+				className="space-y-6 overflow-hidden"
 				{...moduleProps(props)}
 			>
 				{(title || intro) && (
@@ -125,15 +128,16 @@ export default async function PostsFeed({
 						</ul>
 					</Suspense>
 				</ScrollCarousel>
-			</section>
+			</Section>
 		)
 	}
 
 	// Grid layout
 	if (cleanLayout === 'grid') {
 		return (
-			<section
-				className={cn(!nested && 'section', 'space-y-6')}
+			<Section
+				nested={nested}
+				className="space-y-6"
 				{...moduleProps(props)}
 			>
 				{(title || intro) && (
@@ -158,14 +162,15 @@ export default async function PostsFeed({
 						</li>
 					))}
 				</ul>
-			</section>
+			</Section>
 		)
 	}
 
 	// Carousel layout (default)
 	return (
-		<section
-			className={cn(!nested && 'section', 'space-y-6 overflow-hidden')}
+		<Section
+			nested={nested}
+			className="space-y-6 overflow-hidden"
 			{...moduleProps(props)}
 		>
 			{(title || intro) && (
@@ -204,6 +209,6 @@ export default async function PostsFeed({
 					</ul>
 				</Suspense>
 			</ScrollCarousel>
-		</section>
+		</Section>
 	)
 }
