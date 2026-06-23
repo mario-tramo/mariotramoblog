@@ -1,23 +1,24 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 
 export default function ScrollToTop() {
 	const pathname = usePathname()
+	const isHome = pathname === '/'
 
 	useEffect(() => {
+		if (isHome) return
+
 		history.scrollRestoration = 'manual'
-	}, [])
 
-	useEffect(() => {
 		const id = setTimeout(() => {
 			window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
 			document.querySelector<HTMLElement>('#main-content')?.focus()
 		}, 0)
 
 		return () => clearTimeout(id)
-	}, [pathname])
+	}, [pathname, isHome])
 
 	return null
 }

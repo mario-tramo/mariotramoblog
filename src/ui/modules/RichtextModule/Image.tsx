@@ -16,6 +16,7 @@ export default function Image({
 
 	return (
 		<figure
+			data-sanity-id="image"
 			className={cn('max-lg:full-bleed space-y-2 text-center md:[grid-column:bleed]!', floatClass)}
 		>
 			<Img

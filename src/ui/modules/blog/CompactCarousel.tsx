@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { cn } from '@/lib/utils'
+import { cn, getInitials } from '@/lib/utils'
 import { getCategoryColor } from '@/lib/categoryColors'
 import Link from 'next/link'
 import resolveUrl from '@/lib/resolveUrl'
@@ -43,18 +43,23 @@ function Slide({
 
 			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-[65%] bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
 
-			<div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-1.5 text-center sm:items-start sm:text-left p-4 sm:gap-2 sm:p-5">
+			<div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 p-5 text-center sm:items-start sm:text-left sm:gap-3 sm:p-8 lg:gap-4 lg:p-12">
 				{post.categories?.[0] && (
 					<span
-						className="w-fit rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white"
+						className="w-fit rounded px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white sm:px-3 sm:py-1.5 sm:text-sm"
 						style={{ backgroundColor: getCategoryColor(post.categories[0]) }}
 					>
 						{post.categories[0].title}
 					</span>
 				)}
-				<h3 className="line-clamp-2 text-sm font-bold leading-snug text-white sm:text-lg">
+				<h3 className="line-clamp-2 text-sm font-bold leading-tight text-white sm:text-lg lg:text-xl">
 					{post.title}
 				</h3>
+				{post.metadata?.description && (
+					<p className="-mt-1 line-clamp-1 max-w-xl text-xs text-white/70 sm:line-clamp-2 sm:text-sm">
+						{post.metadata.description}
+					</p>
+				)}
 			</div>
 		</Link>
 	)
@@ -73,6 +78,7 @@ export default function CompactCarousel({
 	const [paused, setPaused] = useState(false)
 	const dragX = useRef<number | null>(null)
 	const dragDx = useRef(0)
+	const pointerTarget = useRef<EventTarget | null>(null)
 
 	const next = useCallback(
 		() => setIndex((i) => (i + 1) % count),
@@ -97,6 +103,7 @@ export default function CompactCarousel({
 	const onPointerDown = useCallback((e: React.PointerEvent) => {
 		dragX.current = e.clientX
 		dragDx.current = 0
+		pointerTarget.current = e.target
 		;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
 		setPaused(true)
 	}, [])
@@ -112,19 +119,27 @@ export default function CompactCarousel({
 			const dx = dragDx.current
 			dragX.current = null
 			dragDx.current = 0
+			const target = pointerTarget.current as HTMLElement | null
+			pointerTarget.current = null
 			try {
 				;(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
 			} catch (err) {
 				console.error('[CompactCarousel] releasePointerCapture failed:', err)
 			}
 			setPaused(false)
-			if (Math.abs(dx) > 50) (dx < 0 ? next : prev)()
+			if (Math.abs(dx) > 50) {
+				(dx < 0 ? next : prev)()
+			} else {
+				// Not a swipe → forward the click to the underlying link
+				target?.closest('a')?.click()
+			}
 		},
 		[next, prev],
 	)
 
 	return (
 		<div
+			data-sanity-id="CompactCarousel"
 			className="relative"
 			onMouseEnter={() => setPaused(true)}
 			onMouseLeave={() => setPaused(false)}
@@ -141,18 +156,18 @@ export default function CompactCarousel({
 				<div aria-live="off" aria-atomic="true" className="sr-only">
 					{`Articolo ${index + 1} di ${count}`}
 				</div>
-				{posts.map((post, i) => (
-					<div
-						key={post._id}
-						className={cn(
-							'transition-opacity duration-500',
-							i === 0 ? 'relative' : 'absolute inset-0',
-							i === index ? 'z-10 opacity-100' : 'z-0 opacity-0',
-						)}
-					>
-						<Slide post={post} active={i === index} eager={i === 0} />
-					</div>
-				))}
+			{posts.map((post, i) => (
+				<div
+					key={post._id}
+					className={cn(
+						'transition-opacity duration-500',
+						i === 0 ? 'relative' : 'absolute inset-0',
+						i === index ? 'z-10 opacity-100 pointer-events-auto' : 'z-0 opacity-0 pointer-events-none',
+					)}
+				>
+					<Slide post={post} active={i === index} eager={i === 0} />
+				</div>
+			))}
 			</div>
 
 			{/* Dots */}

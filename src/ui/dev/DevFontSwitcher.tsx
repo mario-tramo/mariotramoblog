@@ -112,9 +112,10 @@ export default function DevFontSwitcher() {
 		<div className="fixed right-3 bottom-3 z-[9999]" style={{ fontFamily: 'system-ui, sans-serif' }}>
 			{!open && (
 				<button
+					type="button"
 					onClick={() => setOpen(true)}
 					className="grid size-10 place-items-center rounded-full bg-brand text-brand-foreground shadow-lg transition hover:scale-110"
-					title="Font Switcher"
+					aria-label="Font Switcher"
 				>
 					<Type className="size-5" />
 				</button>
@@ -130,8 +131,10 @@ export default function DevFontSwitcher() {
 							FONT SWITCHER
 						</span>
 						<button
+							type="button"
 							onClick={() => setOpen(false)}
 							className="text-muted transition hover:text-ink"
+							aria-label="Chiudi"
 						>
 							<X className="size-4" />
 						</button>
@@ -168,8 +171,10 @@ export default function DevFontSwitcher() {
 							className="min-w-0 flex-1 rounded-lg border border-line bg-canvas px-2 py-1.5 text-xs text-ink placeholder:text-muted"
 						/>
 						<button
+							type="button"
 							onClick={addCustomFont}
 							className="rounded-lg bg-brand px-2 py-1.5 text-xs font-semibold text-brand-foreground"
+							aria-label="Aggiungi font personalizzato"
 						>
 							+
 						</button>
@@ -198,6 +203,7 @@ export default function DevFontSwitcher() {
 					)}
 
 					<button
+						type="button"
 						onClick={() => applyFont('')}
 						className="w-full rounded-lg border border-line py-1.5 text-xs font-medium text-muted transition hover:text-ink"
 					>

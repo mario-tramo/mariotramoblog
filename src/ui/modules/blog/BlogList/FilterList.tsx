@@ -20,7 +20,7 @@ export default async function FilterList({
 	if (!categories) return null
 
 	return (
-		<fieldset>
+		<fieldset data-sanity-id="FilterList">
 			<legend className="sr-only">Filtra per categoria</legend>
 
 			<div

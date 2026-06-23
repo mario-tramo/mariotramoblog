@@ -76,6 +76,7 @@ export default function PostPreview({
 
 	return (
 		<article
+			data-sanity-id="PostPreview"
 			className="group relative isolate flex h-full flex-col overflow-hidden rounded-xl border border-line-soft bg-surface transition-all duration-400"
 		>
 			<figure className="relative aspect-[16/9] overflow-hidden bg-ink/3">

@@ -174,7 +174,7 @@ function List({
 		<div className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-2">
 			{posts.slice(0, limit).map((post) => (
 				<article key={post._id} className="group relative flex gap-3">
-					<figure className="size-16 flex-shrink-0 overflow-hidden rounded-lg">
+					<figure className="size-20 flex-shrink-0 overflow-hidden rounded-lg sm:size-24">
 						<Img
 							className="size-full object-cover"
 							image={post.metadata.image}
@@ -182,14 +182,19 @@ function List({
 							alt={post.title}
 						/>
 					</figure>
-					<div>
+					<div className="min-w-0">
 						<h3 className="text-sm font-semibold leading-snug">
 							<Link href={resolveUrl(post, { base: false })}>
 								<span className="absolute inset-0" />
 								{post.title}
 							</Link>
 						</h3>
-						<ReadTime value={post.readTime} className="text-[11px] text-muted" />
+						{post.metadata?.description && (
+							<p className="mt-1 line-clamp-2 text-xs leading-relaxed text-muted">
+								{post.metadata.description}
+							</p>
+						)}
+						<ReadTime value={post.readTime} className="mt-1 text-[11px] text-muted" />
 					</div>
 				</article>
 			))}
@@ -235,7 +240,7 @@ export default function PostListWidget({
 	const Renderer = RENDERERS[variant]
 
 	return (
-		<SectionCard className="p-5 sm:p-6">
+		<SectionCard data-sanity-id="PostListWidget" className="p-5 sm:p-6">
 			{/* Header */}
 			<div className="mb-5 flex items-center justify-between">
 				<SectionTitle showDot={showDot}>{title}</SectionTitle>

@@ -95,9 +95,9 @@ export default function BytesCarousel() {
 
 								{/* Content */}
 								<div className="absolute bottom-0 left-0 right-0 z-10 p-3 lg:p-4">
-									<h3 className="mb-1 text-xs font-medium leading-snug text-white line-clamp-3 lg:mb-2 lg:text-lg lg:font-bold">
+									<span className="mb-1 text-xs font-medium leading-snug text-white line-clamp-3 lg:mb-2 lg:text-lg lg:font-bold">
 										{byte.title}
-									</h3>
+									</span>
 									<p className="text-[10px] leading-none text-blue-400 line-clamp-1 lg:text-sm">
 										{byte.category}
 									</p>

@@ -53,6 +53,7 @@ function ClientFilter({
 
 	return (
 		<button
+			type="button"
 			className={cn(
 				css.filter,
 				'rounded-full border px-4 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-colors',

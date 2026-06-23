@@ -61,7 +61,7 @@ export default async function RelatedPosts({
 
 	if (variant === 'mobile-collapsible') {
 		return (
-			<details className="group rounded-2xl border border-line bg-surface-light">
+			<details data-sanity-id="RelatedPosts" className="group rounded-2xl border border-line bg-surface-light">
 				<summary className="flex cursor-pointer items-center justify-between px-5 py-4 text-sm font-black uppercase tracking-wider text-brand">
 					Articoli correlati
 					<ChevronRight className="size-5 rotate-90 text-brand transition-transform group-open:rotate-270" />
@@ -111,7 +111,7 @@ export default async function RelatedPosts({
 		const small = related.slice(2)
 
 		return (
-			<SectionCard className="border-line bg-surface-light/40 p-5 backdrop-blur-2xl backdrop-saturate-150 sm:p-6">
+			<SectionCard data-sanity-id="RelatedPosts" className="border-line bg-surface-light/40 p-5 backdrop-blur-2xl backdrop-saturate-150 sm:p-6">
 				<h3 className="mb-5 text-sm font-extrabold uppercase tracking-widest text-ink">
 					<span className="mr-2 text-brand" aria-hidden="true">✦</span>
 					Articoli Correlati
@@ -188,7 +188,7 @@ export default async function RelatedPosts({
 	}
 
 	return (
-		<section className="mx-auto mt-16 max-w-[820px] px-4 pb-12 sm:px-6">
+		<section data-sanity-id="RelatedPosts" className="mx-auto mt-16 max-w-[820px] px-4 pb-12 sm:px-6">
 			<SectionTitle className="mb-6">ARTICOLI CORRELATI</SectionTitle>
 
 			<div className="grid grid-cols-1 gap-5 sm:grid-cols-3">

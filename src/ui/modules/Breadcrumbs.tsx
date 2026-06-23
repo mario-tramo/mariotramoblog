@@ -6,13 +6,14 @@ export default async function Breadcrumbs({
 	crumbs,
 	hideCurrent,
 	currentPage,
+	...props
 }: Partial<{
 	crumbs: Sanity.Link[]
 	hideCurrent?: boolean
 	currentPage: Sanity.Page | Sanity.BlogPost
 }>) {
 	return (
-		<nav className="section py-4 text-sm text-muted">
+		<nav className="section py-4 text-sm text-muted" {...props}>
 			<ol
 				className="flex flex-wrap items-center gap-x-2 gap-y-1"
 				itemScope
@@ -30,7 +31,7 @@ export default async function Breadcrumbs({
 					</Fragment>
 				))}
 
-				<Crumb position={(crumbs?.length || 0) + 2} hidden={hideCurrent} isCurrent>
+				<Crumb position={(crumbs?.length || 0) + 1} hidden={hideCurrent} isCurrent>
 					{currentPage?.title || currentPage?.metadata.title}
 				</Crumb>
 			</ol>

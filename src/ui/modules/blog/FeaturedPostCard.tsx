@@ -26,7 +26,7 @@ export default function FeaturedPostCard({
 	const catColor = getCategoryColor(post.categories?.[0])
 
 	return (
-		<SectionCard className="overflow-hidden">
+		<SectionCard data-sanity-id="FeaturedPostCard" className="overflow-hidden">
 			<div className="p-4 pb-3 sm:p-5 sm:pb-3">
 				<SectionTitle>{title}</SectionTitle>
 			</div>

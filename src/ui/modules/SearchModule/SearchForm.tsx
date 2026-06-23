@@ -63,6 +63,7 @@ export default function SearchForm({
 						css.results,
 						'anim-fade-to-b absolute inset-x-0 top-full z-[1]',
 					)}
+					aria-live="polite"
 				>
 					<div className="frosted-glass bg-canvas border-line mt-1 max-h-[20em] space-y-2 overflow-y-auto rounded border py-2 shadow-md *:px-3">
 						{loading ? (

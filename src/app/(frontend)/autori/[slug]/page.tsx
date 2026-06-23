@@ -6,6 +6,7 @@ import { IMAGE_QUERY } from '@/sanity/lib/queries'
 import { BASE_URL } from '@/lib/env'
 import { personJsonLd, breadcrumbJsonLd } from '@/lib/jsonLd'
 import { Img } from '@/ui/primitives/Img'
+import { urlFor } from '@/sanity/lib/image'
 import PostPreview from '@/ui/modules/blog/PostPreview'
 import { FaLinkedinIn, FaInstagram, FaXTwitter } from 'react-icons/fa6'
 import { IoIosLink } from 'react-icons/io'
@@ -61,6 +62,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 		`Articoli e approfondimenti di ${author.name} su TRM Sport.`
 	const url = `${BASE_URL}/autori/${slug}`
 
+	const ogImage = author.image?.asset
+		? { url: urlFor(author.image).width(1200).height(630).url(), width: 1200, height: 630 }
+		: undefined
+
 	return {
 		metadataBase: new URL(BASE_URL),
 		title,
@@ -73,11 +78,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 			description,
 			siteName: 'TRM Sport',
 			locale: 'it_IT',
+			...ogImage && { images: ogImage },
 		},
 		twitter: {
-			card: 'summary',
+			card: 'summary_large_image',
 			title,
 			description,
+			...ogImage && { images: [ogImage.url] },
 		},
 		alternates: {
 			canonical: url,

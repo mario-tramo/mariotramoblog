@@ -50,7 +50,7 @@ export function MatchTimeline({ value }: MatchTimelineProps) {
 						<span className="font-mono text-sm text-muted-foreground w-12 shrink-0 pt-0.5">
 							{event.minute}
 						</span>
-						<span className="text-lg shrink-0">{eventIcons[event.type] || "•"}</span>
+						<span className="text-lg shrink-0" aria-hidden="true">{eventIcons[event.type] || "•"}</span>
 						<div className="flex-1 min-w-0">
 							<div className="text-sm font-medium">
 								{event.player}

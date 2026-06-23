@@ -10,7 +10,7 @@ interface QuoteBlockProps {
 
 export function QuoteBlock({ value }: QuoteBlockProps) {
 	return (
-		<blockquote className="my-8 border-l border-accent py-4 pl-6" style={{ borderLeftWidth: 'thick' }}>
+		<blockquote data-sanity-id="quoteBlock" className="my-8 border-l border-accent py-4 pl-6" style={{ borderLeftWidth: 'thick' }}>
 			<p className="text-xl font-bold italic leading-relaxed text-ink sm:text-2xl">
 				<span className="text-accent text-3xl font-serif leading-none select-none" aria-hidden="true">
 					{'\u201C\u201C'}

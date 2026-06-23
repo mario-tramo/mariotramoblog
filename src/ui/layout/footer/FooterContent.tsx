@@ -57,6 +57,7 @@ export default function FooterContent({
 						{footerLinks.map((group, i) => (
 							<div key={i} className="border-b border-line">
 								<button
+									type="button"
 									onClick={() => setOpenSection(openSection === i ? null : i)}
 									aria-expanded={openSection === i}
 									className="flex w-full items-center justify-between px-4 py-4 text-xs font-bold uppercase tracking-widest text-ink"
@@ -178,6 +179,7 @@ export default function FooterContent({
 							</Link>
 							<span className="text-muted/20">·</span>
 							<button
+								type="button"
 								onClick={requestReconsideration}
 								className="text-muted/40 transition hover:text-muted/60"
 							>

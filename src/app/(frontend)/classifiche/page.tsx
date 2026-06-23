@@ -8,8 +8,21 @@ import { BASE_URL } from '@/lib/env'
 export const metadata: Metadata = {
 	title: 'Classifiche',
 	description: 'Classifiche aggiornate dei principali campionati di calcio europei',
+	openGraph: {
+		type: 'website',
+		url: `${BASE_URL}/classifiche`,
+		title: 'Classifiche | Trm Sport',
+		description: 'Classifiche aggiornate dei principali campionati di calcio europei',
+		siteName: 'Trm Sport',
+		locale: 'it_IT',
+	},
+	twitter: {
+		card: 'summary_large_image',
+		title: 'Classifiche | Trm Sport',
+		description: 'Classifiche aggiornate dei principali campionati di calcio europei',
+	},
 	alternates: {
-		canonical: '/classifiche',
+		canonical: `${BASE_URL}/classifiche`,
 	},
 }
 

@@ -41,6 +41,7 @@ export default function TabList({
 		<div className="max-md:full-bleed no-scrollbar flex overflow-x-auto" role="tablist" onKeyDown={onKeyDown}>
 			{tabs?.map((tab, key) => (
 				<button
+					type="button"
 					className={cn(
 						'shrink-0 grow basis-[min(150px,80vw)] rounded-t border-b p-2 transition-all',
 						key === active

@@ -50,10 +50,11 @@ export default function DevColorSwitcher() {
 		>
 			{!open && (
 				<button
+					type="button"
 					onClick={() => setOpen(true)}
 					className="grid size-10 place-items-center rounded-full shadow-lg transition hover:scale-110"
 					style={{ backgroundColor: color, color: '#0a0f1a' }}
-					title="Color Switcher"
+					aria-label="Color Switcher"
 				>
 					<Palette className="size-5" />
 				</button>
@@ -72,8 +73,10 @@ export default function DevColorSwitcher() {
 							COLOR SWITCHER
 						</span>
 						<button
+							type="button"
 							onClick={() => setOpen(false)}
 							className="text-muted transition hover:text-ink"
+							aria-label="Chiudi"
 						>
 							<X className="size-4" />
 						</button>
@@ -106,6 +109,7 @@ export default function DevColorSwitcher() {
 					<div className="mb-3 grid grid-cols-6 gap-1.5">
 						{PRESETS.map((p) => (
 							<button
+								type="button"
 								key={p.value}
 								onClick={() => setColor(p.value)}
 								className="size-8 rounded-lg border-2 transition hover:scale-110"
@@ -116,7 +120,7 @@ export default function DevColorSwitcher() {
 											? 'white'
 											: 'transparent',
 								}}
-								title={p.name}
+								aria-label={p.name}
 							/>
 						))}
 					</div>
@@ -133,6 +137,7 @@ export default function DevColorSwitcher() {
 					</div>
 
 					<button
+						type="button"
 						onClick={reset}
 						className="w-full rounded-lg border border-line py-1.5 text-xs font-medium text-muted transition hover:text-ink"
 					>

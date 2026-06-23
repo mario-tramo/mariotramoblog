@@ -30,7 +30,7 @@ export default function Pagination({
 	return (
 		<nav className="frosted-glass sticky bottom-0 flex items-center justify-center gap-4 bg-canvas p-2 pb-[max(env(safe-area-inset-bottom),0.5rem)] tabular-nums">
 			{currentPage > 1 ? (
-				<Link href={pageUrl(currentPage - 1)} className="hover:underline">
+				<Link href={pageUrl(currentPage - 1)} className="hover:underline" aria-label="Pagina precedente">
 					Prec
 				</Link>
 			) : (
@@ -42,7 +42,7 @@ export default function Pagination({
 			</span>
 
 			{currentPage < totalPages ? (
-				<Link href={pageUrl(currentPage + 1)} className="hover:underline">
+				<Link href={pageUrl(currentPage + 1)} className="hover:underline" aria-label="Pagina successiva">
 					Succ
 				</Link>
 			) : (

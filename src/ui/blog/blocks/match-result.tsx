@@ -61,12 +61,12 @@ export function MatchResult({ value }: MatchResultProps) {
 				<div className="px-6 pb-3 flex justify-between text-sm text-muted-foreground">
 					<div className="flex-1">
 						{value.homeScorers?.map((s, i) => (
-							<div key={i}>⚽ {s}</div>
+							<div key={i}><span aria-hidden="true">⚽</span> {s}</div>
 						))}
 					</div>
 					<div className="flex-1 text-right">
 						{value.awayScorers?.map((s, i) => (
-							<div key={i}>{s} ⚽</div>
+							<div key={i}>{s} <span aria-hidden="true">⚽</span></div>
 						))}
 					</div>
 				</div>

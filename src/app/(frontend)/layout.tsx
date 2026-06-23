@@ -72,7 +72,7 @@ export default async function RootLayout({
 					<ScrollToTop />
 					<Announcement />
 					<Header />
-					<main id="main-content" role="main" tabIndex={-1} className="flex-1">
+					<main id="main-content" tabIndex={-1} className="flex-1">
 						{children}
 					</main>
 					<Footer />

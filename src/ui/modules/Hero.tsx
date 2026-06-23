@@ -221,6 +221,7 @@ export default function Hero({
 				{isCarousel && (
 					<div className="pointer-events-auto mt-6 flex items-center gap-3 sm:mt-8">
 						<button
+							type="button"
 							onClick={prev}
 							className="grid size-9 place-items-center rounded-full border border-white/20 text-white transition hover:border-white/40 hover:bg-white/10 sm:size-10"
 							aria-label="Slide precedente"
@@ -228,6 +229,7 @@ export default function Hero({
 							<ChevronLeft className="size-4" />
 						</button>
 						<button
+							type="button"
 							onClick={next}
 							className="grid size-9 place-items-center rounded-full border border-white/20 text-white transition hover:border-white/40 hover:bg-white/10 sm:size-10"
 							aria-label="Slide successiva"
@@ -243,6 +245,7 @@ export default function Hero({
 						>
 							{slides.map((slide, i) => (
 								<button
+									type="button"
 									key={slide._key}
 									onClick={() => { setProgress(0); setCurrent(i) }}
 									className="relative h-1 overflow-hidden rounded-full transition-all"

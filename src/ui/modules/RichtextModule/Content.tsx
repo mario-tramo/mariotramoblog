@@ -90,7 +90,7 @@ export default function Content({
 					block: {
 						normal: autoLink
 							? ({ children: c }) => <p>{autoLinkChildren(c, used)}</p>
-							: undefined,
+							: ({ children }) => <p>{children}</p>,
 						h2: (node) => <AnchoredHeading as="h2" {...node} />,
 						h3: (node) => <AnchoredHeading as="h3" {...node} />,
 						h4: (node) => <AnchoredHeading as="h4" {...node} />,
@@ -104,6 +104,7 @@ export default function Content({
 						socialEmbed: SocialEmbed,
 					'custom-html': ({ value }) => (
 							<CustomHTML
+								data-sanity-id="custom-html"
 								className="has-[table]:md:[grid-column:bleed] has-[table]:md:mx-auto"
 								{...value}
 							/>

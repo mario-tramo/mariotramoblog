@@ -75,7 +75,7 @@ export default function CardList({
 										className="aspect-video w-full object-cover"
 										image={card.image}
 										width={600}
-										alt={getBlockText(card.content as any)}
+										alt={getBlockText(card.content)}
 									/>
 								</figure>
 							)}

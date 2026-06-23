@@ -93,6 +93,7 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 			onKeyDown={handleKeyDown}
 		>
 			<button
+				type="button"
 				ref={triggerRef}
 				className="flex items-center gap-1 rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted transition-colors hover:bg-surface hover:text-ink"
 				onClick={() => setOpen((v) => !v)}
@@ -236,6 +237,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 					{/* Right Actions */}
 					<div className="flex items-center gap-1 sm:gap-2">
 						<button
+							type="button"
 							onClick={() => setSearchOpen(true)}
 							className="flex items-center gap-2 rounded-full border border-line-soft px-4 py-2 text-sm text-ink/80 transition hover:border-ink/20 hover:bg-surface sm:px-5"
 							aria-label="Cerca notizie"
@@ -255,6 +257,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 						))}
 
 						<button
+							type="button"
 							className="grid size-9 place-items-center rounded-full transition hover:bg-surface lg:hidden"
 							onClick={() => setMobileMenuOpen(true)}
 							aria-label="Menu"
@@ -291,6 +294,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 								<Logo logoUrl={logoUrl} siteTitle={siteTitle} />
 							</Link>
 							<button
+								type="button"
 								className="grid size-9 place-items-center rounded-full transition hover:bg-surface"
 								onClick={() => setMobileMenuOpen(false)}
 								aria-label="Chiudi"
@@ -308,6 +312,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 									{item.children?.length ? (
 										<>
 											<button
+												type="button"
 												className="flex w-full items-center justify-between px-3 py-4 text-base font-semibold"
 												onClick={() =>
 													setMobileExpanded(

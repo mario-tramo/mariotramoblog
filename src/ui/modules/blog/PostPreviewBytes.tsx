@@ -17,6 +17,7 @@ export default function PostPreviewBytes({
 	if (skeleton) {
 		return (
 			<div
+				data-sanity-id="PostPreviewBytes"
 				className="w-29 shrink-0 animate-pulse rounded-lg bg-surface-light lg:w-49"
 				style={{ aspectRatio: '9 / 16' }}
 			/>
@@ -25,6 +26,7 @@ export default function PostPreviewBytes({
 
 	return (
 		<Link
+			data-sanity-id="PostPreviewBytes"
 			href={resolveUrl(post, { base: false })}
 			className="group/byte relative block w-29 shrink-0 overflow-hidden rounded-lg lg:w-49"
 			style={{ aspectRatio: '9 / 16' }}

@@ -153,6 +153,7 @@ export default function SearchOverlay({
 						/>
 
 						<button
+							type="button"
 							onClick={onClose}
 							className="grid size-8 shrink-0 place-items-center rounded-lg text-muted transition-colors hover:bg-canvas hover:text-ink"
 							aria-label="Chiudi ricerca"

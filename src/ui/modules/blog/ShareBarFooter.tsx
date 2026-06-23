@@ -74,7 +74,7 @@ export default function ShareBarFooter({ title }: { title?: string }) {
 						className={btnClass}
 						aria-label={`Condividi su ${label}`}
 					>
-						<Icon className="size-5" />
+						<Icon className="size-5" aria-hidden="true" />
 					</a>
 				))}
 				<ClickToCopy
@@ -82,7 +82,7 @@ export default function ShareBarFooter({ title }: { title?: string }) {
 					className={btnClass}
 					aria-label="Copia link"
 				>
-					<IoIosLink className="size-5" />
+					<IoIosLink className="size-5" aria-hidden="true" />
 				</ClickToCopy>
 			</div>
 		</div>

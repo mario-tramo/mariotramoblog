@@ -2,6 +2,8 @@ import { cookies } from 'next/headers'
 import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import { groq } from 'next-sanity'
+import { cn } from '@/lib/utils'
+import Section from '@/ui/primitives/Section'
 import Carousel from './Carousel'
 import {
 	type CollectionFilter,
@@ -15,6 +17,8 @@ export default async function ArticleCarousel({
 	showFeaturedFirst,
 	filters,
 	searchParams,
+	nested,
+	...props
 }: Partial<{
 	limit: number
 	showFeaturedFirst: boolean
@@ -88,8 +92,8 @@ export default async function ArticleCarousel({
 	if (!posts?.length) return null
 
 	return (
-		<section className="section !pt-2 !pb-4 md:!pt-2 md:!pb-8 overflow-hidden">
+		<Section nested={nested} className={cn(!nested && '!pt-2 !pb-4 md:!pt-2 md:!pb-8', 'overflow-hidden')} {...props}>
 			<Carousel posts={posts} />
-		</section>
+		</Section>
 	)
 }

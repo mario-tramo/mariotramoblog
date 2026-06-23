@@ -120,6 +120,7 @@ export default function Modules({
 								path: `page[_key == "${module._key}"]`,
 							}).toString()
 						}
+						data-sanity-id={module._type}
 						key={module._key}
 					/>
 				)

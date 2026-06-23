@@ -72,6 +72,7 @@ function TikTokEmbed({ url, size }: { url: string; size?: EmbedSize }) {
       style={{ height: size?.height ?? 750, maxWidth: size?.width ?? 605, margin: "0 auto", display: "block" }}
       allow="encrypted-media"
       allowFullScreen
+      loading="lazy"
       title="TikTok"
     />
   );
@@ -88,6 +89,7 @@ function InstagramEmbed({ url, size }: { url: string; size?: EmbedSize }) {
       style={{ height: size?.height ?? 600, maxWidth: size?.width ?? 540, margin: "0 auto", display: "block" }}
       allow="encrypted-media"
       allowFullScreen
+      loading="lazy"
       title="Instagram"
     />
   );
@@ -146,6 +148,7 @@ function FacebookEmbed({ url, size }: { url: string; size?: EmbedSize }) {
       style={{ width: w, height: size?.height ?? 600, maxWidth: "100%", margin: "0 auto", display: "block" }}
       allow="encrypted-media"
       allowFullScreen
+      loading="lazy"
       title="Facebook"
     />
   );
@@ -162,6 +165,7 @@ function ThreadsEmbed({ url, size }: { url: string; size?: EmbedSize }) {
       style={{ height: size?.height ?? 500, maxWidth: size?.width ?? 540, margin: "0 auto", display: "block" }}
       allow="encrypted-media"
       allowFullScreen
+      loading="lazy"
       title="Threads"
     />
   );
@@ -193,11 +197,11 @@ export function SocialEmbed({ value }: SocialEmbedProps) {
 
   if (consent !== "accepted") {
     return (
-      <div className="my-6 rounded-xl border border-line bg-surface/50 p-8 text-center">
+      <div data-sanity-id="socialEmbed" className="my-6 rounded-xl border border-line bg-surface/50 p-8 text-center">
         <p className="mb-3 text-sm text-muted">
           Il contenuto {platform ? `${platformLabels[platform] || platform} ` : ""}è bloccato. Per visualizzarlo, accetta i cookie analitici.
         </p>
-        <button onClick={accept} className="action text-sm">
+        <button type="button" onClick={accept} className="action text-sm">
           Accetta cookie
         </button>
       </div>
@@ -212,7 +216,7 @@ export function SocialEmbed({ value }: SocialEmbedProps) {
     : <FallbackLink url={value.url} platform={platform} />;
 
   return (
-    <figure className="my-6">
+    <figure data-sanity-id="socialEmbed" className="my-6">
       {embed}
       {value.description && (
         <p className="mt-3 text-sm text-muted-foreground text-center italic">

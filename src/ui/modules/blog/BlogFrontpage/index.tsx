@@ -29,6 +29,7 @@ export default async function BlogFrontpage({
 	searchParams,
 	page = 1,
 	basePath = '/',
+	...props
 }: Partial<{
 	slides: Sanity.HeroSlide[]
 	mainPost: 'recent' | 'featured'
@@ -125,7 +126,7 @@ export default async function BlogFrontpage({
 	)
 
 	return (
-		<section className="section space-y-8">
+		<section className="section space-y-8" {...props}>
 			<h1 className="sr-only">
 				TRM Sport — Notizie di Calcio, Formula 1, Tennis e Sport
 			</h1>

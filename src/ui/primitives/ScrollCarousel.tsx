@@ -100,6 +100,7 @@ export default function ScrollCarousel({
 			{showArrows && (
 				<>
 					<button
+						type="button"
 						onClick={() => scroll('left')}
 						className={cn(
 							'absolute top-1/2 left-1 z-10 hidden -translate-y-1/2 place-items-center rounded-full border border-line bg-surface text-ink shadow-lg transition hover:bg-brand hover:text-brand-foreground sm:grid',
@@ -111,6 +112,7 @@ export default function ScrollCarousel({
 						<ChevronLeft className="size-5" strokeWidth={2} />
 					</button>
 					<button
+						type="button"
 						onClick={() => scroll('right')}
 						className={cn(
 							'absolute top-1/2 right-1 z-10 hidden -translate-y-1/2 place-items-center rounded-full border border-line bg-surface text-ink shadow-lg transition hover:bg-brand hover:text-brand-foreground sm:grid',
@@ -129,6 +131,7 @@ export default function ScrollCarousel({
 				<div className="mt-4 flex items-center justify-center gap-1.5">
 					{Array.from({ length: totalPages }).map((_, i) => (
 						<button
+							type="button"
 							key={i}
 							onClick={() => scrollToPage(i)}
 							className={cn(

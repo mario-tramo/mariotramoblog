@@ -7,6 +7,7 @@ export default function Callout({
 	content,
 	ctas,
 	nested,
+	...props
 }: Partial<{
 	content: PortableTextBlock[]
 	ctas: Sanity.CTA[]
@@ -15,7 +16,7 @@ export default function Callout({
 	const Tag = nested ? 'div' : 'section'
 
 	return (
-		<Tag className={cn(!nested && 'section', 'text-center')}>
+		<Tag className={cn(!nested && 'section', 'text-center')} {...props}>
 			<div className={cn(!nested && 'section', 'bg-accent/3 max-w-screen-lg rounded')}>
 				<div className="richtext mx-auto max-w-screen-sm text-balance">
 					<PortableText value={content} />

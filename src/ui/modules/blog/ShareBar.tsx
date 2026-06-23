@@ -24,7 +24,7 @@ export default function ShareBar({ title }: { title?: string }) {
 				className={btnClass}
 				aria-label="Condividi su X"
 			>
-				<FaXTwitter className="size-4" />
+				<FaXTwitter className="size-4" aria-hidden="true" />
 			</a>
 			<a
 				href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
@@ -33,7 +33,7 @@ export default function ShareBar({ title }: { title?: string }) {
 				className={btnClass}
 				aria-label="Condividi su Facebook"
 			>
-				<FaFacebookF className="size-4" />
+				<FaFacebookF className="size-4" aria-hidden="true" />
 			</a>
 			<ClickToCopy
 				value={url}

@@ -133,6 +133,7 @@ export function ImageGallery({ value }: ImageGalleryProps) {
         {isMultiple && (
           <>
             <button
+              type="button"
               onClick={goPrev}
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/70"
               aria-label="Precedente"
@@ -140,6 +141,7 @@ export function ImageGallery({ value }: ImageGalleryProps) {
               ‹
             </button>
             <button
+              type="button"
               onClick={goNext}
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/70"
               aria-label="Successiva"
@@ -161,6 +163,7 @@ export function ImageGallery({ value }: ImageGalleryProps) {
         <div className="flex justify-center gap-1.5 mt-3">
           {value.images.map((_, i) => (
             <button
+              type="button"
               key={i}
               onClick={() => setActiveIndex(i)}
               className={`w-2 h-2 rounded-full transition-colors ${i === activeIndex ? "bg-foreground" : "bg-border"}`}

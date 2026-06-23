@@ -55,6 +55,7 @@ export default async function NoArticlesFound() {
 								strokeWidth={1.6}
 								strokeLinecap="round"
 								strokeLinejoin="round"
+								aria-hidden="true"
 							>
 								<rect x="3" y="4" width="18" height="18" rx="2" />
 								<line x1="16" y1="2" x2="16" y2="6" />
@@ -84,6 +85,7 @@ export default async function NoArticlesFound() {
 								stroke="white"
 								strokeWidth={3.5}
 								strokeLinecap="round"
+								aria-hidden="true"
 							>
 								<line x1="18" y1="6" x2="6" y2="18" />
 								<line x1="6" y1="6" x2="18" y2="18" />
@@ -145,6 +147,7 @@ export default async function NoArticlesFound() {
 								strokeWidth={2.2}
 								strokeLinecap="round"
 								strokeLinejoin="round"
+								aria-hidden="true"
 							>
 								<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
 								<path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />

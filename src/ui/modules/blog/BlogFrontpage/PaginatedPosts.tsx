@@ -15,7 +15,7 @@ export default function PaginatedPosts({
 	searchParams?: Record<string, string | string[] | undefined>
 }) {
 	return (
-		<div className="relative space-y-12">
+		<div data-sanity-id="PaginatedPosts" className="relative space-y-12">
 			<ul
 				id="blog-list"
 				className="grid scroll-mt-[calc(var(--header-height)+1rem)] gap-x-8 gap-y-12 sm:grid-cols-[repeat(auto-fill,minmax(300px,1fr))]"

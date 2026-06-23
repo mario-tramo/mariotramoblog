@@ -50,12 +50,10 @@ export function getInitials(name?: string) {
 		.slice(0, 2)
 }
 
+import type { PortableTextBlock } from '@portabletext/react'
+
 export function getBlockText(
-	block?: {
-		children?: {
-			text: string
-		}[]
-	}[],
+	block?: PortableTextBlock[],
 	lineBreakChar: string = '↵ ',
 ) {
 	return (
