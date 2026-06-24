@@ -27,6 +27,8 @@ import { BASE_URL } from '@/lib/env'
 import { processSlug } from '@/lib/processSlug'
 import errors from '@/lib/errors'
 
+export const revalidate = 60
+
 export default async function Page({ params, searchParams }: Props) {
 	const resolvedParams = await params
 	const resolvedSearchParams = await searchParams

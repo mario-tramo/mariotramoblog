@@ -29,6 +29,9 @@ const securityHeaders = [
 ]
 
 export default {
+	compiler: {
+		removeConsole: process.env.NODE_ENV === 'production',
+	},
 	async headers() {
 		return [
 			{

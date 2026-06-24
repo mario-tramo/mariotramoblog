@@ -18,7 +18,7 @@ export default function ShareBar({ title }: { title?: string }) {
 	const LinkIcon = getIcon('link')!
 
 	return (
-		<div className="ml-auto flex items-center gap-2">
+		<div className="mt-2 md:mt-0 md:ml-auto flex items-center gap-2">
 			<span className="text-sm text-muted">Condividi su</span>
 			<a
 				href={`https://x.com/intent/tweet?text=${text}&url=${encodedUrl}`}

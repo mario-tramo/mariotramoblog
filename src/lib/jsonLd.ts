@@ -33,6 +33,15 @@ const PUBLISHER = {
 	},
 } as const
 
+function normalizeDate(date: string): string {
+	if (date.match(/^\d{4}-\d{2}-\d{2}$/)) {
+		return `${date}T12:00:00Z`
+	}
+	if (date.includes('T') && date.includes('Z')) return date
+	if (date.includes('T') && !date.includes('Z')) return `${date}Z`
+	return date
+}
+
 const NEWS_MEDIA_PUBLISHER = {
 	'@type': 'NewsMediaOrganization',
 	name: 'TRM Sport',
@@ -83,8 +92,8 @@ export function newsArticleJsonLd(post: Sanity.BlogPost) {
 		description: post.metadata.description,
 		url,
 		inLanguage: post.language || 'it',
-		datePublished: post.publishDate,
-		dateModified: post._updatedAt || post.publishDate,
+		datePublished: normalizeDate(post.publishDate),
+		dateModified: normalizeDate(post._updatedAt || post.publishDate),
 		...(post.readTime && {
 			wordCount: Math.round(post.readTime * 200),
 		}),

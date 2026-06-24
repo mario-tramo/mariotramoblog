@@ -56,10 +56,11 @@
   "license": "ISC",
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build --webpack",
-    "start": "next start",
+    "build": "NODE_ENV=production next build --webpack",
+    "start": "NODE_ENV=production next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "prod": "pnpm typecheck && pnpm build && pnpm start",
     "seed:legal": "node scripts/seed-legal.mjs"
   }
 }

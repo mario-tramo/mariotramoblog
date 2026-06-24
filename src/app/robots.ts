@@ -1,13 +1,13 @@
 import type { MetadataRoute } from 'next'
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!.replace(/\/+$/, '')
 
 export default function robots(): MetadataRoute.Robots {
 	return {
 		rules: [
 			{
 				userAgent: '*',
-				allow: '/',
+				allow: ['/', '/_next/static/'],
 				disallow: ['/admin', '/api/', '/_next/'],
 			},
 			// Block AI training crawlers
@@ -19,7 +19,7 @@ export default function robots(): MetadataRoute.Robots {
 			{ userAgent: 'Omgilibot', disallow: '/' },
 			{ userAgent: 'FacebookBot', allow: '/' },
 		],
-		sitemap: `${BASE_URL}/sitemap.xml`,
+		sitemap: [`${BASE_URL}/sitemap.xml`, `${BASE_URL}/news-sitemap.xml`],
 		host: BASE_URL,
 	}
 }
