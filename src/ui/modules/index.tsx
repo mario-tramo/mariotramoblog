@@ -8,6 +8,7 @@ import Breadcrumbs from './Breadcrumbs'
 import Callout from './Callout'
 import CardList from './CardList'
 import Divider from './Divider'
+import EditorialBanner from './EditorialBanner'
 import Hero from './Hero'
 import RichtextModule from './RichtextModule'
 import LayoutBlock from './LayoutBlock'
@@ -35,6 +36,7 @@ const MODULE_MAP = {
 	'card-list': CardList,
 	'custom-html': CustomHTML,
 	divider: Divider,
+	'editorial-banner': EditorialBanner,
 	hero: Hero,
 	'layout-block': LayoutBlock,
 	'richtext-module': RichtextModule,

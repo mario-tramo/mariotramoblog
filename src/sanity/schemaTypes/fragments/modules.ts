@@ -13,6 +13,7 @@ export default defineField({
 		{ type: 'card-list' },
 		{ type: 'accordion-list' },
 		{ type: 'callout' },
+		{ type: 'editorial-banner' },
 		{ type: 'blog-frontpage' },
 		{ type: 'blog-list' },
 		{ type: 'blog-post-content' },
@@ -44,7 +45,7 @@ export default defineField({
 				{
 					name: 'contenuto',
 					title: 'Contenuto',
-					of: ['richtext-module', 'card-list', 'accordion-list', 'callout', 'custom-html'],
+					of: ['richtext-module', 'card-list', 'accordion-list', 'callout', 'editorial-banner', 'custom-html'],
 				},
 				{
 					name: 'blog',

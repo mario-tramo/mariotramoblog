@@ -75,6 +75,7 @@ function contentModules() {
 		{ type: 'accordion-list' },
 		{ type: 'blog-list' },
 		{ type: 'callout' },
+		{ type: 'editorial-banner' },
 		{ type: 'standings' },
 		{ type: 'custom-html' },
 		{ type: 'posts-feed' },

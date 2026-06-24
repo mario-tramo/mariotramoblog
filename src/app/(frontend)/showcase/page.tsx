@@ -25,6 +25,7 @@ import AccordionList from '@/ui/modules/AccordionList'
 import ModuleCallout from '@/ui/modules/Callout'
 import Divider from '@/ui/modules/Divider'
 import ArticleCarousel from '@/ui/modules/ArticleCarousel'
+import EditorialBanner from '@/ui/modules/EditorialBanner'
 import BlogList from '@/ui/modules/blog/BlogList'
 import PostsFeed from '@/ui/modules/PostsFeed'
 import StandingsModule from '@/ui/modules/Standings'
@@ -355,6 +356,93 @@ export default function ShowcasePage() {
 						variant="compact"
 						title="Newsletter"
 					/>
+				</div>
+			</Section>
+
+			{/* ── EDITORIAL BANNER ── */}
+			<Section title="Banner Editoriale" wide>
+				<p className="mx-auto max-w-screen-md text-sm text-muted-foreground">
+					Banner promozionale con decorazioni SVG sport-specifiche e gradienti dinamici. 15 preset disponibili.
+				</p>
+
+				<Variant label="Completo — Calcio" props='preset="calcio-green" category="Match Report" author + timeAgo + CTA' />
+				<EditorialBanner
+					preset="calcio-green"
+					category="Match Report"
+					title="Derby Infinito: Inter-Milan 3-1, Lautaro firma la notte perfetta"
+					subtitle="Tripletta del Toro e prestazione maiuscola di Barella: Inzaghi espugna il Meazza e resta in scia al Napoli."
+					author="Marco Rossi"
+					timeAgo="2 ore fa"
+					ctaText="LEGGI"
+					ctaLink={{ type: 'external', external: '#' } as any}
+				/>
+
+				<Variant label="Con sottotitolo — Analisi" props='preset="analisi-violet" category="Analisi del Giorno"' />
+				<EditorialBanner
+					preset="analisi-violet"
+					category="Analisi del Giorno"
+					title="Perché l'Inter domina a centrocampo: il ruolo chiave di Calhanoglu"
+					subtitle="La regia del turco è il motore nascosto della squadra di Inzaghi. Numeri e posizionamento."
+				/>
+
+				<Variant label="Autore + tempo — F1" props='preset="f1-red" category="GP Monaco" author + timeAgo' />
+				<EditorialBanner
+					preset="f1-red"
+					category="GP Monaco"
+					title="Leclerc trionfa a Monaco: «Un sogno che si avvera»"
+					author="Matteo Bianchi"
+					timeAgo="5 ore fa"
+					ctaText="SCOPRI"
+				/>
+
+				<Variant label="Solo titolo — Tennis" props='preset="tennis-clay" category="Internazionali"' />
+				<EditorialBanner
+					preset="tennis-clay"
+					category="Internazionali"
+					title="Sinner batte Alcaraz in tre set e vola in semifinale"
+				/>
+
+				<Variant label="Basket — vari colori" props='tre preset NBA a confronto' />
+				<div className="grid gap-4 md:grid-cols-3">
+					<EditorialBanner
+						preset="basket-nba"
+						category="NBA"
+						title="I Lakers vincono a Denver: Davis dominante"
+						ctaText="LEGGI"
+					/>
+					<EditorialBanner
+						preset="basket-bulls"
+						category="NBA"
+						title="Bulls in corsa per i playoff: segnali di ripresa"
+						ctaText="LEGGI"
+					/>
+					<EditorialBanner
+						preset="basket-lakers"
+						category="NBA"
+						title="LeBron da record: superati i 40.000 punti in carriera"
+						ctaText="LEGGI"
+					/>
+				</div>
+
+				<Variant label="Calcio — tutte le tinte" props='green + blue + amber' />
+				<div className="grid gap-4 md:grid-cols-3">
+					<EditorialBanner preset="calcio-green" category="Serie A" title="Lautaro show: tripletta nel derby" ctaText="LEGGI" />
+					<EditorialBanner preset="calcio-blue" category="Champions" title="L'Inter vola a Istanbul: rimonta da sogno" ctaText="LEGGI" />
+					<EditorialBanner preset="calcio-amber" category="Mercato" title="Osimhen saluta: è fatta col PSG" ctaText="LEGGI" />
+				</div>
+
+				<Variant label="Analisi — tutte le tinte" props='violet + blue + indigo' />
+				<div className="grid gap-4 md:grid-cols-3">
+					<EditorialBanner preset="analisi-violet" category="Analisi" title="Il nuovo modulo di Inzaghi: 3-5-2 o 3-4-3?" ctaText="ANALISI" />
+					<EditorialBanner preset="analisi-blue" category="Analisi" title="La corsa Scudetto: i numeri del rush finale" ctaText="ANALISI" />
+					<EditorialBanner preset="analisi-indigo" category="Analisi" title="Percentuali e xG: la fotografia della stagione" ctaText="ANALISI" />
+				</div>
+
+				<Variant label="Tennis — tutte le superfici" props='clay + grass + hard' />
+				<div className="grid gap-4 md:grid-cols-3">
+					<EditorialBanner preset="tennis-clay" category="Terra" title="Nadal: «Roland Garros sarà l'ultima danza»" ctaText="LEGGI" />
+					<EditorialBanner preset="tennis-grass" category="Erba" title="Djokovic vince il suo nono Wimbledon" ctaText="LEGGI" />
+					<EditorialBanner preset="tennis-hard" category="Cemento" title="Sinner conquista gli Australian Open" ctaText="LEGGI" />
 				</div>
 			</Section>
 

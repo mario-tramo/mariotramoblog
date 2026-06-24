@@ -135,6 +135,17 @@ declare global {
 			desktopRows?: '5' | '10' | 'all'
 		}
 
+		interface EditorialBanner extends Module<'editorial-banner'> {
+			preset?: string
+			category?: string
+			title?: string
+			subtitle?: string
+			author?: string
+			timeAgo?: string
+			ctaText?: string
+			ctaLink?: Link
+		}
+
 		interface CustomHTML extends Module<'custom-html'> {
 			className?: string
 			html?: {
