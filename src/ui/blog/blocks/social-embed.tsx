@@ -190,6 +190,127 @@ function FallbackLink({
   );
 }
 
+type EmbedConfig = {
+  avatarGradient: string;
+  headerText: string;
+  subText: string | null;
+  bodyText: string;
+  timestamp: string;
+  actions: string[];
+};
+
+const embedConfigs: Record<string, EmbedConfig> = {
+  twitter: {
+    avatarGradient: "from-sky-400 to-blue-600",
+    headerText: "Nome utente",
+    subText: "@username",
+    bodyText:
+      "Testo del tweet che sarebbe visibile se i cookie analitici fossero accettati. Qui ci sarebbe il contenuto reale del tweet con link, hashtag e menzioni.",
+    timestamp: "4:32 PM · 24 giu 2026",
+    actions: ["Reply", "Repost", "Like"],
+  },
+  instagram: {
+    avatarGradient: "from-pink-400 to-amber-500",
+    headerText: "nome_utente",
+    subText: null,
+    bodyText:
+      "Didascalia del post Instagram bloccata dai cookie analitici. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
+    timestamp: "24 giugno 2026",
+    actions: ["Like", "Comment", "Share"],
+  },
+  tiktok: {
+    avatarGradient: "from-cyan-400 to-purple-600",
+    headerText: "@username",
+    subText: null,
+    bodyText:
+      "Descrizione del video TikTok bloccata dai cookie analitici. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
+    timestamp: "2026-6-24",
+    actions: ["Like", "Comment", "Share"],
+  },
+  facebook: {
+    avatarGradient: "from-blue-500 to-blue-800",
+    headerText: "Nome Utente",
+    subText: null,
+    bodyText:
+      "Testo del post Facebook bloccato dai cookie analitici. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
+    timestamp: "24 giugno 2026",
+    actions: ["Like", "Comment", "Share"],
+  },
+  threads: {
+    avatarGradient: "from-zinc-800 to-zinc-600",
+    headerText: "Nome utente",
+    subText: "@username",
+    bodyText:
+      "Testo del post Threads bloccato dai cookie analitici. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
+    timestamp: "4:32 PM · 24 giu 2026",
+    actions: ["Reply", "Repost", "Like"],
+  },
+};
+
+function BlurredEmbedCard({
+  platform,
+  onAccept,
+}: {
+  platform: string;
+  onAccept: () => void;
+}) {
+  const config = embedConfigs[platform] ?? embedConfigs.twitter;
+
+  return (
+    <div className="relative mx-auto w-full max-w-sm overflow-hidden rounded-xl border border-line bg-white">
+      <div aria-hidden className="blur-[2px] [&>*]:select-none">
+        <div className="p-4 pb-3">
+          <div className="flex items-start gap-3">
+            <div
+              className={`size-10 shrink-0 rounded-full bg-linear-to-br ${config.avatarGradient}`}
+            />
+            <div className="min-w-0 flex-1 space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold text-neutral-900">
+                  {config.headerText}
+                </span>
+                {config.subText && (
+                  <span className="text-xs text-neutral-500">
+                    {config.subText}
+                  </span>
+                )}
+              </div>
+              <p className="text-sm leading-relaxed text-neutral-900">
+                {config.bodyText}
+              </p>
+              <div className="flex items-center gap-4 pt-1 text-neutral-500">
+                <span className="text-xs">{config.timestamp}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="mx-4 mb-3 h-44 rounded-lg bg-neutral-100" />
+        <div className="flex items-center gap-6 border-t border-neutral-100 px-4 py-3 text-neutral-500">
+          {config.actions.map((action) => (
+            <span key={action} className="text-xs">
+              {action}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/60 backdrop-blur-[1px]">
+        <p className="mb-3 text-balance text-center text-sm text-neutral-900">
+          Il contenuto {platformLabels[platform] ?? "social"} è bloccato.
+          <br />
+          Per visualizzarlo, accetta i cookie analitici.
+        </p>
+        <button
+          type="button"
+          onClick={onAccept}
+          className="rounded-full bg-neutral-900 px-5 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-neutral-800"
+        >
+          Accetta cookie
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function SocialEmbed({ value }: SocialEmbedProps) {
   const platform = (value.platform as Platform) || detectPlatform(value.url);
   const size: EmbedSize = { width: value.width, height: value.height };
@@ -197,14 +318,12 @@ export function SocialEmbed({ value }: SocialEmbedProps) {
 
   if (consent !== "accepted") {
     return (
-      <div data-sanity-id="socialEmbed" className="my-6 rounded-xl border border-line bg-surface/50 p-8 text-center">
-        <p className="mb-3 text-sm text-muted">
-          Il contenuto {platform ? `${platformLabels[platform] || platform} ` : ""}è bloccato. Per visualizzarlo, accetta i cookie analitici.
-        </p>
-        <button type="button" onClick={accept} className="action text-sm">
-          Accetta cookie
-        </button>
-      </div>
+      <figure data-sanity-id="socialEmbed" className="my-6">
+        <BlurredEmbedCard
+          platform={platform ?? "social"}
+          onAccept={accept}
+        />
+      </figure>
     );
   }
 
