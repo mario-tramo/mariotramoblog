@@ -68,7 +68,11 @@ export default {
 				destination.type == 'internal' =>
 					select(
 						destination.internal->._type == 'blog.post' =>
-							'/' + coalesce(destination.internal->.categories[0]->slug.current, '') + '/',
+							select(
+								defined(destination.internal->.categories[0]->slug.current) =>
+									'/' + destination.internal->.categories[0]->slug.current + '/',
+								'/'
+							),
 						destination.internal->._type == 'blog.category' =>
 							'/',
 						'/'

@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import JsonLd from '@/ui/primitives/JsonLd'
 import Modules from '@/ui/modules'
 import ViewTracker from '@/ui/ViewTracker'
@@ -116,6 +116,10 @@ export default async function Page({ params, searchParams }: Props) {
 	const post = await getPost(resolvedParams)
 	if (post) {
 		const catSlug = post.categories?.[0]?.slug?.current
+		// Redirect to canonical URL if accessed via non-primary category
+		if (resolvedParams.slug?.[0] && catSlug && resolvedParams.slug[0] !== catSlug) {
+			permanentRedirect(`/${catSlug}/${post.metadata.slug.current}`)
+		}
 		const faqItems = collectFaqItems(post.modules)
 		return (
 			<>
