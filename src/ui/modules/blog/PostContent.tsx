@@ -41,7 +41,7 @@ export default function PostContent({
 			>
 				<ol className="flex flex-wrap items-center gap-1 text-xs text-muted" itemScope itemType="https://schema.org/BreadcrumbList">
 					<li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
-						<Link href="/" itemProp="item" itemScope itemType="https://schema.org/WebPage" className="transition hover:text-ink">
+						<Link href="/" itemProp="item" className="transition hover:text-ink">
 							<span itemProp="name">Home page</span>
 						</Link>
 						<meta itemProp="position" content="1" />
@@ -50,7 +50,7 @@ export default function PostContent({
 					<li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
 						<Link
 							href="/"
-							itemProp="item" itemScope itemType="https://schema.org/WebPage"
+							itemProp="item"
 							className="transition hover:text-ink"
 						>
 							<span itemProp="name">Notizie</span>
@@ -63,7 +63,7 @@ export default function PostContent({
 							<li itemProp="itemListElement" itemScope itemType="https://schema.org/ListItem">
 								<Link
 									href={`/${post.categories[0].slug.current}`}
-									itemProp="item" itemScope itemType="https://schema.org/WebPage"
+									itemProp="item"
 									className="transition hover:text-ink"
 								>
 									<span itemProp="name">{post.categories[0].title}</span>
