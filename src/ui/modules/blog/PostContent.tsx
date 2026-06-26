@@ -16,6 +16,7 @@ import { cn, getInitials } from '@/lib/utils'
 import { getSocialIcon } from '@/ui/primitives/SocialIcons'
 import { RelatedPostsSkeleton } from '@/ui/skeletons/PostContentSkeleton'
 import GooglePreferredSourceBanner from './GooglePreferredSourceBanner'
+import ScrollProgressBar from '@/ui/features/ScrollProgressBar'
 import css from './PostContent.module.css'
 
 function AuthorSocialIcon({ url }: { url: string }) {
@@ -34,6 +35,8 @@ export default function PostContent({
 
 	return (
 		<article {...moduleProps(props)}>
+			<ScrollProgressBar />
+
 			{/* Breadcrumb */}
 			<nav
 				aria-label="Navigazione breadcrumb"

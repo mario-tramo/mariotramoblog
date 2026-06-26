@@ -20,4 +20,4 @@ export const CONTACT_NAME =
 export const CONTACT_ADDRESS =
 	process.env.NEXT_PUBLIC_CONTACT_ADDRESS || 'Via dello Sport, 1 — 00100 Roma (RM)'
 export const CONTACT_EMAIL =
-	process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'info@trmsport.it'
+	process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'info@trmsport.com'

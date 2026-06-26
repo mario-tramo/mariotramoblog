@@ -1114,6 +1114,58 @@ export default function ShowcasePage() {
 				</div>
 			</Section>
 
+			{/* Premium features */}
+			<Section title="✨ Premium Features">
+				<div className="grid gap-8 sm:grid-cols-2">
+					{/* Skeleton shimmer */}
+					<div className="space-y-4 rounded-xl border border-line-soft bg-surface/30 p-5">
+						<h3 className="font-heading text-xl uppercase text-ink">Shimmer Skeleton</h3>
+						<p className="text-sm text-muted">
+							Scheletri di caricamento animati con effetto shimmer. Attivi globalmente su tutti i componenti.
+						</p>
+						<div className="space-y-3">
+							<div className="skeleton w-3/4" />
+							<div className="skeleton-2 w-full" />
+							<div className="skeleton w-1/2" />
+							<div className="skeleton-3 w-5/6" />
+						</div>
+					</div>
+
+					{/* Scroll progress bar */}
+					<div className="space-y-4 rounded-xl border border-line-soft bg-surface/30 p-5">
+						<h3 className="font-heading text-xl uppercase text-ink">Scroll Progress Bar</h3>
+						<p className="text-sm text-muted">
+							Indicatore di avanzamento lettura nella parte superiore degli articoli. Si aggiorna in tempo reale.
+						</p>
+						<div className="flex items-center gap-3">
+							<div className="h-2 flex-1 rounded-full bg-ink/10">
+								<div className="h-full w-3/5 rounded-full bg-accent transition-all" />
+							</div>
+							<span className="text-xs font-bold text-accent">60%</span>
+						</div>
+						<p className="text-[11px] text-muted/60">Attivo su tutti gli articoli — barra sottile sotto l'header.</p>
+					</div>
+
+					{/* Lightbox */}
+					<div className="space-y-4 rounded-xl border border-line-soft bg-surface/30 p-5">
+						<h3 className="font-heading text-xl uppercase text-ink">Image Lightbox</h3>
+						<p className="text-sm text-muted">
+							Clicca sulle immagini degli articoli per vederle a schermo intero con overlay sfocato.
+						</p>
+						<div className="flex items-center justify-center rounded-lg bg-ink/5 p-6">
+							<div className="relative cursor-pointer rounded-lg bg-accent/10 p-8 text-center hover:bg-accent/20 transition-colors">
+								<svg className="mx-auto size-8 text-accent/60" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+									<path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />
+								</svg>
+								<p className="mt-2 text-xs text-muted">Clicca su qualsiasi immagine articolo → lightbox</p>
+							</div>
+						</div>
+					</div>
+
+	
+				</div>
+			</Section>
+
 			{/* Full-width background strips */}
 			<div className="mx-auto max-w-screen-md">
 				<h2 className="text-lg font-bold uppercase tracking-widest text-muted-foreground">

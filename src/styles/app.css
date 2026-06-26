@@ -269,7 +269,32 @@
 	}
 }
 
-/* --- Skeleton (no shimmer) --- */
+/* --- Skeleton shimmer animation --- */
+
+@keyframes shimmer {
+	0% { background-position: -200% 0; }
+	100% { background-position: 200% 0; }
+}
+
+@utility skeleton {
+	@apply bg-ink/3 h-[1lh] relative overflow-hidden;
+	background: linear-gradient(
+		90deg,
+		color-mix(in oklab, var(--color-ink) 3%, transparent) 25%,
+		color-mix(in oklab, var(--color-ink) 8%, transparent) 50%,
+		color-mix(in oklab, var(--color-ink) 3%, transparent) 75%
+	);
+	background-size: 200% 100%;
+	animation: shimmer 1.5s ease-in-out infinite;
+}
+@utility skeleton-2 {
+	@apply skeleton;
+	height: 2lh;
+}
+@utility skeleton-3 {
+	@apply skeleton;
+	height: 3lh;
+}
 
 /* --- CTA & Button micro-interactions --- */
 
@@ -833,18 +858,6 @@
 	& video {
 		width: 100%;
 	}
-}
-
-/* skeleton */
-
-@utility skeleton {
-	@apply bg-ink/3 h-[1lh];
-}
-@utility skeleton-2 {
-	@apply bg-ink/3 h-[2lh];
-}
-@utility skeleton-3 {
-	@apply bg-ink/3 h-[3lh];
 }
 
 /* components */
