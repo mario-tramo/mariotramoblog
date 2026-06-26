@@ -41,14 +41,19 @@ export default defineType({
 		defineField({
 			name: 'staticValue',
 			title: 'Valore statico',
-			description: 'Lo slug del valore da filtrare (es. "tennis", "formula-1")',
-			type: 'string',
+			description: 'Cerca e seleziona la categoria, tag o autore',
+			type: 'reference',
+			to: [
+				{ type: 'blog.category' },
+				{ type: 'blog.tag' },
+				{ type: 'person' },
+			],
 			hidden: ({ parent }) => parent?.mode !== 'static',
 			validation: (Rule) =>
 				Rule.custom((value, context) => {
 					const parent = context.parent as { mode?: string }
 					if (parent?.mode === 'static' && !value) {
-						return 'Inserisci un valore statico'
+						return 'Seleziona un valore'
 					}
 					return true
 				}),
@@ -82,11 +87,21 @@ export default defineType({
 		select: {
 			field: 'field',
 			mode: 'mode',
-			staticValue: 'staticValue',
+			staticSlug: 'staticValue->slug.current',
+			staticTitle: 'staticValue->title',
+			staticName: 'staticValue->name',
 			urlParam: 'urlParam',
 			fallback: 'fallback',
 		},
-		prepare: ({ field, mode, staticValue, urlParam, fallback }) => {
+		prepare: ({
+			field,
+			mode,
+			staticSlug,
+			staticTitle,
+			staticName,
+			urlParam,
+			fallback,
+		}) => {
 			const fieldLabels: Record<string, string> = {
 				category: 'Categoria',
 				tag: 'Tag',
@@ -95,7 +110,7 @@ export default defineType({
 			const fieldLabel = fieldLabels[field] || field
 			const subtitle =
 				mode === 'static'
-					? `Statico: ${staticValue || '—'}`
+					? `Statico: ${staticTitle || staticName || staticSlug || '—'}`
 					: `Dinamico: ?${urlParam || '—'}${fallback ? ` (fallback: ${fallback})` : ''}`
 
 			return {

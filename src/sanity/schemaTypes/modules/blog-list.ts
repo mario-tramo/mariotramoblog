@@ -28,6 +28,14 @@ export default defineType({
 			group: 'content',
 		}),
 		defineField({
+			name: 'category',
+			title: 'Categoria',
+			description: 'Mostra solo gli articoli di questa categoria. Se vuoto, mostra tutti i post.',
+			type: 'reference',
+			to: [{ type: 'blog.category' }],
+			group: 'content',
+		}),
+		defineField({
 			name: 'intro',
 			title: 'Introduzione',
 			type: 'array',

@@ -32,9 +32,10 @@ export default async function BlogList({
 	showFeaturedPostsFirst,
 	displayFilters,
 	filters,
+	category,
 	searchParams,
 	nested,
-	filteredCategory,
+	filteredCategory: _filteredCategory,
 	...props
 }: Partial<{
 	pretitle: string
@@ -45,22 +46,13 @@ export default async function BlogList({
 	showFeaturedPostsFirst: boolean
 	displayFilters: boolean
 	filters: CollectionFilter[]
+	category: string
+	filteredCategory: { _ref: string }
 	searchParams: Record<string, string | string[] | undefined>
 	nested: boolean
-	filteredCategory: { _ref: string }
 }> &
 	Sanity.Module) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
-
-	// Legacy filteredCategory support: resolve the reference to a category slug
-	let legacyCategorySlug: string | undefined
-	if (filteredCategory?._ref) {
-		const cat = await fetchSanityLive<{ slug: string } | null>({
-			query: groq`*[_type == 'blog.category' && _id == $catId][0]{ "slug": slug.current }`,
-			params: { catId: filteredCategory._ref },
-		})
-		legacyCategorySlug = cat?.slug
-	}
 
 	// Resolve dynamic filters (new system)
 	const resolvedFilters = resolveCollectionFilters(filters, { searchParams })
@@ -68,9 +60,8 @@ export default async function BlogList({
 	const filterParams = buildGroqFilterParams(resolvedFilters)
 
 	// Auto-apply ?categoria from URL when no explicit category filter configured
-	const hasExplicitCategoryFilter = resolvedFilters.some(
-		(f) => f.field === 'category',
-	)
+	const hasExplicitCategoryFilter =
+		resolvedFilters.some((f) => f.field === 'category') || !!category
 	const rawCategoria = searchParams?.categoria
 	const urlCategoria =
 		!hasExplicitCategoryFilter &&
@@ -86,7 +77,7 @@ export default async function BlogList({
 				&& metadata.noIndex != true
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
 				${filterConditions}
-				${legacyCategorySlug ? `&& $legacyCategorySlug in categories[]->.slug.current` : ''}
+				${category ? `&& $category in categories[]->.slug.current` : ''}
 				${urlCategoria ? `&& $urlCategoria in categories[]->.slug.current` : ''}
 			]|order(
 				${showFeaturedPostsFirst ? 'featured desc, ' : ''}
@@ -106,14 +97,14 @@ export default async function BlogList({
 		`,
 		params: {
 			...filterParams,
-			...(legacyCategorySlug ? { legacyCategorySlug } : {}),
+			...(category ? { category } : {}),
 			...(urlCategoria ? { urlCategoria } : {}),
 			limit: limit ?? 0,
 		},
 	})
 
 	// Show rich empty state when a category page has no posts
-	if (posts.length === 0 && (urlCategoria || legacyCategorySlug)) {
+	if (posts.length === 0 && (urlCategoria || category)) {
 		return (
 			<Section nested={nested} className="space-y-8" {...moduleProps(props)}>
 				<NoArticlesFound />
