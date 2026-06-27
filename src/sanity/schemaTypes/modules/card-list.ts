@@ -123,11 +123,12 @@ export default defineType({
 	],
 	preview: {
 		select: {
+			pretitle: 'pretitle',
 			intro: 'intro',
 			cards: 'cards',
 		},
-		prepare: ({ intro, cards }) => ({
-			title: getBlockText(intro) || count(cards, 'card'),
+		prepare: ({ pretitle, intro, cards }) => ({
+			title: pretitle || getBlockText(intro) || count(cards, 'card'),
 			subtitle: 'Lista card',
 		}),
 	},

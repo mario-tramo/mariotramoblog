@@ -82,9 +82,9 @@ export default defineType({
 		}),
 	],
 	preview: {
-		select: { intro: 'intro', stats: 'stats' },
-		prepare: ({ intro, stats }) => ({
-			title: getBlockText(intro) || count(stats, 'statistica'),
+		select: { pretitle: 'pretitle', intro: 'intro', stats: 'stats' },
+		prepare: ({ pretitle, intro, stats }) => ({
+			title: pretitle || getBlockText(intro) || count(stats, 'statistica'),
 			subtitle: 'Barra di fiducia',
 		}),
 	},

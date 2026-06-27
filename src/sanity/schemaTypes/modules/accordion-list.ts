@@ -125,10 +125,11 @@ export default defineType({
 	],
 	preview: {
 		select: {
+			pretitle: 'pretitle',
 			intro: 'intro',
 		},
-		prepare: ({ intro }) => ({
-			title: getBlockText(intro) || 'Lista accordion',
+		prepare: ({ pretitle, intro }) => ({
+			title: pretitle || getBlockText(intro) || 'Lista accordion',
 			subtitle: 'Pannelli espandibili',
 		}),
 	},

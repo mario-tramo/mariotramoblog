@@ -12,24 +12,8 @@
 	--color-surface-light: #1E293B;
 	--color-surface-2: #283548;
 
-	/* gradient endpoints — 60/30/10 palette
-	   60% = canvas/navy base (#07111F)
-	   30% = surface blues (#0D1B2E → #1E293B)
-	   10% = accent blue (#0ea5e9) — used sparingly */
-	--color-surface-grad-from: #0B1828;
-	--color-surface-grad-to: #132A42;
-	--color-soft-grad-from: #0A1520;
-	--color-soft-grad-to: #0F2035;
 	--color-contrast-grad-from: #030810;
 	--color-contrast-grad-to: #0A1525;
-	--color-accent-grad-from: #0C0E1E;
-	--color-accent-grad-to: #1A0F20;
-	--color-dark-grad-from: #040A16;
-	--color-dark-grad-to: #0B1528;
-	--color-warm-grad-from: #120C1A;
-	--color-warm-grad-to: #1C1228;
-	--color-ocean-grad-from: #06142A;
-	--color-ocean-grad-to: #0C2848;
 
 	--color-muted: #94A3B8;
 	--color-border: rgba(0, 209, 255, 0.12);
@@ -240,6 +224,32 @@
 			scale: 1;
 		}
 	}
+}
+
+/* --- Sport section backgrounds --- */
+
+@utility bg-calcio {
+	background:
+		radial-gradient(circle at top right, rgba(0, 212, 255, .08), transparent 45%),
+		linear-gradient(180deg, #0B1C2C, #10283E);
+}
+@utility bg-tennis {
+	background:
+		radial-gradient(circle at top right, rgba(82, 183, 136, .10), transparent 45%),
+		linear-gradient(180deg, #0D2018, #173527);
+}
+@utility bg-motori {
+	background:
+		radial-gradient(circle at top right, rgba(255, 255, 255, .05), transparent 45%),
+		linear-gradient(180deg, #1A1C22, #2A2E37);
+}
+@utility bg-altri-sport {
+	background: linear-gradient(180deg, #1B1714, #33261E);
+}
+@utility bg-betting {
+	background:
+		radial-gradient(circle at top right, rgba(0, 212, 255, .10), transparent 45%),
+		linear-gradient(180deg, #081A2C, #0F3253);
 }
 
 /* --- Hero Ken Burns cinematic zoom --- */

@@ -7,18 +7,14 @@ import { VscCheck, VscCopy } from 'react-icons/vsc'
 
 const BACKGROUND_OPTIONS = [
 	{ title: 'Nessuno', value: 'none' },
-	{ title: 'Superficie (cards)', value: 'surface' },
-	{ title: 'Soft (respiro)', value: 'soft' },
-	{ title: 'Contrasto (quasi nero)', value: 'contrast' },
-	{ title: 'Accento', value: 'accent' },
-	{ title: 'Scuro', value: 'dark' },
-	{ title: '🌊 Superficie gradiente', value: 'surface-gradient' },
-	{ title: '🌊 Soft gradiente', value: 'soft-gradient' },
-	{ title: '🌊 Contrasto gradiente', value: 'contrast-gradient' },
-	{ title: '🌊 Accento gradiente', value: 'accent-gradient' },
-	{ title: '🌊 Scuro gradiente', value: 'dark-gradient' },
-	{ title: '🌊 Warm (brand)', value: 'warm-gradient' },
-	{ title: '🌊 Ocean (blu)', value: 'ocean-gradient' },
+	{ title: 'Superficie', value: 'surface' },
+	{ title: 'Contrasto', value: 'contrast' },
+	{ title: 'Contrasto gradiente', value: 'contrast-gradient' },
+	{ title: '⚽ Calcio', value: 'calcio' },
+	{ title: '🎾 Tennis', value: 'tennis' },
+	{ title: '🏎 Motori', value: 'motori' },
+	{ title: '🏀 Altri Sport', value: 'altri-sport' },
+	{ title: '🎯 Betting', value: 'betting' },
 	{ title: 'Personalizzato', value: 'custom' },
 ]
 

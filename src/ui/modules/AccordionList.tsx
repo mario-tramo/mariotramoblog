@@ -1,5 +1,4 @@
 import moduleProps from '@/lib/moduleProps'
-import Pretitle from '@/ui/primitives/Pretitle'
 import { PortableText } from '@portabletext/react'
 import Image from './RichtextModule/Image'
 import CustomHTML from './CustomHTML'
@@ -42,14 +41,20 @@ export default function AccordionList({
 		>
 			<header
 				className={cn(
-					'richtext',
+					'space-y-4',
 					layout === 'horizontal'
 						? 'md:sticky-below-header self-start [--offset:1rem]'
 						: 'text-center',
 				)}
 			>
-				<Pretitle>{pretitle}</Pretitle>
-				<PortableText value={intro} />
+				{pretitle && (
+					<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">{pretitle}</h2>
+				)}
+				{intro && (
+					<div className="richtext">
+						<PortableText value={intro} />
+					</div>
+				)}
 			</header>
 
 			<div className="mx-auto w-full max-w-screen-md">

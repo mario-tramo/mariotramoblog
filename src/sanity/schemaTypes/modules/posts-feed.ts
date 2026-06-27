@@ -32,10 +32,18 @@ export default defineType({
 		// ── Contenuto ──────────────────────────────────────────
 
 		defineField({
-			name: 'title',
-			title: 'Titolo',
+			name: 'pretitle',
+			title: 'Sopratitolo',
 			type: 'string',
-			description: 'Intestazione visibile sopra la lista (es. "Ultime Notizie", "Di Tendenza")',
+			description: 'Testo breve mostrato sopra il titolo della sezione',
+			group: 'content',
+		}),
+
+		defineField({
+			name: 'title',
+			title: 'Titolo (fallback)',
+			type: 'string',
+			description: 'Usato come titolo solo se il Sopratitolo non è compilato. Intestazione visibile sopra la lista (es. "Ultime Notizie", "Di Tendenza")',
 			group: 'content',
 		}),
 
@@ -152,18 +160,19 @@ export default defineType({
 	],
 	preview: {
 		select: {
+			pretitle: 'pretitle',
 			title: 'title',
 			source: 'source',
 			layout: 'layout',
 			limit: 'limit',
 		},
-		prepare: ({ title, source, layout, limit }) => {
+		prepare: ({ pretitle, title, source, layout, limit }) => {
 			const sourceLabel =
 				SOURCE_OPTIONS.find((s) => s.value === source)?.title || source
 			const layoutLabel =
 				LAYOUT_OPTIONS.find((l) => l.value === layout)?.title || layout
 			return {
-				title: title || 'Feed articoli',
+				title: pretitle || title || 'Feed articoli',
 				subtitle: `${sourceLabel} · ${layoutLabel} · ${source === 'manual' ? 'manuale' : `${limit || 6} articoli`}`,
 			}
 		},

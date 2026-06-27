@@ -62,10 +62,11 @@ export default defineType({
 	],
 	preview: {
 		select: {
+			pretitle: 'pretitle',
 			intro: 'intro',
 			scope: 'scope',
 		},
-		prepare: ({ intro, scope }) => {
+		prepare: ({ pretitle, intro, scope }) => {
 			const scopeLabels: Record<string, string> = {
 				all: 'tutto il sito',
 				pages: 'solo pagine',
@@ -73,7 +74,7 @@ export default defineType({
 				'blog posts': 'solo articoli blog',
 			}
 			return {
-				title: getBlockText(intro) || 'Ricerca',
+				title: pretitle || getBlockText(intro) || 'Ricerca',
 				subtitle: scope ? `Cerca in: ${scopeLabels[scope] ?? scope}` : 'Ricerca',
 			}
 		},

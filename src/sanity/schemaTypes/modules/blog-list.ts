@@ -110,10 +110,11 @@ export default defineType({
 	],
 	preview: {
 		select: {
+			pretitle: 'pretitle',
 			intro: 'intro',
 		},
-		prepare: ({ intro }) => ({
-			title: getBlockText(intro) || 'Lista articoli',
+		prepare: ({ pretitle, intro }) => ({
+			title: pretitle || getBlockText(intro) || 'Lista articoli',
 			subtitle: 'Lista articoli blog',
 		}),
 	},

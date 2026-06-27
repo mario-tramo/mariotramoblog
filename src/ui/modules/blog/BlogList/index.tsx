@@ -4,8 +4,8 @@ import { fetchSanityLive } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
 import moduleProps from '@/lib/moduleProps'
+import Link from 'next/link'
 import Section from '@/ui/primitives/Section'
-import Pretitle from '@/ui/primitives/Pretitle'
 import { PortableText } from '@portabletext/react'
 import { stegaClean } from '@sanity/client/stega'
 import FilterList from '@/ui/modules/blog/BlogList/FilterList'
@@ -136,16 +136,14 @@ export default async function BlogList({
 	return (
 		<Section nested={nested} className="space-y-8" {...moduleProps(props)}>
 			{(pretitle || intro) && (
-				<header className={cn(intro ? 'richtext' : 'flex items-end justify-between border-b border-line-soft pb-4')}>
-					{pretitle && !intro ? (
-						<>
-							<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">{pretitle}</h2>
-						</>
-					) : (
-						<>
-							<Pretitle>{pretitle}</Pretitle>
-							{intro && <PortableText value={intro} />}
-						</>
+				<header className="space-y-4">
+					{pretitle && (
+						<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">{pretitle}</h2>
+					)}
+					{intro && (
+						<div className="richtext">
+							<PortableText value={intro} />
+						</div>
 					)}
 				</header>
 			)}
@@ -176,9 +174,19 @@ export default async function BlogList({
 						</ul>
 					}
 				>
-					<List posts={posts} className={listClassName} cardSize={cleanCardSize} />
-				</Suspense>
-			</CarouselWrapper>
+<List posts={posts} className={listClassName} cardSize={cleanCardSize} />
+                {category && (
+                    <div className="mt-8 text-center">
+                        <Link
+                            href={`/blog/${category}`}
+                            className="inline-block rounded-lg border border-line-soft bg-ink/5 px-6 py-3 text-lg font-medium text-blue-600 transition-colors hover:bg-ink/10"
+                        >
+                            Vedi tutti gli articoli di questa categoria
+                        </Link>
+                    </div>
+                )}
+            </Suspense>
+        </CarouselWrapper>
 		</Section>
 	)
 }

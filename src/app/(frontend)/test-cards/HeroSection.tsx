@@ -9,7 +9,7 @@ export default function HeroSection() {
 				{/* Featured Card */}
 				<article className="group relative overflow-hidden rounded-xl bg-surface-light">
 					<div className="relative aspect-[16/9] md:aspect-[4/3]">
-						<div className="absolute inset-0 bg-gradient-to-br from-accent-grad-from to-accent-grad-to" />
+						<div className="absolute inset-0 bg-gradient-to-br from-[#0C0E1E] to-[#1A0F20]" />
 						<div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
 						<div className="absolute inset-0 bg-gradient-to-t from-canvas via-canvas/30 to-transparent" />
 						<div className="absolute inset-0 bg-gradient-to-r from-accent/10 to-transparent" />

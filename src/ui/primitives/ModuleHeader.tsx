@@ -1,4 +1,3 @@
-import Pretitle from '@/ui/primitives/Pretitle'
 import { PortableText } from '@portabletext/react'
 import CTAList from '@/ui/primitives/CTAList'
 import type { PortableTextBlock } from '@portabletext/react'
@@ -22,7 +21,11 @@ export default function ModuleHeader({
 
 	return (
 		<header className={className} {...props}>
-			<Pretitle>{pretitle}</Pretitle>
+			{pretitle && (
+				<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">
+					{pretitle}
+				</h2>
+			)}
 			{intro && <PortableText value={intro} />}
 			{ctas && <CTAList className="justify-center" ctas={ctas} />}
 			{children}

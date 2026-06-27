@@ -15,6 +15,7 @@ import type { PortableTextBlock } from '@portabletext/react'
 type PostsFeedLayout = 'carousel' | 'grid' | 'list' | 'numbered' | 'thumbs' | 'bytes'
 
 export default async function PostsFeed({
+	pretitle,
 	title,
 	intro,
 	source = 'latest',
@@ -28,6 +29,7 @@ export default async function PostsFeed({
 	nested,
 	...props
 }: Partial<{
+	pretitle: string
 	title: string
 	intro: PortableTextBlock[]
 	source: PostsFeedSource
@@ -76,7 +78,7 @@ export default async function PostsFeed({
 				<PostListWidget
 					variant={variantMap[cleanLayout]}
 					posts={posts}
-					title={title || ''}
+					title={pretitle || title || ''}
 					limit={cleanLimit}
 					viewAllHref={viewAllHref}
 					viewAllLabel={viewAllLabel}
@@ -93,11 +95,11 @@ export default async function PostsFeed({
 				className="space-y-6 overflow-hidden"
 				{...moduleProps(props)}
 			>
-				{(title || intro) && (
+				{((pretitle || title) || intro) && (
 					<header className={cn(intro ? 'space-y-2 border-b border-line-soft pb-4' : 'border-b border-line-soft pb-4')}>
-						{title && (
+						{(pretitle || title) && (
 							<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">
-								{title}
+								{pretitle || title}
 							</h2>
 						)}
 						{intro && (
@@ -141,11 +143,11 @@ export default async function PostsFeed({
 				className="space-y-6"
 				{...moduleProps(props)}
 			>
-				{(title || intro) && (
+				{((pretitle || title) || intro) && (
 					<header className={cn(intro ? 'space-y-2 border-b-2 border-line pb-3' : 'border-b-2 border-line pb-3')}>
-						{title && (
+						{(pretitle || title) && (
 							<h2 className="font-heading text-4xl uppercase tracking-tight md:text-5xl">
-								{title}
+								{pretitle || title}
 							</h2>
 						)}
 						{intro && (
@@ -174,11 +176,11 @@ export default async function PostsFeed({
 			className="space-y-6 overflow-hidden"
 			{...moduleProps(props)}
 		>
-			{(title || intro) && (
+			{((pretitle || title) || intro) && (
 				<header className={cn(intro ? 'space-y-2 border-b border-line-soft pb-4' : 'border-b border-line-soft pb-4')}>
-					{title && (
+					{(pretitle || title) && (
 						<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">
-							{title}
+							{pretitle || title}
 						</h2>
 					)}
 					{intro && (

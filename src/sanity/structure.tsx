@@ -100,14 +100,14 @@ export const structure = structureTool({
 							].map(({ title, slug }) =>
 								S.listItem()
 									.title(title)
-									.child(
-										S.documentList()
-											.title(title)
-											.filter(
-												'_type == "blog.post" && $slug in categories[]->slug.current',
-											)
-											.params({ slug }),
-									),
+.child(
+			S.documentList()
+				.title(title)
+				.filter(
+					'_type == "blog.post" && apiVersion: 2 && $slug in categories[]->slug.current',
+				)
+				.params({ slug }),
+		),
 							),
 						]),
 				),
