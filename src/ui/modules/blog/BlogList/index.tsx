@@ -176,10 +176,10 @@ export default async function BlogList({
 					}
 				>
 <List posts={posts} className={listClassName} cardSize={cleanCardSize} />
-                {category && (
+                {(category || urlCategoria) && (
                     <div className="mt-8 text-center">
                         <Link
-                            href={`/blog/${category}`}
+                            href={`/${category || urlCategoria}`}
                             className="group inline-flex items-center gap-2 text-sm font-semibold text-brand transition hover:underline"
                         >
                             Vedi tutti gli articoli

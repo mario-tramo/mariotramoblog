@@ -69,10 +69,12 @@ export default async function Page({ params, searchParams }: Props) {
 
 	const category = await getCategory(resolvedParams)
 	if (category) {
+		const catSlug = category.slug.current
+
 		// Inject category slug so blog modules auto-filter
 		const mergedSearchParams = {
 			...resolvedSearchParams,
-			categoria: category.slug.current,
+			categoria: catSlug,
 		}
 
 		// Custom modules on category override the template
@@ -80,7 +82,18 @@ export default async function Page({ params, searchParams }: Props) {
 			category.modules.length > 0
 				? category.modules
 				: await getCategoryTemplate()
-		const faqItems = collectFaqItems(modules)
+
+		// Patch viewAllHref on posts-feed modules when on a category page
+		const patchedModules = modules.map((mod) => {
+			if (!mod || mod._type !== 'posts-feed') return mod
+			const m = mod as Sanity.Module & { viewAllHref?: string; viewAllLabel?: string }
+			if (!m.viewAllHref || m.viewAllHref === '/' || m.viewAllHref === '/blog') {
+				return { ...m, viewAllHref: `/${catSlug}`, viewAllLabel: m.viewAllLabel || 'Vedi tutti' }
+			}
+			return m
+		})
+
+		const faqItems = collectFaqItems(patchedModules)
 
 		return (
 			<>
@@ -104,7 +117,7 @@ export default async function Page({ params, searchParams }: Props) {
 					])}
 				/>
 				<Modules
-					modules={modules}
+					modules={patchedModules}
 					page={category as unknown as Sanity.Page}
 					searchParams={mergedSearchParams}
 				/>
