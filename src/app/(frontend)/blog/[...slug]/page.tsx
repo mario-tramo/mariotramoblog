@@ -40,13 +40,27 @@ export default async function Page({ params }: Props) {
 		params: { slug },
 	})
 
-	if (!post) notFound()
+	if (post) {
+		const destination = post.categorySlug
+			? `/${post.categorySlug}/${post.slug}`
+			: `/${post.slug}`
+		permanentRedirect(destination)
+	}
 
-	const destination = post.categorySlug
-		? `/${post.categorySlug}/${post.slug}`
-		: `/${post.slug}`
+	// Not a post — check if slug is a category and redirect to /{slug}
+	const category = await fetchSanityLive<{ slug: string }>({
+		query: groq`*[
+			_type == 'blog.category'
+			&& slug.current == $slug
+		][0]{ 'slug': slug.current }`,
+		params: { slug },
+	})
 
-	permanentRedirect(destination)
+	if (category) {
+		permanentRedirect(`/${category.slug}`)
+	}
+
+	notFound()
 }
 
 type Props = {
