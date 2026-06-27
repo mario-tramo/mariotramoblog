@@ -14,6 +14,7 @@ import PostPreview from '../PostPreview'
 import List from './List'
 import { cn } from '@/lib/utils'
 import ScrollCarousel from '@/ui/primitives/ScrollCarousel'
+import ChevronIcon from '@/ui/icons/ChevronIcon'
 import NoArticlesFound from '../NoArticlesFound'
 import type { PortableTextBlock } from '@portabletext/react'
 import {
@@ -179,9 +180,10 @@ export default async function BlogList({
                     <div className="mt-8 text-center">
                         <Link
                             href={`/blog/${category}`}
-                            className="inline-block rounded-lg border border-line-soft bg-ink/5 px-6 py-3 text-lg font-medium text-blue-600 transition-colors hover:bg-ink/10"
+                            className="group inline-flex items-center gap-2 text-sm font-semibold text-brand transition hover:underline"
                         >
-                            Vedi tutti gli articoli di questa categoria
+                            Vedi tutti gli articoli
+                            <ChevronIcon direction="right" className="size-3.5 shrink-0 transition group-hover:translate-x-0.5" />
                         </Link>
                     </div>
                 )}
