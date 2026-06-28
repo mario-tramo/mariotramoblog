@@ -243,6 +243,8 @@ async function getPage(params: Params) {
 			${TRANSLATIONS_QUERY},
 		}`,
 		params: { slug },
+		cacheHint: { type: 'page', slug },
+		tags: lang ? [`page:lang:${lang}`] : undefined,
 	})
 
 	if (slug === 'index' && !page) throw new Error(errors.missingHomepage)
@@ -269,6 +271,7 @@ async function getCategory(params: Params) {
 			},
 		}`,
 		params: { slug },
+		cacheHint: { type: 'blog.category', slug },
 	})
 
 	if (!raw) return null
@@ -337,6 +340,8 @@ async function getPost(params: Params) {
 			${TRANSLATIONS_QUERY},
 		}`,
 		params: { postSlug, categorySlug },
+		cacheHint: { type: 'blog.post', slug: postSlug },
+		tags: [`category:${categorySlug}`],
 	})
 
 	if (!post) return null

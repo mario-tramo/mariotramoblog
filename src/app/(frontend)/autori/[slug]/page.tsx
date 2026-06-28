@@ -40,6 +40,8 @@ async function getAuthor(slug: string): Promise<AuthorWithPosts | null> {
 			}
 		}`,
 		params: { slug },
+		cacheHint: { type: 'person', slug },
+		tags: ['authors'],
 	})
 }
 
