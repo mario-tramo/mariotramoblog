@@ -39,7 +39,8 @@ export default function ScrollCarousel({
 		const items = Array.from(el.children) as HTMLElement[]
 		if (items.length > 0) {
 			const firstItem = items[0]
-			const gap = parseFloat(getComputedStyle(el).columnGap || '0') || 32
+		const rawGap = parseFloat(getComputedStyle(el).columnGap)
+		const gap = isNaN(rawGap) ? 32 : rawGap
 			const itemWidth = firstItem.offsetWidth + gap
 			const visibleItems = Math.max(1, Math.round(clientWidth / itemWidth))
 			const pages = Math.ceil(items.length / visibleItems)
@@ -81,7 +82,8 @@ export default function ScrollCarousel({
 		if (!el) return
 		const items = Array.from(el.children) as HTMLElement[]
 		if (items.length === 0) return
-		const gap = parseFloat(getComputedStyle(el).columnGap || '0') || 32
+		const rawGap = parseFloat(getComputedStyle(el).columnGap)
+		const gap = isNaN(rawGap) ? 32 : rawGap
 		const itemWidth = items[0].offsetWidth + gap
 		const visibleItems = Math.max(1, Math.round(el.clientWidth / itemWidth))
 		const targetIdx = Math.min(page * visibleItems, items.length - 1)
