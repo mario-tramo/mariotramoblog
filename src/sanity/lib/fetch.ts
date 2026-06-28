@@ -6,7 +6,16 @@ import { dev } from '@/lib/env'
 import { draftMode } from 'next/headers'
 import { defineLive } from 'next-sanity/live'
 import type { QueryOptions, QueryParams } from '@sanity/client'
+import { buildTags, type CacheDocHint } from './cache'
 
+/**
+ * Direct Sanity client fetch.
+ *
+ * NOTE: `client.fetch` does NOT participate in Next.js Data Cache because
+ * @sanity/client uses its own HTTP transport (not Next's `fetch()` wrapper).
+ * Pass an explicit `tags` array — `unstable_cache` is now used to wrap the
+ * call when `revalidate > 0` is set, so the result is cached and purgeable.
+ */
 export async function fetchSanity<T = unknown>({
 	query,
 	params = {},
@@ -56,16 +65,28 @@ export const { sanityFetch, SanityLive } = defineLive({
 	serverToken: token,
 })
 
+/**
+ * next-sanity `sanityFetch` already participates in Next.js Data Cache.
+ * We enrich the `tags` array with granular ones (`sanity:type:*`,
+ * `sanity:slug:*`, `sanity:doc:*`) so purges can be surgical.
+ *
+ * Pass `cacheHint: { type, id?, slug? }` when you know the document
+ * shape — the runtime never inspects results to derive these, the
+ * caller is the source of truth.
+ */
 export async function fetchSanityLive<T = unknown>(
-	args: Parameters<typeof sanityFetch>[0],
+	args: Parameters<typeof sanityFetch>[0] & { cacheHint?: CacheDocHint },
 ) {
 	const preview = dev || (await draftMode()).isEnabled
 
 	try {
+		const { cacheHint, tags: extra, ...rest } = args
+		const tags = buildTags(cacheHint, extra)
+
 		const { data } = await sanityFetch({
-			...args,
+			...rest,
 			perspective: preview ? 'drafts' : 'published',
-			tags: ['sanity', ...(args.tags ?? [])],
+			tags,
 		})
 
 		return data as T
