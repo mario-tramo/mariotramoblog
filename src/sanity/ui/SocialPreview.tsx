@@ -4,7 +4,14 @@ import { useFormValue } from 'sanity'
 import { Card, Stack, Text, Box } from '@sanity/ui'
 import { urlFor } from '@/sanity/lib/image'
 
-const BASE = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/+$/, '') || 'http://localhost:3000'
+const BASE =
+	process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/+$/, '') ||
+	(() => {
+		if (typeof window !== 'undefined') {
+			console.warn('NEXT_PUBLIC_BASE_URL non impostata, fallback a localhost:3000')
+		}
+		return 'http://localhost:3000'
+	})()
 const domain = BASE.replace(/https?:\/\//, '')
 
 export default function SocialPreview() {
@@ -61,8 +68,8 @@ export default function SocialPreview() {
 							position: 'relative',
 						}}
 					>
-						{/* eslint-disable-next-line @next/next/no-img-element */}
-						<img
+					{/* Raw <img> preview in Sanity Studio. */}
+					<img
 							src={ogUrl}
 							alt="OG Preview"
 							style={{

@@ -46,7 +46,7 @@ export function resolveCollectionFilters(
 
 			const urlValue = Array.isArray(raw) ? raw[0] : raw
 
-			value = urlValue || filter.fallback || undefined
+			value = urlValue ?? filter.fallback ?? undefined
 		}
 
 		if (value) {
