@@ -13,4 +13,19 @@ export default {
 		"Missing homepage: 🏚️ There's no place like... index?\n\n" +
 		'Solution: Add a new Page document in your Sanity Studio with the slug "index".\n\n' +
 		'💁‍♂️ https://sanitypress.dev/docs/errors#missing-homepage',
+
+	missingContactName:
+		'Missing contact name: ⚠️ NEXT_PUBLIC_CONTACT_NAME non impostata.\n\n' +
+		'Solution: Imposta NEXT_PUBLIC_CONTACT_NAME in .env.local con il nome del titolare del trattamento dati.\n\n' +
+		'Esempio: NEXT_PUBLIC_CONTACT_NAME="Trm Sport"',
+
+	missingContactAddress:
+		'Missing contact address: ⚠️ NEXT_PUBLIC_CONTACT_ADDRESS non impostata.\n\n' +
+		'Solution: Imposta NEXT_PUBLIC_CONTACT_ADDRESS in .env.local con la sede legale.\n\n' +
+		'Esempio: NEXT_PUBLIC_CONTACT_ADDRESS="Via dello Sport, 1 — 00100 Roma (RM)"',
+
+	missingContactEmail:
+		'Missing contact email: ⚠️ NEXT_PUBLIC_CONTACT_EMAIL non impostata.\n\n' +
+		'Solution: Imposta NEXT_PUBLIC_CONTACT_EMAIL in .env.local con l\'email di contatto.\n\n' +
+		'Esempio: NEXT_PUBLIC_CONTACT_EMAIL="info@trmsport.com"',
 }
