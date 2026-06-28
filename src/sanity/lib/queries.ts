@@ -145,6 +145,8 @@ export async function getSite() {
 				'ogimage': ogimage.asset->url
 			}
 		`,
+		cacheHint: { type: 'site', id: 'site' },
+		tags: ['site-config'],
 	})
 
 	if (!site) throw new Error(errors.missingSiteSettings)
@@ -169,5 +171,7 @@ export async function getTranslations() {
 				language
 			}
 		}`,
+		cacheHint: undefined,
+		tags: ['translations', 'site-config'],
 	})
 }
