@@ -173,8 +173,8 @@ export default function OgPlayground({
 				{/* ---- Previews ---- */}
 				<main className="space-y-10">
 					<Section title="Card OG (1200×630) — sorgente unica">
-						{/* eslint-disable-next-line @next/next/no-img-element */}
-						<img
+					{/* Raw <img> — playground for next/og behaviour, not user-facing. */}
+					<img
 							src={ogImageUrl}
 							alt="OG card"
 							className="w-full max-w-[640px] rounded-xl border border-line shadow-lg"
@@ -335,7 +335,7 @@ function Field({
 }
 
 function Img({ src, className, style }: { src: string; className?: string; style?: React.CSSProperties }) {
-	// eslint-disable-next-line @next/next/no-img-element
+	// Raw <img> — deliberate, see @next/next/no-img-element comment above.
 	return <img src={src} alt="" className={className} style={style} />
 }
 

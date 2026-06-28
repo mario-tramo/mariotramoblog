@@ -55,7 +55,10 @@ export async function GET(request: NextRequest) {
 			>
 				{/* Full-bleed featured photo */}
 				{imageUrl && (
-					// eslint-disable-next-line @next/next/no-img-element
+					// Raw <img> is intentional here: <Image> can't render remote
+					// URLs in next/og context and the OG image renderer does its
+					// own optimization. We re-encode to JPEG before responding
+					// (see below), so this is safe.
 					<img
 						src={imageUrl}
 						alt=""
