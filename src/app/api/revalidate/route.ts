@@ -1,12 +1,26 @@
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
+import { isAuthorized } from '@/lib/http-auth'
+import { processRevalidation, type RevalidatePayload } from '@/lib/revalidate-handler'
 
+/**
+ * POST /api/revalidate — Sanity publish-time cache invalidation.
+ *
+ * Body shape (all fields optional except auth):
+ *   {
+ *     "path"?:     "/blog/mio-articolo",
+ *     "paths"?:    ["/a", "/b"],
+ *     "tags"?:     ["sanity:type:blog.post", "sanity:slug:mio-articolo"],
+ *     "document"?: { "_type": "blog.post", "_id": "...", "slug": "..." }
+ *   }
+ *
+ * Auth via `x-revalidate-secret` header, `Authorization: Bearer`, or
+ * `?secret=` query param. Compared in constant-time via `safeEqual`.
+ */
 export async function POST(request: NextRequest) {
-	const secret =
-		request.headers.get('x-revalidate-secret') ??
-		request.nextUrl.searchParams.get('secret')
-
-	if (secret !== process.env.REVALIDATE_SECRET) {
+	if (!isAuthorized(request, process.env.REVALIDATE_SECRET, {
+		headers: ['x-revalidate-secret'],
+	})) {
 		console.warn('[revalidate] rejected: invalid secret', {
 			hasHeader: request.headers.has('x-revalidate-secret'),
 			hasQuery: request.nextUrl.searchParams.has('secret'),
@@ -14,34 +28,25 @@ export async function POST(request: NextRequest) {
 		return NextResponse.json({ error: 'Invalid secret' }, { status: 401 })
 	}
 
-	let body: { path?: string; paths?: string[] } = {}
+	let body: RevalidatePayload = {}
 
 	try {
-		body = await request.json()
+		body = (await request.json()) as RevalidatePayload
 	} catch (err) {
 		console.warn('[revalidate] no JSON body (expected for Sanity webhooks):', err)
 	}
 
 	console.log('[revalidate] received', JSON.stringify(body))
 
-	// `{ expire: 0 }` forces immediate expiration (full revalidation), which is
-	// required in Next 16 — `revalidateTag(tag)` alone is deprecated, and the
-	// `'max'` profile only does stale-while-revalidate (no immediate purge).
-	revalidateTag('sanity', { expire: 0 })
-	revalidatePath('/', 'layout')
-
-	const paths = [body.path, ...(body.paths ?? [])].filter(
-		(path): path is string => typeof path === 'string' && path.startsWith('/'),
-	)
-
-	for (const path of paths) {
-		revalidatePath(path)
-	}
+	const outcome = processRevalidation(body, {
+		revalidateTag,
+		revalidatePath,
+	})
 
 	const result = {
 		revalidated: true,
-		paths: ['/', ...paths],
-		tags: ['sanity'],
+		flushedTags: outcome.flushedTags,
+		paths: outcome.paths,
 		now: Date.now(),
 	}
 
