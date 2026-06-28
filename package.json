@@ -49,7 +49,8 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18",
     "tsx": "^4.22.4",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.62.0"
   },
   "author": "nuotsu <mitchell@nuotsu.dev> (https://nuotsu.dev)",
   "description": "An impressive Sanity.io starter template with Next.js 16 and Tailwind 4",
@@ -58,9 +59,23 @@
     "dev": "next dev --webpack",
     "build": "NODE_ENV=production next build --webpack",
     "start": "NODE_ENV=production next start",
-    "lint": "next lint",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
-    "prod": "pnpm typecheck && pnpm build && pnpm start",
+    "test": "tsx --test src/lib/crypto.test.ts src/sanity/lib/cache.test.ts src/lib/http-auth.test.ts src/lib/cron-publish.test.ts src/lib/revalidate-handler.test.ts src/lib/newsletter-store.test.ts",
+    "test:watch": "tsx --test --watch src/lib/crypto.test.ts src/sanity/lib/cache.test.ts src/lib/http-auth.test.ts src/lib/cron-publish.test.ts src/lib/revalidate-handler.test.ts src/lib/newsletter-store.test.ts",
+    "audit:prod": "pnpm audit --prod",
+    "prod": "pnpm typecheck && pnpm lint && pnpm test && pnpm audit:prod && pnpm build && pnpm start",
     "seed:legal": "node scripts/seed-legal.mjs"
+  },
+  "pnpm": {
+    "overrides": {
+      "linkify-it": "^5.0.1",
+      "undici": ">=7.28.0",
+      "elliptic": ">=6.6.1",
+      "form-data": ">=4.0.6",
+      "ws": ">=8.21.0",
+      "vite": ">=7.3.5"
+    }
   }
 }
