@@ -15,9 +15,16 @@ export const BASE_URL = (dev
 
 export const BLOG_DIR = 'blog'
 
-export const CONTACT_NAME =
-	process.env.NEXT_PUBLIC_CONTACT_NAME || 'Trm Sport'
-export const CONTACT_ADDRESS =
-	process.env.NEXT_PUBLIC_CONTACT_ADDRESS || 'Via dello Sport, 1 — 00100 Roma (RM)'
-export const CONTACT_EMAIL =
-	process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'info@trmsport.com'
+if (!process.env.NEXT_PUBLIC_CONTACT_NAME) {
+	throw new Error(errors.missingContactName)
+}
+if (!process.env.NEXT_PUBLIC_CONTACT_ADDRESS) {
+	throw new Error(errors.missingContactAddress)
+}
+if (!process.env.NEXT_PUBLIC_CONTACT_EMAIL) {
+	throw new Error(errors.missingContactEmail)
+}
+
+export const CONTACT_NAME = process.env.NEXT_PUBLIC_CONTACT_NAME!
+export const CONTACT_ADDRESS = process.env.NEXT_PUBLIC_CONTACT_ADDRESS!
+export const CONTACT_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL!
