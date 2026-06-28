@@ -13,7 +13,7 @@ type PaginationProps = React.ComponentProps<'div'> &
 		onClick: () => void
 	}>
 
-export function usePagination<T extends unknown>({
+export function usePagination<T>({
 	items = [],
 	itemsPerPage = 3,
 }: {
