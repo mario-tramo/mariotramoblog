@@ -16,10 +16,12 @@ function Slide({
 	slide,
 	active,
 	isFirst,
+	paused,
 }: {
 	slide: Sanity.HeroSlide
 	active: boolean
 	isFirst: boolean
+	paused: boolean
 }) {
 	return (
 		<div
@@ -39,6 +41,11 @@ function Slide({
 						'object-cover',
 						active && 'animate-ken-burns',
 					)}
+					style={
+						active
+							? { animationPlayState: paused ? 'paused' : 'running' }
+							: undefined
+					}
 					// First slide is the LCP candidate: eager + high fetch priority
 					// (`priority` is deprecated in Next 16 and drops fetchpriority=high).
 					loading={isFirst ? 'eager' : undefined}
@@ -137,6 +144,8 @@ export default function Hero({
 
 	const onMouseEnter = useCallback(() => setPaused(true), [])
 	const onMouseLeave = useCallback(() => setPaused(false), [])
+	const onFocus = useCallback(() => setPaused(true), [])
+	const onBlur = useCallback(() => setPaused(false), [])
 
 	if (!slides?.length) return null
 
@@ -161,6 +170,8 @@ export default function Hero({
 			onPointerCancel={isCarousel ? onPointerUp : undefined}
 			onMouseEnter={onMouseEnter}
 			onMouseLeave={onMouseLeave}
+			onFocusCapture={onFocus}
+			onBlurCapture={onBlur}
 			{...moduleProps(props)}
 		>
 			<div aria-live="polite" aria-atomic="true" className="sr-only">
@@ -168,7 +179,13 @@ export default function Hero({
 			</div>
 
 			{slides.map((slide, i) => (
-				<Slide key={slide._key} slide={slide} active={i === current} isFirst={i === 0} />
+				<Slide
+					key={slide._key}
+					slide={slide}
+					active={i === current}
+					isFirst={i === 0}
+					paused={paused}
+				/>
 			))}
 
 			{/* Gradient overlays — cinematic depth */}
