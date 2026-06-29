@@ -23,9 +23,6 @@ const warnEnv = (key, fallback) => {
 
 const contactName =
 	process.env.NEXT_PUBLIC_CONTACT_NAME || warnEnv('NEXT_PUBLIC_CONTACT_NAME', 'Trm Sport')
-const contactAddress =
-	process.env.NEXT_PUBLIC_CONTACT_ADDRESS ||
-	warnEnv('NEXT_PUBLIC_CONTACT_ADDRESS', 'Via dello Sport, 1 — 00100 Roma (RM)')
 const contactEmail =
 	process.env.NEXT_PUBLIC_CONTACT_EMAIL || warnEnv('NEXT_PUBLIC_CONTACT_EMAIL', 'info@trmsport.com')
 const contactPEC =
@@ -105,7 +102,7 @@ const docs = [
 			block('h2', '1. Titolare del trattamento'),
 			block(
 				'normal',
-				`Il Titolare del trattamento dei dati personali è ${contactName}, con sede in ${contactAddress}, contattabile all'indirizzo email ${contactEmail}.`,
+				`Il Titolare del trattamento dei dati personali è ${contactName}, con sede in Via dello Sport, 1 — 00100 Roma (RM), contattabile all'indirizzo email ${contactEmail}.`,
 			),
 			block('normal', `Eventuali richieste possono essere inviate a: ${contactEmail}.`),
 			block('h2', '2. Responsabile della protezione dei dati (DPO / RPD)'),
@@ -243,7 +240,7 @@ const docs = [
 			block('h2', '2. Titolare e contenuti'),
 			block(
 				'normal',
-				`Il sito è pubblicato da ${contactName}, con sede in ${contactAddress}. I contenuti (articoli, analisi, immagini, video, audio) sono di proprietà del Titolare o dei rispettivi autori e sono protetti dalle leggi sul diritto d\'autore (Legge 633/1941 e successive modifiche). È vietata la riproduzione, anche parziale, senza autorizzazione scritta, salvi i casi di citazione a fini di critica, discussione o insegnamento (art. 70 L. 633/1941) con indicazione della fonte.`,
+				`Il sito è pubblicato da ${contactName}, con sede in Via dello Sport, 1 — 00100 Roma (RM). I contenuti (articoli, analisi, immagini, video, audio) sono di proprietà del Titolare o dei rispettivi autori e sono protetti dalle leggi sul diritto d\'autore (Legge 633/1941 e successive modifiche). È vietata la riproduzione, anche parziale, senza autorizzazione scritta, salvi i casi di citazione a fini di critica, discussione o insegnamento (art. 70 L. 633/1941) con indicazione della fonte.`,
 			),
 			block('h2', '3. Utilizzo del servizio newsletter'),
 			block(
@@ -298,5 +295,4 @@ console.log(
 	`📝  Completare le informazioni del Titolare in privacy-policy controllando le env var:`,
 )
 console.log(`   NEXT_PUBLIC_CONTACT_NAME → "${contactName}"`)
-console.log(`   NEXT_PUBLIC_CONTACT_ADDRESS → "${contactAddress}"`)
 console.log(`   NEXT_PUBLIC_CONTACT_EMAIL → "${contactEmail}"`)

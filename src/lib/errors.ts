@@ -19,11 +19,6 @@ export default {
 		'Solution: Imposta NEXT_PUBLIC_CONTACT_NAME in .env.local con il nome del titolare del trattamento dati.\n\n' +
 		'Esempio: NEXT_PUBLIC_CONTACT_NAME="Trm Sport"',
 
-	missingContactAddress:
-		'Missing contact address: ⚠️ NEXT_PUBLIC_CONTACT_ADDRESS non impostata.\n\n' +
-		'Solution: Imposta NEXT_PUBLIC_CONTACT_ADDRESS in .env.local con la sede legale.\n\n' +
-		'Esempio: NEXT_PUBLIC_CONTACT_ADDRESS="Via dello Sport, 1 — 00100 Roma (RM)"',
-
 	missingContactEmail:
 		'Missing contact email: ⚠️ NEXT_PUBLIC_CONTACT_EMAIL non impostata.\n\n' +
 		'Solution: Imposta NEXT_PUBLIC_CONTACT_EMAIL in .env.local con l\'email di contatto.\n\n' +
