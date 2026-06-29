@@ -113,7 +113,7 @@ export default function PostContent({
 							<div className="flex items-center gap-2">
 								{firstAuthor ? (
 									<>
-										<span className="grid size-9 place-items-center rounded-full bg-brand text-xs font-bold text-brand-foreground">
+										<span className="grid size-9 place-items-center rounded-full bg-brand-deep text-xs font-bold text-white">
 											{firstAuthor.image ? (
 												<Img
 													className="size-full rounded-full object-cover"
@@ -246,7 +246,7 @@ export default function PostContent({
 						</h2>
 						<div className="rounded-xl border border-line bg-surface p-5 shadow-[0_10px_30px_rgba(0,0,0,0.35)] sm:p-6">
 							<div className="flex gap-4">
-								<span className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full bg-brand text-lg font-bold text-brand-foreground sm:size-20">
+								<span className="grid size-16 shrink-0 place-items-center overflow-hidden rounded-full bg-brand-deep text-lg font-bold text-white sm:size-20">
 									{firstAuthor?.image ? (
 										<Img
 											className="size-full rounded-full object-cover"

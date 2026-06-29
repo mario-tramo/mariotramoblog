@@ -74,7 +74,7 @@ function Slide({ post, active, eager }: { post: Post; active: boolean; eager: bo
 
 			<div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 p-5 text-center sm:items-start sm:text-left sm:gap-3 sm:p-8 lg:gap-2 lg:p-6">
 				{post.categories?.[0] && (
-					<span className="w-fit rounded bg-brand px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-brand-foreground sm:px-3 sm:py-1.5 sm:text-sm lg:px-2 lg:py-0.5 lg:text-[0.7rem]">
+					<span className="w-fit rounded bg-brand-deep px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-white sm:px-3 sm:py-1.5 sm:text-sm lg:px-2 lg:py-0.5 lg:text-[0.7rem]">
 						{post.categories[0].title}
 					</span>
 				)}
@@ -284,7 +284,7 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 					<button
 						type="button"
 						onClick={prev}
-						className="absolute top-1/2 left-2 z-10 hidden size-10 -translate-y-1/2 place-items-center rounded-full border-2 border-brand bg-white text-brand shadow-xl transition hover:bg-brand hover:text-white focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:left-[calc(var(--peek)-1.5rem)] sm:grid sm:size-12"
+						className="absolute top-1/2 left-2 z-10 hidden size-10 -translate-y-1/2 place-items-center rounded-full border-2 border-brand-deep bg-white text-brand-deep shadow-xl transition hover:bg-brand-deep hover:text-white focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:left-[calc(var(--peek)-1.5rem)] sm:grid sm:size-12"
 						aria-label="Articolo precedente"
 					>
 						<ChevronLeft className="size-5 sm:size-6" strokeWidth={2.5} />
@@ -292,7 +292,7 @@ export default function Carousel({ posts }: { posts: Post[] }) {
 					<button
 						type="button"
 						onClick={next}
-						className="absolute top-1/2 right-2 z-10 hidden size-10 -translate-y-1/2 place-items-center rounded-full border-2 border-brand bg-white text-brand shadow-xl transition hover:bg-brand hover:text-white focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:right-[calc(var(--peek)-1.5rem)] sm:grid sm:size-12"
+						className="absolute top-1/2 right-2 z-10 hidden size-10 -translate-y-1/2 place-items-center rounded-full border-2 border-brand-deep bg-white text-brand-deep shadow-xl transition hover:bg-brand-deep hover:text-white focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:right-[calc(var(--peek)-1.5rem)] sm:grid sm:size-12"
 						aria-label="Articolo successivo"
 					>
 						<ChevronRight className="size-5 sm:size-6" strokeWidth={2.5} />

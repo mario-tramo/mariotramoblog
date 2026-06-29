@@ -20,6 +20,7 @@
 	--color-line: rgba(0, 209, 255, 0.12);
 	--color-line-soft: rgba(0, 209, 255, 0.06);
 	--color-brand: #0ea5e9;
+	--color-brand-deep: #0369a1;
 	--color-brand-foreground: #ffffff;
 
 	--font-heading: var(--font-bebas-neue), system-ui, sans-serif;
@@ -309,7 +310,7 @@
 /* --- CTA & Button micro-interactions --- */
 
 @utility action {
-	@apply action-base bg-accent rounded border border-transparent text-balance text-white;
+	@apply action-base bg-brand-deep rounded border border-transparent text-balance text-white;
 	position: relative;
 	overflow: hidden;
 	transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1),

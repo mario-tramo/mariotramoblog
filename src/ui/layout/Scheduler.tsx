@@ -13,17 +13,17 @@ export default function Scheduler({
 }>) {
 	if (!start && !end) return children
 
-	function checkActive() {
-		const now = new Date()
-		return (!start || new Date(start) < now) && (!end || new Date(end) > now)
-	}
-
-	const [isActive, setIsActive] = useState(checkActive())
+	const [isActive, setIsActive] = useState(true)
 
 	useEffect(() => {
-		const interval = setInterval(() => setIsActive(checkActive()), 1000) // check every second
+		function checkActive() {
+			const now = new Date()
+			return (!start || new Date(start) < now) && (!end || new Date(end) > now)
+		}
+		setIsActive(checkActive())
+		const interval = setInterval(() => setIsActive(checkActive()), 1000)
 		return () => clearInterval(interval)
-	}, [])
+	}, [start, end])
 
 	if (!isActive) return null
 

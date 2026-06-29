@@ -128,7 +128,7 @@ export default async function AuthorPage({ params }: Props) {
 			<div className="section space-y-12">
 				{/* Author profile */}
 				<header className="flex flex-col items-center gap-6 text-center sm:flex-row sm:text-left">
-					<span className="grid size-24 shrink-0 place-items-center overflow-hidden rounded-full bg-brand text-2xl font-bold text-brand-foreground sm:size-32">
+					<span className="grid size-24 shrink-0 place-items-center overflow-hidden rounded-full bg-brand-deep text-2xl font-bold text-white sm:size-32">
 						{author.image ? (
 							<Img
 								className="size-full rounded-full object-cover"

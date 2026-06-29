@@ -56,7 +56,7 @@ export default function CompactNewsletter({
 									onChange={(e) => setEmail(e.target.value)}
 									onFocus={() => setIsFocused(true)}
 									onBlur={() => setIsFocused(false)}
-									className="min-w-0 flex-1 rounded-lg bg-canvas/80 px-3 py-2 text-sm text-ink placeholder:text-muted/60 focus:outline-none focus:ring-1 focus:ring-brand/40"
+									className="min-w-0 flex-1 rounded-lg bg-canvas/80 px-3 py-2 text-sm text-ink placeholder:text-muted focus:outline-none focus:ring-1 focus:ring-brand/40"
 								/>
 								<SubscribeButton
 									className="shrink-0 rounded-lg px-4 py-2 text-xs"
@@ -76,7 +76,7 @@ export default function CompactNewsletter({
 								onChange={(e) => setPrivacyConsent(e.target.checked)}
 								className="mt-0.5 size-3 shrink-0 accent-brand"
 							/>
-							<span className="text-[10px] leading-snug text-muted/50">
+							<span className="text-[10px] leading-snug text-muted">
 								Accetto il trattamento dei dati personali secondo la{' '}
 								<Link href="/legal/privacy-policy" className="underline">Privacy Policy</Link>
 							</span>
@@ -88,7 +88,7 @@ export default function CompactNewsletter({
 				<p className="mt-2 text-xs text-red-500" role="alert">{error}</p>
 			)}
 
-				<p className="mt-3 text-[10px] text-muted/50">Nessuno spam. Cancellati quando vuoi.</p>
+				<p className="mt-3 text-[10px] text-muted">Nessuno spam. Cancellati quando vuoi.</p>
 			</div>
 		</motion.div>
 	)

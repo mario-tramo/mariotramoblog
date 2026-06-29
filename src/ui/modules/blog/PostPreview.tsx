@@ -1,21 +1,9 @@
 import { Img } from '@/ui/primitives/Img'
+import TimeAgo from '@/ui/primitives/TimeAgo'
 import Link from 'next/link'
 import resolveUrl from '@/lib/resolveUrl'
 import { cn } from '@/lib/utils'
 import { getCategoryColor } from '@/lib/categoryColors'
-
-function timeAgo(dateStr: string) {
-	const now = new globalThis.Date()
-	const date = new globalThis.Date(dateStr + 'T00:00:00')
-	const diffMs = now.getTime() - date.getTime()
-	const diffH = Math.floor(diffMs / (1000 * 60 * 60))
-	const diffD = Math.floor(diffH / 24)
-
-	if (diffH < 1) return 'Ora'
-	if (diffH < 24) return `${diffH}h fa`
-	if (diffD < 7) return `${diffD}g fa`
-	return date.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })
-}
 
 export default function PostPreview({
 	post,
@@ -88,7 +76,7 @@ export default function PostPreview({
 				/>
 
 				{post?.featured && (
-					<span className="absolute top-2.5 right-2.5 rounded bg-brand px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+					<span className="absolute top-2.5 right-2.5 rounded bg-brand-deep px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
 						In evidenza
 					</span>
 				)}
@@ -119,7 +107,7 @@ export default function PostPreview({
 				</p>
 
 				<div className="mt-auto flex items-center justify-between border-t border-line-soft pt-3 text-[11px] text-muted">
-					<span>{post?.publishDate && timeAgo(post.publishDate)}</span>
+					<span>{post?.publishDate && <TimeAgo dateStr={post.publishDate} />}</span>
 					{post?.authors?.[0] && (
 						<span className="font-medium text-ink/60">{post.authors[0].name}</span>
 					)}

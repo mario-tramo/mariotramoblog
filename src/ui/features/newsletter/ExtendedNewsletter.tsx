@@ -108,7 +108,7 @@ export default function ExtendedNewsletter({
 						onChange={(e) => setPrivacyConsent(e.target.checked)}
 						className="mt-0.5 size-3 shrink-0 accent-brand"
 					/>
-					<span className="text-[10px] leading-snug text-muted/50">
+					<span className="text-[10px] leading-snug text-muted">
 						Accetto il trattamento dei dati personali secondo la{' '}
 						<Link href="/legal/privacy-policy" className="underline">Privacy Policy</Link>
 					</span>

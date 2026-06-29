@@ -145,7 +145,7 @@ export default function SearchOverlay({
 							onChange={onChange}
 							onKeyDown={onKeyDown}
 							placeholder="Cerca articoli, pagine..."
-							className="min-w-0 flex-1 bg-transparent text-lg text-ink outline-none placeholder:text-muted/60"
+							className="min-w-0 flex-1 bg-transparent text-lg text-ink outline-none placeholder:text-muted"
 							aria-label="Cerca"
 							aria-autocomplete="list"
 							aria-controls={listboxId}

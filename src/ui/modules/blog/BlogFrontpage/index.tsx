@@ -128,7 +128,7 @@ export default async function BlogFrontpage({
 	return (
 		<section className="section space-y-8" {...props}>
 			<h1 className="sr-only">
-				TRM Sport — Notizie di Calcio, Formula 1, Tennis e Sport
+				TRM Sport — Analisi, Notizie e Fantacalcio in tempo reale
 			</h1>
 
 			{/* 3-column newspaper layout */}

@@ -151,32 +151,32 @@ export default function FooterContent({
 			{copyright && (
 				<div className="bg-surface">
 					<div className="mx-auto max-w-screen-2xl border-t border-line px-4 pb-8 sm:px-6">
-						<div className="pt-5 text-center text-[10px] uppercase tracking-widest text-muted/60">
-							<PortableText value={copyright} />
-						</div>
-						<div className="mt-2 flex items-center justify-center gap-3 text-[10px] uppercase tracking-widest">
-							<Link
-								href="/legal/cookie-policy"
-								className="text-muted/40 transition hover:text-muted/60"
-							>
-								Cookie Policy
-							</Link>
-							<span className="text-muted/20">·</span>
-							<Link
-								href="/legal/privacy-policy"
-								className="text-muted/40 transition hover:text-muted/60"
-							>
-								Privacy Policy
-							</Link>
-							<span className="text-muted/20">·</span>
-							<button
-								type="button"
-								onClick={requestReconsideration}
-								className="text-muted/40 transition hover:text-muted/60"
-							>
-								Preferenze cookie
-							</button>
-						</div>
+					<div className="pt-5 text-center text-[10px] uppercase tracking-widest text-muted">
+						<PortableText value={copyright} />
+					</div>
+					<div className="mt-2 flex items-center justify-center gap-3 text-[10px] uppercase tracking-widest">
+						<Link
+							href="/legal/cookie-policy"
+							className="text-muted transition hover:text-ink"
+						>
+							Cookie Policy
+						</Link>
+						<span className="text-muted/40">·</span>
+						<Link
+							href="/legal/privacy-policy"
+							className="text-muted transition hover:text-ink"
+						>
+							Privacy Policy
+						</Link>
+						<span className="text-muted/40">·</span>
+						<button
+							type="button"
+							onClick={requestReconsideration}
+							className="text-muted transition hover:text-ink"
+						>
+							Preferenze cookie
+						</button>
+					</div>
 					</div>
 				</div>
 			)}

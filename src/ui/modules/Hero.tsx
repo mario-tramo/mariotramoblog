@@ -202,7 +202,7 @@ export default function Hero({
 				<div className="mx-auto flex w-full max-w-2xl flex-col items-center space-y-2 md:space-y-3">
 					{/* Category label */}
 					{s.cta?.link?.label && s.cta.link.label !== 'Leggi di più' && (
-						<span className="inline-block w-fit rounded bg-brand px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white sm:text-[11px] lg:text-xs">
+						<span className="inline-block w-fit rounded bg-brand-deep px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white sm:text-[11px] lg:text-xs">
 							{s.cta.link.label}
 						</span>
 					)}
@@ -239,7 +239,7 @@ export default function Hero({
 						)}
 						<CTAList
 							ctas={[s.cta]}
-							className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:rounded-lg [&_a]:bg-brand [&_a]:px-4 [&_a]:py-1.5 [&_a]:text-[11px] [&_a]:font-bold [&_a]:uppercase [&_a]:tracking-wide [&_a]:text-white [&_a]:transition [&_a]:hover:opacity-90 md:[&_a]:px-5 md:[&_a]:py-2 md:[&_a]:text-xs"
+							className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:rounded-lg [&_a]:bg-brand-deep [&_a]:px-4 [&_a]:py-1.5 [&_a]:text-[11px] [&_a]:font-bold [&_a]:uppercase [&_a]:tracking-wide [&_a]:text-white [&_a]:transition [&_a]:hover:opacity-90 md:[&_a]:px-5 md:[&_a]:py-2 md:[&_a]:text-xs"
 						/>
 					</div>
 				</div>

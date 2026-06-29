@@ -47,7 +47,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 	altro: '#546e7a',
 }
 
-const DEFAULT_COLOR = '#0ea5e9'
+const DEFAULT_COLOR = '#0369a1'
 
 export function getCategoryColor(category?: {
 	slug?: { current?: string }

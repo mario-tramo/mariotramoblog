@@ -29,7 +29,7 @@ export default function Filter({
 					css.filter,
 					'rounded-full border px-4 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-colors',
 					isActive
-						? 'border-brand bg-brand text-brand-foreground'
+						? 'border-brand-deep bg-brand-deep text-white'
 						: 'border-brand/40 text-muted hover:border-brand/60 hover:text-ink',
 				)}
 				aria-label={`Filtra per ${label}`}
@@ -57,9 +57,9 @@ function ClientFilter({
 			className={cn(
 				css.filter,
 				'rounded-full border px-4 py-1.5 text-[10px] font-semibold uppercase tracking-widest transition-colors',
-				category === value
-					? 'border-brand bg-brand text-brand-foreground'
-					: 'border-brand/40 text-muted hover:border-brand/60 hover:text-ink',
+			category === value
+				? 'border-brand-deep bg-brand-deep text-white'
+				: 'border-brand/40 text-muted hover:border-brand/60 hover:text-ink',
 			)}
 			aria-label={`Filtra per ${label}`}
 			aria-pressed={category === value}

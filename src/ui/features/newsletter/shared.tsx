@@ -93,7 +93,7 @@ export function SubscribeButton({
 		<motion.button
 			type="submit"
 			disabled={isSubmitting}
-			className={`relative overflow-hidden bg-brand text-sm font-semibold text-brand-foreground transition-colors hover:opacity-90 disabled:opacity-70 ${className}`}
+			className={`relative overflow-hidden bg-brand-deep text-sm font-semibold text-white transition-colors hover:opacity-90 disabled:opacity-70 ${className}`}
 			whileHover={{ scale: 1.02 }}
 			whileTap={{ scale: 0.98 }}
 		>
@@ -106,8 +106,7 @@ export function SubscribeButton({
 						exit={{ opacity: 0 }}
 						className="flex items-center justify-center gap-2"
 					>
-						<motion.div
-							className="size-4 rounded-full border-2 border-brand-foreground/30 border-t-brand-foreground"
+						<motion.div								className="size-4 rounded-full border-2 border-white/30 border-t-white"
 							animate={{ rotate: 360 }}
 							transition={{
 								duration: 1,

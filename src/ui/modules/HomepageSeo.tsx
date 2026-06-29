@@ -4,7 +4,7 @@ export function HomepageH1() {
 	return (
 		<div className="mx-auto max-w-screen-2xl px-4 pt-6 sm:px-6">
 			<h1 className="text-center font-heading text-2xl font-bold uppercase tracking-wide text-ink sm:text-3xl md:text-4xl">
-				TRM Sport: Notizie Calcio, Formula 1, Tennis e Fantacalcio
+				TRM Sport — Analisi, Notizie e Fantacalcio in tempo reale
 			</h1>
 		</div>
 	)
@@ -19,7 +19,7 @@ export function HomepageSeoFooter() {
 	return (
 		<div className="bg-surface">
 			<div className="mx-auto max-w-screen-2xl border-t border-line px-3 py-4 sm:px-6">
-				<div className="space-y-1.5 text-[10px] leading-tight text-muted/50">
+				<div className="space-y-1.5 text-[10px] leading-tight text-muted">
 					<p>
 						TRM Sport — il portale dedicato alle ultime notizie sportive italiane e internazionali. Ogni giorno la redazione seleziona, analizza e approfondisce i fatti più rilevanti dal mondo dello sport, offrendo un punto di vista editoriale indipendente, aggiornato e approfondito. Il nostro obiettivo è fornire ai lettori notizie sportive verificate, analisi tattiche di qualità e contenuti che permettano di vivere lo sport in modo più consapevole.
 					</p>

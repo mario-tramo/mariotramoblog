@@ -19,7 +19,9 @@ export default async function processMetadata(
 ): Promise<Metadata> {
 	const url = resolveUrl(page)
 	const { description, noIndex, keywords, canonicalUrl } = page.metadata
-	const title = page.metadata.title || page.title || ''
+	const rawTitle = page.metadata.title || page.title || ''
+	const isHomepage = page._type === 'page' && page.metadata?.slug?.current === 'index'
+	const title = isHomepage ? { absolute: rawTitle } : rawTitle
 	const isBlogPost = page._type === 'blog.post'
 
 	const tagNames = page.tags?.filter(Boolean).map((t) => t.title) || []
@@ -30,7 +32,7 @@ export default async function processMetadata(
 	// the featured photo full-bleed + category + title overlay. This keeps the
 	// preview consistent everywhere and readable in-feed (better for clicks).
 	// The clean, un-overlaid photo lives in the JSON-LD `image` (Discover/News).
-	const ogParams = new URLSearchParams({ title })
+	const ogParams = new URLSearchParams({ title: rawTitle })
 	if (description) ogParams.set('description', description)
 	if (isBlogPost && page.categories?.[0]) ogParams.set('category', page.categories[0].title)
 	if (isBlogPost && page.publishDate) ogParams.set('date', page.publishDate)
@@ -41,7 +43,7 @@ export default async function processMetadata(
 	}
 	const image = `${BASE_URL}/api/og?${ogParams.toString()}`
 	// Describe the share image for screen readers / accessibility.
-	const imageAlt = featured?.alt || title || SITE_NAME
+	const imageAlt = featured?.alt || rawTitle || SITE_NAME
 
 	return {
 		metadataBase: new URL(BASE_URL),

@@ -6,6 +6,7 @@ import ChevronIcon from '@/ui/icons/ChevronIcon'
 import resolveUrl from '@/lib/resolveUrl'
 import ReadTime from './ReadTime'
 import { getCategoryColor } from '@/lib/categoryColors'
+import TimeAgo from '@/ui/primitives/TimeAgo'
 
 export type PostListVariant =
 	| 'sidebar-thumbs'
@@ -24,19 +25,6 @@ interface PostListWidgetProps {
 	showDot?: boolean
 	/** CTA button style: 'link' for text arrow, 'outline' for bordered, 'brand' for filled */
 	ctaStyle?: 'link' | 'outline' | 'brand'
-}
-
-function timeAgo(dateStr: string) {
-	const now = new Date()
-	const date = new Date(dateStr + 'T00:00:00')
-	const diffMs = now.getTime() - date.getTime()
-	const diffH = Math.floor(diffMs / (1000 * 60 * 60))
-	const diffD = Math.floor(diffH / 24)
-
-	if (diffH < 1) return 'Ora'
-	if (diffH < 24) return `${diffH}h fa`
-	if (diffD < 7) return `${diffD}g fa`
-	return date.toLocaleDateString('it-IT', { day: 'numeric', month: 'short' })
 }
 
 /** sidebar-thumbs: small thumbnail + time ago + title */
@@ -68,7 +56,7 @@ function SidebarThumbs({
 								className="mb-1 text-[11px] font-medium"
 								style={{ color: getCategoryColor(post.categories?.[0]) }}
 							>
-								{timeAgo(post.publishDate)}
+								<TimeAgo dateStr={post.publishDate} />
 							</p>
 							<p className="line-clamp-2 text-sm font-medium leading-snug group-hover:underline">
 								{post.title}
@@ -282,7 +270,7 @@ export default function PostListWidget({
 				<div className="mt-6 grid place-items-center">
 					<Link
 						href={viewAllHref}
-						className="inline-flex h-10 items-center rounded bg-brand px-6 text-sm font-semibold text-brand-foreground transition hover:opacity-90"
+						className="inline-flex h-10 items-center rounded bg-brand-deep px-6 text-sm font-semibold text-white transition hover:opacity-90"
 					>
 						{viewAllLabel}
 					</Link>
