@@ -1,0 +1,32 @@
+# TRM Sport
+
+> Blog di sport, calcio, tattiche e molto altro. Notizie, classifiche, calciomercato e approfondimenti su Serie A, Champions League, Premier League, La Liga, Bundesliga e Ligue 1.
+
+## Articoli e categorie
+
+- [Homepage](https://trmsport.com/): Ultimi articoli e news in evidenza
+- [Serie A](https://trmsport.com/serie-a): Notizie, risultati e analisi sul campionato italiano
+- [Champions League](https://trmsport.com/champions-league): News e approfondimenti sulla massima competizione europea
+- [Premier League](https://trmsport.com/premier-league): Tutto sul campionato inglese
+- [Calciomercato](https://trmsport.com/calciomercato): Trattative, ufficialità e rumors di mercato
+- [La Liga](https://trmsport.com/la-liga): Notizie sul campionato spagnolo
+- [Bundesliga](https://trmsport.com/bundesliga): News dalla Bundesliga tedesca
+- [Ligue 1](https://trmsport.com/ligue-1): Notizie sul campionato francese
+
+## Classifiche
+
+- [Classifiche](https://trmsport.com/classifiche): Classifiche live di Serie A, Premier League, La Liga, Bundesliga e Ligue 1
+
+## Autori
+
+- [Autori](https://trmsport.com/autori): Profili degli autori e tutti i loro articoli
+
+## Pagine informative
+
+- [Chi siamo](https://trmsport.com/chi-siamo): Informazioni sul progetto TRM Sport
+
+## Optional
+
+- [Privacy Policy](https://trmsport.com/legal/privacy-policy): Informativa sulla privacy
+- [Cookie Policy](https://trmsport.com/legal/cookie-policy): Gestione dei cookie
+- [Termini di servizio](https://trmsport.com/legal/termini-di-servizio): Condizioni di utilizzo del sito
