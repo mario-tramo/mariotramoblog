@@ -5,6 +5,7 @@ import JsonLd from '@/ui/primitives/JsonLd'
 import { getSite } from '@/sanity/lib/queries'
 import { urlFor } from '@/sanity/lib/image'
 import { websiteJsonLd } from '@/lib/jsonLd'
+import { Suspense } from 'react'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import SkipToContent from '@/ui/layout/SkipToContent'
 import ScrollToTop from '@/ui/layout/FocusOnNavigate'
@@ -19,6 +20,7 @@ import DevColorSwitcher from '@/ui/dev/DevColorSwitcher'
 import '@/styles/app.css'
 
 const Announcement = dynamic(() => import('@/ui/layout/Announcement'))
+const NavigationLoadingBar = dynamic(() => import('@/ui/layout/NavigationLoadingBar'))
 const VisualEditingControls = dynamic(() => import('@/ui/dev/VisualEditingControls'))
 
 export const viewport = {
@@ -73,6 +75,9 @@ export default async function RootLayout({
 					<ToastProvider>
 					<SkipToContent />
 					<ScrollToTop />
+					<Suspense fallback={null}>
+						<NavigationLoadingBar />
+					</Suspense>
 					<Announcement />
 					<Header />
 					<main id="main-content" tabIndex={-1} className="flex-1">
