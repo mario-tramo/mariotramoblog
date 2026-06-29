@@ -1,14 +1,14 @@
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import groq from 'groq'
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!.replace(/\/+$/, '')
+import { BASE_URL } from '@/lib/env'
 
 export async function GET() {
+	const base = BASE_URL.replace(/\/+$/, '') + '/'
+
 	const posts = await fetchSanityLive<
 		Array<{
 			url: string
 			publishDate: string
-			_updatedAt: string
 			title: string
 			categories: { title: string; slug: { current: string } }[]
 		}>
@@ -16,15 +16,18 @@ export async function GET() {
 		query: groq`*[
 			_type == 'blog.post'
 			&& metadata.noIndex != true
-			&& publishDate > now() - 60 * 60 * 24 * 2
+			&& dateTime(_updatedAt) > dateTimeNow() - 60 * 60 * 24 * 2
 		]|order(publishDate desc){
-			'url': $base + '/' + select(defined(categories[0]->slug.current) => categories[0]->slug.current + '/', '') + metadata.slug.current,
+			'url': (
+				$base
+				+ select(defined(categories[0]->slug.current) => categories[0]->slug.current + '/', '')
+				+ metadata.slug.current
+			),
 			publishDate,
-			'_updatedAt': _updatedAt,
-			'title': coalesce(title, metadata.title),
+			title,
 			'categories': categories[@->title != null]->{ title, 'slug': slug.current },
 		}`,
-		params: { base: BASE_URL },
+		params: { base },
 	})
 
 	if (!posts?.length) {
@@ -48,7 +51,7 @@ export async function GET() {
 				<news:name>Trm Sport</news:name>
 				<news:language>it</news:language>
 			</news:publication>
-			<news:publication_date>${post.publishDate.slice(0, 10)}T${post.publishDate.includes('T') ? post.publishDate.slice(11, 19) : '12:00:00'}Z</news:publication_date>
+			<news:publication_date>${post.publishDate}</news:publication_date>
 			<news:title>${escapeXml(post.title)}</news:title>
 			${post.categories?.[0]?.title ? `<news:keywords>${escapeXml(post.categories[0].title)}</news:keywords>` : ''}
 		</news:news>

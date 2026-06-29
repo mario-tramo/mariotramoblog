@@ -21,7 +21,7 @@ export const runtime = 'nodejs'
 export async function GET(request: NextRequest) {
 	if (
 		!isAuthorized(request, process.env.CRON_SECRET, {
-			headerNames: ['x-cron-secret'],
+			headers: ['x-cron-secret'],
 		})
 	) {
 		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

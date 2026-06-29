@@ -95,7 +95,7 @@ export default function Modules({
 
 				const Component = MODULE_MAP[
 				module._type as keyof typeof MODULE_MAP
-			] as React.ComponentType<any>
+			] as React.ComponentType<Record<string, unknown>>
 
 				if (!Component) return null
 

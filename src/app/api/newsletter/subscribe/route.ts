@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 			)
 		}
 
-		let body: { email?: string }
+		let body: { email?: string; privacyConsent?: boolean }
 		try {
 			body = await request.json()
 		} catch {
@@ -46,6 +46,13 @@ export async function POST(request: NextRequest) {
 		}
 
 		const { email } = body
+
+		if (!body.privacyConsent) {
+			return NextResponse.json(
+				{ error: 'Devi accettare il trattamento dei dati personali' },
+				{ status: 400 },
+			)
+		}
 
 		if (!email || typeof email !== 'string') {
 			return NextResponse.json(

@@ -1,4 +1,3 @@
-import type { SanityImageObject } from '@sanity/image-url/lib/types/types'
 import type { SanityAssetDocument, SanityDocument } from 'next-sanity'
 import type { PortableTextBlock } from '@portabletext/react'
 

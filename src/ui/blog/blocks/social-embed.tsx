@@ -205,7 +205,7 @@ const embedConfigs: Record<string, EmbedConfig> = {
     headerText: "Nome utente",
     subText: "@username",
     bodyText:
-      "Testo del tweet che sarebbe visibile se i cookie analitici fossero accettati. Qui ci sarebbe il contenuto reale del tweet con link, hashtag e menzioni.",
+      "Testo del tweet che sarebbe visibile se i cookie di terze parti fossero accettati. Qui ci sarebbe il contenuto reale del tweet con link, hashtag e menzioni.",
     timestamp: "4:32 PM · 24 giu 2026",
     actions: ["Reply", "Repost", "Like"],
   },
@@ -214,7 +214,7 @@ const embedConfigs: Record<string, EmbedConfig> = {
     headerText: "nome_utente",
     subText: null,
     bodyText:
-      "Didascalia del post Instagram bloccata dai cookie analitici. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
+      "Didascalia del post Instagram bloccata dai cookie di terze parti. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
     timestamp: "24 giugno 2026",
     actions: ["Like", "Comment", "Share"],
   },
@@ -223,7 +223,7 @@ const embedConfigs: Record<string, EmbedConfig> = {
     headerText: "@username",
     subText: null,
     bodyText:
-      "Descrizione del video TikTok bloccata dai cookie analitici. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
+      "Descrizione del video TikTok bloccata dai cookie di terze parti. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
     timestamp: "2026-6-24",
     actions: ["Like", "Comment", "Share"],
   },
@@ -232,7 +232,7 @@ const embedConfigs: Record<string, EmbedConfig> = {
     headerText: "Nome Utente",
     subText: null,
     bodyText:
-      "Testo del post Facebook bloccato dai cookie analitici. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
+      "Testo del post Facebook bloccato dai cookie di terze parti. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
     timestamp: "24 giugno 2026",
     actions: ["Like", "Comment", "Share"],
   },
@@ -241,7 +241,7 @@ const embedConfigs: Record<string, EmbedConfig> = {
     headerText: "Nome utente",
     subText: "@username",
     bodyText:
-      "Testo del post Threads bloccato dai cookie analitici. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
+      "Testo del post Threads bloccato dai cookie di terze parti. Il contenuto reale diventerebbe visibile dopo l'accettazione.",
     timestamp: "4:32 PM · 24 giu 2026",
     actions: ["Reply", "Repost", "Like"],
   },
@@ -297,7 +297,7 @@ function BlurredEmbedCard({
         <p className="mb-3 text-balance text-center text-sm text-neutral-900">
           Il contenuto {platformLabels[platform] ?? "social"} è bloccato.
           <br />
-          Per visualizzarlo, accetta i cookie analitici.
+          Per visualizzarlo, accetta i cookie di terze parti.
         </p>
         <button
           type="button"

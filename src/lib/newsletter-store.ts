@@ -22,14 +22,9 @@ type SubscriberRecord = {
 }
 
 async function getRedis(): Promise<RedisLike> {
-	const { default: Redis } = await import('@upstash/redis')
 	const { redis } = await import('@/lib/redis')
-	return (redis as unknown as RedisLike)
-}
-
-async function withRedis<T>(fn: (r: RedisLike) => Promise<T>): Promise<T> {
-	const r = await getRedis()
-	return fn(r)
+	if (!redis) throw new Error('Newsletter storage is unavailable')
+	return redis as unknown as RedisLike
 }
 
 export async function subscribe(

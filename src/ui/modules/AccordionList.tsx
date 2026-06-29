@@ -11,7 +11,7 @@ export default function AccordionList({
 	items,
 	layout = 'vertical',
 	connect,
-	generateSchema,
+	generateSchema: _generateSchema,
 	nested,
 	...props
 }: Partial<{

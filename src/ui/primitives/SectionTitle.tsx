@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils'
 export default function SectionTitle({
 	className,
 	children,
-	showDot,
 	...props
 }: { showDot?: boolean } & React.ComponentProps<'h2'>) {
 	if (!children) return null

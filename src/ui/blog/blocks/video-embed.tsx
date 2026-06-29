@@ -1,3 +1,7 @@
+"use client";
+
+import { useCookieConsent } from "@/ui/features/CookieConsent";
+
 interface VideoEmbedProps {
   value: {
     url: string;
@@ -28,7 +32,32 @@ const typeLabels: Record<string, string> = {
   other: "Video",
 };
 
+function BlurredVideoCard({ onAccept }: { onAccept: () => void }) {
+  return (
+    <div className="relative mx-auto w-full overflow-hidden rounded-xl border border-line bg-surface">
+      <div aria-hidden className="blur-[2px] [&>*]:select-none">
+        <div className="aspect-video w-full bg-muted" />
+      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center bg-canvas/60 backdrop-blur-[1px]">
+        <p className="mb-3 text-balance px-4 text-center text-sm text-ink">
+          Il video è bloccato.
+          <br />
+          Per visualizzarlo, accetta i cookie di terze parti.
+        </p>
+        <button
+          type="button"
+          onClick={onAccept}
+          className="rounded-full bg-ink px-5 py-1.5 text-sm font-semibold text-canvas transition-colors hover:bg-ink/80"
+        >
+          Accetta cookie
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function VideoEmbed({ value }: VideoEmbedProps) {
+  const { consent, accept } = useCookieConsent();
   const embedUrl = getEmbedUrl(value.url);
 
   if (!embedUrl) {
@@ -43,6 +72,14 @@ export function VideoEmbed({ value }: VideoEmbedProps) {
           {value.caption || "Guarda il video"}
         </a>
       </div>
+    );
+  }
+
+  if (consent !== "accepted") {
+    return (
+      <figure className="my-6">
+        <BlurredVideoCard onAccept={accept} />
+      </figure>
     );
   }
 

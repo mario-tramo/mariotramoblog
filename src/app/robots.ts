@@ -2,29 +2,20 @@ import type { MetadataRoute } from 'next'
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!.replace(/\/+$/, '')
 
-// User-Agents that have a track record of scraping for AI model training or
-// out-of-context republication. Listed by AI-training opt-out convention
-// (used by major publishers worldwide). Update quarterly.
+// Training-only AI crawlers that do NOT power search/answer engines —
+// blocking these prevents model training while still allowing AI citation
+// and referral traffic from ChatGPT Search, Perplexity, Google AI Overviews,
+// and other AI answer engines.
 //
-// TRADITIONAL search indexers (Googlebot, Bingbot, FacebookBot, etc.) are
-// NOT included here — they are allowed by the wildcard `*` rule so that
-// Google News, Discover, and Bing-cited-by-Microsoft-Copilot still work.
+// SEARCH/ANSWER AI crawlers (GPTBot, ChatGPT-User, OAI-SearchBot,
+// Google-Extended, PerplexityBot, Perplexity-User, anthropic-ai, Claude-Web,
+// Applebot-Extended, DuckDuckBot-AI, Omgilibot, Cohere-AI) are deliberately
+// ALLOWED via the wildcard `*` rule so that this site can be cited and
+// discovered through AI-powered search experiences.
 const AI_TRAINING_CRAWLERS = [
-	'GPTBot',
-	'ChatGPT-User',
-	'CCBot',
-	'anthropic-ai',
-	'Claude-Web',
-	'ClaudeBot', // Anthropic crawler
-	'Google-Extended', // Google AI training, separate from search indexing
-	'Applebot-Extended', // Apple Intelligence training opt-out
-	'PerplexityBot',
-	'Perplexity-User', // Perplexity answer engine
-	'DuckDuckBot-AI',
-	'Omgilibot',
+	'CCBot', // Common Crawl — used by many AI models for training only
+	'ClaudeBot', // Anthropic training crawler (Claude-Web is the search crawler)
 	'Meta-ExternalAgent', // Meta AI training crawler
-	'OAI-SearchBot',
-	'Cohere-AI',
 ]
 
 export default function robots(): MetadataRoute.Robots {

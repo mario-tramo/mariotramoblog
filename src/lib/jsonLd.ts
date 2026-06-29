@@ -21,17 +21,19 @@ function articleImages(post: Sanity.BlogPost): string[] {
 	]
 }
 
-const PUBLISHER = {
-	'@type': 'Organization',
-	name: 'Trm Sport',
-	url: BASE_URL,
-	logo: {
-		'@type': 'ImageObject',
-		url: `${BASE_URL}/logo.png`,
-		width: 512,
-		height: 512,
-	},
-} as const
+function publisher(logoUrl?: string) {
+	return {
+		'@type': 'Organization',
+		name: 'Trm Sport',
+		url: BASE_URL,
+		logo: {
+			'@type': 'ImageObject',
+			url: logoUrl || `${BASE_URL}/logo.png`,
+			width: 512,
+			height: 512,
+		},
+	}
+}
 
 function normalizeDate(date: string): string {
 	if (date.match(/^\d{4}-\d{2}-\d{2}$/)) {
@@ -42,19 +44,21 @@ function normalizeDate(date: string): string {
 	return date
 }
 
-const NEWS_MEDIA_PUBLISHER = {
-	'@type': 'NewsMediaOrganization',
-	name: 'TRM Sport',
-	url: BASE_URL,
-	logo: {
-		'@type': 'ImageObject',
-		url: `${BASE_URL}/logo.png`,
-		width: 512,
-		height: 512,
-	},
-} as const
+function newsMediaPublisher(logoUrl?: string) {
+	return {
+		'@type': 'NewsMediaOrganization',
+		name: 'TRM Sport',
+		url: BASE_URL,
+		logo: {
+			'@type': 'ImageObject',
+			url: logoUrl || `${BASE_URL}/logo.png`,
+			width: 512,
+			height: 512,
+		},
+	}
+}
 
-export function websiteJsonLd(siteTitle: string, description?: string) {
+export function websiteJsonLd(siteTitle: string, description?: string, logoUrl?: string) {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'WebSite',
@@ -62,19 +66,19 @@ export function websiteJsonLd(siteTitle: string, description?: string) {
 		url: BASE_URL,
 		inLanguage: 'it',
 		...(description && { description }),
-		publisher: PUBLISHER,
+		publisher: publisher(logoUrl),
 		potentialAction: {
 			'@type': 'SearchAction',
 			target: {
 				'@type': 'EntryPoint',
-				urlTemplate: `${BASE_URL}/blog?q={search_term_string}`,
+				urlTemplate: `${BASE_URL}/?q={search_term_string}`,
 			},
 			'query-input': 'required name=search_term_string',
 		},
 	}
 }
 
-export function newsArticleJsonLd(post: Sanity.BlogPost) {
+export function newsArticleJsonLd(post: Sanity.BlogPost, logoUrl?: string) {
 	const catSlug = post.categories?.[0]?.slug?.current
 	const url = catSlug
 		? `${BASE_URL}/${catSlug}/${post.metadata.slug.current}`
@@ -105,7 +109,7 @@ export function newsArticleJsonLd(post: Sanity.BlogPost) {
 				? `${BASE_URL}/autori/${author.slug.current}`
 				: `${BASE_URL}/blog?author=${encodeURIComponent(author.name)}`,
 		})),
-		publisher: NEWS_MEDIA_PUBLISHER,
+		publisher: newsMediaPublisher(logoUrl),
 		mainEntityOfPage: {
 			'@type': 'WebPage',
 			'@id': url,
@@ -126,6 +130,7 @@ export function collectionPageJsonLd(
 	title: string,
 	description?: string,
 	url?: string,
+	logoUrl?: string,
 ) {
 	return {
 		'@context': 'https://schema.org',
@@ -139,7 +144,7 @@ export function collectionPageJsonLd(
 			name: 'Trm Sport',
 			url: BASE_URL,
 		},
-		publisher: PUBLISHER,
+		publisher: publisher(logoUrl),
 	}
 }
 
@@ -148,7 +153,7 @@ export function webPageJsonLd(page: {
 	description?: string
 	url: string
 	dateModified?: string
-}) {
+}, logoUrl?: string) {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'WebPage',
@@ -162,7 +167,7 @@ export function webPageJsonLd(page: {
 			name: 'Trm Sport',
 			url: BASE_URL,
 		},
-		publisher: PUBLISHER,
+		publisher: publisher(logoUrl),
 	}
 }
 
@@ -214,7 +219,7 @@ export function personJsonLd(author: Sanity.Person) {
 	}
 }
 
-export function organizationJsonLd(socialLinks?: string[]) {
+export function organizationJsonLd(socialLinks?: string[], logoUrl?: string) {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'Organization',
@@ -222,7 +227,7 @@ export function organizationJsonLd(socialLinks?: string[]) {
 		url: BASE_URL,
 		logo: {
 			'@type': 'ImageObject',
-			url: `${BASE_URL}/logo.png`,
+			url: logoUrl || `${BASE_URL}/logo.png`,
 			width: 512,
 			height: 512,
 		},
@@ -230,7 +235,7 @@ export function organizationJsonLd(socialLinks?: string[]) {
 	}
 }
 
-export function newsMediaOrganizationJsonLd(socialLinks?: string[]) {
+export function newsMediaOrganizationJsonLd(socialLinks?: string[], logoUrl?: string) {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'NewsMediaOrganization',
@@ -238,7 +243,7 @@ export function newsMediaOrganizationJsonLd(socialLinks?: string[]) {
 		url: BASE_URL,
 		logo: {
 			'@type': 'ImageObject',
-			url: `${BASE_URL}/logo.png`,
+			url: logoUrl || `${BASE_URL}/logo.png`,
 			width: 512,
 			height: 512,
 		},

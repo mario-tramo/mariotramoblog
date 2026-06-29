@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic'
 import Root from '@/ui/layout/Root'
 import JsonLd from '@/ui/primitives/JsonLd'
 import { getSite } from '@/sanity/lib/queries'
+import { urlFor } from '@/sanity/lib/image'
 import { websiteJsonLd } from '@/lib/jsonLd'
 import { NuqsAdapter } from 'nuqs/adapters/next/app'
 import SkipToContent from '@/ui/layout/SkipToContent'
@@ -58,14 +59,15 @@ export default async function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
-	const { title } = await getSite()
+	const { title, logo } = await getSite()
+	const logoUrl = logo?.asset ? urlFor(logo).width(512).height(512).url() : undefined
 
 	return (
 		<Root>
 			<link rel="preconnect" href="https://cdn.sanity.io" />
 			<link rel="dns-prefetch" href="https://cdn.sanity.io" />
 			<body className="flex min-h-svh flex-col bg-canvas text-ink antialiased">
-				<JsonLd data={websiteJsonLd(title)} />
+				<JsonLd data={websiteJsonLd(title, undefined, logoUrl)} />
 				<NuqsAdapter>
 					<CookieConsentProvider>
 					<ToastProvider>

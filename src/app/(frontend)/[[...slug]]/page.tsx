@@ -23,6 +23,7 @@ import {
 	MODULES_QUERY,
 	TRANSLATIONS_QUERY,
 } from '@/sanity/lib/queries'
+import { urlFor } from '@/sanity/lib/image'
 import { BASE_URL } from '@/lib/env'
 import { processSlug } from '@/lib/processSlug'
 import errors from '@/lib/errors'
@@ -32,6 +33,8 @@ export const revalidate = 60
 export default async function Page({ params, searchParams }: Props) {
 	const resolvedParams = await params
 	const resolvedSearchParams = await searchParams
+
+	const logoUrl = await getSiteLogoUrl()
 
 	// Try page first, then category, then blog post (category/slug)
 	const page = await getPage(resolvedParams)
@@ -51,15 +54,15 @@ export default async function Page({ params, searchParams }: Props) {
 						description: page.metadata.description,
 						url: resolveUrl(page),
 						dateModified: page._updatedAt,
-					})}
+					}, logoUrl)}
 				/>
 				{faqItems.length > 0 && (
 					<JsonLd data={faqPageJsonLd(faqItems)} />
 				)}
 				{(isHomepage || isAboutPage) && (
 					<>
-						<JsonLd data={organizationJsonLd(socialLinks)} />
-						<JsonLd data={newsMediaOrganizationJsonLd(socialLinks)} />
+						<JsonLd data={organizationJsonLd(socialLinks, logoUrl)} />
+						<JsonLd data={newsMediaOrganizationJsonLd(socialLinks, logoUrl)} />
 					</>
 				)}
 				<Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
@@ -105,6 +108,7 @@ export default async function Page({ params, searchParams }: Props) {
 						category.metadata.title,
 						category.metadata.description,
 						`${BASE_URL}/${category.metadata.slug.current}`,
+						logoUrl,
 					)}
 				/>
 				<JsonLd
@@ -136,7 +140,7 @@ export default async function Page({ params, searchParams }: Props) {
 		const faqItems = collectFaqItems(post.modules)
 		return (
 			<>
-				<JsonLd data={newsArticleJsonLd(post)} />
+				<JsonLd data={newsArticleJsonLd(post, logoUrl)} />
 				{faqItems.length > 0 && (
 					<JsonLd data={faqPageJsonLd(faqItems)} />
 				)}
@@ -356,6 +360,14 @@ type Params = { slug?: string[] }
 type Props = {
 	params: Promise<Params>
 	searchParams: Promise<Record<string, string | string[] | undefined>>
+}
+
+async function getSiteLogoUrl(): Promise<string | undefined> {
+	const site = await fetchSanityLive<{ logo?: Sanity.Image }>({
+		query: groq`*[_id == 'site'][0]{ logo }`,
+	})
+	if (!site?.logo?.asset) return undefined
+	return urlFor(site.logo).width(512).height(512).url()
 }
 
 async function getSocialLinks(): Promise<string[]> {
