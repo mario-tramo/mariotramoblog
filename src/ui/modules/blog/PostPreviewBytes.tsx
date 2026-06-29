@@ -1,5 +1,3 @@
-'use client'
-
 import { Img } from '@/ui/primitives/Img'
 import Link from 'next/link'
 import resolveUrl from '@/lib/resolveUrl'

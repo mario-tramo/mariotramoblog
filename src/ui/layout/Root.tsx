@@ -1,6 +1,3 @@
-'use client'
-
-import getLang from '@/lib/getLang'
 import { Inter, Bebas_Neue } from 'next/font/google'
 import type { ComponentProps } from 'react'
 
@@ -18,11 +15,9 @@ const bebasNeue = Bebas_Neue({
 })
 
 export default function Root(props: ComponentProps<'html'>) {
-	const lang = getLang()
-
 	return (
 		<html
-			lang={lang}
+			lang="it"
 			className={`${inter.variable} ${bebasNeue.variable}`}
 			{...props}
 		/>

@@ -1,3 +1,5 @@
+'use client'
+
 import moduleProps from '@/lib/moduleProps'
 import CSS from './CSS'
 import { stegaClean } from '@sanity/client/stega'

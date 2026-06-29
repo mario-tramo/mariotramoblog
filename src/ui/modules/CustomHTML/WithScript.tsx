@@ -1,5 +1,3 @@
-'use client'
-
 import moduleProps from '@/lib/moduleProps'
 import { stegaClean } from '@sanity/client/stega'
 import type { ComponentProps } from 'react'

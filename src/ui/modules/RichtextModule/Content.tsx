@@ -1,5 +1,3 @@
-'use client'
-
 import { Children, isValidElement } from 'react'
 import { PortableText } from '@portabletext/react'
 import AnchoredHeading from './AnchoredHeading'
