@@ -29,10 +29,10 @@ export async function GET(request: NextRequest) {
 
 	// Scale the title down as it gets longer so it always fits the card.
 	// Leave more breathing room when a description is also shown.
-	const titleCeiling = description ? 64 : 84
+	const titleCeiling = description ? 46 : 60
 	const titleSize = Math.min(
 		titleCeiling,
-		title.length > 90 ? 50 : title.length > 60 ? 60 : title.length > 36 ? 72 : 84,
+		title.length > 90 ? 36 : title.length > 60 ? 42 : title.length > 36 ? 50 : 60,
 	)
 
 	const fonts = await loadFonts()
@@ -85,7 +85,7 @@ export async function GET(request: NextRequest) {
 						height: '630px',
 						display: 'flex',
 						backgroundImage: imageUrl
-							? 'linear-gradient(180deg, rgba(19,20,27,0.10) 0%, rgba(19,20,27,0.45) 48%, rgba(19,20,27,0.94) 100%)'
+							? 'linear-gradient(180deg, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.88) 76%, rgba(0,0,0,1) 100%)'
 							: `radial-gradient(circle at 78% 18%, rgba(230,57,70,0.32) 0%, rgba(19,20,27,0) 55%)`,
 					}}
 				/>
@@ -111,22 +111,22 @@ export async function GET(request: NextRequest) {
 						justifyContent: 'flex-end',
 						width: '1200px',
 						height: '630px',
-						padding: '64px',
+						padding: '48px',
 					}}
 				>
 					{/* Category chip */}
 					{category && (
-						<div style={{ display: 'flex', marginBottom: '24px' }}>
+						<div style={{ display: 'flex', marginBottom: '16px' }}>
 							<div
 								style={{
 									display: 'flex',
 									backgroundColor: BRAND,
 									color: '#fff',
-									fontSize: '24px',
+									fontSize: '17px',
 									fontWeight: 700,
 									textTransform: 'uppercase',
 									letterSpacing: '0.08em',
-									padding: '8px 18px',
+									padding: '6px 13px',
 									borderRadius: '8px',
 								}}
 							>
@@ -155,11 +155,11 @@ export async function GET(request: NextRequest) {
 						<div
 							style={{
 								display: 'flex',
-								marginTop: '20px',
-								fontSize: '28px',
-								fontWeight: 400,
+								marginTop: '14px',
+								fontSize: '23px',
+								fontWeight: 600,
 								lineHeight: 1.35,
-								color: 'rgba(255,255,255,0.82)',
+								color: 'rgba(255,255,255,0.95)',
 								textShadow: '0 1px 12px rgba(0,0,0,0.45)',
 								lineClamp: 2,
 							}}
@@ -174,22 +174,22 @@ export async function GET(request: NextRequest) {
 							display: 'flex',
 							alignItems: 'center',
 							justifyContent: 'space-between',
-							marginTop: '40px',
+							marginTop: '26px',
 						}}
 					>
 						<div style={{ display: 'flex', alignItems: 'baseline' }}>
-							<span style={{ fontSize: '30px', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>
+							<span style={{ fontSize: '22px', fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>
 								TRM
 							</span>
-							<span style={{ fontSize: '30px', fontWeight: 800, color: BRAND, letterSpacing: '-0.02em' }}>
+							<span style={{ fontSize: '22px', fontWeight: 800, color: BRAND, letterSpacing: '-0.02em' }}>
 								SPORT
 							</span>
-							<span style={{ fontSize: '22px', fontWeight: 500, color: 'rgba(255,255,255,0.65)', marginLeft: '16px' }}>
+							<span style={{ fontSize: '16px', fontWeight: 500, color: 'rgba(255,255,255,0.65)', marginLeft: '12px' }}>
 								{domain}
 							</span>
 						</div>
 						{formattedDate && (
-							<span style={{ fontSize: '22px', fontWeight: 500, color: 'rgba(255,255,255,0.65)' }}>
+							<span style={{ fontSize: '16px', fontWeight: 500, color: 'rgba(255,255,255,0.65)' }}>
 								{formattedDate}
 							</span>
 						)}
@@ -231,12 +231,12 @@ function safeDate(value: string) {
 	return d.toLocaleDateString('it-IT', { year: 'numeric', month: 'long', day: 'numeric' })
 }
 
-type Font = { name: string; data: ArrayBuffer; weight: 400 | 500 | 700 | 800; style: 'normal' }
+type Font = { name: string; data: ArrayBuffer; weight: 400 | 500 | 600 | 700 | 800; style: 'normal' }
 
 /** Loads Inter at the weights the card uses. Never throws: a failed fetch just
  *  drops that weight (next/og falls back to its built-in font). */
 async function loadFonts(): Promise<Font[]> {
-	const weights: Font['weight'][] = [400, 500, 700, 800]
+	const weights: Font['weight'][] = [400, 500, 600, 700, 800]
 	const results = await Promise.all(weights.map((w) => loadGoogleFont('Inter', w)))
 	return weights
 		.map((weight, i) => results[i] && { name: 'Inter', data: results[i] as ArrayBuffer, weight, style: 'normal' as const })

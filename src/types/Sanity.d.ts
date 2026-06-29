@@ -100,6 +100,7 @@ declare global {
 			name: string
 			slug?: { current: string }
 			image?: Image
+			imageUrl?: string
 			bio?: string
 			socialLink?: string
 			articleCount?: number

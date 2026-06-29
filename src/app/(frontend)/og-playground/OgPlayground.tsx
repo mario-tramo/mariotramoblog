@@ -74,19 +74,19 @@ export default function OgPlayground({
 	const shared: Shared = { ...fields, domain, ogImageUrl, url }
 
 	return (
-		<div className="mx-auto w-full max-w-[1400px] px-5 py-10 text-ink">
-			<header className="mb-8">
-				<h1 className="text-3xl font-black tracking-tight">OG Playground</h1>
-				<p className="mt-1 text-sm text-muted">
+		<div className="mx-auto w-full max-w-6xl px-4 py-6 text-ink sm:px-5 sm:py-8">
+			<header className="mb-4 sm:mb-6">
+				<h1 className="text-xl font-black tracking-tight sm:text-2xl">OG Playground</h1>
+				<p className="mt-1 text-xs text-muted sm:text-sm">
 					Anteprima delle preview social, generate dallo stesso endpoint
 					(<code>/api/og</code>) usato in produzione. Scegli un articolo reale o
 					modifica i campi per prototipare.
 				</p>
 			</header>
 
-			<div className="grid gap-8 lg:grid-cols-[360px_1fr]">
+			<div className="grid gap-4 md:gap-6 lg:grid-cols-[280px_1fr] xl:grid-cols-[320px_1fr]">
 				{/* ---- Controls ---- */}
-				<aside className="space-y-5">
+				<aside className="space-y-3 sm:space-y-4">
 					<label className="block">
 						<span className="mb-1 block text-xs font-semibold uppercase tracking-wide text-muted">
 							Articolo
@@ -94,7 +94,7 @@ export default function OgPlayground({
 						<select
 							value={selected}
 							onChange={(e) => loadPost(e.target.value)}
-							className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm"
+							className="w-full rounded-lg border border-line bg-surface px-3 py-1.5 text-xs"
 						>
 							{posts.map((p) => (
 								<option key={p.id} value={p.id}>
@@ -132,7 +132,7 @@ export default function OgPlayground({
 						<input
 							value={fields.category}
 							onChange={(e) => set('category', e.target.value)}
-							className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm"
+							className="w-full rounded-lg border border-line bg-surface px-3 py-1.5 text-xs"
 						/>
 					</label>
 
@@ -144,7 +144,7 @@ export default function OgPlayground({
 							value={fields.imageUrl}
 							onChange={(e) => set('imageUrl', e.target.value)}
 							placeholder="https://cdn.sanity.io/…"
-							className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-xs"
+							className="w-full rounded-lg border border-line bg-surface px-3 py-1.5 text-xs"
 						/>
 					</label>
 
@@ -156,7 +156,7 @@ export default function OgPlayground({
 							type="date"
 							value={fields.date}
 							onChange={(e) => set('date', e.target.value)}
-							className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm"
+							className="w-full rounded-lg border border-line bg-surface px-3 py-1.5 text-xs"
 						/>
 					</label>
 
@@ -171,13 +171,13 @@ export default function OgPlayground({
 				</aside>
 
 				{/* ---- Previews ---- */}
-				<main className="space-y-10">
+				<main className="space-y-6 sm:space-y-8">
 					<Section title="Card OG (1200×630) — sorgente unica">
 					{/* Raw <img> — playground for next/og behaviour, not user-facing. */}
 					<img
 							src={ogImageUrl}
 							alt="OG card"
-							className="w-full max-w-[640px] rounded-xl border border-line shadow-lg"
+							className="w-full max-w-full rounded-xl border border-line shadow-lg sm:max-w-[640px]"
 							style={{ aspectRatio: '1200 / 630' }}
 						/>
 					</Section>
@@ -250,18 +250,18 @@ function fieldsFromPost(post?: PlaygroundPost): Fields {
 
 function MetaPanel({ rows }: { rows: [string, string][] }) {
 	return (
-		<div className="max-w-[720px] overflow-hidden rounded-xl border border-line">
+		<div className="max-w-full overflow-hidden rounded-xl border border-line sm:max-w-[720px]">
 			{rows.map(([key, value], i) => (
 				<div
 					key={key}
-					className={`flex flex-col gap-0.5 px-4 py-2.5 sm:flex-row sm:gap-4 ${
+					className={`flex flex-col gap-0.5 px-3 py-2 sm:flex-row sm:gap-4 sm:px-4 sm:py-2.5 ${
 						i % 2 ? 'bg-ink/[0.02]' : ''
 					}`}
 				>
-					<span className="w-[180px] shrink-0 font-mono text-xs font-semibold text-muted">
+					<span className="w-full shrink-0 font-mono text-[11px] font-semibold text-muted sm:w-[180px] sm:text-xs">
 						{key}
 					</span>
-					<span className="break-all text-sm text-ink">
+					<span className="break-all text-xs text-ink sm:text-sm">
 						{value || <em className="text-amber-600">— vuoto —</em>}
 					</span>
 				</div>
@@ -311,7 +311,7 @@ function Field({
 		<label className="block">
 			<span className="mb-1 flex items-center justify-between text-xs font-semibold uppercase tracking-wide text-muted">
 				{label}
-				<span className={tone}>
+				<span className={'text-[11px] ' + tone}>
 					{count}
 					{idealMin !== undefined ? `/${idealMin}–${ideal}` : `/${ideal}`}
 				</span>
@@ -320,14 +320,14 @@ function Field({
 				<textarea
 					value={value}
 					onChange={(e) => onChange(e.target.value)}
-					rows={3}
-					className="w-full resize-y rounded-lg border border-line bg-surface px-3 py-2 text-sm"
+					rows={2}
+					className="w-full resize-y rounded-lg border border-line bg-surface px-3 py-1.5 text-xs"
 				/>
 			) : (
 				<input
 					value={value}
 					onChange={(e) => onChange(e.target.value)}
-					className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm"
+					className="w-full rounded-lg border border-line bg-surface px-3 py-1.5 text-xs"
 				/>
 			)}
 		</label>
@@ -345,29 +345,29 @@ function Img({ src, className, style }: { src: string; className?: string; style
 
 function TwitterCard({ title, domain, ogImageUrl }: Shared) {
 	return (
-		<div className="max-w-[520px] overflow-hidden rounded-2xl border border-[#cfd9de] bg-white font-sans">
+		<div className="max-w-full overflow-hidden rounded-2xl border border-[#cfd9de] bg-white font-sans sm:max-w-[520px]">
 			<div className="relative" style={{ aspectRatio: '1200 / 630' }}>
 				<Img src={ogImageUrl} className="absolute inset-0 size-full object-cover" />
-				<span className="absolute bottom-2 left-2 rounded bg-black/60 px-1.5 py-0.5 text-xs text-white">
+				<span className="absolute bottom-2 left-2 rounded bg-black/60 px-1.5 py-0.5 text-[11px] text-white sm:text-xs">
 					{title}
 				</span>
 			</div>
-			<div className="px-3 py-2 text-[13px] text-[#536471]">{domain}</div>
+			<div className="px-3 py-2 text-xs text-[#536471] sm:text-[13px]">{domain}</div>
 		</div>
 	)
 }
 
 function FacebookCard({ title, description, domain, ogImageUrl }: Shared) {
 	return (
-		<div className="max-w-[520px] overflow-hidden rounded-lg border border-[#dadde1] bg-white font-sans">
+		<div className="max-w-full overflow-hidden rounded-lg border border-[#dadde1] bg-white font-sans sm:max-w-[520px]">
 			<Img src={ogImageUrl} className="w-full object-cover" style={{ aspectRatio: '1200 / 630' }} />
 			<div className="bg-[#f2f3f5] px-3 py-2.5">
-				<div className="text-[12px] uppercase tracking-wide text-[#606770]">{domain}</div>
-				<div className="mt-0.5 line-clamp-2 text-[16px] font-semibold leading-snug text-[#1d2129]">
+				<div className="text-[10px] uppercase tracking-wide text-[#606770] sm:text-[12px]">{domain}</div>
+				<div className="mt-0.5 line-clamp-2 text-sm font-semibold leading-snug text-[#1d2129] sm:text-[16px]">
 					{title}
 				</div>
 				{description && (
-					<div className="mt-0.5 line-clamp-1 text-[14px] text-[#606770]">{description}</div>
+					<div className="mt-0.5 line-clamp-1 text-xs text-[#606770] sm:text-[14px]">{description}</div>
 				)}
 			</div>
 		</div>
@@ -376,13 +376,13 @@ function FacebookCard({ title, description, domain, ogImageUrl }: Shared) {
 
 function LinkedInCard({ title, domain, ogImageUrl }: Shared) {
 	return (
-		<div className="max-w-[520px] overflow-hidden rounded-lg border border-[#e0e0e0] bg-white font-sans shadow-sm">
+		<div className="max-w-full overflow-hidden rounded-lg border border-[#e0e0e0] bg-white font-sans shadow-sm sm:max-w-[520px]">
 			<Img src={ogImageUrl} className="w-full object-cover" style={{ aspectRatio: '1200 / 630' }} />
 			<div className="px-3 py-3">
-				<div className="line-clamp-2 text-[16px] font-semibold leading-snug text-[#000000e6]">
+				<div className="line-clamp-2 text-sm font-semibold leading-snug text-[#000000e6] sm:text-[16px]">
 					{title}
 				</div>
-				<div className="mt-1 text-[12px] text-[#00000099]">{domain}</div>
+				<div className="mt-1 text-[11px] text-[#00000099] sm:text-[12px]">{domain}</div>
 			</div>
 		</div>
 	)
@@ -390,30 +390,30 @@ function LinkedInCard({ title, domain, ogImageUrl }: Shared) {
 
 function WhatsAppCard({ title, description, domain, ogImageUrl, url }: Shared) {
 	return (
-		<div className="max-w-[400px] rounded-xl bg-[#d9fdd3] p-1.5 font-sans shadow-sm">
+		<div className="max-w-full rounded-xl bg-[#d9fdd3] p-1.5 font-sans shadow-sm sm:max-w-[400px]">
 			<div className="overflow-hidden rounded-lg bg-white/70">
 				<Img src={ogImageUrl} className="w-full object-cover" style={{ aspectRatio: '1200 / 630' }} />
 				<div className="px-2.5 py-2">
-					<div className="line-clamp-2 text-[13px] font-medium leading-snug text-[#111b21]">
+					<div className="line-clamp-2 text-xs font-medium leading-snug text-[#111b21] sm:text-[13px]">
 						{title}
 					</div>
 					{description && (
-						<div className="mt-0.5 line-clamp-2 text-[12px] text-[#667781]">{description}</div>
+						<div className="mt-0.5 line-clamp-2 text-[11px] text-[#667781] sm:text-[12px]">{description}</div>
 					)}
-					<div className="mt-0.5 text-[12px] text-[#667781]">{domain}</div>
+					<div className="mt-0.5 text-[11px] text-[#667781] sm:text-[12px]">{domain}</div>
 				</div>
 			</div>
-			<div className="px-2 pt-1 text-[12px] text-[#53bdeb]">{url}</div>
+			<div className="px-2 pt-1 text-[11px] text-[#53bdeb] sm:text-[12px]">{url}</div>
 		</div>
 	)
 }
 
 function DiscordCard({ title, description, domain, ogImageUrl }: Shared) {
 	return (
-		<div className="max-w-[460px] rounded border-l-4 border-[#e63946] bg-[#2b2d31] p-3 font-sans text-white">
-			<div className="text-[12px] text-[#b5bac1]">{domain}</div>
-			<div className="mt-1 text-[16px] font-semibold leading-snug text-[#00a8fc]">{title}</div>
-			{description && <div className="mt-1 text-[14px] text-[#dbdee1]">{description}</div>}
+		<div className="max-w-full rounded border-l-4 border-[#e63946] bg-[#2b2d31] p-3 font-sans text-white sm:max-w-[460px]">
+			<div className="text-[11px] text-[#b5bac1] sm:text-[12px]">{domain}</div>
+			<div className="mt-1 text-sm font-semibold leading-snug text-[#00a8fc] sm:text-[16px]">{title}</div>
+			{description && <div className="mt-1 text-xs text-[#dbdee1] sm:text-[14px]">{description}</div>}
 			<Img
 				src={ogImageUrl}
 				className="mt-3 w-full rounded object-cover"
@@ -425,7 +425,7 @@ function DiscordCard({ title, description, domain, ogImageUrl }: Shared) {
 
 function GoogleResult({ title, description, domain, url }: Shared) {
 	return (
-		<div className="max-w-[600px]" style={{ fontFamily: 'arial, sans-serif' }}>
+		<div className="max-w-full sm:max-w-[600px]" style={{ fontFamily: 'arial, sans-serif' }}>
 			<div className="flex items-center gap-2">
 				<div className="grid size-7 place-items-center rounded-full border border-[#dadce0] bg-white text-[12px] font-bold text-[#e63946]">
 					T
@@ -435,11 +435,11 @@ function GoogleResult({ title, description, domain, url }: Shared) {
 					<div className="text-[12px] text-[#4d5156]">{url}</div>
 				</div>
 			</div>
-			<div className="mt-1 text-[20px] leading-snug text-[#1a0dab] hover:underline">
+			<div className="mt-1 text-base leading-snug text-[#1a0dab] hover:underline sm:text-[20px]">
 				{title}
 			</div>
 			{description && (
-				<div className="mt-1 line-clamp-2 text-[14px] leading-snug text-[#4d5156]">
+				<div className="mt-1 line-clamp-2 text-xs leading-snug text-[#4d5156] sm:text-[14px]">
 					{description}
 				</div>
 			)}

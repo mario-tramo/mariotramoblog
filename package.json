@@ -62,8 +62,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --test src/lib/crypto.test.ts src/sanity/lib/cache.test.ts src/lib/http-auth.test.ts src/lib/cron-publish.test.ts src/lib/revalidate-handler.test.ts src/lib/newsletter-store.test.ts",
-    "test:watch": "tsx --test --watch src/lib/crypto.test.ts src/sanity/lib/cache.test.ts src/lib/http-auth.test.ts src/lib/cron-publish.test.ts src/lib/revalidate-handler.test.ts src/lib/newsletter-store.test.ts",
+    "test": "tsx --test src/lib/crypto.test.ts src/sanity/lib/cache.test.ts src/lib/http-auth.test.ts src/lib/cron-publish.test.ts src/lib/revalidate-handler.test.ts src/lib/newsletter-store.test.ts src/lib/fantasy/ranking.test.ts",
+    "test:watch": "tsx --test --watch src/lib/crypto.test.ts src/sanity/lib/cache.test.ts src/lib/http-auth.test.ts src/lib/cron-publish.test.ts src/lib/revalidate-handler.test.ts src/lib/newsletter-store.test.ts src/lib/fantasy/ranking.test.ts",
     "audit:prod": "pnpm audit --prod",
     "prod": "pnpm typecheck && pnpm lint && pnpm test && pnpm audit:prod && pnpm build && pnpm start",
     "seed:legal": "node scripts/seed-legal.mjs"

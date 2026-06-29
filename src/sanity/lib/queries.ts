@@ -42,8 +42,16 @@ const COLUMN_MODULES_QUERY = groq`
 	},
 	_type == 'card-list' => { cards[]{ ..., ctas[]{ ${CTA_QUERY} } } },
 	_type == 'hero' => {
-		slides[]{ ..., author->, cta{ ${CTA_QUERY} },
-			'imageUrl': image.asset->url, 'lqip': image.asset->metadata.lqip }
+		slides[]{
+			...,
+			'author': author->{
+				...,
+				'imageUrl': image.asset->url,
+			},
+			cta{ ${CTA_QUERY} },
+			'imageUrl': image.asset->url,
+			'lqip': image.asset->metadata.lqip,
+		}
 	},
 	_type == 'richtext-module' => {
 		content[]{ ..., _type == 'image' => { ${IMAGE_QUERY} } },
@@ -64,7 +72,10 @@ export const MODULES_QUERY = groq`
 	_type == 'blog-frontpage' => {
 		slides[]{
 			...,
-			author->,
+			'author': author->{
+				...,
+				'imageUrl': image.asset->url,
+			},
 			cta{ ${CTA_QUERY} },
 			'imageUrl': image.asset->url,
 			'lqip': image.asset->metadata.lqip,
@@ -92,7 +103,10 @@ export const MODULES_QUERY = groq`
 	_type == 'hero' => {
 		slides[]{
 			...,
-			author->,
+			'author': author->{
+				...,
+				'imageUrl': image.asset->url,
+			},
 			cta{ ${CTA_QUERY} },
 			'imageUrl': image.asset->url,
 			'lqip': image.asset->metadata.lqip,

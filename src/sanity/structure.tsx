@@ -104,7 +104,7 @@ export const structure = structureTool({
 			S.documentList()
 				.title(title)
 				.filter(
-					'_type == "blog.post" && apiVersion: 2 && $slug in categories[]->slug.current',
+					'_type == "blog.post" && $slug in categories[]->slug.current',
 				)
 				.params({ slug }),
 		),

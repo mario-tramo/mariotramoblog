@@ -1,0 +1,39 @@
+name: Fantasy scrape
+
+# Daily at 06:00 UTC. Cheap, idempotent (server overwrites), retryable.
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install --quiet soccerdata requests beautifulsoup4 lxml
+
+      - name: Run daily FBref scrape (fantasy)
+        env:
+          FANTASY_WEBHOOK_URL: ${{ secrets.FANTASY_WEBHOOK_URL }}
+          FANTASY_INGEST_SECRET: ${{ secrets.FANTASY_INGEST_SECRET }}
+          FANTASY_LEAGUES: "Serie A"
+        run: python scripts/fantasy_scrape.py
+
+      - name: Run daily FBref scrape (standings)
+        env:
+          STANDINGS_WEBHOOK_URL: ${{ secrets.STANDINGS_WEBHOOK_URL }}
+          STANDINGS_INGEST_SECRET: ${{ secrets.STANDINGS_INGEST_SECRET }}
+          STANDINGS_LEAGUES: "Serie A,Premier League,La Liga,Bundesliga,Ligue 1"
+        run: python scripts/standings_scrape.py

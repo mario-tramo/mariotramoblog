@@ -56,7 +56,7 @@ export default async function ArticleCarousel({
 			imageUrl: string | null
 			lqip: string | null
 			hotspot: { x: number; y: number } | null
-			authors: { name: string }[] | null
+			authors: { name: string; imageUrl: string | null }[] | null
 			categories: { title: string }[]
 		}[]
 	>({
@@ -79,7 +79,7 @@ export default async function ArticleCarousel({
 				'imageUrl': metadata.image.asset->url,
 				'lqip': metadata.image.asset->metadata.lqip,
 				'hotspot': metadata.image.hotspot{ x, y },
-				'authors': authors[]->{ name },
+				'authors': authors[]->{ name, 'imageUrl': image.asset->url },
 				categories[]->{ title },
 			}
 		`,

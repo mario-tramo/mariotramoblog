@@ -15,7 +15,7 @@ type Post = {
 	imageUrl: string | null
 	lqip: string | null
 	hotspot: { x: number; y: number } | null
-	authors: { name: string }[] | null
+	authors: { name: string; imageUrl: string | null }[] | null
 	categories: { title: string }[]
 }
 
@@ -72,28 +72,38 @@ function Slide({ post, active, eager }: { post: Post; active: boolean; eager: bo
 
 			<div className="pointer-events-none absolute inset-x-0 bottom-0 h-[50%] bg-gradient-to-t from-black/90 via-black/70 via-60% to-transparent sm:h-[60%] lg:h-[70%]" />
 
-			<div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 p-5 text-center sm:items-start sm:text-left sm:gap-3 sm:p-8 lg:gap-4 lg:p-12">
+			<div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-2 p-5 text-center sm:items-start sm:text-left sm:gap-3 sm:p-8 lg:gap-2 lg:p-6">
 				{post.categories?.[0] && (
-					<span className="w-fit rounded bg-brand px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-brand-foreground sm:px-3 sm:py-1.5 sm:text-sm lg:text-base">
+					<span className="w-fit rounded bg-brand px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-brand-foreground sm:px-3 sm:py-1.5 sm:text-sm lg:px-2 lg:py-0.5 lg:text-[0.7rem]">
 						{post.categories[0].title}
 					</span>
 				)}
 
-				<h3 className="line-clamp-2 text-xl font-bold leading-tight text-white sm:text-3xl lg:text-[2.75rem]">
+				<h3 className="line-clamp-2 text-xl font-bold leading-tight text-white sm:text-3xl lg:text-[2rem]">
 					{post.title}
 				</h3>
 
 				{post.description && (
-					<p className="line-clamp-1 max-w-xl text-xs text-white/70 sm:line-clamp-2 sm:text-sm lg:text-base">
+					<p className="line-clamp-1 max-w-xl text-sm text-white/70 sm:line-clamp-2 sm:text-base lg:text-sm">
 						{post.description}
 					</p>
 				)}
 
 				{post.authors?.[0] && (
-					<div className="flex items-center gap-2 text-sm text-white/80 sm:gap-3 sm:text-base lg:text-lg">
-						<span className="grid size-7 place-items-center rounded-full bg-white/20 text-xs font-bold text-white sm:size-8 sm:text-sm lg:size-9">
-							{getInitials(post.authors[0].name)}
-						</span>
+					<div className="flex items-center gap-2 text-sm text-white/80 sm:gap-3 sm:text-base lg:gap-2 lg:text-sm">
+						{post.authors[0].imageUrl ? (
+							<Image
+								src={post.authors[0].imageUrl}
+								alt={post.authors[0].name}
+								width={32}
+								height={32}
+								className="size-7 rounded-full object-cover sm:size-8 lg:size-7"
+							/>
+						) : (
+							<span className="grid size-7 place-items-center rounded-full bg-white/20 text-xs font-bold text-white sm:size-8 sm:text-sm lg:size-7">
+								{getInitials(post.authors[0].name)}
+							</span>
+						)}
 						{post.authors[0].name}
 					</div>
 				)}

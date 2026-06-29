@@ -1,9 +1,12 @@
 import {
 	fetchStandings,
 	COMPETITIONS,
+	StandingsError,
+	APIErrorCode,
 	type CompetitionCode,
 	type Standing,
 } from '@/lib/football-data'
+import SectionTitle from '@/ui/primitives/SectionTitle'
 
 function getRowVisibilityClass(
 	index: number,
@@ -37,7 +40,6 @@ export default async function Standings({
 }>) {
 	let standings: Standing[] = []
 	let competitionName: string = COMPETITIONS[competition]
-	let emblem: string | undefined
 	let currentMatchday: number | undefined
 
 	try {
@@ -45,13 +47,27 @@ export default async function Standings({
 		const total = data.standings.find((s) => s.type === 'TOTAL')
 		standings = total?.table ?? []
 		competitionName = data.competition.name
-		emblem = data.competition.emblem
 		currentMatchday = data.season.currentMatchday
-	} catch {
+	} catch (error) {
+		let message = 'Classifica non disponibile al momento.'
+		if (error instanceof StandingsError) {
+			switch (error.code) {
+				case APIErrorCode.MISSING_KEY:
+				case APIErrorCode.INVALID_KEY:
+					message = 'Classifica momentaneamente non disponibile.'
+					break
+				case APIErrorCode.RATE_LIMITED:
+					message = 'Classifica momentaneamente non disponibile — riprova più tardi.'
+					break
+				case APIErrorCode.NETWORK_ERROR:
+					message = 'Errore di connessione, riprova più tardi.'
+					break
+			}
+		}
 		const errorContent = (
 			<div className={inline ? '' : 'mx-auto max-w-screen-lg'}>
 				<p className="text-muted text-center">
-					Classifica non disponibile al momento.
+					{message}
 				</p>
 			</div>
 		)
@@ -69,22 +85,13 @@ export default async function Standings({
 
 	const content = (
 		<div className={inline ? '' : 'mx-auto max-w-screen-lg'}>
-			<header className="mb-6 flex items-center gap-3">
-				{emblem && (
-					<img
-						src={emblem}
-						alt={competitionName}
-						className="h-8 w-8"
-					/>
+			<header className={inline ? 'mb-3' : 'mb-5'}>
+				<SectionTitle>{competitionName}</SectionTitle>
+				{currentMatchday != null && currentMatchday > 0 && (
+					<p className="text-muted mt-1 text-xs sm:text-sm">
+						Giornata {currentMatchday}
+					</p>
 				)}
-				<div>
-					<h2 className="h4">{competitionName}</h2>
-					{currentMatchday && (
-						<p className="text-muted text-sm">
-							Giornata {currentMatchday}
-						</p>
-					)}
-				</div>
 			</header>
 
 			<div className={`overflow-x-auto rounded-lg border border-line ${inline ? 'no-scrollbar' : ''}`}>
@@ -134,11 +141,17 @@ export default async function Standings({
 								</td>
 								<td className="px-2 py-2 sm:px-3 sm:py-2.5">
 									<div className="flex min-w-0 items-center gap-2">
-										<img
-											src={row.team.crest}
-											alt={row.team.shortName}
-											className="h-5 w-5 shrink-0"
-										/>
+										{row.team.crest ? (
+											<img
+												src={row.team.crest}
+												alt={row.team.shortName}
+												className="h-5 w-5 shrink-0"
+											/>
+										) : (
+											<span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-white/15 text-[10px] font-bold text-white/80">
+												{row.team.name.charAt(0).toUpperCase()}
+											</span>
+										)}
 										<span className="hidden truncate sm:inline">
 											{row.team.name}
 										</span>

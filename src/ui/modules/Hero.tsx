@@ -4,8 +4,8 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import moduleProps from '@/lib/moduleProps'
 import CTAList from '@/ui/primitives/CTAList'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { cn, getInitials } from '@/lib/utils'
+import { ChevronLeft, ChevronRight, User } from 'lucide-react'
+import { cn } from '@/lib/utils'
 import resolveUrl from '@/lib/resolveUrl'
 import { stegaClean } from '@sanity/client/stega'
 import Link from 'next/link'
@@ -198,38 +198,48 @@ export default function Hero({
 			)}
 
 			{/* Content — cinematic editorial layout */}
-			<div className="pointer-events-none relative z-[2] flex h-full flex-col items-center justify-end text-center sm:items-start sm:text-left p-5 sm:p-8 md:p-12">
-				<div className="max-w-3xl space-y-3 md:space-y-4">
+			<div className="pointer-events-none relative z-[2] flex h-full w-full flex-col items-center justify-end text-center p-5 sm:p-8 md:p-10 lg:p-12">
+				<div className="mx-auto flex w-full max-w-2xl flex-col items-center space-y-2 md:space-y-3">
 					{/* Category label */}
-					{s.cta?.link?.label && (
-						<span className="inline-block rounded bg-brand px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white sm:text-xs">
-							{s.cta.link.label === 'Leggi di più' ? '' : s.cta.link.label}
+					{s.cta?.link?.label && s.cta.link.label !== 'Leggi di più' && (
+						<span className="inline-block w-fit rounded bg-brand px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest text-white sm:text-[11px] lg:text-xs">
+							{s.cta.link.label}
 						</span>
 					)}
 
-					<h2 className="font-heading text-4xl uppercase leading-[0.92] tracking-tight text-white drop-shadow-lg sm:text-6xl md:text-7xl lg:text-8xl">
+					<h2 className="font-heading text-xl uppercase leading-[0.92] tracking-tight text-white drop-shadow-lg sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl">
 						{s.title}
 					</h2>
 
 					{s.description && (
-						<p className="line-clamp-2 max-w-xl text-sm leading-relaxed text-white/70 sm:text-base md:text-lg">
+						<p className="line-clamp-2 max-w-prose text-sm leading-relaxed text-white/70 lg:text-base">
 							{s.description}
 						</p>
 					)}
 
 					{/* Author + CTA row */}
-					<div className="flex items-center gap-4 pt-1">
+					<div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 pt-1">
 						{s.author && (
-							<div className="flex items-center gap-2 text-xs text-white/60 sm:text-sm">
-								<span className="grid size-7 place-items-center rounded-full bg-white/15 text-[10px] font-bold text-white">
-									{getInitials(s.author.name)}
-								</span>
+							<div className="flex items-center gap-1.5 text-[10px] text-white/60 sm:text-[11px] md:text-xs">
+								{s.author?.imageUrl ? (
+									<Image
+										src={s.author.imageUrl}
+										alt={s.author.name}
+										width={24}
+										height={24}
+										className="size-5 rounded-full object-cover"
+									/>
+								) : (
+									<span className="grid size-5 place-items-center rounded-full bg-white/15 text-white">
+										<User className="size-3" aria-hidden="true" />
+									</span>
+								)}
 								{s.author.name}
 							</div>
 						)}
 						<CTAList
 							ctas={[s.cta]}
-							className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:rounded-lg [&_a]:bg-brand [&_a]:px-5 [&_a]:py-2 [&_a]:text-xs [&_a]:font-bold [&_a]:uppercase [&_a]:tracking-wide [&_a]:text-white [&_a]:transition [&_a]:hover:opacity-90 sm:[&_a]:text-sm"
+							className="pointer-events-auto [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:rounded-lg [&_a]:bg-brand [&_a]:px-4 [&_a]:py-1.5 [&_a]:text-[11px] [&_a]:font-bold [&_a]:uppercase [&_a]:tracking-wide [&_a]:text-white [&_a]:transition [&_a]:hover:opacity-90 md:[&_a]:px-5 md:[&_a]:py-2 md:[&_a]:text-xs"
 						/>
 					</div>
 				</div>
