@@ -22,7 +22,7 @@ function LinkMark({
 	value?: { href?: string }
 	children: React.ReactNode
 }) {
-	const href = value?.href ?? ''
+	const href = value?.href ?? '';
 	if (!href) return <>{children}</>
 
 	const isSpecial = /^(mailto:|tel:|#)/i.test(href)
@@ -102,7 +102,7 @@ export default function Content({
 						admonition: Admonition,
 						quoteBlock: QuoteBlock,
 						socialEmbed: SocialEmbed,
-					'custom-html': ({ value }) => (
+						'custom-html': ({ value }) => (
 							<CustomHTML
 								data-sanity-id="custom-html"
 								className="has-[table]:md:[grid-column:bleed] has-[table]:md:mx-auto"
