@@ -5,6 +5,8 @@
  * the same Upstash pipeline helper.
  */
 
+import * as Sentry from '@sentry/nextjs'
+
 const PREFIX = process.env.STANDINGS_REDIS_PREFIX ?? 'standings'
 
 interface PipelineEnvelope<T> { result?: T; error?: string }
@@ -12,7 +14,10 @@ interface PipelineEnvelope<T> { result?: T; error?: string }
 async function upstash<T>(commands: string[][]): Promise<PipelineEnvelope<T>[]> {
 	const url = process.env.UPSTASH_REDIS_REST_URL
 	const token = process.env.UPSTASH_REDIS_REST_TOKEN
-	if (!url || !token) throw new Error('standings store unavailable')
+	if (!url || !token) {
+		Sentry.captureMessage('standings/store missing Redis config', { level: 'error' })
+		throw new Error('standings store unavailable')
+	}
 	const res = await fetch(`${url}/pipeline`, {
 		method: 'POST',
 		headers: {
@@ -24,6 +29,9 @@ async function upstash<T>(commands: string[][]): Promise<PipelineEnvelope<T>[]> 
 	})
 	if (!res.ok) {
 		const err = await res.text().catch(() => '')
+		Sentry.captureException(new Error(`Upstash pipeline ${res.status}: ${err.slice(0, 200)}`), {
+			tags: { service: 'standings', operation: 'upstash' },
+		})
 		throw new Error(`Upstash pipeline ${res.status}: ${err.slice(0, 200)}`)
 	}
 	return (await res.json()) as PipelineEnvelope<T>[]
@@ -76,9 +84,19 @@ export async function writeStandings(
 		for (const r of results) {
 			if (!r.error) ok++
 		}
+		Sentry.withScope((scope) => {
+			scope.setTag('service', 'standings')
+			scope.setExtra('totalCommands', commands.length)
+			scope.setExtra('successfulWrites', ok)
+			Sentry.captureMessage('standings/store write complete', { level: 'info' })
+		})
 		return ok
 	} catch (err) {
 		console.error('[standings/store] write failed', err)
+		Sentry.captureException(err, {
+			tags: { service: 'standings', operation: 'writeStandings' },
+			extra: { season: payload.season, competitions: Object.keys(payload.standings) },
+		})
 		return 0
 	}
 }
@@ -90,10 +108,17 @@ export async function readStandingsTable(
 	try {
 		const [result] = await upstash<string | null>([['GET', key(competition, season)]])
 		if (result?.error) throw new Error(result.error)
-		if (result?.result == null) return null
+		if (result?.result == null) {
+			Sentry.captureMessage('standings/store no data for competition', { level: 'info', tags: { service: 'standings' }, extra: { competition, season } })
+			return null
+		}
 		return JSON.parse(result.result) as ScrapedStandingRow[]
 	} catch (err) {
 		console.error('[standings/store] read failed', err)
+		Sentry.captureException(err, {
+			tags: { service: 'standings', operation: 'readStandingsTable' },
+			extra: { competition, season },
+		})
 		return null
 	}
 }

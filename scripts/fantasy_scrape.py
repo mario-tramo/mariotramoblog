@@ -36,6 +36,8 @@ log = logging.getLogger("fantasy")
 
 WEBHOOK_URL = os.environ["FANTASY_WEBHOOK_URL"].rstrip("/") + "/api/fantasy/ingest"
 SECRET = os.environ["FANTASY_INGEST_SECRET"]
+HEARTBEAT_URL = os.environ.get("FANTASY_HEARTBEAT_URL", "").rstrip("/") + "/api/cron/standings"
+HEARTBEAT_SECRET = os.environ.get("CRON_SECRET", "")
 LEAGUES = [s.strip() for s in os.environ.get("FANTASY_LEAGUES", "Serie A").split(",") if s.strip()]
 BATCH_SIZE = int(os.environ.get("FANTASY_BATCH_SIZE", "2000"))
 MAX_RETRIES = 3
@@ -214,6 +216,28 @@ def post_batch(rows: list[dict[str, Any]]) -> bool:
     return False
 
 
+def send_heartbeat(status: str = "ok", reason: str = "") -> None:
+    """Notify the Next.js cron endpoint that this scrape completed."""
+    if not HEARTBEAT_URL or not HEARTBEAT_SECRET:
+        return
+    try:
+        resp = requests.get(
+            HEARTBEAT_URL,
+            headers={
+                "x-cron-secret": HEARTBEAT_SECRET,
+                "User-Agent": "fantasy-scraper/1.0",
+            },
+            params={"status": status, "reason": reason} if reason else {"status": status},
+            timeout=15,
+        )
+        if resp.status_code == 200:
+            log.info("heartbeat sent (status=%s)", status)
+        else:
+            log.warning("heartbeat returned status %d", resp.status_code)
+    except requests.RequestException as e:
+        log.warning("heartbeat failed: %s", e)
+
+
 def main() -> int:
     season = current_season()
     rows: list[dict[str, Any]] = []
@@ -222,16 +246,19 @@ def main() -> int:
         rows.append(row)
         if len(rows) >= BATCH_SIZE:
             if not post_batch(rows):
+                send_heartbeat(status="failed", reason="batch ingest failure")
                 return 1
             total += len(rows)
             rows = []
 
     if rows:
         if not post_batch(rows):
+            send_heartbeat(status="failed", reason="final batch ingest failure")
             return 1
         total += len(rows)
 
     log.info("scrape complete: %d rows for season %s", total, season)
+    send_heartbeat()
     return 0
 
 

@@ -9,6 +9,7 @@
  * populated at ingest.
  */
 
+import * as Sentry from '@sentry/nextjs'
 import { readRanking } from './store'
 import type { RankingRow } from './store'
 
@@ -28,7 +29,15 @@ export async function getRankings(
 	const cached = cache.get(key)
 	if (cached && Date.now() < cached.expiresAt) return cached.data
 
-	const data = await readRanking(competition, season, limit)
-	cache.set(key, { data, expiresAt: Date.now() + TTL_MS })
-	return data
+	try {
+		const data = await readRanking(competition, season, limit)
+		cache.set(key, { data, expiresAt: Date.now() + TTL_MS })
+		return data
+	} catch (err) {
+		Sentry.captureException(err, {
+			tags: { service: 'fantasy', operation: 'getRankings' },
+			extra: { competition, season, limit },
+		})
+		throw err
+	}
 }

@@ -12,6 +12,7 @@
  * rows and a per-season ZSET ranking.
  */
 
+import * as Sentry from '@sentry/nextjs'
 import { computeFantasyIndex } from './ranking'
 import type { IngestMatch, PlayerRank } from './store'
 import { writeMatches, writeRanking } from './store'
@@ -70,6 +71,10 @@ export async function ingestMatchStats(
 			} catch (err) {
 				errors++
 				console.error('[fantasy/engine] row failed', err)
+				Sentry.captureException(err, {
+					tags: { service: 'fantasy', operation: 'rowProcessing' },
+					extra: { playerId: m.playerId, matchId: m.matchId },
+				})
 			}
 		}
 
@@ -83,6 +88,10 @@ export async function ingestMatchStats(
 		} catch (err) {
 			errors++
 			console.error('[fantasy/engine] group write failed', err)
+			Sentry.captureException(err, {
+				tags: { service: 'fantasy', operation: 'groupWrite' },
+				extra: { competition, season, rowCount: rows.length },
+			})
 		}
 	}
 

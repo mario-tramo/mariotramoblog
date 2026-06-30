@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import { getRankings } from '@/lib/fantasy/api'
 
 export const dynamic = 'force-dynamic'
@@ -21,6 +22,10 @@ export async function GET(request: NextRequest) {
 		return NextResponse.json({ competition, season, count: items.length, items })
 	} catch (err) {
 		console.error('[fantasy/rankings]', err)
+		Sentry.captureException(err, {
+			tags: { service: 'fantasy', operation: 'rankingsEndpoint' },
+			extra: { competition, season, limit },
+		})
 		return NextResponse.json(
 			{ error: 'Rankings unavailable' },
 			{ status: 500 },

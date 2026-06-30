@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/nextjs'
 import { readStandingsTable } from '@/lib/standings/store'
 
 export const COMPETITIONS = {
@@ -93,6 +94,10 @@ export async function fetchStandings(
 	}
 
 	if (!process.env.UPSTASH_REDIS_REST_URL) {
+		Sentry.captureMessage('football-data Redis not configured', {
+			level: 'error',
+			tags: { service: 'standings', competition },
+		})
 		throw new StandingsError(APIErrorCode.SERVICE_ERROR, 'Redis non configurato')
 	}
 
@@ -100,6 +105,11 @@ export async function fetchStandings(
 	const rows = await readStandingsTable(competition, season)
 
 	if (!rows || rows.length === 0) {
+		Sentry.captureMessage('football-data no standings for competition', {
+			level: 'warning',
+			tags: { service: 'standings', competition },
+			extra: { season },
+		})
 		throw new StandingsError(APIErrorCode.SERVICE_ERROR, 'Nessuna classifica disponibile per questo campionato')
 	}
 

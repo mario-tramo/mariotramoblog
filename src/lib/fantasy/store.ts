@@ -6,6 +6,8 @@
  * `src/lib/redis.ts` because all access is server-only Next.js code.
  */
 
+import * as Sentry from '@sentry/nextjs'
+
 const PREFIX = (process.env.FANTASY_REDIS_PREFIX ?? 'fantasy').replace(/[:]+$/, '')
 
 // Upstash REST direct access via the /pipeline endpoint.
@@ -27,7 +29,10 @@ type PipelineEnvelope<T> = { result?: T; error?: string }
 async function upstash<T>(commands: string[][]): Promise<PipelineEnvelope<T>[]> {
 	const url = process.env.UPSTASH_REDIS_REST_URL
 	const token = process.env.UPSTASH_REDIS_REST_TOKEN
-	if (!url || !token) throw new Error('fantasy store unavailable')
+	if (!url || !token) {
+		Sentry.captureMessage('fantasy/store missing Redis config', { level: 'error', tags: { service: 'fantasy' } })
+		throw new Error('fantasy store unavailable')
+	}
 	const res = await fetch(`${url}/pipeline`, {
 		method: 'POST',
 		headers: {
@@ -39,6 +44,9 @@ async function upstash<T>(commands: string[][]): Promise<PipelineEnvelope<T>[]> 
 	})
 	if (!res.ok) {
 		const err = await res.text().catch(() => '')
+		Sentry.captureException(new Error(`Upstash pipeline ${res.status}: ${err.slice(0, 200)}`), {
+			tags: { service: 'fantasy', operation: 'upstash' },
+		})
 		throw new Error(`Upstash pipeline ${res.status}: ${err.slice(0, 200)}`)
 	}
 	return (await res.json()) as PipelineEnvelope<T>[]
@@ -102,9 +110,20 @@ export async function writeMatches(
 			if (r.error) errors++
 			else written++
 		}
+		Sentry.withScope((scope) => {
+			scope.setTag('service', 'fantasy')
+			scope.setExtra('totalRows', rows.length)
+			scope.setExtra('written', written)
+			scope.setExtra('errors', errors)
+			Sentry.captureMessage('fantasy/store matches write complete', { level: 'info' })
+		})
 		return { written, errors }
 	} catch (err) {
 		console.error('[fantasy/store] hset pipeline failed', err)
+		Sentry.captureException(err, {
+			tags: { service: 'fantasy', operation: 'writeMatches' },
+			extra: { competition, season, rowCount: rows.length },
+		})
 		return { written: 0, errors: rows.length }
 	}
 }
@@ -118,9 +137,12 @@ export async function writeRanking(
 	// Replace strategy: stale members would skew ZRANGE so clear first.
 	try {
 		const [del] = await upstash<number>([['DEL', key]])
-		if (del?.error) console.warn('[fantasy/store] del failed', del.error)
+		if (del?.error) {
+			Sentry.captureMessage('fantasy/store del failed', { level: 'warning', tags: { service: 'fantasy' }, extra: { error: del.error } })
+		}
 	} catch (err) {
 		console.warn('[fantasy/store] del failed (continuing)', err)
+		Sentry.captureException(err, { tags: { service: 'fantasy', operation: 'writeRankingDel' } })
 	}
 	if (ranks.length === 0) return
 	const args: Array<string> = []
@@ -128,7 +150,10 @@ export async function writeRanking(
 		args.push(String(r.fantasyIndex), r.playerId)
 	}
 	const [addRes] = await upstash<number>([['ZADD', key, ...args]])
-	if (addRes?.error) throw new Error(`Upstash ZADD: ${addRes.error}`)
+	if (addRes?.error) {
+		Sentry.captureMessage(`Upstash ZADD: ${addRes.error}`, { level: 'error', tags: { service: 'fantasy', operation: 'writeRankingZadd' } })
+		throw new Error(`Upstash ZADD: ${addRes.error}`)
+	}
 }
 
 export interface RankingRow {
@@ -141,13 +166,19 @@ export async function readRanking(
 	season: string,
 	limit: number,
 ): Promise<RankingRow[]> {
-	if (!process.env.UPSTASH_REDIS_REST_URL) return []
+	if (!process.env.UPSTASH_REDIS_REST_URL) {
+		Sentry.captureMessage('fantasy/store readRanking no Redis URL', { level: 'warning', tags: { service: 'fantasy' } })
+		return []
+	}
 	const key = rankingsKey(competition, season)
 	// ZREVRANGE returns [member1, score1, member2, score2, ...] flat.
 	const [zrev] = await upstash<string[]>([
 		['ZREVRANGE', key, '0', String(Math.max(0, limit - 1)), 'WITHSCORES'],
 	])
-	if (zrev?.error) throw new Error(`Upstash ZREVRANGE: ${zrev.error}`)
+	if (zrev?.error) {
+		Sentry.captureMessage(`Upstash ZREVRANGE: ${zrev.error}`, { level: 'error', tags: { service: 'fantasy', operation: 'readRanking' } })
+		throw new Error(`Upstash ZREVRANGE: ${zrev.error}`)
+	}
 	const flat = zrev?.result ?? []
 	const out: RankingRow[] = []
 	for (let i = 0; i + 1 < flat.length; i += 2) {

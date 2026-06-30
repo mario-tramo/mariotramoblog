@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import {
 	fetchStandings,
 	COMPETITIONS,
@@ -27,6 +28,10 @@ export async function GET(request: NextRequest) {
 	} catch (error) {
 		const message =
 			error instanceof Error ? error.message : 'Unknown error'
+		Sentry.captureException(error, {
+			tags: { service: 'standings', operation: 'readEndpoint' },
+			extra: { competition },
+		})
 		return NextResponse.json({ error: message }, { status: 500 })
 	}
 }

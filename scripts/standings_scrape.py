@@ -39,6 +39,8 @@ WEBHOOK_URL = (
     os.environ["STANDINGS_WEBHOOK_URL"].rstrip("/") + "/api/standings/ingest"
 )
 SECRET = os.environ["STANDINGS_INGEST_SECRET"]
+HEARTBEAT_URL = os.environ.get("STANDINGS_HEARTBEAT_URL", "").rstrip("/") + "/api/cron/standings"
+HEARTBEAT_SECRET = os.environ.get("CRON_SECRET", "")
 LEAGUES = [
     s.strip()
     for s in os.environ.get(
@@ -240,6 +242,7 @@ def main() -> int:
                     len(all_standings),
                     resp.status_code,
                 )
+                send_heartbeat()
                 return 0
             if resp.status_code in (429, 500, 502, 503, 504):
                 wait = (2**attempt) + random.uniform(0, 3)
@@ -249,12 +252,40 @@ def main() -> int:
             log.error(
                 "non-retriable status %d: %s", resp.status_code, resp.text[:300]
             )
+            send_heartbeat(status="failed", reason=f"non-retriable status {resp.status_code}")
             return 1
         except requests.RequestException as e:
             log.error("transport error: %s", e)
             time.sleep((2**attempt) + random.uniform(0, 3))
 
+    send_heartbeat(status="failed", reason="max retries exceeded")
     return 1
+
+
+def send_heartbeat(status: str = "ok", reason: str = "") -> None:
+    """Notify the Next.js cron endpoint that this scrape completed.
+
+    The cron endpoint reports the heartbeat outcome to Sentry so the
+    daily-scrape health is visible in the Sentry dashboard.
+    """
+    if not HEARTBEAT_URL or not HEARTBEAT_SECRET:
+        return
+    try:
+        resp = requests.get(
+            HEARTBEAT_URL,
+            headers={
+                "x-cron-secret": HEARTBEAT_SECRET,
+                "User-Agent": "standings-scraper/1.0",
+            },
+            params={"status": status, "reason": reason} if reason else {"status": status},
+            timeout=15,
+        )
+        if resp.status_code == 200:
+            log.info("heartbeat sent (status=%s)", status)
+        else:
+            log.warning("heartbeat returned status %d", resp.status_code)
+    except requests.RequestException as e:
+        log.warning("heartbeat failed: %s", e)
 
 
 if __name__ == "__main__":
