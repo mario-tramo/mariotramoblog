@@ -1,6 +1,7 @@
 import { createClient, groq } from 'next-sanity'
 import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
 import type { NextConfig } from 'next'
+import { withSentryConfig } from '@sentry/nextjs'
 
 const client = createClient({
 	projectId,
@@ -28,45 +29,46 @@ const securityHeaders = [
 	},
 ]
 
-export default {
-	compiler: {
-		removeConsole: process.env.NODE_ENV === 'production',
-	},
-	async headers() {
-		return [
-			{
-				source: '/(.*)',
-				headers: securityHeaders,
-			},
-		]
-	},
+export default withSentryConfig(
+	{
+		compiler: {
+			removeConsole: process.env.NODE_ENV === 'production',
+		},
+		async headers() {
+			return [
+				{
+					source: '/(.*)',
+					headers: securityHeaders,
+				},
+			]
+		},
 
-	images: {
-		dangerouslyAllowSVG: true,
-		contentDispositionType: 'attachment',
-		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-		remotePatterns: [
-			{
-				protocol: 'https',
-				hostname: 'cdn.sanity.io',
-			},
-			{
-				protocol: 'https',
-				hostname: 'avatars.githubusercontent.com',
-			},
-			{
-				protocol: 'https',
-				hostname: 'picsum.photos',
-			},
-			{
-				protocol: 'https',
-				hostname: 'media.api-sports.io',
-			},
-		],
-	},
+		images: {
+			dangerouslyAllowSVG: true,
+			contentDispositionType: 'attachment',
+			contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+			remotePatterns: [
+				{
+					protocol: 'https',
+					hostname: 'cdn.sanity.io',
+				},
+				{
+					protocol: 'https',
+					hostname: 'avatars.githubusercontent.com',
+				},
+				{
+					protocol: 'https',
+					hostname: 'picsum.photos',
+				},
+				{
+					protocol: 'https',
+					hostname: 'media.api-sports.io',
+				},
+			],
+		},
 
-	async redirects() {
-		return await client.fetch(groq`*[_type == 'redirect']{
+		async redirects() {
+			return await client.fetch(groq`*[_type == 'redirect']{
 			source,
 			'destination': select(
 				destination.type == 'internal' =>
@@ -85,6 +87,12 @@ export default {
 			),
 			permanent
 		}`)
-	},
+		},
 
-} satisfies NextConfig
+	} satisfies NextConfig,
+	{
+		sourcemaps: {
+			disable: process.env.NODE_ENV === 'development',
+		},
+	},
+)

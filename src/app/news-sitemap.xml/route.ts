@@ -17,7 +17,7 @@ export async function GET() {
 			_type == 'blog.post'
 			&& metadata.noIndex != true
 			&& defined(categories[0]->slug.current)
-			&& dateTime(_updatedAt) > dateTimeNow() - 60 * 60 * 24 * 2
+			&& dateTime(_updatedAt) > now() - 60 * 60 * 24 * 2
 		]|order(publishDate desc){
 			'url': (
 				$base

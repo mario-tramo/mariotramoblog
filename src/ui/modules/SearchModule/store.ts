@@ -90,7 +90,8 @@ export async function handleSearch({
 			_id,
 			_type,
 			'title': coalesce(title, metadata.title),
-			metadata
+			metadata,
+			'categories': categories[]->{ title, slug }
 		}`,
 		params: {
 			query: `*${query}*`,
