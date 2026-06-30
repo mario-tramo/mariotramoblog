@@ -85,8 +85,14 @@ export default async function Standings({
 
 	const content = (
 		<div className={inline ? '' : 'mx-auto max-w-screen-lg'}>
-			<header className={inline ? 'mb-3' : 'mb-5'}>
-				<SectionTitle>{competitionName}</SectionTitle>
+			<header className={inline ? 'mb-3' : 'mb-5 border-b border-line-soft pb-4'}>
+				{inline ? (
+					<SectionTitle>{competitionName}</SectionTitle>
+				) : (
+					<h2 className="font-heading text-3xl uppercase tracking-tight md:text-5xl">
+						{competitionName}
+					</h2>
+				)}
 				{currentMatchday != null && currentMatchday > 0 && (
 					<p className="text-muted mt-1 text-xs sm:text-sm">
 						Giornata {currentMatchday}
@@ -140,18 +146,7 @@ export default async function Standings({
 									{row.position}
 								</td>
 								<td className="px-2 py-2 sm:px-3 sm:py-2.5">
-									<div className="flex min-w-0 items-center gap-2">
-										{row.team.crest ? (
-											<img
-												src={row.team.crest}
-												alt={row.team.shortName}
-												className="h-5 w-5 shrink-0"
-											/>
-										) : (
-											<span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-white/15 text-[10px] font-bold text-white/80">
-												{row.team.name.charAt(0).toUpperCase()}
-											</span>
-										)}
+									<div className="flex min-w-0 items-center">
 										<span className="hidden truncate sm:inline">
 											{row.team.name}
 										</span>
