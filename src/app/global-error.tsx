@@ -15,6 +15,9 @@ export default function GlobalError({
 
 	return (
 		<html>
+			<head>
+				<meta name="robots" content="noindex" />
+			</head>
 			<body className="flex min-h-svh flex-col items-center justify-center bg-[#07111F] px-4 text-center text-[#E2E8F0] antialiased">
 				<h1 className="sr-only">Errore</h1>
 				<h2 className="mb-4 text-3xl font-bold sm:text-4xl">

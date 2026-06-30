@@ -24,7 +24,7 @@ export default function robots(): MetadataRoute.Robots {
 			{
 				userAgent: '*',
 				allow: ['/', '/_next/static/'],
-				disallow: ['/admin', '/api/', '/_next/', '/legal/draft'],
+				disallow: ['/admin', '/api/', '/_next/', '/legal/draft', '/test-cards', '/og-playground'],
 			},
 			// Always block AI training / LLM scrappers — keep the list unique
 			// and outside the `*` allow rule to prevent directive conflicts

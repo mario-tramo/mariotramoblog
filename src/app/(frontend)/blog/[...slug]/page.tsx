@@ -9,17 +9,24 @@ import type { Metadata } from 'next'
  */
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	const { slug } = processSlug(await params)
-	const post = await fetchSanityLive<{ title?: string }>({
+	const post = await fetchSanityLive<{ title?: string; categorySlug?: string }>({
 		query: groq`*[
 			_type == 'blog.post'
 			&& metadata.slug.current == $slug
-		][0]{ 'title': coalesce(title, metadata.title) }`,
+		][0]{
+			'title': coalesce(title, metadata.title),
+			'categorySlug': categories[0]->slug.current,
+		}`,
 		params: { slug },
 	})
 	if (!post) return {}
+	const canonical = post.categorySlug
+		? `/${post.categorySlug}/${slug}`
+		: `/${slug}`
 	return {
 		title: post.title || 'Articolo',
 		robots: { index: false, follow: false },
+		alternates: { canonical },
 	}
 }
 

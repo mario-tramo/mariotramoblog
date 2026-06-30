@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 				'url': $base + slug.current,
 				'lastModified': _updatedAt,
 			},
-			'blog': *[_type == 'blog.post' && metadata.noIndex != true]|order(publishDate desc){
+			'blog': *[_type == 'blog.post' && metadata.noIndex != true && defined(categories[0]->slug.current)]|order(publishDate desc){
 				'url': (
 					$base
 					+ select(defined(categories[0]->slug.current) => categories[0]->slug.current + '/', '')

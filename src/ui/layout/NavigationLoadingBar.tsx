@@ -8,33 +8,24 @@ export default function NavigationLoadingBar() {
 	const searchParams = useSearchParams()
 	const [loading, setLoading] = useState(false)
 	const timer = useRef<ReturnType<typeof setTimeout>>(null)
-	const raf = useRef<number>(null)
-	const startTime = useRef(0)
-
-	const MIN_DURATION = 800
-	const MAX_DURATION = 3000
+	const mounted = useRef(false)
 
 	useEffect(() => {
-		if (timer.current) clearTimeout(timer.current)
-		if (raf.current) cancelAnimationFrame(raf.current)
-
-		setLoading(true)
-		startTime.current = Date.now()
-
-		const show = () => {
-			if (timer.current) clearTimeout(timer.current)
-			const elapsed = Date.now() - startTime.current
-			const remaining = Math.max(0, MIN_DURATION - elapsed)
-			timer.current = setTimeout(() => {
-				setLoading(false)
-			}, remaining + Math.random() * (MAX_DURATION - MIN_DURATION))
+		if (!mounted.current) {
+			mounted.current = true
+			return
 		}
 
-		raf.current = requestAnimationFrame(show)
+		if (timer.current) clearTimeout(timer.current)
+
+		setLoading(true)
+
+		timer.current = setTimeout(() => {
+			setLoading(false)
+		}, 1200)
 
 		return () => {
 			if (timer.current) clearTimeout(timer.current)
-			if (raf.current) cancelAnimationFrame(raf.current)
 		}
 	}, [pathname, searchParams])
 

@@ -15,7 +15,9 @@ export default function Error({
 	}, [error])
 
 	return (
-		<section className="flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center px-4 text-center">
+		<>
+			<meta name="robots" content="noindex" />
+			<section className="flex min-h-[calc(100svh-4rem)] flex-col items-center justify-center px-4 text-center">
 			<h1 className="mb-4 text-3xl font-bold sm:text-4xl">
 				<span className="text-accent">Errore</span> imprevisto
 			</h1>
@@ -37,5 +39,6 @@ export default function Error({
 				</Link>
 			</div>
 		</section>
+		</>
 	)
 }
