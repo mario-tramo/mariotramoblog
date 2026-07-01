@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useRef, useState, useEffect, useCallback } from 'react'
+import { useMemo } from 'react'
 import type { ArrayOfObjectsInputProps } from 'sanity'
 
 function countChars(value: unknown): number {
@@ -68,53 +68,16 @@ export function PortableTextCharCount(props: ArrayOfObjectsInputProps) {
 	const chars = useMemo(() => countChars(props.value), [props.value])
 	const words = useMemo(() => countWords(props.value), [props.value])
 	const readTime = useMemo(() => estimateReadTime(words), [words])
-	const anchorRef = useRef<HTMLDivElement>(null)
-	const [pos, setPos] = useState({ left: 0, width: 0 })
-
-	const measure = useCallback(() => {
-		const el = anchorRef.current
-		if (!el) return
-		// Find the document panel (scroll container) that holds this field
-		const panel =
-			el.closest('[data-testid="document-panel-scroller"]') ||
-			el.closest('[data-ui="ScrollContainer"]') ||
-			el.closest('main')
-		if (panel) {
-			const rect = panel.getBoundingClientRect()
-			setPos({ left: rect.left, width: rect.width })
-		}
-	}, [])
-
-	useEffect(() => {
-		measure()
-		window.addEventListener('resize', measure)
-		// Re-measure when panels resize (e.g. sidebar toggle)
-		const observer = new ResizeObserver(measure)
-		const el = anchorRef.current
-		const panel =
-			el?.closest('[data-testid="document-panel-scroller"]') ||
-			el?.closest('[data-ui="ScrollContainer"]') ||
-			el?.closest('main')
-		if (panel) observer.observe(panel)
-		return () => {
-			window.removeEventListener('resize', measure)
-			observer.disconnect()
-		}
-	}, [measure])
-
 	const barStyle: React.CSSProperties = {
-		position: 'fixed',
-		bottom: 51,
-		left: pos.left,
-		width: pos.width || '50%',
-		zIndex: 999999,
 		display: 'flex',
 		alignItems: 'center',
 		justifyContent: 'center',
 		gap: 24,
+		marginBottom: 16,
 		padding: '10px 20px',
 		background: '#101112',
-		borderTop: '1px solid #2a2c30',
+		borderRadius: 8,
+		border: '1px solid #2a2c30',
 		fontFamily:
 			'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
 		fontSize: 13,
@@ -123,8 +86,7 @@ export function PortableTextCharCount(props: ArrayOfObjectsInputProps) {
 	}
 
 	return (
-		<div ref={anchorRef} lang="it" spellCheck>
-			{props.renderDefault(props)}
+		<div lang="it" spellCheck>
 			<div style={barStyle}>
 				<div style={statStyle}>
 					<span style={valueStyle}>
@@ -145,6 +107,7 @@ export function PortableTextCharCount(props: ArrayOfObjectsInputProps) {
 					<span style={labelStyle}>min lettura</span>
 				</div>
 			</div>
+			{props.renderDefault(props)}
 		</div>
 	)
 }
