@@ -66,7 +66,7 @@ export default async function BlogFrontpage({
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
 				${filterConditions}
 				${urlCategoria ? `&& $urlCategoria in categories[]->.slug.current` : ''}
-			]|order(publishDate desc){
+			]|order(publishDate desc, _updatedAt desc){
 				_type,
 				_id,
 				'title': coalesce(title, metadata.title),

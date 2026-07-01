@@ -92,7 +92,11 @@ export default defineType({
 			name: 'publishDate',
 			title: 'Data di pubblicazione',
 			description: 'Data in cui l\'articolo viene pubblicato sul sito',
-			type: 'date',
+			type: 'datetime',
+			options: {
+				dateFormat: 'YYYY-MM-DD',
+				timeFormat: 'HH:mm',
+			},
 			validation: (Rule) => Rule.required().error('La data di pubblicazione è obbligatoria'),
 			group: 'content',
 		}),
