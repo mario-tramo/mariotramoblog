@@ -107,7 +107,8 @@ export default defineType({
 		defineField({
 			name: 'featured',
 			title: 'In evidenza',
-			description: 'Metti in risalto questo articolo nella homepage del blog (verrà mostrato per primo)',
+			description:
+				'Solo gli articoli "In evidenza" vengono mostrati nel carosello della homepage e nei moduli "Article Carousel". Il primo in evidenza diventa "Scelta della Redazione" nella homepage. Il badge "In evidenza" appare sulle card. (Default: true — imposta false per escludere dal carosello e nascondere il badge).',
 			type: 'boolean',
 			group: 'options',
 			initialValue: true,

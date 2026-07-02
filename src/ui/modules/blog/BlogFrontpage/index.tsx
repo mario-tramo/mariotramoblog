@@ -104,7 +104,7 @@ export default async function BlogFrontpage({
 
 	const featuredPosts = sorted.filter((p) => p.featured)
 	const editorPick = featuredPosts[0] || sorted[0]
-	const topStories = sorted.slice(0, 4)
+	const topStories = sorted.filter((p) => p.featured).slice(0, 4)
 	const latestPosts = sorted.slice(0, 5)
 	const trendingPosts = [
 		...featuredPosts,

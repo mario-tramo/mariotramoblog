@@ -20,13 +20,22 @@ function formatAbsolute(date: Date): string {
   return `${date.getDate()} ${MONTHS[date.getMonth()]} ${date.getFullYear()}`
 }
 
+// publishDate can be date-only ('2025-07-01') or full datetime ('2025-07-01T14:30:00Z')
+function parseDate(dateStr: string): Date {
+  return new Date(dateStr.includes('T') ? dateStr : dateStr + 'T00:00:00')
+}
+
 export default function TimeAgo({ dateStr }: { dateStr: string }) {
-  const date = new Date(dateStr + 'T00:00:00')
-  const [text, setText] = useState(formatAbsolute(date))
+  const date = parseDate(dateStr)
+  const valid = !isNaN(date.getTime())
+  const [text, setText] = useState(valid ? formatAbsolute(date) : '')
 
   useEffect(() => {
+    if (!valid) return
     setText(computeRelativeTime(date) ?? formatAbsolute(date))
   }, [dateStr])
+
+  if (!valid) return null
 
   return <>{text}</>
 }

@@ -64,6 +64,7 @@ export default async function ArticleCarousel({
 			*[
 				_type == 'blog.post'
 				&& metadata.noIndex != true
+				&& featured == true
 				${!!lang ? `&& (!defined(language) || language == '${lang}')` : ''}
 				${filterConditions}
 				${urlCategoria ? `&& $urlCategoria in categories[]->.slug.current` : ''}
