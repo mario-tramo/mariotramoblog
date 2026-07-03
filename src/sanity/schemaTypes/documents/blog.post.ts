@@ -52,7 +52,7 @@ export default defineType({
 		defineField({
 			name: 'categories',
 			title: 'Categorie',
-			description: 'Categorie dell\'articolo (es. Calcio, Tennis, Formula 1)',
+			description: 'Categorie dell\'articolo (es. Calcio, Tennis, Formula 1). Fondamentale per la navigazione, le URL, la sitemap e il article:section di Open Graph.',
 			type: 'array',
 			of: [
 				{
@@ -60,7 +60,7 @@ export default defineType({
 					to: [{ type: 'blog.category' }],
 				},
 			],
-			validation: (Rule) => Rule.required().min(1).warning('Aggiungi almeno una categoria per organizzare l\'articolo'),
+			validation: (Rule) => Rule.required().min(1).error('Ogni articolo deve avere almeno una categoria — determina la URL, la sezione OG e la sitemap XML'),
 			group: 'content',
 		}),
 		defineField({
@@ -75,8 +75,10 @@ export default defineType({
 					to: [{ type: 'blog.tag' }],
 				},
 			],
-			validation: (Rule) =>
-				Rule.max(8).warning('Troppi tag riducono l\'efficacia SEO. Usa al massimo 8 tag.'),
+			validation: (Rule) => [
+				Rule.min(1).warning('Nessun tag selezionato. I tag migliorano la navigazione tra articoli correlati e il keyword targeting semantico.'),
+				Rule.max(8).warning('Troppi tag riducono l\'efficacia SEO. Usa almeno 1 e al massimo 8 tag.'),
+			],
 			group: 'content',
 		}),
 		defineField({

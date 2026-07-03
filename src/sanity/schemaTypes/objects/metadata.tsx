@@ -49,7 +49,8 @@ export default defineType({
 			description: 'Lascia vuoto per usare il titolo principale. Compilalo solo se vuoi un titolo diverso nei risultati di Google (es. più corto o con keyword specifiche). Ideale: 50-60 caratteri.',
 			fieldset: 'seo',
 			validation: (Rule) => [
-				Rule.max(70).warning('Il titolo potrebbe essere tagliato da Google. Resta sotto i 60 caratteri.'),
+				Rule.min(30).warning('Il titolo è troppo corto (min 30 caratteri). Google mostrerà un titolo poco informativo. I titoli brevi riducono il CTR del 20-30%.'),
+				Rule.max(70).warning('Il titolo potrebbe essere tagliato da Google oltre i 60 caratteri. Resta sotto i 60 per evitare la troncatura mobile.'),
 			],
 			components: {
 				input: (props) => (
@@ -67,8 +68,9 @@ export default defineType({
 			description: 'La descrizione sotto il titolo nei risultati di Google. Deve invogliare al click. Ideale: 120-160 caratteri.',
 			fieldset: 'seo',
 			validation: (Rule) => [
-				Rule.required().warning('Senza descrizione, Google mostrera un estratto automatico (spesso poco efficace)'),
-				Rule.max(170).warning('La descrizione potrebbe essere tagliata. Resta sotto i 160 caratteri.'),
+				Rule.required().warning('Senza descrizione, Google mostrera un estratto automatico (spesso poco efficace) — le pagine con meta description hanno in media il 5.8% di CTR in piu'),
+				Rule.min(120).warning('Descrizione troppo corta (min 120 caratteri). Le descrizioni brevi vengono ignorate da Google che usa un estratto automatico.'),
+				Rule.max(170).warning('La descrizione potrebbe essere tagliata da Google oltre i 160 caratteri su mobile.'),
 			],
 			components: {
 				input: SeoDescriptionFeedback,
@@ -79,11 +81,15 @@ export default defineType({
 			title: 'Parole chiave',
 			type: 'array',
 			of: [{ type: 'string' }],
-			description: 'Le 3-5 parole chiave principali. Il sistema verifica se sono presenti nel titolo.',
+			description: 'Le 3-5 parole chiave principali. Il sistema verifica se sono presenti nel titolo. Fondamentali per il sistema di navigazione e per segnalare i topic a Google.',
 			fieldset: 'seo',
 			options: {
 				layout: 'tags',
 			},
+			validation: (Rule) => [
+				Rule.min(1).warning('Aggiungi almeno una parola chiave per aiutare Google a capire l\'argomento principale. Le keyword aiutano la pertinenza semantica.'),
+				Rule.max(5).warning('Troppe parole chiave (max 5). Usa solo quelle essenziali.'),
+			],
 		}),
 
 		// --- CONDIVISIONE ---
@@ -101,9 +107,13 @@ export default defineType({
 				defineField({
 					name: 'alt',
 					title: 'Testo alternativo',
-					description: 'Descrive l\'immagine per i motori di ricerca e gli screen reader (es. "Trm Sport in conferenza stampa")',
+					description: 'Descrive l\'immagine per i motori di ricerca e gli screen reader (es. "Trm Sport in conferenza stampa"). Obbligatorio per accessibilità (WCAG 2.1) e per il posizionamento su Google Immagini.',
 					type: 'string',
-					validation: (Rule) => Rule.required().warning('Il testo alternativo migliora l\'accessibilità e il posizionamento SEO'),
+					validation: (Rule) => [
+						Rule.required().warning('Il testo alternativo è obbligatorio: senza alt text, Google non indicizza l\'immagine e gli screen reader non possono descriverla'),
+						Rule.min(10).warning('Testo alternativo troppo corto (min 10 caratteri). Descrivi brevemente cosa mostra l\'immagine.'),
+						Rule.max(160).warning('Testo alternativo troppo lungo (max 160 caratteri). Sii conciso.'),
+					],
 				}),
 				defineField({
 					name: 'caption',

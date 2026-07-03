@@ -38,6 +38,8 @@ export default defineType({
 			name: 'metadata',
 			type: 'metadata',
 			group: 'metadata',
+			description: 'Metadati SEO per la pagina. Senza title e description, la pagina non verra indicizzata correttamente.',
+			validation: (Rule) => Rule.required().warning('I metadati SEO sono obbligatori per ogni pagina pubblica'),
 		}),
 		defineField({
 			name: 'language',

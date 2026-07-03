@@ -43,6 +43,8 @@ export default defineType({
 			name: 'metadata',
 			type: 'metadata',
 			group: 'metadata',
+			description: 'Metadati SEO per la pagina legale. Obbligatorio per garantire l\'indicizzazione corretta e la conformita normativa.',
+			validation: (Rule) => Rule.required().warning('I metadati SEO sono obbligatori per ogni pagina pubblica'),
 		}),
 		defineField({
 			name: 'language',

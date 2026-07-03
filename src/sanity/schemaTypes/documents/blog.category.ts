@@ -51,8 +51,9 @@ export default defineType({
 			title: 'SEO e Metadati',
 			type: 'metadata',
 			description:
-				'Metadati per la pagina categoria. Lo slug viene ignorato (si usa quello della categoria).',
+				'Metadati per la pagina categoria. Obbligatorio: senza metadati la pagina categoria non ha title SEO ne meta description, con impatto negativo su ranking e CTR. Lo slug viene ignorato (si usa quello della categoria).',
 			group: 'metadata',
+			validation: (Rule) => Rule.required().warning('I metadati SEO sono obbligatori per tutte le pagine pubbliche: senza title e description la categoria non viene indicizzata correttamente'),
 		}),
 	],
 	preview: {
