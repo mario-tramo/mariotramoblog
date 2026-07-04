@@ -7,6 +7,7 @@ import { draftMode } from 'next/headers'
 import { defineLive } from 'next-sanity/live'
 import type { QueryOptions, QueryParams } from '@sanity/client'
 import { buildTags, type CacheDocHint } from './cache'
+import * as Sentry from '@sentry/nextjs'
 
 /**
  * Direct Sanity client fetch.
@@ -56,6 +57,10 @@ export async function fetchSanity<T = unknown>({
 	} catch (err) {
 		const previewLabel = preview ? ' (preview)' : ''
 		console.error(`[fetchSanity${previewLabel}] query failed:`, err)
+		Sentry.captureException(err, {
+			tags: { domain: 'sanity', operation: 'fetchSanity' },
+			extra: { query, params, preview },
+		})
 		throw err
 	}
 }
@@ -93,6 +98,10 @@ export async function fetchSanityLive<T = unknown>(
 	} catch (err) {
 		const previewLabel = preview ? ' (preview)' : ''
 		console.error(`[fetchSanityLive${previewLabel}] query failed:`, err)
+		Sentry.captureException(err, {
+			tags: { domain: 'sanity', operation: 'fetchSanityLive' },
+			extra: { args, preview },
+		})
 		throw err
 	}
 }

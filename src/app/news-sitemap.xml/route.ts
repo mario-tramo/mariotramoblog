@@ -1,11 +1,18 @@
-import { fetchSanityLive } from '@/sanity/lib/fetch'
+import { fetchSanity } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { BASE_URL } from '@/lib/env'
+
+// Google News only surfaces articles published in the last 48h, so the
+// window must slide: regenerate at most every 15 minutes.
+export const revalidate = 900
 
 export async function GET() {
 	const base = BASE_URL.replace(/\/+$/, '') + '/'
 
-	const posts = await fetchSanityLive<
+	// publishDate can be date-only ('2026-06-24') or a full datetime, and GROQ's
+	// now() is a string: both sides must go through dateTime() or the filter
+	// silently matches nothing (this is what shipped an empty news sitemap).
+	const posts = await fetchSanity<
 		Array<{
 			url: string
 			publishDate: string
@@ -17,7 +24,11 @@ export async function GET() {
 			_type == 'blog.post'
 			&& metadata.noIndex != true
 			&& defined(categories[0]->slug.current)
-			&& dateTime(_updatedAt) > now() - 60 * 60 * 24 * 2
+			&& defined(publishDate)
+			&& dateTime(select(
+				publishDate match '*T*' => publishDate,
+				publishDate + 'T00:00:00Z'
+			)) > dateTime(now()) - 60 * 60 * 24 * 2
 		]|order(publishDate desc){
 			'url': (
 				$base
@@ -49,7 +60,7 @@ export async function GET() {
 		<loc>${post.url}</loc>
 		<news:news>
 			<news:publication>
-				<news:name>Trm Sport</news:name>
+				<news:name>TRM Sport</news:name>
 				<news:language>it</news:language>
 			</news:publication>
 			<news:publication_date>${post.publishDate}</news:publication_date>

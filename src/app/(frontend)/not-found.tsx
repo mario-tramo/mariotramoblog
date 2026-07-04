@@ -3,7 +3,8 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-	title: '404 — Pagina non trovata | Trm Sport',
+	// The layout template appends "| TRM Sport" — don't repeat it here.
+	title: '404 — Pagina non trovata',
 	description: 'La pagina che stai cercando non esiste o è stata spostata.',
 	robots: { index: false, follow: false },
 }

@@ -1,6 +1,10 @@
-import { fetchSanityLive } from '@/sanity/lib/fetch'
+import { fetchSanity } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import type { MetadataRoute } from 'next'
+
+// Without route-level revalidation the sitemap is frozen at build time and
+// articles published after the last deploy never appear in it.
+export const revalidate = 3600
 
 const BASE = process.env.NEXT_PUBLIC_BASE_URL!.replace(/\/+$/, '') + '/'
 
@@ -12,11 +16,13 @@ interface SitemapEntry {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const data = await fetchSanityLive<Record<string, SitemapEntry[]>>({
+	const data = await fetchSanity<Record<string, SitemapEntry[]>>({
 		query: groq`{
 			'pages': *[
 				_type == 'page' &&
-				!(metadata.slug.current in ['404']) &&
+				// 'blog' 308-redirects to / and 'chi-siamo-2' 301s to /chi-siamo:
+				// redirecting URLs must not be listed in the sitemap
+				!(metadata.slug.current in ['404', 'blog', 'chi-siamo-2']) &&
 				metadata.noIndex != true
 			]|order(metadata.slug.current){
 				'url': (

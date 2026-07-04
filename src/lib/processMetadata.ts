@@ -4,7 +4,14 @@ import { urlFor } from '@/sanity/lib/image'
 import type { Metadata } from 'next'
 import { DEFAULT_LANG } from './i18n'
 
-const SITE_NAME = 'Trm Sport'
+const SITE_NAME = 'TRM Sport'
+
+// CMS titles sometimes already end with the brand ("Chi Siamo | TRM Sport");
+// the layout template appends it again, producing "… | TRM Sport | Trm Sport".
+// Strip any trailing brand so the template stays the single source of truth.
+function stripBrandSuffix(title: string): string {
+	return title.replace(/\s*[|\-–—]\s*trm\s*sport\s*$/i, '').trim()
+}
 
 export default async function processMetadata(
 	page: Sanity.PageBase & {
@@ -19,8 +26,9 @@ export default async function processMetadata(
 ): Promise<Metadata> {
 	const url = resolveUrl(page)
 	const { description, noIndex, keywords, canonicalUrl } = page.metadata
-	const rawTitle = page.metadata.title || page.title || ''
 	const isHomepage = page._type === 'page' && page.metadata?.slug?.current === 'index'
+	const untrimmedTitle = page.metadata.title || page.title || ''
+	const rawTitle = isHomepage ? untrimmedTitle : stripBrandSuffix(untrimmedTitle)
 	const title = isHomepage ? { absolute: rawTitle } : rawTitle
 	const isBlogPost = page._type === 'blog.post'
 

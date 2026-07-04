@@ -30,12 +30,12 @@ export const viewport = {
 export const metadata: Metadata = {
 	metadataBase: new URL(BASE_URL),
 	title: {
-		template: '%s | Trm Sport',
-		default: 'Trm Sport',
+		template: '%s | TRM Sport',
+		default: 'TRM Sport',
 	},
 	description: 'Blog di sport, calcio, tattiche e molto altro.',
 	openGraph: {
-		siteName: 'Trm Sport',
+		siteName: 'TRM Sport',
 		locale: 'it_IT',
 		type: 'website',
 	},

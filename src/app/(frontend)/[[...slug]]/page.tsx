@@ -2,6 +2,8 @@ import { notFound, permanentRedirect } from 'next/navigation'
 import JsonLd from '@/ui/primitives/JsonLd'
 import Modules from '@/ui/modules'
 import ViewTracker from '@/ui/ViewTracker'
+import { HomepageH1 } from '@/ui/modules/HomepageSeo'
+import BettingDisclaimer from '@/ui/modules/blog/BettingDisclaimer'
 import processMetadata from '@/lib/processMetadata'
 import {
 	webPageJsonLd,
@@ -39,8 +41,11 @@ export default async function Page({ params, searchParams }: Props) {
 	// Try page first, then category, then blog post (category/slug)
 	const page = await getPage(resolvedParams)
 	if (page) {
-		const isHomepage = page.metadata.slug?.current === 'index'
-		const isAboutPage = page.metadata.slug?.current === 'chi-siamo'
+		const pageSlug = page.metadata.slug?.current
+		// Legacy duplicate of the about page still published in Sanity
+		if (pageSlug === 'chi-siamo-2') permanentRedirect('/chi-siamo')
+		const isHomepage = pageSlug === 'index'
+		const isAboutPage = pageSlug === 'chi-siamo'
 		const socialLinks = isHomepage || isAboutPage
 			? await getSocialLinks()
 			: undefined
@@ -64,6 +69,13 @@ export default async function Page({ params, searchParams }: Props) {
 						<JsonLd data={organizationJsonLd(socialLinks, logoUrl)} />
 						<JsonLd data={newsMediaOrganizationJsonLd(socialLinks, logoUrl)} />
 					</>
+				)}
+				{isHomepage ? (
+					<HomepageH1 />
+				) : (
+					// Static pages' modules start at h2 — expose the page title
+					// as the document h1 without altering the visible layout.
+					<h1 className="sr-only">{page.title || page.metadata.title}</h1>
 				)}
 				<Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
 			</>
@@ -166,9 +178,15 @@ export default async function Page({ params, searchParams }: Props) {
 				))}
 				<ViewTracker slug={post.metadata.slug.current} />
 				<Modules modules={post.modules} post={post} />
+				{post.categories?.some((c) => c.slug?.current === 'betting') && (
+					<BettingDisclaimer />
+				)}
 			</>
 		)
 	}
+
+	const canonicalPath = await getCaseInsensitiveRedirect(resolvedParams)
+	if (canonicalPath) permanentRedirect(canonicalPath)
 
 	notFound()
 }
@@ -200,6 +218,10 @@ export async function generateMetadata({ params, searchParams }: Props) {
 	if (category) return processMetadata(category)
 	const post = await getPost(resolvedParams)
 	if (post) return processMetadata(post)
+	// Mirror the Page() fallback: redirect wrongly-cased URLs instead of
+	// 404ing, since notFound() here would win over the Page redirect.
+	const canonicalPath = await getCaseInsensitiveRedirect(resolvedParams)
+	if (canonicalPath) permanentRedirect(canonicalPath)
 	notFound()
 }
 
@@ -372,6 +394,50 @@ async function getPost(params: Params) {
 	const modules = await getArticleTemplate()
 
 	return { ...post, modules } as Sanity.BlogPost & { modules: Sanity.Module[] }
+}
+
+/**
+ * Historic slugs are mixed-case ("chi-e-Hamilton-…"), so wrongly-cased URLs
+ * used to render duplicate content (or a soft 404). When nothing matches
+ * exactly, look up the target case-insensitively and 301 to the canonical
+ * path. Only runs on would-be-404s, so the extra query is off the hot path.
+ */
+async function getCaseInsensitiveRedirect(params: Params): Promise<string | null> {
+	const segments = params.slug
+	if (!segments?.length) return null
+
+	if (segments.length === 1) {
+		const lowered = segments[0].toLowerCase()
+		if (lowered === segments[0]) return null
+		const slug = await fetchSanityLive<string | null>({
+			query: groq`coalesce(
+				*[_type == 'blog.category' && slug.current == $slug][0].slug.current,
+				*[_type == 'page' && metadata.slug.current == $slug][0].metadata.slug.current
+			)`,
+			params: { slug: lowered },
+		})
+		return slug ? `/${slug}` : null
+	}
+
+	if (segments.length === 2) {
+		const [categorySlug, postSlug] = segments
+		const match = await fetchSanityLive<{ slug: string; category: string } | null>({
+			query: groq`*[
+				_type == 'blog.post'
+				&& lower(metadata.slug.current) == lower($postSlug)
+				&& defined(categories[0]->slug.current)
+			][0]{
+				'slug': metadata.slug.current,
+				'category': categories[0]->slug.current
+			}`,
+			params: { postSlug },
+		})
+		if (!match) return null
+		const target = `/${match.category}/${match.slug}`
+		return target === `/${categorySlug}/${postSlug}` ? null : target
+	}
+
+	return null
 }
 
 type Params = { slug?: string[] }

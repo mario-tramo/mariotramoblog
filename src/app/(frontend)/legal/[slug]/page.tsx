@@ -23,7 +23,7 @@ export default async function LegalPage({ params }: Props) {
 		dateModified: page.lastUpdated || page._updatedAt,
 		isPartOf: {
 			'@type': 'WebSite',
-			name: 'Trm Sport',
+			name: 'TRM Sport',
 			url: BASE_URL,
 		},
 	}

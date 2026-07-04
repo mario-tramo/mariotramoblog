@@ -18,6 +18,7 @@ import { CalendarIcon } from '@sanity/icons'
 import { SchedulingToolComponent } from '@/sanity/tools/SchedulingTool'
 import { ScheduleAction } from '@/sanity/actions/ScheduleAction'
 import { UnscheduleAction } from '@/sanity/actions/UnscheduleAction'
+import { sentryPlugin } from '@/sanity/sentry'
 
 const singletonTypes = ['site']
 const schedulableTypes = ['blog.post', 'page', 'legal']
@@ -55,6 +56,7 @@ export default defineConfig({
 			supportedLanguages,
 			schemaTypes: ['page', 'blog.post'],
 		}),
+		sentryPlugin(),
 	],
 
 	tools: [

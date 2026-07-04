@@ -11,14 +11,14 @@ export const metadata: Metadata = {
 	openGraph: {
 		type: 'website',
 		url: `${BASE_URL}/classifiche`,
-		title: 'Classifiche | Trm Sport',
+		title: 'Classifiche | TRM Sport',
 		description: 'Classifiche aggiornate dei principali campionati di calcio europei',
-		siteName: 'Trm Sport',
+		siteName: 'TRM Sport',
 		locale: 'it_IT',
 	},
 	twitter: {
 		card: 'summary_large_image',
-		title: 'Classifiche | Trm Sport',
+		title: 'Classifiche | TRM Sport',
 		description: 'Classifiche aggiornate dei principali campionati di calcio europei',
 	},
 	alternates: {
@@ -32,13 +32,13 @@ export default function ClassifichePage() {
 	const jsonLd = {
 		'@context': 'https://schema.org',
 		'@type': 'WebPage',
-		name: 'Classifiche | Trm Sport',
+		name: 'Classifiche | TRM Sport',
 		description: 'Classifiche aggiornate dei principali campionati di calcio europei',
 		url: `${BASE_URL}/classifiche`,
 		inLanguage: 'it',
 		isPartOf: {
 			'@type': 'WebSite',
-			name: 'Trm Sport',
+			name: 'TRM Sport',
 			url: BASE_URL,
 		},
 	}

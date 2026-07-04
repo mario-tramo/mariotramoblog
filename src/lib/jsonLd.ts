@@ -24,7 +24,7 @@ function articleImages(post: Sanity.BlogPost): string[] {
 function publisher(logoUrl?: string) {
 	return {
 		'@type': 'Organization',
-		name: 'Trm Sport',
+		name: 'TRM Sport',
 		url: BASE_URL,
 		logo: {
 			'@type': 'ImageObject',
@@ -141,7 +141,7 @@ export function collectionPageJsonLd(
 		...(description && { description }),
 		isPartOf: {
 			'@type': 'WebSite',
-			name: 'Trm Sport',
+			name: 'TRM Sport',
 			url: BASE_URL,
 		},
 		publisher: publisher(logoUrl),
@@ -164,7 +164,7 @@ export function webPageJsonLd(page: {
 		...(page.dateModified && { dateModified: page.dateModified }),
 		isPartOf: {
 			'@type': 'WebSite',
-			name: 'Trm Sport',
+			name: 'TRM Sport',
 			url: BASE_URL,
 		},
 		publisher: publisher(logoUrl),
@@ -213,7 +213,7 @@ export function personJsonLd(author: Sanity.Person) {
 		...(author.socialLink && { sameAs: [author.socialLink] }),
 		worksFor: {
 			'@type': 'Organization',
-			name: 'Trm Sport',
+			name: 'TRM Sport',
 			url: BASE_URL,
 		},
 	}

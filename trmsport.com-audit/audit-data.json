@@ -1,0 +1,109 @@
+{
+  "summary": {
+    "health_score": 67,
+    "business_type": "Italian sports news publisher (Next.js + Sanity on Vercel)",
+    "top_findings": [
+      "news-sitemap.xml is empty (zero URLs) — forfeits Google News/Top Stories discovery",
+      "Soft 404s: non-existent URLs return HTTP 200",
+      "Homepage and 6 static pages have no <h1>",
+      "9 articles duplicated under two category paths; case-variant URLs return 200 without canonical",
+      "Betting content has no responsible-gambling signals (18+/ADM)"
+    ],
+    "quick_wins": [
+      "Populate news-sitemap.xml with last-48h articles",
+      "Return real 404 status from not-found pages",
+      "Add <h1> to homepage and static pages",
+      "Remove /blog redirect from sitemap; add 13 missing articles",
+      "Fix doubled '| Trm Sport | Trm Sport' title suffix"
+    ]
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": 60,
+      "what_works": ["Valid robots.txt with sitemap declarations", "HSTS preload, CSP, nosniff headers", "Self-canonicals on all 162 indexable pages", "Brotli compression (567KB -> 68KB)", "RSS feeds at /feed, /rss.xml", "https and trailing-slash 308 normalization"],
+      "findings": [
+        {"title": "Empty news sitemap", "severity": "Critical", "description": "news-sitemap.xml declared in robots.txt returns an empty <urlset> despite daily article publishing", "recommendation": "Generate from articles published in last 48h with news:news tags"},
+        {"title": "Soft 404s", "severity": "High", "description": "Non-existent URLs (e.g. /pagina-che-non-esiste-xyz, /CALCIO) return HTTP 200 with a noindex 404 template", "recommendation": "Return status 404 via notFound() when Sanity fetch is null"},
+        {"title": "13 articles missing from sitemap.xml", "severity": "High", "description": "Published, internally-linked, self-canonical articles absent from the sitemap", "recommendation": "Fix the sitemap route's GROQ filter"},
+        {"title": "Duplicate article paths across categories", "severity": "High", "description": "9 slugs resolve 200 under two category prefixes; internal links target non-canonical variants", "recommendation": "301 non-canonical paths; link only canonical category"},
+        {"title": "Case-variant URLs indexable", "severity": "High", "description": "Lowercase slug variants return 200 with NO canonical tag", "recommendation": "Middleware 301 to canonical slug; lowercase slugs going forward"},
+        {"title": "/blog redirect in sitemap", "severity": "Medium", "description": "sitemap.xml lists /blog which 308-redirects to /", "recommendation": "Remove from sitemap"},
+        {"title": "non-www redirect is 307", "severity": "Medium", "description": "https://trmsport.com/ -> 307 temporary redirect to www", "recommendation": "Make permanent (308/301)"},
+        {"title": "No edge caching", "severity": "Medium", "description": "Cache-Control private/no-store; x-vercel-cache MISS on every request", "recommendation": "ISR with revalidate for home/category pages"}
+      ]
+    },
+    {
+      "name": "On-Page SEO",
+      "score": 60,
+      "what_works": ["Unique meta descriptions on all pages", "No duplicate article titles", "Single H1 on all articles", "og:image + twitter:card everywhere"],
+      "findings": [
+        {"title": "7 pages missing H1 incl. homepage", "severity": "High", "description": "/, /chi-siamo, /chi-siamo-2, /contatti, /correzioni, /linea-editoriale, /redazione", "recommendation": "Add semantic h1 to layouts"},
+        {"title": "141/162 titles over 60 chars", "severity": "High", "description": "Titles truncate in SERPs; template concatenates headline + category + brand", "recommendation": "Template '{headline <=50ch} | TRM Sport'"},
+        {"title": "Doubled brand suffix", "severity": "Medium", "description": "'… | TRM Sport | Trm Sport' on 404 and chi-siamo-2", "recommendation": "Dedupe brand in metadata template"},
+        {"title": "3 legal pages share a generic title", "severity": "Medium", "description": "cookie-policy, privacy-policy, termini-di-servizio all use the site-default title", "recommendation": "Page-specific titles"},
+        {"title": "Keyword-list mixed-case slugs", "severity": "Medium", "description": "e.g. calciomercato-Inter-Marotta-Ausilio-Lautaro-Onana-Chivu", "recommendation": "Short lowercase descriptive slugs"}
+      ]
+    },
+    {
+      "name": "Content Quality",
+      "score": 65,
+      "what_works": ["Named bylines with author pages", "Published + modified dates", "Corrections and editorial-policy pages exist", "Person schema on 49 pages"],
+      "findings": [
+        {"title": "No responsible-gambling signals in betting section", "severity": "High", "description": "No 18+, gioco responsabile, or ADM references on betting articles (YMYL)", "recommendation": "Standing disclaimer block in betting layout"},
+        {"title": "Duplicate About pages", "severity": "Medium", "description": "/chi-siamo (331w) and orphaned /chi-siamo-2 (205w, 46% overlap)", "recommendation": "301 chi-siamo-2 -> chi-siamo"},
+        {"title": "Thin articles", "severity": "Medium", "description": "Articles under 300 words, e.g. /rugby/rugby-urc-zebre-parma-semifinale (251w)", "recommendation": "Expand or merge"},
+        {"title": "Orphan pages", "severity": "Medium", "description": "/chi-siamo-2 and /legal/termini-di-servizio have zero internal links", "recommendation": "Link from footer or remove"},
+        {"title": "Thin trust pages", "severity": "Low", "description": "correzioni 109w, contatti 114w, redazione 175w", "recommendation": "Expand with concrete policies and contacts"}
+      ]
+    },
+    {
+      "name": "Schema",
+      "score": 85,
+      "what_works": ["NewsArticle passes Google Rich Results requirements", "BreadcrumbList valid", "WebSite + SearchAction", "NewsMediaOrganization publisher with logo"],
+      "findings": [
+        {"title": "isAccessibleForFree is null", "severity": "Low", "description": "Property emitted as null on NewsArticle", "recommendation": "Emit true or omit"},
+        {"title": "SearchAction target unverified", "severity": "Low", "description": "Points to /?q={search_term_string}; unclear it renders results", "recommendation": "Point at real search route or verify"},
+        {"title": "Brand name inconsistency in schema", "severity": "Low", "description": "WebSite name 'TRM SPORT' vs publisher 'TRM Sport'", "recommendation": "Unify"}
+      ]
+    },
+    {
+      "name": "Performance",
+      "score": 70,
+      "what_works": ["TTFB 0.2-0.4s", "Brotli", "next/image with lazy loading + WebP", "Zero third-party scripts", "preconnect to Sanity CDN"],
+      "findings": [
+        {"title": "349KB inline RSC flight data on homepage", "severity": "Medium", "description": "62% of the 567KB homepage document is serialized Next.js flight data", "recommendation": "Trim fields serialized per article card"},
+        {"title": "No edge-cache hits", "severity": "Medium", "description": "Every request is an SSR MISS", "recommendation": "ISR revalidate"}
+      ]
+    },
+    {
+      "name": "AI Readiness",
+      "score": 70,
+      "what_works": ["llms.txt present with curated category map", "Full article text server-rendered", "Clear datelines and subheadings"],
+      "findings": [
+        {"title": "Inconsistent AI-crawler policy", "severity": "Medium", "description": "Blocks CCBot/ClaudeBot/Meta-ExternalAgent but allows GPTBot/PerplexityBot; ships llms.txt while blocking ClaudeBot", "recommendation": "Decide policy; make robots.txt consistent"},
+        {"title": "llms.txt uses non-www URLs", "severity": "Low", "description": "Links 307-redirect to www", "recommendation": "Use canonical www host"}
+      ]
+    },
+    {
+      "name": "Images",
+      "score": 90,
+      "what_works": ["0 of 2058 images missing alt text", "next/image everywhere", "WebP negotiation works", "og:image on all pages"],
+      "findings": [
+        {"title": "AVIF not served", "severity": "Low", "description": "Heroes are ~90KB WebP at w=1200", "recommendation": "Enable AVIF in next.config images.formats"}
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {"name": "Phase 1: Critical Fixes", "timeframe": "Week 1", "items": ["Populate news-sitemap.xml", "Return real 404 status", "Fix sitemap.xml (remove /blog, add 13 missing articles)", "Add h1 to homepage + static pages"]},
+      {"name": "Phase 2: High-Impact Improvements", "timeframe": "Weeks 2-3", "items": ["301 duplicate category paths", "Case-normalize slugs", "Shorten titles + fix doubled brand suffix", "Betting disclaimers", "Remove chi-siamo-2", "Permanent non-www redirect"]},
+      {"name": "Phase 3: Content & Authority", "timeframe": "Month 2", "items": ["Expand thin articles and trust pages", "Unify brand naming", "Align AI-crawler policy + llms.txt", "Enrich author Person schema"]},
+      {"name": "Phase 4: Monitoring & Iteration", "timeframe": "Ongoing", "items": ["ISR for home/categories", "GSC + CrUX monitoring", "Verify SearchAction search route"]}
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/"
+  }
+}
