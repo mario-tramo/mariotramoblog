@@ -28,7 +28,7 @@ function LinkMark({
 	const isSpecial = /^(mailto:|tel:|#)/i.test(href)
 	const isAbsolute = /^https?:\/\//i.test(href)
 	const isInternal =
-		!isAbsolute || href.startsWith(BASE_URL) || href.includes('trmsport.com')
+		!isAbsolute || href.startsWith(BASE_URL) || href.includes('www.trmsport.com')
 	const openInNewTab = isAbsolute && !isInternal && !isSpecial
 
 	return (

@@ -2,6 +2,7 @@ import { revalidatePath, revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 import { isAuthorized } from '@/lib/http-auth'
 import { processRevalidation, type RevalidatePayload } from '@/lib/revalidate-handler'
+import { resolveUrlFromDocument, submitToIndexNow } from '@/lib/indexnow'
 
 /**
  * POST /api/revalidate — Sanity publish-time cache invalidation.
@@ -42,6 +43,24 @@ export async function POST(request: NextRequest) {
 		revalidateTag,
 		revalidatePath,
 	})
+
+	// Notify IndexNow so search engines crawl updated content immediately
+	if (body.document) {
+		const url = await resolveUrlFromDocument(body.document)
+		const paths = outcome.paths.filter((p) => p !== '/')
+		const urls = [
+			...(url ? [url] : []),
+			...paths.map((p) => {
+				const base = process.env.NEXT_PUBLIC_BASE_URL?.replace(/\/+$/, '')
+				return base ? `${base}${p}` : null
+			}).filter(Boolean) as string[],
+		]
+		if (urls.length > 0) {
+			submitToIndexNow(urls).then((ok) => {
+				if (ok) console.log('[revalidate] indexnow submitted', urls.length, 'urls')
+			})
+		}
+	}
 
 	const result = {
 		revalidated: true,

@@ -173,10 +173,29 @@ export default async function Page({ params, searchParams }: Props) {
 	notFound()
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params, searchParams }: Props) {
 	const resolvedParams = await params
+	const resolvedSearchParams = await searchParams
+	const categoria = resolvedSearchParams?.categoria
+
 	const page = await getPage(resolvedParams)
-	if (page) return processMetadata(page)
+	if (page) {
+		const meta = await processMetadata(page)
+		// When ?categoria is present, adjust canonical to the category page
+		// to prevent duplicate content between /?categoria=X and /X
+		if (categoria && typeof categoria === 'string') {
+			const catUrl = `${BASE_URL}/${categoria}`
+			return {
+				...meta,
+				alternates: {
+					...meta.alternates,
+					canonical: catUrl,
+				},
+				robots: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+			}
+		}
+		return meta
+	}
 	const category = await getCategory(resolvedParams)
 	if (category) return processMetadata(category)
 	const post = await getPost(resolvedParams)

@@ -4,8 +4,15 @@ import type { MetadataRoute } from 'next'
 
 const BASE = process.env.NEXT_PUBLIC_BASE_URL!.replace(/\/+$/, '') + '/'
 
+interface SitemapEntry {
+	url: string
+	lastModified: string
+	changefreq?: MetadataRoute.Sitemap[number]['changeFrequency']
+	priority?: number
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const data = await fetchSanityLive<Record<string, MetadataRoute.Sitemap>>({
+	const data = await fetchSanityLive<Record<string, SitemapEntry[]>>({
 		query: groq`{
 			'pages': *[
 				_type == 'page' &&
@@ -53,12 +60,36 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		params: { base: BASE },
 	})
 
-	const urls = Object.values(data).flat()
+	const enrich = (
+		e: SitemapEntry,
+		overrides?: Partial<MetadataRoute.Sitemap[number]>,
+	): MetadataRoute.Sitemap[number] => ({
+		url: e.url,
+		lastModified: e.lastModified,
+		...overrides,
+	})
 
 	const seen = new Set<string>()
-	return urls.filter((entry) => {
-		if (seen.has(entry.url)) return false
-		seen.add(entry.url)
-		return true
-	})
+	const result: MetadataRoute.Sitemap = []
+
+	const add = (entries: SitemapEntry[], overrides?: Partial<MetadataRoute.Sitemap[number]>) => {
+		for (const e of entries) {
+			if (seen.has(e.url)) continue
+			seen.add(e.url)
+			result.push(enrich(e, overrides))
+		}
+	}
+
+	add(
+		[{ url: BASE, lastModified: new Date().toISOString() }],
+		{ changeFrequency: 'daily', priority: 1 },
+	)
+
+	add(data.pages ?? [], { changeFrequency: 'monthly', priority: 0.5 })
+	add(data.categories ?? [], { changeFrequency: 'weekly', priority: 0.6 })
+	add(data.blog ?? [], { changeFrequency: 'weekly', priority: 0.8 })
+	add(data.legal ?? [], { changeFrequency: 'monthly', priority: 0.3 })
+	add(data.authors ?? [], { changeFrequency: 'weekly', priority: 0.4 })
+
+	return result
 }

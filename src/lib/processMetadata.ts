@@ -79,7 +79,11 @@ export default async function processMetadata(
 			? { index: false, follow: false }
 			: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
 		alternates: {
-			canonical: canonicalUrl || url,
+			// If canonicalUrl is manually set to the homepage for a non-homepage
+			// page, ignore it — the resolved URL is the correct canonical.
+			canonical: !isHomepage && canonicalUrl && canonicalUrl.replace(/\/+$/, '') === BASE_URL
+				? url
+				: canonicalUrl || url,
 			languages: Object.fromEntries(
 				page.translations
 					?.filter((t) => !!t?.language && !!t?.slug)
