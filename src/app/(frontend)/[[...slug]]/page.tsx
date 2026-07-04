@@ -70,9 +70,7 @@ export default async function Page({ params, searchParams }: Props) {
 						<JsonLd data={newsMediaOrganizationJsonLd(socialLinks, logoUrl)} />
 					</>
 				)}
-				{isHomepage ? (
-					<HomepageH1 />
-				) : (
+				{(
 					// Static pages' modules start at h2 — expose the page title
 					// as the document h1 without altering the visible layout.
 					<h1 className="sr-only">{page.title || page.metadata.title}</h1>
