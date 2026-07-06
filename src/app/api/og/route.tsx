@@ -214,7 +214,7 @@ export async function GET(request: NextRequest) {
 	return new Response(new Uint8Array(jpeg), {
 		headers: {
 			'Content-Type': 'image/jpeg',
-			'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800',
+			'Cache-Control': 'public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800',
 		},
 	})
 }
