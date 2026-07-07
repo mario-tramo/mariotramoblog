@@ -8,6 +8,18 @@ interface MockCalls {
 	deleted: string[]
 }
 
+function mockTransaction(calls: MockCalls) {
+	return {
+		createOrReplace: (doc: Record<string, unknown>) => {
+			calls.createdOrReplaced.push(doc)
+		},
+		delete: (id: string) => {
+			calls.deleted.push(id)
+		},
+		commit: async () => {},
+	}
+}
+
 function mockClient(drafts: unknown[]): {
 	client: any
 	calls: MockCalls
@@ -24,12 +36,7 @@ function mockClient(drafts: unknown[]): {
 				calls.fetchedQueries.push(q)
 				return drafts
 			},
-			createOrReplace: async (doc: Record<string, unknown>) => {
-				calls.createdOrReplaced.push(doc)
-			},
-			delete: async (id: string) => {
-				calls.deleted.push(id)
-			},
+			transaction: () => mockTransaction(calls),
 		},
 	}
 }
@@ -79,7 +86,7 @@ describe('publishScheduledDrafts', () => {
 		assert.deepEqual(calls.deleted, ['drafts.my-post'])
 	})
 
-	test('multiple drafts: each gets its own createOrReplace + delete, in order', async () => {
+	test('multiple drafts: all mutations queued in a single transaction', async () => {
 		const drafts = [
 			{ _id: 'drafts.a', _type: 'page', publishAt: '2026-01-01', title: 'A' },
 			{ _id: 'drafts.b', _type: 'page', publishAt: '2026-01-02', title: 'B' },
@@ -89,6 +96,8 @@ describe('publishScheduledDrafts', () => {
 		const result = await publishScheduledDrafts({ client })
 
 		assert.deepEqual(result, { found: 3, published: 3, errors: 0 })
+		assert.equal(calls.createdOrReplaced.length, 3)
+		assert.equal(calls.deleted.length, 3)
 		assert.deepEqual(
 			calls.createdOrReplaced.map((d) => d._id),
 			['a', 'b', 'c'],
@@ -96,37 +105,26 @@ describe('publishScheduledDrafts', () => {
 		assert.deepEqual(calls.deleted, ['drafts.a', 'drafts.b', 'drafts.c'])
 	})
 
-	test('one draft fails mid-batch: others still publish, errors counter increments', async () => {
+	test('transaction rejection counts all as errors', async () => {
 		const drafts = [
 			{ _id: 'drafts.a', _type: 'page', publishAt: '2026-01-01', title: 'A' },
 			{ _id: 'drafts.bad', _type: 'page', publishAt: '2026-01-01', title: 'B' },
 			{ _id: 'drafts.c', _type: 'page', publishAt: '2026-01-01', title: 'C' },
 		]
 		const { client, calls } = mockClient(drafts)
-
-		let count = 0
-		client.createOrReplace = async (doc: Record<string, unknown>) => {
-			count++
-			if (count === 2) throw new Error('simulated Sanity rate limit')
-			calls.createdOrReplaced.push(doc)
-		}
-		client.delete = async (id: string) => {
-			calls.deleted.push(id)
+		client.transaction = () => {
+			const tx = mockTransaction(calls)
+			tx.commit = async () => {
+				throw new Error('simulated Sanity transaction failure')
+			}
+			return tx
 		}
 
 		const result = await publishScheduledDrafts({ client })
 
 		assert.equal(result.found, 3)
-		assert.equal(result.published, 2)
-		assert.equal(result.errors, 1)
-
-		// Two successful creates (skipping the broken one) and one
-		// corresponding delete (only after successful create).
-		assert.deepEqual(
-			calls.createdOrReplaced.map((d) => d._id),
-			['a', 'c'],
-		)
-		assert.deepEqual(calls.deleted, ['drafts.a', 'drafts.c'])
+		assert.equal(result.published, 0)
+		assert.equal(result.errors, 3)
 	})
 
 	test('handles null/undefined return from client.fetch', async () => {

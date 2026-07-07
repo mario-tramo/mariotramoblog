@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import * as Sentry from '@sentry/nextjs'
 import { isAuthorized } from '@/lib/http-auth'
-import { readStandingsTable } from '@/lib/standings/store'
-import { COMPETITIONS, type CompetitionCode } from '@/lib/football-data'
+import { readAllStandingsTables } from '@/lib/standings/store'
+import { COMPETITIONS } from '@/lib/football-data'
 
 export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
@@ -30,34 +30,25 @@ export async function GET(request: NextRequest) {
 	}
 
 	const season = String(currentSeason())
+	const entries = Object.entries(COMPETITIONS)
+	const codes = entries.map(([code]) => code)
+	const allRows = await readAllStandingsTables(codes, season)
+
 	const statuses: CompetitionStatus[] = []
 	let totalCompetitions = 0
 	let availableCompetitions = 0
 
-	for (const [code] of Object.entries(COMPETITIONS)) {
+	for (const [code, name] of entries) {
 		totalCompetitions++
-		try {
-			const rows = await readStandingsTable(code, season)
-			const available = rows !== null && rows.length > 0
-			if (available) availableCompetitions++
-			statuses.push({
-				code,
-				name: COMPETITIONS[code as CompetitionCode],
-				available,
-				teamCount: rows?.length ?? 0,
-			})
-		} catch (err) {
-			statuses.push({
-				code,
-				name: COMPETITIONS[code as CompetitionCode],
-				available: false,
-				teamCount: 0,
-			})
-			Sentry.captureException(err, {
-				tags: { service: 'standings', operation: 'cronCheck' },
-				extra: { competition: code, season },
-			})
-		}
+		const rows = allRows.get(code) ?? null
+		const available = rows !== null && rows.length > 0
+		if (available) availableCompetitions++
+		statuses.push({
+			code,
+			name,
+			available,
+			teamCount: rows?.length ?? 0,
+		})
 	}
 
 	const allAvailable = availableCompetitions === totalCompetitions

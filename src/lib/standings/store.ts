@@ -122,3 +122,37 @@ export async function readStandingsTable(
 		return null
 	}
 }
+
+export async function readAllStandingsTables(
+	competitions: string[],
+	season: string,
+): Promise<Map<string, ScrapedStandingRow[] | null>> {
+	const commands = competitions.map((code) => ['GET', key(code, season)])
+
+	try {
+		const results = await upstash<string | null>(commands)
+		const map = new Map<string, ScrapedStandingRow[] | null>()
+
+		for (let i = 0; i < competitions.length; i++) {
+			const r = results[i]
+			if (!r || r.error || r.result == null) {
+				map.set(competitions[i], null)
+			} else {
+				map.set(competitions[i], JSON.parse(r.result) as ScrapedStandingRow[])
+			}
+		}
+
+		return map
+	} catch (err) {
+		console.error('[standings/store] batch read failed', err)
+		Sentry.captureException(err, {
+			tags: { service: 'standings', operation: 'readAllStandingsTables' },
+			extra: { season, competitions },
+		})
+		const map = new Map<string, ScrapedStandingRow[] | null>()
+		for (const code of competitions) {
+			map.set(code, null)
+		}
+		return map
+	}
+}

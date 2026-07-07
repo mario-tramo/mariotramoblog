@@ -6,16 +6,14 @@
  * dependency, no I/O. The route handler stays a thin HTTP wrapper that
  * authenticates and calls this function.
  *
- * Workflow per draft:
- *   1. Compute `publishedId = drafts.<id>` → `<id>` (drop the prefix).
- *   2. Strip `publishAt` + `_id` from the draft payload, then
- *      `createOrReplace` with the published-destination _id.
- *      (Sanity stores scheduled content as drafts in `drafts.**`; this
- *      promotes it into the published namespace atomically.)
- *   3. Delete the draft pointer.
+ * Workflow:
+ *   1. Fetch all drafts whose `publishAt` has passed.
+ *   2. Batch every `createOrReplace` + `delete` into a single Sanity
+ *      transaction. This turns 2N HTTP round-trips into 1.
  *
- * Failures in step 2/3 for a single document do NOT abort the batch;
- * they're counted in `errors` and the loop continues for the rest.
+ * If the transaction fails the entire batch is rejected atomically.
+ * This is acceptable for a daily cron — unprocessed drafts will get
+ * picked up on the next run.
  */
 
 import type { SanityClient } from '@sanity/client'
@@ -36,7 +34,7 @@ interface ScheduledDraft {
 
 /** Minimal Sanity client surface that this function uses. */
 export interface PublishDeps {
-	client: Pick<SanityClient, 'fetch' | 'createOrReplace' | 'delete'>
+	client: Pick<SanityClient, 'fetch' | 'transaction'>
 }
 
 /** Result returned to the route handler for logging + JSON response. */
@@ -62,27 +60,32 @@ export async function publishScheduledDrafts(
 		return { found: 0, published: 0, errors: 0 }
 	}
 
+	const tx = deps.client.transaction()
 	let published = 0
-	let errors = 0
 
 	for (const draft of drafts) {
 		const publishedId = draft._id.replace('drafts.', '')
+		const { publishAt: _publishAt, _id, ...docWithoutSchedule } = draft
 
-		try {
-			const { publishAt: _publishAt, _id, ...docWithoutSchedule } = draft
-			await deps.client.createOrReplace({
-				...docWithoutSchedule,
-				_id: publishedId,
-			})
-			await deps.client.delete(draft._id)
+		tx.createOrReplace({
+			...docWithoutSchedule,
+			_id: publishedId,
+		})
+		tx.delete(draft._id)
+		published++
 
-			published++
-			console.log(`[cron/publish] published ${publishedId} (${draft._type})`)
-		} catch (err) {
-			errors++
-			console.error(`[cron/publish] failed ${publishedId}:`, err)
-		}
+		console.log(`[cron/publish] queued ${publishedId} (${draft._type})`)
 	}
 
-	return { found: drafts.length, published, errors }
+	try {
+		await tx.commit()
+	} catch (err) {
+		console.error(
+			`[cron/publish] transaction failed for ${drafts.length} drafts:`,
+			err,
+		)
+		return { found: drafts.length, published: 0, errors: drafts.length }
+	}
+
+	return { found: drafts.length, published, errors: 0 }
 }
