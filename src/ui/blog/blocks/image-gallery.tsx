@@ -3,11 +3,14 @@
 import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 
+const AI_CAPTION_PREAMBLE = 'Foto generata usando IA.'
+
 interface GalleryImage {
   asset?: { _ref: string };
   imageUrl?: string;
   caption?: string;
   credit?: string;
+  aiGenerated?: boolean;
 }
 
 interface ImageGalleryProps {
@@ -19,7 +22,7 @@ interface ImageGalleryProps {
 }
 
 export function ImageGallery({ value }: ImageGalleryProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
+	const [activeIndex, setActiveIndex] = useState(0);
   const dragX = useRef<number | null>(null);
   const dragDx = useRef(0);
 
@@ -80,7 +83,7 @@ export function ImageGallery({ value }: ImageGalleryProps) {
               ) : null}
               {img.caption && (
                 <div className="absolute bottom-0 inset-x-0 bg-black/50 text-white text-xs px-2 py-1">
-                  {img.caption}
+                  {img.aiGenerated ? `${AI_CAPTION_PREAMBLE} ${img.caption}` : img.caption}
                   {img.credit && <span className="opacity-70"> — {img.credit}</span>}
                 </div>
               )}
@@ -154,7 +157,7 @@ export function ImageGallery({ value }: ImageGalleryProps) {
 
       {(current.caption || current.credit) && (
         <figcaption className="text-sm text-muted-foreground mt-2 text-center">
-          {current.caption}
+          {current.aiGenerated ? `${AI_CAPTION_PREAMBLE} ${current.caption}` : current.caption}
           {current.credit && <span className="opacity-70"> — {current.credit}</span>}
         </figcaption>
       )}

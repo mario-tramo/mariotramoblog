@@ -185,6 +185,8 @@ declare global {
 		interface Image extends SanityAssetDocument {
 			alt: string
 			loading: 'lazy' | 'eager'
+			caption?: string
+			aiGenerated?: boolean
 		}
 
 		interface Link {

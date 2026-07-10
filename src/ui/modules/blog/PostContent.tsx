@@ -169,19 +169,32 @@ export default function PostContent({
 						</div>
 					</header>
 
-					{/* Hero image */}
-					{post.metadata.image && (
-						<figure className="mt-8 overflow-hidden rounded-xl bg-surface">
-							<Img
-								className="aspect-video w-full object-cover"
-								image={post.metadata.image}
-								width={900}
-								alt={post.title}
-								loading="eager"
-								fetchPriority="high"
-							/>
-						</figure>
-					)}
+				{/* Hero image */}
+				{post.metadata.image && (
+					<figure className="mt-8 overflow-hidden rounded-xl bg-surface">
+						<Img
+							className="aspect-video w-full object-cover"
+							image={post.metadata.image}
+							width={900}
+							alt={post.title}
+							loading="eager"
+							fetchPriority="high"
+						/>
+						{(() => {
+							const img = post.metadata.image!
+							const caption = img.caption
+								? img.aiGenerated
+									? `Foto generata usando IA. ${img.caption}`
+									: img.caption
+								: undefined
+							return caption ? (
+								<figcaption className="px-4 pb-3 pt-2 text-sm text-ink/50 text-balance italic">
+									{caption}
+								</figcaption>
+							) : null
+						})()}
+					</figure>
+				)}
 
 					{/* Mobile: collapsible TOC */}
 					<div className="mt-6 space-y-3 lg:hidden">

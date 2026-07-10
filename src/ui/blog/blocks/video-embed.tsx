@@ -57,7 +57,7 @@ function BlurredVideoCard({ onAccept }: { onAccept: () => void }) {
 }
 
 export function VideoEmbed({ value }: VideoEmbedProps) {
-  const { consent, accept } = useCookieConsent();
+	const { consent, accept } = useCookieConsent();
   const embedUrl = getEmbedUrl(value.url);
 
   if (!embedUrl) {

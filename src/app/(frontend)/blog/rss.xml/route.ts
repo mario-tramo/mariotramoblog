@@ -31,7 +31,6 @@ export async function GET() {
 				'image': metadata.image.asset->url,
 				language,
 			},
-			'copyright': pt::text(*[_type == 'site'][0].copyright)
 		}`,
 	})
 

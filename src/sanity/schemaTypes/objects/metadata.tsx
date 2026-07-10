@@ -121,6 +121,13 @@ export default defineType({
 					description: 'Breve descrizione o credito dell\'immagine (opzionale)',
 					type: 'string',
 				}),
+				defineField({
+					name: 'aiGenerated',
+					title: 'Generata con IA',
+					description: 'Se attivo, viene anteposto "Foto generata usando IA." alla didascalia',
+					type: 'boolean',
+					initialValue: true,
+				}),
 			],
 		}),
 		defineField({

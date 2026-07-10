@@ -312,7 +312,7 @@ function BlurredEmbedCard({
 }
 
 export function SocialEmbed({ value }: SocialEmbedProps) {
-  const platform = (value.platform as Platform) || detectPlatform(value.url);
+	const platform = (value.platform as Platform) || detectPlatform(value.url);
   const size: EmbedSize = { width: value.width, height: value.height };
   const { consent, accept } = useCookieConsent();
 

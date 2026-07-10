@@ -9,6 +9,8 @@ import { useLightbox } from '@/ui/features/Lightbox'
 import Lightbox from '@/ui/features/Lightbox'
 import { Expand } from 'lucide-react'
 
+const AI_CAPTION_PREAMBLE = 'Foto generata usando IA.'
+
 export default function Image({
 	value,
 }: {
@@ -17,11 +19,18 @@ export default function Image({
 			caption: string
 			source: string
 			float: 'left' | 'right'
+			aiGenerated: boolean
 		}>
 }) {
 	const floatClass = stegaClean(value.float) === 'left' ? 'float-left' : stegaClean(value.float) === 'right' ? 'float-right' : ''
 	const { open, image, openLightbox, closeLightbox } = useLightbox()
 	const imgRef = useRef<HTMLDivElement>(null)
+
+	const caption = value.caption
+		? value.aiGenerated
+			? `${AI_CAPTION_PREAMBLE} ${value.caption}`
+			: value.caption
+		: undefined
 
 	const src = value?.asset ? urlFor(value).width(1920).url() : ''
 
@@ -40,8 +49,8 @@ export default function Image({
 					onClick={() =>
 						openLightbox({
 							src,
-							alt: value.caption || value.alt || '',
-							caption: value.caption,
+							alt: caption || value.alt || '',
+							caption,
 						})
 					}
 					role="button"
@@ -51,8 +60,8 @@ export default function Image({
 							e.preventDefault()
 							openLightbox({
 								src,
-								alt: value.caption || value.alt || '',
-								caption: value.caption,
+								alt: caption || value.alt || '',
+								caption,
 							})
 						}
 					}}
@@ -61,7 +70,7 @@ export default function Image({
 						className="bg-accent/3 mx-auto max-h-svh w-auto text-[0px]"
 						image={value}
 						width={1500}
-						alt={value.caption || value.alt || ''}
+						alt={caption || value.alt || ''}
 					/>
 
 					<div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -71,9 +80,9 @@ export default function Image({
 					</div>
 				</div>
 
-				{value.caption && (
+				{caption && (
 					<figcaption className="text-ink/50 px-4 text-sm text-balance italic">
-						{value.caption}
+						{caption}
 
 						{value.source && (
 							<>

@@ -31,6 +31,13 @@ export const imageGallery = defineType({
               type: "string",
               description: "Es: Getty Images, ANSA",
             }),
+            defineField({
+              name: "aiGenerated",
+              title: "Generata con IA",
+              description: 'Antepone "Foto generata usando IA." alla didascalia',
+              type: "boolean",
+              initialValue: true,
+            }),
           ],
         }),
       ],

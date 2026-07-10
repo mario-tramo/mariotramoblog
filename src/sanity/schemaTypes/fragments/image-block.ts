@@ -11,6 +11,7 @@ export default defineArrayMember({
 	fieldsets: [
 		{ name: 'attributes', title: 'Attributi', options: { columns: 2 } },
 		{ name: 'options', title: 'Opzioni' },
+		{ name: 'ai', title: 'IA' },
 	],
 	fields: [
 		defineField({
@@ -58,6 +59,14 @@ export default defineArrayMember({
 			type: 'url',
 			description: 'URL della fonte originale dell\'immagine (es. sito del fotografo)',
 			fieldset: 'options',
+		}),
+		defineField({
+			name: 'aiGenerated',
+			title: 'Generata con IA',
+			description: 'Se attivo, viene anteposto "Foto generata usando IA." alla didascalia',
+			type: 'boolean',
+			initialValue: true,
+			fieldset: 'ai',
 		}),
 	],
 	preview: {
