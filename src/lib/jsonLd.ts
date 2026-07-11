@@ -194,7 +194,7 @@ export function breadcrumbJsonLd(items: { name: string; url: string }[]) {
 			'@type': 'ListItem',
 			position: i + 1,
 			name: item.name,
-			item: { '@id': item.url },
+			item: item.url,
 		})),
 	}
 }

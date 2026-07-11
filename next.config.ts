@@ -15,6 +15,7 @@ const securityHeaders = [
 	{ key: 'X-Content-Type-Options', value: 'nosniff' },
 	{ key: 'X-Frame-Options', value: 'SAMEORIGIN' },
 	{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+	{ key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
 	{
 		key: 'Permissions-Policy',
 		value: 'camera=(), microphone=(), geolocation=()',
@@ -25,7 +26,7 @@ const securityHeaders = [
 	},
 	{
 		key: 'Content-Security-Policy',
-		value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.sanity.io https://platform.twitter.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://cdn.sanity.io https://avatars.githubusercontent.com https://picsum.photos https://pbs.twimg.com https://media.api-sports.io; font-src 'self'; connect-src 'self' https://cdn.sanity.io https://*.api.sanity.io https://v3.football.api-sports.io https://*.upstash.io https://platform.twitter.com; frame-src 'self' https://www.youtube.com https://twitter.com https://x.com https://platform.twitter.com https://www.instagram.com https://www.tiktok.com https://www.facebook.com https://www.threads.net; media-src 'self' https://cdn.sanity.io;",
+		value: "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.sanity.io https://platform.twitter.com https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://cdn.sanity.io https://avatars.githubusercontent.com https://picsum.photos https://pbs.twimg.com https://media.api-sports.io; font-src 'self'; connect-src 'self' https://cdn.sanity.io https://*.api.sanity.io https://v3.football.api-sports.io https://*.upstash.io https://platform.twitter.com; frame-src 'self' https://www.youtube.com https://twitter.com https://x.com https://platform.twitter.com https://www.instagram.com https://www.tiktok.com https://www.facebook.com https://www.threads.net; media-src 'self' https://cdn.sanity.io;",
 	},
 ]
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useCookieConsent } from "@/ui/features/CookieConsent";
 
 interface SocialEmbedProps {
@@ -96,46 +96,75 @@ function InstagramEmbed({ url, size }: { url: string; size?: EmbedSize }) {
 }
 
 function TwitterEmbed({ url, size }: { url: string; size?: EmbedSize }) {
-  const containerRef = useRef<HTMLDivElement>(null);
+	const [html, setHtml] = useState<string | null>(null)
+	const [loading, setLoading] = useState(true)
+	const [error, setError] = useState(false)
 
-  useEffect(() => {
-    const tweetId = getTweetId(url);
-    if (!tweetId || !containerRef.current) return;
+	useEffect(() => {
+		if (!getTweetId(url)) {
+			setError(true)
+			setLoading(false)
+			return
+		}
 
-    const container = containerRef.current;
-    container.innerHTML = "";
+		fetch(`/api/oembed?url=${encodeURIComponent(url)}`)
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.html) {
+					setHtml(data.html)
+				} else {
+					setError(true)
+				}
+				setLoading(false)
+			})
+			.catch(() => {
+				setError(true)
+				setLoading(false)
+			})
+	}, [url])
 
-    const win = window as typeof window & {
-      twttr?: { widgets: { createTweet: (id: string, el: HTMLElement) => void } };
-    };
+	const tweetId = getTweetId(url)
+	if (!tweetId) return <FallbackLink url={url} platform="twitter" />
 
-    function renderTweet() {
-      if (win.twttr?.widgets) {
-        win.twttr.widgets.createTweet(tweetId!, container);
-      }
-    }
+	if (loading) {
+		return (
+			<div
+				className="mx-auto flex justify-center"
+				style={{ maxWidth: size?.width ?? 550 }}
+			>
+				<div className="h-48 w-full animate-pulse rounded-xl bg-neutral-100" />
+			</div>
+		)
+	}
 
-    if (win.twttr?.widgets) {
-      renderTweet();
-    } else {
-      const script = document.createElement("script");
-      script.src = "https://platform.twitter.com/widgets.js";
-      script.async = true;
-      script.onload = renderTweet;
-      document.head.appendChild(script);
-    }
-  }, [url]);
+	if (error || !html) return <FallbackLink url={url} platform="twitter" />
 
-  const tweetId = getTweetId(url);
-  if (!tweetId) return <FallbackLink url={url} platform="twitter" />;
-
-  return (
-    <div
-      ref={containerRef}
-      className="flex justify-center [&>div]:!m-0"
-      style={size?.width ? { maxWidth: size.width, margin: "0 auto" } : undefined}
-    />
-  );
+	return (
+		<>
+			<style>{`
+				.trm-twitter-embed .twitter-tweet {
+					margin: 0 auto !important;
+					max-width: 100% !important;
+					border: 1px solid #e5e7eb;
+					border-radius: 12px;
+					padding: 16px;
+					background: #fff;
+				}
+				.trm-twitter-embed .twitter-tweet a {
+					color: #1d9bf0;
+					text-decoration: none;
+				}
+				.trm-twitter-embed .twitter-tweet a:hover {
+					text-decoration: underline;
+				}
+			`}</style>
+			<div
+				className="trm-twitter-embed flex justify-center"
+				style={size?.width ? { maxWidth: size.width, margin: "0 auto" } : undefined}
+				dangerouslySetInnerHTML={{ __html: html }}
+			/>
+		</>
+	)
 }
 
 function FacebookEmbed({ url, size }: { url: string; size?: EmbedSize }) {
