@@ -17,6 +17,7 @@ import ConsentAnalytics from '@/ui/features/ConsentAnalytics'
 import { ToastProvider } from '@/ui/features/Toast'
 import { BASE_URL } from '@/lib/env'
 import DevColorSwitcher from '@/ui/dev/DevColorSwitcher'
+import ScrollReveal from '@/ui/features/ScrollReveal'
 import '@/styles/app.css'
 
 const Announcement = dynamic(() => import('@/ui/layout/Announcement'))
@@ -73,8 +74,9 @@ export default async function RootLayout({
 				<NuqsAdapter>
 					<CookieConsentProvider>
 					<ToastProvider>
-					<SkipToContent />
-					<ScrollToTop />
+				<SkipToContent />
+				<ScrollToTop />
+				<ScrollReveal />
 					<Suspense fallback={null}>
 						<NavigationLoadingBar />
 					</Suspense>

@@ -1,45 +1,17 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
-
-const checkmarkVariants = {
-	initial: { pathLength: 0 },
-	animate: {
-		pathLength: 1,
-		transition: { duration: 0.5, ease: 'easeOut' as const },
-	},
-}
-
-const avatarVariants = {
-	initial: { scale: 0, opacity: 0 },
-	animate: (i: number) => ({
-		scale: 1,
-		opacity: 1,
-		transition: {
-			delay: 0.3 + i * 0.1,
-			type: 'spring' as const,
-			stiffness: 260,
-			damping: 20,
-		},
-	}),
-	hover: { scale: 1.1, y: -2 },
-}
-
 const avatars = [{ bg: '#f97316' }, { bg: '#8b5cf6' }, { bg: '#3b82f6' }]
 
 export function SuccessState({ inline }: { inline?: boolean }) {
 	return (
-		<motion.div
-			key="success"
-			initial={{ opacity: 0, scale: 0.8 }}
-			animate={{ opacity: 1, scale: 1 }}
+		<div
 			className={
 				inline
-					? 'flex items-center gap-2 text-sm font-semibold text-brand'
-					: 'rounded border border-brand/30 bg-surface p-4 text-center'
+					? 'flex animate-fade-in items-center gap-2 text-sm font-semibold text-brand'
+					: 'animate-fade-in rounded border border-brand/30 bg-surface p-4 text-center'
 			}
 		>
-			<motion.svg
+			<svg
 				className={inline ? 'size-5' : 'mx-auto mb-2 size-8'}
 				viewBox="0 0 24 24"
 				fill="none"
@@ -47,36 +19,34 @@ export function SuccessState({ inline }: { inline?: boolean }) {
 				strokeWidth="2"
 			>
 				{!inline && (
-					<motion.circle
+					<circle
 						cx="12"
 						cy="12"
 						r="10"
 						className="text-brand"
-						initial={{ pathLength: 0 }}
-						animate={{ pathLength: 1 }}
-						transition={{ duration: 0.4 }}
+						strokeDasharray={2 * Math.PI * 10}
+						strokeDashoffset={2 * Math.PI * 10}
+						style={{ animation: 'draw-circle 0.4s ease-out forwards' }}
 					/>
 				)}
-				<motion.path
+				<path
 					d={inline ? 'M5 12l5 5L20 7' : 'M8 12l3 3 5-6'}
 					className="text-brand"
-					variants={checkmarkVariants}
-					initial="initial"
-					animate="animate"
+					strokeDasharray={20}
+					strokeDashoffset={20}
+					style={{ animation: 'draw-check 0.5s ease-out 0.1s forwards' }}
 				/>
-			</motion.svg>
+			</svg>
 			{!inline && (
-				<motion.p
+				<p
 					className="text-sm font-semibold text-brand"
-					initial={{ opacity: 0, y: 5 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.3 }}
+					style={{ animation: 'fade-in-up 0.3s ease-out 0.3s both' }}
 				>
 					Benvenuto a bordo!
-				</motion.p>
+				</p>
 			)}
 			{inline && 'Benvenuto a bordo!'}
-		</motion.div>
+		</div>
 	)
 }
 
@@ -90,50 +60,23 @@ export function SubscribeButton({
 	showLabel?: boolean
 }) {
 	return (
-		<motion.button
+		<button
 			type="submit"
 			disabled={isSubmitting}
-			className={`relative overflow-hidden bg-brand-deep text-sm font-semibold text-white transition-colors hover:opacity-90 disabled:opacity-70 ${className}`}
-			whileHover={{ scale: 1.02 }}
-			whileTap={{ scale: 0.98 }}
+			className={`relative overflow-hidden bg-brand-deep text-sm font-semibold text-white transition-all duration-200 hover:scale-[1.02] hover:opacity-90 active:scale-[0.98] disabled:opacity-70 ${className}`}
 		>
-			<AnimatePresence mode="wait">
+			<span className="flex items-center justify-center gap-2">
 				{isSubmitting ? (
-					<motion.div
-						key="loading"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						className="flex items-center justify-center gap-2"
-					>
-						<motion.div								className="size-4 rounded-full border-2 border-white/30 border-t-white"
-							animate={{ rotate: 360 }}
-							transition={{
-								duration: 1,
-								repeat: Infinity,
-								ease: 'linear',
-							}}
-						/>
+					<>
+						<span className="inline-block size-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
 						{showLabel && 'Iscrizione...'}
-					</motion.div>
+					</>
 				) : (
-					<motion.span
-						key="text"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-					>
-						Iscriviti
-					</motion.span>
+					'Iscriviti'
 				)}
-			</AnimatePresence>
-			<motion.div
-				className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-				initial={{ x: '-100%' }}
-				whileHover={{ x: '100%' }}
-				transition={{ duration: 0.6 }}
-			/>
-		</motion.button>
+			</span>
+			<span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-[600ms] hover:translate-x-full" />
+		</button>
 	)
 }
 
@@ -148,7 +91,7 @@ export function AvatarRow({
 		<div className="flex items-center gap-2">
 			<div className="flex -space-x-2">
 				{avatars.map((avatar, i) => (
-					<motion.div
+					<div
 						key={i}
 						className="rounded-full border-2"
 						style={{
@@ -156,13 +99,8 @@ export function AvatarRow({
 							borderColor,
 							width: size,
 							height: size,
+							animation: `avatar-enter 0.4s ease-out ${0.3 + i * 0.1}s both`,
 						}}
-						custom={i}
-						variants={avatarVariants}
-						initial="initial"
-						whileInView="animate"
-						whileHover="hover"
-						viewport={{ once: true }}
 					/>
 				))}
 			</div>

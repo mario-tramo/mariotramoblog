@@ -1,6 +1,5 @@
 'use client'
 
-import { Children, isValidElement } from 'react'
 import { PortableText } from '@portabletext/react'
 import AnchoredHeading from './AnchoredHeading'
 import { cn } from '@/lib/utils'
@@ -11,7 +10,7 @@ import CustomHTML from '@/ui/modules/CustomHTML'
 import { QuoteBlock } from '@/ui/blog/blocks/quote-block'
 import { SocialEmbed } from '@/ui/blog/blocks/social-embed'
 import type { PortableTextBlock } from '@portabletext/react'
-import { autoLinkText } from '@/lib/autoLink'
+import { addAutoLinkMarks } from '@/lib/autoLink'
 import { BASE_URL } from '@/lib/env'
 
 /** Render a hyperlink annotation from the rich-text body. */
@@ -41,38 +40,13 @@ function LinkMark({
 	)
 }
 
-/**
- * Recursively walk React children and auto-link plain text strings.
- * Skips children that are already inside <a> or <Link> elements.
- */
-function autoLinkChildren(
-	children: React.ReactNode,
-	used: Set<string>,
-): React.ReactNode {
-	return Children.map(children, (child) => {
-		if (typeof child === 'string') {
-			const nodes = autoLinkText(child, used)
-			return nodes.length === 1 && typeof nodes[0] === 'string'
-				? child
-				: nodes
-		}
-		// Skip anchor elements — don't nest links
-		if (isValidElement(child)) {
-			const el = child as React.ReactElement<{ children?: React.ReactNode; href?: string }>
-			if (el.type === 'a' || (el.props && 'href' in el.props)) return child
-		}
-		return child
-	})
-}
-
 export default function Content({
 	value,
 	className,
 	children,
 	autoLink = false,
 }: { value: PortableTextBlock[]; autoLink?: boolean } & React.ComponentProps<'div'>) {
-	// Track which keywords have been linked (max once each)
-	const used = new Set<string>()
+	const blocks = autoLink ? addAutoLinkMarks(value as never) : value
 
 	return (
 		<div
@@ -82,15 +56,13 @@ export default function Content({
 			)}
 		>
 			<PortableText
-				value={value}
+				value={blocks}
 				components={{
 					marks: {
 						link: LinkMark,
 					},
 					block: {
-						normal: autoLink
-							? ({ children: c }) => <p>{autoLinkChildren(c, used)}</p>
-							: ({ children }) => <p>{children}</p>,
+						normal: ({ children }) => <p>{children}</p>,
 						h2: (node) => <AnchoredHeading as="h2" {...node} />,
 						h3: (node) => <AnchoredHeading as="h3" {...node} />,
 						h4: (node) => <AnchoredHeading as="h4" {...node} />,
