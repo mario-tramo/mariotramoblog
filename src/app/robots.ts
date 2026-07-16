@@ -29,7 +29,7 @@ export default function robots(): MetadataRoute.Robots {
 			{
 				userAgent: '*',
 				allow: ['/', '/_next/static/'],
-				disallow: ['/admin', '/api/', '/_next/', '/legal/draft', '/test-cards', '/og-playground'],
+				disallow: ['/admin', '/api/', '/_next/', '/legal/draft', '/test-cards', '/og-playground', '/site.webmanifest', '/sw.js'],
 			},
 			// Training crawlers get their own records: per robots.txt spec a
 			// UA-specific record replaces the `*` record entirely for that UA.
