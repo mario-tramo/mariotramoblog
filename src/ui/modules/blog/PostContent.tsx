@@ -182,11 +182,12 @@ export default function PostContent({
 						/>
 						{(() => {
 							const img = post.metadata.image!
-							const caption = img.caption
-								? img.aiGenerated
-									? `Foto generata usando IA. ${img.caption}`
-									: img.caption
-								: undefined
+							const cleanCaption = img.caption?.replace(/^Foto generata usando IA\.?\s*/i, '')
+								const caption = cleanCaption
+									? img.aiGenerated
+										? `Foto generata usando IA. ${cleanCaption}`
+										: cleanCaption
+									: undefined
 							return caption ? (
 								<figcaption className="px-4 pb-3 pt-2 text-sm text-ink/50 text-balance italic">
 									{caption}

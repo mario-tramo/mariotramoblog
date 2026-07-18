@@ -26,10 +26,11 @@ export default function Image({
 	const { open, image, openLightbox, closeLightbox } = useLightbox()
 	const imgRef = useRef<HTMLDivElement>(null)
 
-	const caption = value.caption
+	const cleanCaption = value.caption?.replace(new RegExp(`^${AI_CAPTION_PREAMBLE}\\s*`, 'i'), '')
+	const caption = cleanCaption
 		? value.aiGenerated
-			? `${AI_CAPTION_PREAMBLE} ${value.caption}`
-			: value.caption
+			? `${AI_CAPTION_PREAMBLE} ${cleanCaption}`
+			: cleanCaption
 		: undefined
 
 	const src = value?.asset ? urlFor(value).width(1920).url() : ''

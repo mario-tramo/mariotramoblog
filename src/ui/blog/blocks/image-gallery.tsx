@@ -81,12 +81,20 @@ export function ImageGallery({ value }: ImageGalleryProps) {
                   [Immagine {i + 1}]
                 </div>
               ) : null}
-              {img.caption && (
-                <div className="absolute bottom-0 inset-x-0 bg-black/50 text-white text-xs px-2 py-1">
-                  {img.aiGenerated ? `${AI_CAPTION_PREAMBLE} ${img.caption}` : img.caption}
-                  {img.credit && <span className="opacity-70"> — {img.credit}</span>}
-                </div>
-              )}
+              {(() => {
+                const cleanCaption = img.caption?.replace(new RegExp(`^${AI_CAPTION_PREAMBLE}\\s*`, 'i'), '')
+                const displayCaption = cleanCaption
+                  ? img.aiGenerated
+                    ? `${AI_CAPTION_PREAMBLE} ${cleanCaption}`
+                    : cleanCaption
+                  : undefined
+                return displayCaption ? (
+                  <div className="absolute bottom-0 inset-x-0 bg-black/50 text-white text-xs px-2 py-1">
+                    {displayCaption}
+                    {img.credit && <span className="opacity-70"> — {img.credit}</span>}
+                  </div>
+                ) : null
+              })()}
             </div>
           ))}
         </div>
@@ -155,12 +163,20 @@ export function ImageGallery({ value }: ImageGalleryProps) {
         )}
       </div>
 
-      {(current.caption || current.credit) && (
-        <figcaption className="text-sm text-muted-foreground mt-2 text-center">
-          {current.aiGenerated ? `${AI_CAPTION_PREAMBLE} ${current.caption}` : current.caption}
-          {current.credit && <span className="opacity-70"> — {current.credit}</span>}
-        </figcaption>
-      )}
+      {(() => {
+        const cleanCaption = current.caption?.replace(new RegExp(`^${AI_CAPTION_PREAMBLE}\\s*`, 'i'), '')
+        const displayCaption = cleanCaption
+          ? current.aiGenerated
+            ? `${AI_CAPTION_PREAMBLE} ${cleanCaption}`
+            : cleanCaption
+          : undefined
+        return (displayCaption || current.credit) ? (
+          <figcaption className="text-sm text-muted-foreground mt-2 text-center">
+            {displayCaption}
+            {current.credit && <span className="opacity-70"> — {current.credit}</span>}
+          </figcaption>
+        ) : null
+      })()}
 
       {isMultiple && (
         <div className="flex justify-center gap-1.5 mt-3">
