@@ -69,7 +69,18 @@ export default withSentryConfig(
 		},
 
 		async redirects() {
-			return await client.fetch(groq`*[_type == 'redirect']{
+			// The production deployment is also reachable at the .vercel.app
+			// alias: Google crawled it and picked it as canonical for some
+			// articles, splitting indexing signals across the two hosts.
+			const hostRedirects = [
+				{
+					source: '/:path*',
+					has: [{ type: 'host' as const, value: 'mariotramoblog.vercel.app' }],
+					destination: 'https://www.trmsport.com/:path*',
+					permanent: true,
+				},
+			]
+			const cmsRedirects = await client.fetch(groq`*[_type == 'redirect']{
 			source,
 			'destination': select(
 				destination.type == 'internal' =>
@@ -88,6 +99,7 @@ export default withSentryConfig(
 			),
 			permanent
 		}`)
+			return [...hostRedirects, ...cmsRedirects]
 		},
 
 	} satisfies NextConfig,

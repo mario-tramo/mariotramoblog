@@ -46,7 +46,9 @@ export default function Content({
 	children,
 	autoLink = false,
 }: { value: PortableTextBlock[]; autoLink?: boolean } & React.ComponentProps<'div'>) {
-	const blocks = autoLink ? addAutoLinkMarks(value as never) : value
+	const blocks = autoLink
+		? (addAutoLinkMarks(value as never) as unknown as PortableTextBlock[])
+		: value
 
 	return (
 		<div
