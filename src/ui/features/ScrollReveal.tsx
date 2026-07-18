@@ -1,11 +1,13 @@
 'use client'
 
 import { useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 
 const SECTION_SELECTOR = '.section, [data-module]'
 const ITEM_SELECTOR = '.section :is(article, [class*="grid"] > *)'
 
 export default function ScrollReveal() {
+	const pathname = usePathname()
 	const observerRef = useRef<IntersectionObserver | null>(null)
 
 	useEffect(() => {
@@ -32,7 +34,7 @@ export default function ScrollReveal() {
 		}
 
 		return () => observerRef.current?.disconnect()
-	}, [])
+	}, [pathname])
 
 	return null
 }

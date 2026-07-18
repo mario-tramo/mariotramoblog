@@ -30,7 +30,11 @@ import { BASE_URL } from '@/lib/env'
 import { processSlug } from '@/lib/processSlug'
 import errors from '@/lib/errors'
 
-export const revalidate = 60
+// Content freshness is driven by the Sanity webhook (`/api/revalidate`,
+// tag-based). This interval is only a safety net — a short one forces a
+// full re-render per page per interval, burning function invocations and
+// ISR writes on every crawler pass.
+export const revalidate = 3600
 
 export default async function Page({ params, searchParams }: Props) {
 	const resolvedParams = await params
