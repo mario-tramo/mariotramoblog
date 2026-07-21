@@ -75,7 +75,7 @@ export default withSentryConfig(
 			const hostRedirects = [
 				{
 					source: '/:path*',
-					has: [{ type: 'host' as const, value: 'mariotramoblog.vercel.app' }],
+					has: [{ type: 'host' as const, value: 'mariotramoblog-plum.vercel.app' }],
 					destination: 'https://www.trmsport.com/:path*',
 					permanent: true,
 				},
