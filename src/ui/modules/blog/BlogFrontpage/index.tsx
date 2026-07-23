@@ -29,6 +29,7 @@ export default async function BlogFrontpage({
 	searchParams,
 	page = 1,
 	basePath = '/',
+	isHomepage,
 	...props
 }: Partial<{
 	slides: Sanity.HeroSlide[]
@@ -39,6 +40,7 @@ export default async function BlogFrontpage({
 	searchParams: Record<string, string | string[] | undefined>
 	page: number
 	basePath: string
+	isHomepage: boolean
 }>) {
 	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
 
@@ -104,7 +106,9 @@ export default async function BlogFrontpage({
 
 	const featuredPosts = sorted.filter((p) => p.featured)
 	const editorPick = featuredPosts[0] || sorted[0]
-	const topStories = sorted.filter((p) => p.featured).slice(0, 4)
+	const topStories = isHomepage
+		? sorted.filter((p) => p.featured).slice(0, 4)
+		: sorted.slice(0, 4)
 	const latestPosts = sorted.slice(0, 5)
 	const trendingPosts = [
 		...featuredPosts,

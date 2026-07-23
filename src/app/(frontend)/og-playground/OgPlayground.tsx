@@ -59,7 +59,6 @@ export default function OgPlayground({
 	const ogImageUrl = useMemo(() => {
 		const params = new URLSearchParams()
 		if (fields.title) params.set('title', fields.title)
-		if (fields.description) params.set('description', fields.description)
 		if (fields.category) params.set('category', fields.category)
 		if (fields.date) params.set('date', fields.date)
 		if (fields.imageUrl) {
@@ -186,7 +185,6 @@ export default function OgPlayground({
 						<MetaPanel
 							rows={[
 								['og:title', fields.title],
-								['og:description', fields.description],
 								['og:type', 'article'],
 								['og:url (canonical)', `${baseUrl}/${fields.path}`],
 								['og:image', ogImageUrl],
@@ -357,7 +355,7 @@ function TwitterCard({ title, domain, ogImageUrl }: Shared) {
 	)
 }
 
-function FacebookCard({ title, description, domain, ogImageUrl }: Shared) {
+function FacebookCard({ title, domain, ogImageUrl }: Shared) {
 	return (
 		<div className="max-w-full overflow-hidden rounded-lg border border-[#dadde1] bg-white font-sans sm:max-w-[520px]">
 			<Img src={ogImageUrl} className="w-full object-cover" style={{ aspectRatio: '1200 / 630' }} />
@@ -366,9 +364,6 @@ function FacebookCard({ title, description, domain, ogImageUrl }: Shared) {
 				<div className="mt-0.5 line-clamp-2 text-sm font-semibold leading-snug text-[#1d2129] sm:text-[16px]">
 					{title}
 				</div>
-				{description && (
-					<div className="mt-0.5 line-clamp-1 text-xs text-[#606770] sm:text-[14px]">{description}</div>
-				)}
 			</div>
 		</div>
 	)
@@ -388,7 +383,7 @@ function LinkedInCard({ title, domain, ogImageUrl }: Shared) {
 	)
 }
 
-function WhatsAppCard({ title, description, domain, ogImageUrl, url }: Shared) {
+function WhatsAppCard({ title, domain, ogImageUrl, url }: Shared) {
 	return (
 		<div className="max-w-full rounded-xl bg-[#d9fdd3] p-1.5 font-sans shadow-sm sm:max-w-[400px]">
 			<div className="overflow-hidden rounded-lg bg-white/70">
@@ -397,9 +392,6 @@ function WhatsAppCard({ title, description, domain, ogImageUrl, url }: Shared) {
 					<div className="line-clamp-2 text-xs font-medium leading-snug text-[#111b21] sm:text-[13px]">
 						{title}
 					</div>
-					{description && (
-						<div className="mt-0.5 line-clamp-2 text-[11px] text-[#667781] sm:text-[12px]">{description}</div>
-					)}
 					<div className="mt-0.5 text-[11px] text-[#667781] sm:text-[12px]">{domain}</div>
 				</div>
 			</div>
@@ -408,12 +400,11 @@ function WhatsAppCard({ title, description, domain, ogImageUrl, url }: Shared) {
 	)
 }
 
-function DiscordCard({ title, description, domain, ogImageUrl }: Shared) {
+function DiscordCard({ title, domain, ogImageUrl }: Shared) {
 	return (
 		<div className="max-w-full rounded border-l-4 border-[#e63946] bg-[#2b2d31] p-3 font-sans text-white sm:max-w-[460px]">
 			<div className="text-[11px] text-[#b5bac1] sm:text-[12px]">{domain}</div>
 			<div className="mt-1 text-sm font-semibold leading-snug text-[#00a8fc] sm:text-[16px]">{title}</div>
-			{description && <div className="mt-1 text-xs text-[#dbdee1] sm:text-[14px]">{description}</div>}
 			<Img
 				src={ogImageUrl}
 				className="mt-3 w-full rounded object-cover"

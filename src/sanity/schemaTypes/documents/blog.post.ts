@@ -110,7 +110,7 @@ export default defineType({
 			name: 'featured',
 			title: 'In evidenza',
 			description:
-				'Solo gli articoli "In evidenza" vengono mostrati nel carosello della homepage e nei moduli "Article Carousel". Il primo in evidenza diventa "Scelta della Redazione" nella homepage. Il badge "In evidenza" appare sulle card. (Default: true — imposta false per escludere dal carosello e nascondere il badge).',
+				'Gli articoli "In evidenza" vengono mostrati nel carosello della homepage e nei moduli "Article Carousel". Il primo in evidenza diventa "Scelta della Redazione" nella homepage. Il badge "In evidenza" appare sulle card. Gli articoli non in evidenza vengono esclusi dal carosello ma restano visibili nelle pagine categoria, ultime notizie e altri elenchi. (Default: true).',
 			type: 'boolean',
 			group: 'options',
 			initialValue: true,

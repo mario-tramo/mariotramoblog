@@ -25,13 +25,8 @@ export async function GET(request: NextRequest) {
 	const imageUrl = rawImageUrl && rawImageUrl.startsWith('https://cdn.sanity.io/')
 		? rawImageUrl
 		: null
-	const description = truncate(searchParams.get('description')?.trim(), 150)
-
-	// Scale the title down as it gets longer so it always fits the card.
-	// Leave more breathing room when a description is also shown.
-	const titleCeiling = description ? 46 : 60
 	const titleSize = Math.min(
-		titleCeiling,
+		60,
 		title.length > 90 ? 36 : title.length > 60 ? 42 : title.length > 36 ? 50 : 60,
 	)
 
@@ -149,24 +144,6 @@ export async function GET(request: NextRequest) {
 					>
 						{title}
 					</div>
-
-					{/* Description / standfirst */}
-					{description && (
-						<div
-							style={{
-								display: 'flex',
-								marginTop: '14px',
-								fontSize: '23px',
-								fontWeight: 600,
-								lineHeight: 1.35,
-								color: 'rgba(255,255,255,0.95)',
-								textShadow: '0 1px 12px rgba(0,0,0,0.45)',
-								lineClamp: 2,
-							}}
-						>
-							{description}
-						</div>
-					)}
 
 					{/* Footer: brand wordmark + date */}
 					<div

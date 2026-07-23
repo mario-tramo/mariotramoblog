@@ -1,0 +1,28 @@
+name: Publish Scheduled
+
+# Calls /api/cron/publish-scheduled every 5 minutes.
+# This is the primary cron if Vercel Cron is unavailable (e.g. different hosting)
+# and a fallback if Vercel Cron runs concurrently (idempotent — no double-publish).
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Call publish-scheduled endpoint
+        run: |
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.NEXT_PUBLIC_BASE_URL }}/api/cron/publish-scheduled")
+          echo "HTTP status: $RESPONSE"
+          if [ "$RESPONSE" != "200" ]; then
+            echo "::warning::publish-scheduled returned HTTP $RESPONSE"
+          fi

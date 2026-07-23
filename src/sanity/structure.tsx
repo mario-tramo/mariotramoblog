@@ -2,6 +2,7 @@ import { structureTool } from 'sanity/structure'
 import type { StructureBuilder, ListItemBuilder } from 'sanity/structure'
 import { Iframe } from 'sanity-plugin-iframe-pane'
 import { singleton, group } from './lib/builders'
+import { apiVersion } from '@/sanity/lib/env'
 import { VscFiles, VscServerProcess, VscInfo, VscFileMedia, VscLaw, VscSymbolColor, VscPin } from 'react-icons/vsc'
 import { PiFlowArrow } from 'react-icons/pi'
 import InfoBanner from './ui/InfoBanner'
@@ -106,7 +107,8 @@ export const structure = structureTool({
 				.filter(
 					'_type == "blog.post" && $slug in categories[]->slug.current',
 				)
-				.params({ slug }),
+				.params({ slug })
+				.apiVersion(apiVersion),
 		),
 							),
 						]),

@@ -74,9 +74,11 @@ export default function Modules({
 					searchParams,
 					page: Number(searchParams?.page) || 1,
 					basePath,
+					isHomepage: page?.metadata?.slug?.current === 'index',
 				}
 			case 'blog-list':
 			case 'article-carousel':
+				return { searchParams }
 			case 'posts-feed':
 				return { searchParams }
 			case 'blog-post-content':

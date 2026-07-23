@@ -1,6 +1,7 @@
 import { createClient } from '@sanity/client'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
+import * as Sentry from '@sentry/nextjs'
 import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
 import { isAuthorized } from '@/lib/http-auth'
 import { publishScheduledDrafts } from '@/lib/cron-publish'
@@ -25,10 +26,12 @@ export async function GET(request: NextRequest) {
 			headers: ['x-cron-secret'],
 		})
 	) {
+		Sentry.captureMessage('cron/publish unauthorized attempt', { level: 'warning' })
 		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 	}
 
 	if (!projectId || !process.env.SANITY_API_WRITE_TOKEN) {
+		Sentry.captureMessage('cron/publish missing Sanity config', { level: 'error' })
 		return NextResponse.json(
 			{ error: 'Missing Sanity project id or API token' },
 			{ status: 500 },
@@ -45,6 +48,15 @@ export async function GET(request: NextRequest) {
 		revalidateTag('sanity', { expire: 0 })
 		revalidatePath('/', 'layout')
 	}
+
+	Sentry.withScope((scope) => {
+		scope.setExtras({ found: result.found, published: result.published, errors: result.errors })
+		if (result.errors > 0) {
+			Sentry.captureMessage('cron/publish completed with errors', { level: 'error' })
+		} else if (result.published > 0) {
+			Sentry.captureMessage(`cron/publish published ${result.published} drafts`, { level: 'info' })
+		}
+	})
 
 	console.log('[cron/publish] done', JSON.stringify(result))
 
