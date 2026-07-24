@@ -42,6 +42,14 @@ LEAGUES = [s.strip() for s in os.environ.get("FANTASY_LEAGUES", "Serie A").split
 BATCH_SIZE = int(os.environ.get("FANTASY_BATCH_SIZE", "2000"))
 MAX_RETRIES = 3
 
+SOCCERDATA_LEAGUE_NAMES = {
+    "Serie A": "ITA-Serie A",
+    "Premier League": "ENG-Premier League",
+    "La Liga": "ESP-La Liga",
+    "Bundesliga": "GER-Bundesliga",
+    "Ligue 1": "FRA-Ligue 1",
+}
+
 LEAGUE_TO_CODE = {
     "Serie A": "SA",
     "Premier League": "PL",
@@ -140,7 +148,10 @@ def matchday_from(label: str) -> int | None:
 def fetch_matches(season: str) -> Iterable[dict[str, Any]]:
     import soccerdata as sd  # type: ignore
 
-    fbref = sd.FBref(leagues=LEAGUES, seasons=season)
+    fbref = sd.FBref(
+        leagues=[SOCCERDATA_LEAGUE_NAMES.get(l, l) for l in LEAGUES],
+        seasons=season,
+    )
     for league in LEAGUES:
         comp = league_code(league)
         try:

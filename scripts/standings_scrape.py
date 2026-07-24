@@ -51,6 +51,14 @@ LEAGUES = [
 ]
 MAX_RETRIES = 3
 
+SOCCERDATA_LEAGUE_NAMES = {
+    "Serie A": "ITA-Serie A",
+    "Premier League": "ENG-Premier League",
+    "La Liga": "ESP-La Liga",
+    "Bundesliga": "GER-Bundesliga",
+    "Ligue 1": "FRA-Ligue 1",
+}
+
 LEAGUE_TO_CODE = {
     "Serie A": "SA",
     "Premier League": "PL",
@@ -195,7 +203,10 @@ def main() -> int:
 
         # --- 2. Read structured data via soccerdata ---
         try:
-            fbref = sd.FBref(leagues=[league], seasons=season_str)
+            fbref = sd.FBref(
+                leagues=[SOCCERDATA_LEAGUE_NAMES.get(league, league)],
+                seasons=season_str,
+            )
             df = fbref.read_league_table()
         except Exception as e:
             log.error("failed to scrape %s: %s", league, e)
