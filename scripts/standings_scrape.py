@@ -207,7 +207,7 @@ def main() -> int:
                 leagues=[SOCCERDATA_LEAGUE_NAMES.get(league, league)],
                 seasons=season_str,
             )
-            df = fbref.read_league_table()
+            df = fbref.read_team_season_stats(stat_type='standard')
         except Exception as e:
             log.error("failed to scrape %s: %s", league, e)
             continue
