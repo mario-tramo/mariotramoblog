@@ -58,13 +58,13 @@ export async function GET() {
 		const url = resolveUrl(post, { language: post.language })
 
 		return feed.addItem({
-			title: escapeHTML(post.title || post.metadata.title),
-			description: post.metadata.description,
+			title: escapeHTML(post.title || post.metadata?.title || ''),
+			description: post.metadata?.description,
 			id: url,
 			link: url,
 			published: new Date(post.publishDate),
 			date: new Date(post.publishDate),
-			author: post.authors?.map((author) => ({ name: author.name })),
+			author: post.authors?.filter(Boolean).map((author) => ({ name: author.name })),
 			content: toHTML(post.body, {
 				components: {
 					types: {
@@ -86,8 +86,8 @@ export async function GET() {
 			}),
 			image: post.image,
 			category: [
-				...(post.categories?.map((c) => ({ name: c.title })) || []),
-				...(post.tags?.map((t) => ({ name: t.title })) || []),
+				...(post.categories?.filter(Boolean).map((c) => ({ name: c.title })) || []),
+				...(post.tags?.filter(Boolean).map((t) => ({ name: t.title })) || []),
 			],
 		})
 	})
