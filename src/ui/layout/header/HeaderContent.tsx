@@ -128,34 +128,46 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 				/>
 			</button>
 
+			{/* Always in the DOM (hidden with CSS when closed) so crawlers see the category links */}
+			<ul
+				ref={menuRef}
+				className={`absolute top-full left-0 z-50 mt-1 min-w-[180px] rounded-lg border border-line bg-surface-light py-1 shadow-xl shadow-black/20 ${
+					open ? (closing ? 'animate-dropdown-exit' : 'animate-dropdown-enter') : 'hidden'
+				}`}
+			>
+				{item.href !== '#' && (
+					<li>
+						<Link
+							href={item.href}
+							className="block border-b border-line px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-ink/5"
+							onClick={closeImmediate}
+							tabIndex={open ? undefined : -1}
+						>
+							Tutto su {item.label}
+						</Link>
+					</li>
+				)}
+				{item.children?.map((child) => (
+					<li key={child.href}>
+						<Link
+							href={child.href}
+							className="block px-4 py-2 text-sm text-muted transition-colors hover:bg-ink/5 hover:text-ink"
+							onClick={closeImmediate}
+							tabIndex={open ? undefined : -1}
+						>
+							{child.label}
+						</Link>
+					</li>
+				))}
+			</ul>
 			{open && (
-				<>
-					<ul
-						ref={menuRef}
-						className={`absolute top-full left-0 z-50 mt-1 min-w-[180px] rounded-lg border border-line bg-surface-light py-1 shadow-xl shadow-black/20 ${
-							closing ? 'animate-dropdown-exit' : 'animate-dropdown-enter'
-						}`}
-					>
-						{item.children?.map((child) => (
-							<li key={child.href}>
-								<Link
-									href={child.href}
-									className="block px-4 py-2 text-sm text-muted transition-colors hover:bg-ink/5 hover:text-ink"
-									onClick={closeImmediate}
-								>
-									{child.label}
-								</Link>
-							</li>
-						))}
-					</ul>
-					<button
-						type="button"
-						className="fixed inset-0 -z-10"
-						onClick={closeImmediate}
-						aria-label="Chiudi sottomenu"
-						tabIndex={-1}
-					/>
-				</>
+				<button
+					type="button"
+					className="fixed inset-0 -z-10"
+					onClick={closeImmediate}
+					aria-label="Chiudi sottomenu"
+					tabIndex={-1}
+				/>
 			)}
 		</div>
 	)
