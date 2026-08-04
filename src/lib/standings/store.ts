@@ -90,17 +90,17 @@ export function validateStandingsPayload(
 		if (new Set(competition.table.map((row) => row.team)).size !== expectedTeams) return false
 		for (const row of competition.table) {
 			if (!row.team || !Number.isInteger(row.position)) return false
-			const numeric = [
+			const nonNegativeNumeric = [
 				row.playedGames,
 				row.won,
 				row.draw,
 				row.lost,
 				row.goalsFor,
 				row.goalsAgainst,
-				row.goalDifference,
 				row.points,
 			]
-			if (numeric.some((value) => !Number.isInteger(value) || value < 0)) return false
+			if (nonNegativeNumeric.some((value) => !Number.isInteger(value) || value < 0)) return false
+			if (!Number.isInteger(row.goalDifference)) return false
 			if (row.won + row.draw + row.lost !== row.playedGames) return false
 			if (row.goalDifference !== row.goalsFor - row.goalsAgainst) return false
 		}

@@ -39,6 +39,14 @@ describe('validateStandingsPayload', () => {
 		assert.equal(validateStandingsPayload(payload().standings.SA.table.slice(0, 19)), false)
 	})
 
+	test('accepts a negative goal difference', () => {
+		const valid = payload()
+		valid.standings.SA.table[19]!.goalsFor = 0
+		valid.standings.SA.table[19]!.goalsAgainst = 3
+		valid.standings.SA.table[19]!.goalDifference = -3
+		assert.equal(validateStandingsPayload(valid), true)
+	})
+
 	test('rejects mismatched seasons and unbalanced match totals', () => {
 		const invalid = payload()
 		invalid.standings.SA.season = '2025'

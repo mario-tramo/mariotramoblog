@@ -1,4 +1,4 @@
-name: Fantasy scrape
+name: Sports data scrape
 
 # Daily at 06:00 UTC. Fantasy data remains FBref-backed; standings use the
 # resilient Wikipedia REST source because FBref blocks GitHub Actions runners.
@@ -15,6 +15,7 @@ env:
 
 jobs:
   fantasy:
+    continue-on-error: true
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

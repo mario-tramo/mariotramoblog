@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
 	Sentry.withScope((scope) => {
 		scope.setTag('service', 'standings')
 		scope.setExtra('competitionsWritten', result)
-		const season = (body as Record<string, unknown>).season as string
+		const season = body.season
 		if (season) scope.setExtra('season', season)
 		if (result > 0) {
 			Sentry.captureMessage('standings/ingest success', { level: 'info' })
