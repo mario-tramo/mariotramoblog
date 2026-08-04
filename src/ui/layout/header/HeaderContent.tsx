@@ -1,12 +1,12 @@
 'use client'
 
-import { useState, useRef, useEffect, type KeyboardEvent as ReactKeyboardEvent } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Search, Menu, X, ChevronDown } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useFocusTrap } from '@/lib/useFocusTrap'
 import { usePathname } from 'next/navigation'
 import SearchOverlay from './SearchOverlay'
+import { useFocusTrap } from '@/lib/useFocusTrap'
 
 export interface NavItem {
 	label: string
@@ -27,121 +27,32 @@ interface HeaderContentProps {
 }
 
 function DesktopDropdown({ item }: { item: NavItem }) {
-	const [open, setOpen] = useState(false)
-	const [closing, setClosing] = useState(false)
-	const ref = useRef<HTMLDivElement>(null)
-	const triggerRef = useRef<HTMLButtonElement>(null)
-	const menuRef = useRef<HTMLUListElement>(null)
-	const hoverTimeout = useRef<ReturnType<typeof setTimeout>>(null)
-	const closeTimeout = useRef<ReturnType<typeof setTimeout>>(null)
-
-	function openMenu() {
-		if (hoverTimeout.current) clearTimeout(hoverTimeout.current)
-		if (closeTimeout.current) clearTimeout(closeTimeout.current)
-		setClosing(false)
-		setOpen(true)
-	}
-
-	function closeMenu() {
-		hoverTimeout.current = setTimeout(() => {
-			setClosing(true)
-			closeTimeout.current = setTimeout(() => {
-				setOpen(false)
-				setClosing(false)
-			}, 150)
-		}, 150)
-	}
-
-	function closeImmediate() {
-		if (hoverTimeout.current) clearTimeout(hoverTimeout.current)
-		setClosing(true)
-		closeTimeout.current = setTimeout(() => {
-			setOpen(false)
-			setClosing(false)
-		}, 150)
-	}
-
-	useEffect(() => {
-		return () => {
-			if (hoverTimeout.current) clearTimeout(hoverTimeout.current)
-			if (closeTimeout.current) clearTimeout(closeTimeout.current)
-		}
-	}, [])
-
-	useEffect(() => {
-		if (open && !closing && menuRef.current) {
-			const firstLink = menuRef.current.querySelector<HTMLAnchorElement>('a')
-			firstLink?.focus()
-		}
-	}, [open, closing])
-
-	function handleKeyDown(e: ReactKeyboardEvent<HTMLDivElement>) {
-		if (!open || closing) return
-
-		const links = menuRef.current?.querySelectorAll<HTMLAnchorElement>('a')
-		if (!links?.length) return
-		const active = document.activeElement as HTMLElement
-		const idx = Array.from(links).indexOf(active as HTMLAnchorElement)
-
-		switch (e.key) {
-			case 'Escape':
-				e.preventDefault()
-				closeImmediate()
-				triggerRef.current?.focus()
-				break
-			case 'ArrowDown':
-				e.preventDefault()
-				links[idx < links.length - 1 ? idx + 1 : 0]?.focus()
-				break
-			case 'ArrowUp':
-				e.preventDefault()
-				links[idx > 0 ? idx - 1 : links.length - 1]?.focus()
-				break
-			case 'Tab':
-				closeImmediate()
-				break
-		}
-	}
-
 	return (
-		<div
-			ref={ref}
-			className="relative"
-			onMouseEnter={openMenu}
-			onMouseLeave={closeMenu}
-			onKeyDown={handleKeyDown}
-		>
+		<div className="group relative">
 			<button
 				type="button"
-				ref={triggerRef}
 				className="flex items-center gap-1 rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wide text-muted transition-colors hover:bg-surface hover:text-ink"
-				onClick={() => (open ? closeImmediate() : openMenu())}
-				aria-expanded={open}
 				aria-haspopup="true"
 				aria-label={`${item.label}, sottomenu`}
 			>
 				{item.label}
 				<ChevronDown
 					size={14}
-					className={`transition-transform ${open && !closing ? 'rotate-180' : ''}`}
+					className="text-muted transition-transform duration-150 group-hover:rotate-180 group-focus-within:rotate-180"
 					aria-hidden="true"
 				/>
 			</button>
 
-			{/* Always in the DOM (hidden with CSS when closed) so crawlers see the category links */}
+			{/* Pure CSS menu: hover or keyboard focus opens it, no JS needed.
+			    Always in the DOM so crawlers see the category links. */}
 			<ul
-				ref={menuRef}
-				className={`absolute top-full left-0 z-50 mt-1 min-w-[180px] rounded-lg border border-line bg-surface-light py-1 shadow-xl shadow-black/20 ${
-					open ? (closing ? 'animate-dropdown-exit' : 'animate-dropdown-enter') : 'hidden'
-				}`}
+				className="invisible absolute top-full left-0 z-50 mt-1 min-w-[180px] translate-y-1 rounded-lg border border-line bg-surface-light py-1 opacity-0 shadow-xl shadow-black/20 transition-all duration-150 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100"
 			>
 				{item.href !== '#' && (
 					<li>
 						<Link
 							href={item.href}
 							className="block border-b border-line px-4 py-2 text-sm font-semibold text-ink transition-colors hover:bg-ink/5"
-							onClick={closeImmediate}
-							tabIndex={open ? undefined : -1}
 						>
 							Tutto su {item.label}
 						</Link>
@@ -152,23 +63,12 @@ function DesktopDropdown({ item }: { item: NavItem }) {
 						<Link
 							href={child.href}
 							className="block px-4 py-2 text-sm text-muted transition-colors hover:bg-ink/5 hover:text-ink"
-							onClick={closeImmediate}
-							tabIndex={open ? undefined : -1}
 						>
 							{child.label}
 						</Link>
 					</li>
 				))}
 			</ul>
-			{open && (
-				<button
-					type="button"
-					className="fixed inset-0 -z-10"
-					onClick={closeImmediate}
-					aria-label="Chiudi sottomenu"
-					tabIndex={-1}
-				/>
-			)}
 		</div>
 	)
 }
@@ -200,40 +100,50 @@ function Logo({ logoUrl, siteTitle }: { logoUrl?: string; siteTitle?: string }) 
 }
 
 export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: HeaderContentProps) {
-	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-	const [mobileMenuClosing, setMobileMenuClosing] = useState(false)
 	const pathname = usePathname()
-	const [mobileExpanded, setMobileExpanded] = useState<string | null>(null)
 	const [searchOpen, setSearchOpen] = useState(false)
-	const mobileDrawerRef = useFocusTrap<HTMLDivElement>(mobileMenuOpen)
-	const mobileCloseTimeout = useRef<ReturnType<typeof setTimeout>>(null)
 
-	function closeMobileMenu() {
-		if (mobileCloseTimeout.current) clearTimeout(mobileCloseTimeout.current)
-		setMobileMenuClosing(true)
-		mobileCloseTimeout.current = setTimeout(() => {
-			setMobileMenuOpen(false)
-			setMobileMenuClosing(false)
-		}, 150)
+	const navInputRef = useRef<HTMLInputElement>(null)
+	const [navOpen, setNavOpen] = useState(false)
+	const drawerRef = useFocusTrap<HTMLDivElement>(navOpen)
+
+	function closeNav() {
+		if (navInputRef.current) navInputRef.current.checked = false
+		setNavOpen(false)
+		document.body.style.overflow = ''
 	}
 
-	function openMobileMenu() {
-		setMobileMenuOpen(true)
-	}
-
+	// Mirror the native checkbox state (open/close + body scroll lock).
+	// The drawer itself opens/closes via CSS only (peer-checked), so it
+	// works with no JS; this only adds scroll-lock + focus-trap on top.
 	useEffect(() => {
+		const input = navInputRef.current
+		if (!input) return
+		const sync = () => {
+			setNavOpen(input.checked)
+			document.body.style.overflow = input.checked ? 'hidden' : ''
+		}
+		input.addEventListener('change', sync)
 		return () => {
-			if (mobileCloseTimeout.current) clearTimeout(mobileCloseTimeout.current)
+			input.removeEventListener('change', sync)
+			document.body.style.overflow = ''
 		}
 	}, [])
 
+	// Close the drawer when navigating to a new route.
 	useEffect(() => {
-		document.body.style.overflow =
-			mobileMenuOpen || searchOpen ? 'hidden' : ''
-		return () => {
-			document.body.style.overflow = ''
+		closeNav()
+	}, [pathname])
+
+	// Escape closes the drawer (enhancement; the X works without JS).
+	useEffect(() => {
+		if (!navOpen) return
+		const handleKey = (e: KeyboardEvent) => {
+			if (e.key === 'Escape') closeNav()
 		}
-	}, [mobileMenuOpen, searchOpen])
+		document.addEventListener('keydown', handleKey)
+		return () => document.removeEventListener('keydown', handleKey)
+	}, [navOpen])
 
 	useEffect(() => {
 		if (!searchOpen) return
@@ -244,22 +154,20 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 		return () => document.removeEventListener('keydown', handleKey)
 	}, [searchOpen])
 
-	useEffect(() => {
-		if (!mobileMenuOpen) return
-		const handleKey = (e: KeyboardEvent) => {
-			if (e.key === 'Escape') closeMobileMenu()
-		}
-		document.addEventListener('keydown', handleKey)
-		return () => document.removeEventListener('keydown', handleKey)
-	}, [mobileMenuOpen])
-
 	return (
 		<>
-			<header
-				className="sticky top-0 z-40 border-b border-line bg-canvas/95 backdrop-blur-md"
-			>
+			{/* Native checkbox controlling the mobile drawer via CSS peer-checked.
+			    No JS required: the <label> in the header toggles it, the one inside
+			    the drawer closes it. */}
+			<input
+				id="mobile-nav"
+				ref={navInputRef}
+				type="checkbox"
+				className="peer/nav sr-only"
+			/>
+
+			<header className="sticky top-0 z-40 border-b border-line bg-canvas/95 backdrop-blur-md">
 				<div className="mx-auto flex h-18 max-w-screen-2xl items-center justify-between gap-4 px-3 sm:px-6">
-					{/* Logo */}
 					<Link href="/" className="flex items-center gap-0.5">
 						<Logo logoUrl={logoUrl} siteTitle={siteTitle} />
 					</Link>
@@ -304,124 +212,96 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 							</Link>
 						))}
 
-						<button
-							type="button"
-							className="grid size-9 place-items-center rounded-full transition hover:bg-surface lg:hidden"
-							onClick={openMobileMenu}
-							aria-label="Menu"
+						<label
+							htmlFor="mobile-nav"
+							className="grid size-9 cursor-pointer place-items-center rounded-full transition hover:bg-surface lg:hidden"
+							role="button"
+							aria-label="Apri il menu"
 						>
 							<Menu size={20} />
-						</button>
+						</label>
 					</div>
 				</div>
 			</header>
 
-			{/* Search overlay */}
+			{/* Search overlay (JS enhancement) */}
 			<SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
 
-			{/* Mobile drawer */}
-			{mobileMenuOpen && (
-				<div
-					ref={mobileDrawerRef}
-					role="dialog"
-					aria-modal="true"
-					aria-label="Menu di navigazione"
-					className={`fixed inset-0 z-50 flex flex-col bg-canvas lg:hidden ${
-						mobileMenuClosing ? 'animate-fade-out' : 'animate-fade-in'
-					}`}
-				>
-					<div className="flex h-24 items-center justify-between px-3 sm:px-6">
-						<Link
-							href="/"
-							className="flex items-center gap-0.5"
-							onClick={closeMobileMenu}
-						>
-							<Logo logoUrl={logoUrl} siteTitle={siteTitle} />
-						</Link>
-						<button
-							type="button"
-							className="grid size-9 place-items-center rounded-full transition hover:bg-surface"
-							onClick={closeMobileMenu}
-							aria-label="Chiudi"
-						>
-							<X size={20} />
-						</button>
-					</div>
+			{/* Mobile drawer — visible only when #mobile-nav is checked (CSS only). */}
+			<div
+				ref={drawerRef}
+				role="dialog"
+				aria-modal="true"
+				aria-label="Menu di navigazione"
+				className="invisible fixed inset-0 z-50 flex translate-y-2 flex-col bg-canvas opacity-0 transition-all duration-150 peer-checked/nav:visible peer-checked/nav:translate-y-0 peer-checked/nav:opacity-100 lg:hidden"
+			>
+				<div className="flex h-24 items-center justify-between px-3 sm:px-6">
+					<Link href="/" className="flex items-center gap-0.5">
+						<Logo logoUrl={logoUrl} siteTitle={siteTitle} />
+					</Link>
+					<label
+						htmlFor="mobile-nav"
+						className="grid size-9 cursor-pointer place-items-center rounded-full transition hover:bg-surface"
+						role="button"
+						aria-label="Chiudi"
+					>
+						<X size={20} />
+					</label>
+				</div>
 
-					<nav className="flex-1 overflow-y-auto px-2 py-3" aria-label="Navigazione mobile">
-						{navItems.map((item) => (
-							<div
-								key={item.label}
-								className="border-b border-line-soft"
-							>
-								{item.children?.length ? (
-									<>
-										<button
-											type="button"
-											className="flex w-full items-center justify-between px-3 py-4 text-base font-semibold"
-											onClick={() =>
-												setMobileExpanded(
-													item.label === mobileExpanded
-														? null
-														: item.label,
-												)
-											}
-											aria-expanded={mobileExpanded === item.label}
-											aria-label={`${item.label}, sottomenu`}
-										>
-											{item.label}
-											<ChevronDown
-												size={16}
-												className={`text-muted transition-transform ${mobileExpanded === item.label
-													? 'rotate-180'
-													: ''
-													}`}
-												aria-hidden="true"
-											/>
-										</button>
-										{mobileExpanded === item.label && (
-											<ul className="space-y-1 pb-3 pl-3">
-												{item.children.map((child) => (
-													<li key={child.href}>
-														<Link
-															href={child.href}
-															aria-current={pathname === child.href ? 'page' : undefined}
-															className="block rounded-md px-3 py-2 text-sm text-muted hover:bg-surface hover:text-ink"
-															onClick={closeMobileMenu}
-														>
-															{child.label}
-														</Link>
-													</li>
-												))}
-											</ul>
-										)}
-									</>
-								) : (
-									<Link
-										href={item.href}
-										aria-current={pathname === item.href ? 'page' : undefined}
-										className="block px-3 py-4 text-base font-semibold"
-										onClick={closeMobileMenu}
+				<nav className="flex-1 overflow-y-auto px-2 py-3" aria-label="Navigazione mobile">
+					{navItems.map((item) => (
+						<div key={item.label} className="border-b border-line-soft">
+							{item.children?.length ? (
+								<details className="group">
+									<summary
+										className="flex cursor-pointer list-none items-center justify-between px-3 py-4 text-base font-semibold [&::-webkit-details-marker]:hidden"
+										aria-label={`${item.label}, sottomenu`}
 									>
 										{item.label}
-									</Link>
-								)}
-							</div>
-						))}
+										<ChevronDown
+											size={16}
+											className="text-muted transition-transform group-open:rotate-180"
+											aria-hidden="true"
+										/>
+									</summary>
+									<ul className="space-y-1 pb-3 pl-3">
+										{item.children.map((child) => (
+											<li key={child.href}>
+												<Link
+													href={child.href}
+													aria-current={pathname === child.href ? 'page' : undefined}
+													className="block rounded-md px-3 py-2 text-sm text-muted hover:bg-surface hover:text-ink"
+												>
+													{child.label}
+												</Link>
+											</li>
+										))}
+									</ul>
+								</details>
+							) : (
+								<Link
+									href={item.href}
+									aria-current={pathname === item.href ? 'page' : undefined}
+									className="block px-3 py-4 text-base font-semibold"
+								>
+									{item.label}
+								</Link>
+							)}
+						</div>
+					))}
 
-						{ctas?.map((cta, i) => (
-							<Link
-								key={i}
-								href={cta.href}
-								className="mt-4 mb-2 block w-full rounded-lg border border-brand px-5 py-2 text-center text-sm font-semibold text-brand transition-colors hover:bg-brand-deep hover:text-white"
-								onClick={closeMobileMenu}
-							>
-								{cta.label}
-							</Link>
-						))}
-					</nav>
-				</div>
-			)}
+					{ctas?.map((cta, i) => (
+						<Link
+							key={i}
+							href={cta.href}
+							className="mt-4 mb-2 block w-full rounded-lg border border-brand px-5 py-2 text-center text-sm font-semibold text-brand transition-colors hover:bg-brand-deep hover:text-white"
+						>
+							{cta.label}
+						</Link>
+					))}
+				</nav>
+			</div>
 		</>
 	)
 }

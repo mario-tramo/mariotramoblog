@@ -33,6 +33,8 @@ export default function ExtendedNewsletter({
 
 				<form
 					onSubmit={handleSubmit}
+					action="/api/newsletter/subscribe"
+					method="post"
 					className="flex w-full flex-col gap-3 sm:flex-row md:w-auto"
 				>
 					{!isSuccess ? (
@@ -42,6 +44,7 @@ export default function ExtendedNewsletter({
 							</label>
 							<input
 								id="newsletter-extended-email"
+								name="email"
 								type="email"
 								placeholder="La tua email"
 								value={email}
@@ -67,6 +70,7 @@ export default function ExtendedNewsletter({
 				<label className="relative z-10 mt-3 flex items-start gap-2">
 					<input
 						type="checkbox"
+						name="privacyConsent"
 						checked={privacyConsent}
 						onChange={(e) => setPrivacyConsent(e.target.checked)}
 						className="mt-0.5 size-3 shrink-0 accent-brand"

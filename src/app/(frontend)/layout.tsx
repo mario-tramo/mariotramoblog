@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import dynamic from 'next/dynamic'
+import Script from 'next/script'
 import Root from '@/ui/layout/Root'
 import JsonLd from '@/ui/primitives/JsonLd'
 import { getSite } from '@/sanity/lib/queries'
@@ -70,6 +71,13 @@ export default async function RootLayout({
 			<link rel="preconnect" href="https://cdn.sanity.io" />
 			<link rel="dns-prefetch" href="https://cdn.sanity.io" />
 			<body className="flex min-h-svh flex-col bg-canvas text-ink antialiased">
+				<Script
+					id="js-detect"
+					strategy="beforeInteractive"
+					dangerouslySetInnerHTML={{
+						__html: `document.documentElement.classList.add('js')`,
+					}}
+				/>
 				<JsonLd data={websiteJsonLd(title, undefined, logoUrl)} />
 				<NuqsAdapter>
 					<CookieConsentProvider>

@@ -28,7 +28,12 @@ export default function CompactNewsletter({
 					{displayDescription}
 				</p>
 
-				<form onSubmit={handleSubmit} className="mt-4">
+				<form
+					action="/api/newsletter/subscribe"
+					method="post"
+					onSubmit={handleSubmit}
+					className="mt-4"
+				>
 					{!isSuccess ? (
 						<div className="flex gap-2">
 							<label htmlFor="newsletter-compact-email" className="sr-only">
@@ -36,6 +41,7 @@ export default function CompactNewsletter({
 							</label>
 							<input
 								id="newsletter-compact-email"
+								name="email"
 								type="email"
 								placeholder="La tua email"
 								value={email}
@@ -57,6 +63,7 @@ export default function CompactNewsletter({
 						<label className="mt-2 flex items-start gap-2">
 							<input
 								type="checkbox"
+								name="privacyConsent"
 								checked={privacyConsent}
 								onChange={(e) => setPrivacyConsent(e.target.checked)}
 								className="mt-0.5 size-3 shrink-0 accent-brand"

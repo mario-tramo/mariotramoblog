@@ -279,9 +279,11 @@ const embedConfigs: Record<string, EmbedConfig> = {
 function BlurredEmbedCard({
   platform,
   onAccept,
+  url,
 }: {
   platform: string;
   onAccept: () => void;
+  url: string;
 }) {
   const config = embedConfigs[platform] ?? embedConfigs.twitter;
 
@@ -335,6 +337,15 @@ function BlurredEmbedCard({
         >
           Accetta cookie
         </button>
+        {/* Works even with JS disabled: direct link to the post. */}
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs font-medium text-neutral-600 underline decoration-dotted underline-offset-2 hover:text-neutral-900"
+        >
+          Oppure guarda il post sul sito esterno
+        </a>
       </div>
     </div>
   );
@@ -351,6 +362,7 @@ export function SocialEmbed({ value }: SocialEmbedProps) {
         <BlurredEmbedCard
           platform={platform ?? "social"}
           onAccept={accept}
+          url={value.url}
         />
       </figure>
     );

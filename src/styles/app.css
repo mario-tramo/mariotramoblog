@@ -184,8 +184,10 @@
 /* --- Scroll-triggered reveal --- */
 @media (prefers-reduced-motion: no-preference) {
 	@layer base {
-		.section,
-		[data-module] {
+		/* Only animate when JS is available (html.js added by a beforeInteractive
+		   script). Without JS these rules never match, so all content stays visible. */
+		html.js .section,
+		html.js [data-module] {
 			opacity: 0;
 			translate: 0 2.5rem;
 			transition:
@@ -199,14 +201,14 @@
 		}
 
 		/* Suppress double animation on nested modules inside layout blocks */
-		[data-module] [data-module] {
+		html.js [data-module] [data-module] {
 			opacity: 1;
 			translate: none;
 			transition: none;
 		}
 
 		/* Stagger children in grids */
-		.section :is(article, [class*='grid'] > *) {
+		html.js .section :is(article, [class*='grid'] > *) {
 			opacity: 0;
 			translate: 0 1.5rem;
 			scale: 0.96;

@@ -29,6 +29,8 @@ export default function InlineNewsletter({
 				<div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
 					<form
 						onSubmit={handleSubmit}
+						action="/api/newsletter/subscribe"
+						method="post"
 						className="flex w-full sm:w-auto"
 					>
 						{!isSuccess ? (
@@ -38,6 +40,7 @@ export default function InlineNewsletter({
 								</label>
 								<input
 									id="newsletter-inline-email"
+									name="email"
 									type="email"
 									placeholder="La tua email"
 									value={email}
@@ -60,6 +63,7 @@ export default function InlineNewsletter({
 							<label className="mt-2 flex items-start gap-2">
 								<input
 									type="checkbox"
+									name="privacyConsent"
 									checked={privacyConsent}
 									onChange={(e) => setPrivacyConsent(e.target.checked)}
 									className="mt-0.5 size-3 shrink-0 accent-brand"

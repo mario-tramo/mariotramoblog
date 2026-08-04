@@ -32,13 +32,13 @@ const typeLabels: Record<string, string> = {
   other: "Video",
 };
 
-function BlurredVideoCard({ onAccept }: { onAccept: () => void }) {
+function BlurredVideoCard({ onAccept, url }: { onAccept: () => void; url: string }) {
   return (
     <div className="relative mx-auto w-full overflow-hidden rounded-xl border border-line bg-surface">
       <div aria-hidden className="blur-[2px] [&>*]:select-none">
         <div className="aspect-video w-full bg-muted" />
       </div>
-      <div className="absolute inset-0 flex flex-col items-center justify-center bg-canvas/60 backdrop-blur-[1px]">
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-canvas/60 backdrop-blur-[1px]">
         <p className="mb-3 text-balance px-4 text-center text-sm text-ink">
           Il video è bloccato.
           <br />
@@ -51,6 +51,15 @@ function BlurredVideoCard({ onAccept }: { onAccept: () => void }) {
         >
           Accetta cookie
         </button>
+        {/* Works even with JS disabled: direct link to the video. */}
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-xs font-medium text-muted underline decoration-dotted underline-offset-2 hover:text-ink"
+        >
+          Oppure guarda il video sul sito esterno
+        </a>
       </div>
     </div>
   );
@@ -78,7 +87,7 @@ export function VideoEmbed({ value }: VideoEmbedProps) {
   if (consent !== "accepted") {
     return (
       <figure className="my-6">
-        <BlurredVideoCard onAccept={accept} />
+        <BlurredVideoCard onAccept={accept} url={value.url} />
       </figure>
     );
   }
