@@ -52,16 +52,19 @@ export default defineType({
 			type: 'url',
 			description: 'URL esterno (es. https://...)',
 			validation: (Rule) => [
-				Rule.uri({
-					scheme: ['http', 'https', 'mailto', 'tel'],
-					allowRelative: true,
-				}),
 				Rule.custom((value, context) => {
 					const parent = context.parent as { type?: string }
 					if (parent?.type === 'external' && !value) {
 						return "L'URL è obbligatorio per i link esterni"
 					}
-					return true
+					if (!value) return true
+					if (value.startsWith('mailto:') || value.startsWith('tel:')) {
+						return true
+					}
+					return Rule.uri({
+						scheme: ['http', 'https'],
+						allowRelative: true,
+					}).validate(value)
 				}),
 			],
 			hidden: ({ parent }) => parent?.type !== 'external',
