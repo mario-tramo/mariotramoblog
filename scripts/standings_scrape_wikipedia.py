@@ -202,13 +202,27 @@ def validate_table(rows: list[dict[str, Any]], code: str) -> None:
 
 
 def fetch_table(title: str, requester: Any = requests) -> list[dict[str, Any]]:
+    """Fetch and parse a Wikipedia standings table with bounded retries."""
     encoded = quote(title, safe="")
     url = f"https://en.wikipedia.org/w/rest.php/v1/page/{encoded}/html"
-    response = requester.get(url, headers=REQUEST_HEADERS, timeout=40)
-    if response.status_code == 404:
-        raise ArticleNotFound(title)
-    response.raise_for_status()
-    return parse_table_html(response.text, title)
+    last_error: Exception | None = None
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            response = requester.get(url, headers=REQUEST_HEADERS, timeout=40)
+            if response.status_code == 404:
+                raise ArticleNotFound(title)
+            if response.status_code in (429, 500, 502, 503, 504):
+                raise requests.HTTPError(f"retryable HTTP {response.status_code}")
+            response.raise_for_status()
+            return parse_table_html(response.text, title)
+        except ArticleNotFound:
+            raise
+        except (requests.RequestException, ValueError) as error:
+            last_error = error
+            if attempt < MAX_RETRIES:
+                time.sleep(2**attempt)
+    assert last_error is not None
+    raise last_error
 
 
 def fetch_league(code: str, start: int, requester: Any = requests) -> list[dict[str, Any]] | None:
