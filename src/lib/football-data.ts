@@ -69,7 +69,7 @@ export class StandingsError extends Error {
 
 function currentSeason(): number {
 	const now = new Date()
-	return now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1
+	return now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear() - 1
 }
 
 function teamId(name: string): number {
@@ -101,14 +101,32 @@ export async function fetchStandings(
 		throw new StandingsError(APIErrorCode.SERVICE_ERROR, 'Redis non configurato')
 	}
 
-	const season = String(currentSeason())
-	const rows = await readStandingsTable(competition, season)
+	const current = currentSeason()
+	let season = String(current)
+	let rows = await readStandingsTable(competition, season)
+
+	// The new season can be published before its first complete table exists.
+	// Keep the standings endpoint useful during that short off-season window by
+	// serving the latest completed season without relabelling its data.
+	if (!rows || rows.length === 0) {
+		const previousSeason = String(current - 1)
+		const previousRows = await readStandingsTable(competition, previousSeason)
+		if (previousRows && previousRows.length > 0) {
+			season = previousSeason
+			rows = previousRows
+			Sentry.captureMessage('football-data serving previous season standings', {
+				level: 'info',
+				tags: { service: 'standings', competition },
+				extra: { requestedSeason: String(current), servedSeason: season },
+			})
+		}
+	}
 
 	if (!rows || rows.length === 0) {
 		Sentry.captureMessage('football-data no standings for competition', {
 			level: 'warning',
 			tags: { service: 'standings', competition },
-			extra: { season },
+			extra: { season: String(current) },
 		})
 		throw new StandingsError(APIErrorCode.SERVICE_ERROR, 'Nessuna classifica disponibile per questo campionato')
 	}

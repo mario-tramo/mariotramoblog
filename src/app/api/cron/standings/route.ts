@@ -9,7 +9,7 @@ export const runtime = 'nodejs'
 
 function currentSeason(): number {
 	const now = new Date()
-	return now.getMonth() >= 7 ? now.getFullYear() : now.getFullYear() - 1
+	return now.getMonth() >= 6 ? now.getFullYear() : now.getFullYear() - 1
 }
 
 interface CompetitionStatus {
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
 	}
 
 	const season = String(currentSeason())
-	const entries = Object.entries(COMPETITIONS)
+	const entries = Object.entries(COMPETITIONS).filter(([code]) => code !== 'CL')
 	const codes = entries.map(([code]) => code)
 	const allRows = await readAllStandingsTables(codes, season)
 

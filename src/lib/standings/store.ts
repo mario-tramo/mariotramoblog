@@ -62,6 +62,53 @@ export interface ScrapedStandingsPayload {
 	standings: Record<string, ScrapedCompetitionStandings>
 }
 
+const EXPECTED_TEAM_COUNTS: Record<string, number> = {
+	SA: 20,
+	PL: 20,
+	PD: 20,
+	BL1: 18,
+	FL1: 18,
+}
+
+export function validateStandingsPayload(
+	payload: unknown,
+): payload is ScrapedStandingsPayload {
+	if (!payload || typeof payload !== 'object') return false
+	const candidate = payload as Partial<ScrapedStandingsPayload>
+	if (!/^\d{4}$/.test(candidate.season ?? '') || !candidate.standings) return false
+	if (typeof candidate.standings !== 'object') return false
+
+	for (const [code, competition] of Object.entries(candidate.standings)) {
+		const expectedTeams = EXPECTED_TEAM_COUNTS[code]
+		if (!expectedTeams || !competition || typeof competition !== 'object') return false
+		if (competition.season !== candidate.season) return false
+		if (competition.competition?.code !== code || !competition.competition.name) return false
+		if (!Array.isArray(competition.table) || competition.table.length !== expectedTeams) return false
+
+		const positions = competition.table.map((row) => row.position)
+		if (positions.some((position, index) => position !== index + 1)) return false
+		if (new Set(competition.table.map((row) => row.team)).size !== expectedTeams) return false
+		for (const row of competition.table) {
+			if (!row.team || !Number.isInteger(row.position)) return false
+			const numeric = [
+				row.playedGames,
+				row.won,
+				row.draw,
+				row.lost,
+				row.goalsFor,
+				row.goalsAgainst,
+				row.goalDifference,
+				row.points,
+			]
+			if (numeric.some((value) => !Number.isInteger(value) || value < 0)) return false
+			if (row.won + row.draw + row.lost !== row.playedGames) return false
+			if (row.goalDifference !== row.goalsFor - row.goalsAgainst) return false
+		}
+	}
+
+	return Object.keys(candidate.standings).length > 0
+}
+
 function key(competition: string, season: string): string {
 	return `${PREFIX}:${competition}:${season}`
 }
@@ -69,6 +116,8 @@ function key(competition: string, season: string): string {
 export async function writeStandings(
 	payload: ScrapedStandingsPayload,
 ): Promise<number> {
+	if (!validateStandingsPayload(payload)) return 0
+
 	const entries = Object.entries(payload.standings)
 	const commands = entries.map(([code, data]) => [
 		'SET',

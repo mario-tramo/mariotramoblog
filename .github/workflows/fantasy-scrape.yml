@@ -1,6 +1,7 @@
 name: Fantasy scrape
 
-# Daily at 06:00 UTC. Cheap, idempotent (server overwrites), retryable.
+# Daily at 06:00 UTC. Fantasy data remains FBref-backed; standings use the
+# resilient Wikipedia REST source because FBref blocks GitHub Actions runners.
 on:
   schedule:
     - cron: "0 6 * * *"
@@ -9,10 +10,13 @@ on:
 permissions:
   contents: read
 
+env:
+  PYTHONUNBUFFERED: "1"
+
 jobs:
-  scrape:
+  fantasy:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -20,8 +24,8 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install dependencies
-        run: pip install --quiet soccerdata requests beautifulsoup4 lxml
+      - name: Install fantasy scraper dependencies
+        run: pip install --quiet soccerdata requests
 
       - name: Run daily FBref scrape (fantasy)
         env:
@@ -30,9 +34,27 @@ jobs:
           FANTASY_LEAGUES: "Serie A"
         run: python scripts/fantasy_scrape.py
 
-      - name: Run daily FBref scrape (standings)
+  standings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install standings scraper dependencies
+        run: pip install --quiet requests beautifulsoup4 lxml
+
+      - name: Run daily standings scrape (Wikipedia)
         env:
           STANDINGS_WEBHOOK_URL: ${{ secrets.STANDINGS_WEBHOOK_URL }}
           STANDINGS_INGEST_SECRET: ${{ secrets.STANDINGS_INGEST_SECRET }}
-          STANDINGS_LEAGUES: "Serie A,Premier League,La Liga,Bundesliga,Ligue 1"
-        run: python scripts/standings_scrape.py
+          STANDINGS_HEARTBEAT_URL: ${{ secrets.STANDINGS_WEBHOOK_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: python scripts/standings_scrape_wikipedia.py
+
+      - name: Run standings scraper unit tests
+        working-directory: scripts
+        run: python -m unittest -v test_standings_scrape_wikipedia.py
