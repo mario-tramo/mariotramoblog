@@ -49,8 +49,8 @@ export default defineType({
 			name: 'external',
 			title: 'Esterno',
 			placeholder: 'https://example.com',
-			type: 'url',
-			description: 'URL esterno (es. https://...)',
+			type: 'string',
+			description: 'URL esterno (es. https://..., mailto:... o tel:...)',
 			validation: (Rule) => [
 				Rule.custom((value, context) => {
 					const parent = context.parent as { type?: string }
