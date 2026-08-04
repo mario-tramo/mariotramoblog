@@ -15,6 +15,8 @@ export default async function FilterList({
 			_type == 'blog.category' &&
 			count(*[_type == 'blog.post' && references(^._id)]) > 0
 		]|order(title)`,
+		cacheHint: { type: 'blog.category' },
+		tags: ['sanity:categories', 'sanity:posts'],
 	})
 
 	if (!categories) return null

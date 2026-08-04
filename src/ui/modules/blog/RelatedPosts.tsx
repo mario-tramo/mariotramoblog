@@ -53,6 +53,8 @@ export default async function RelatedPosts({
 			}
 		`,
 		params: { postId: post._id, categoryIds, tagIds, ...(authorId ? { authorId } : {}) },
+		cacheHint: { type: 'blog.post', id: post._id },
+		tags: ['sanity:posts', 'sanity:feed:latest'],
 	})
 
 	if (!related?.length) return null

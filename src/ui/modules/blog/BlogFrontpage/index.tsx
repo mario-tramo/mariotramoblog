@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
-import { cookies } from 'next/headers'
-import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
+import { DEFAULT_LANG } from '@/lib/i18n'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
@@ -42,7 +41,7 @@ export default async function BlogFrontpage({
 	basePath: string
 	isHomepage: boolean
 }>) {
-	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
+	const lang = DEFAULT_LANG
 
 	const resolvedFilters = resolveCollectionFilters(filters, { searchParams })
 	const filterConditions = buildGroqFilterConditions(resolvedFilters)
@@ -88,6 +87,7 @@ export default async function BlogFrontpage({
 			...filterParams,
 			...(urlCategoria ? { urlCategoria } : {}),
 		},
+		tags: ['sanity:posts', 'sanity:feed:homepage'],
 	})
 
 	// Show rich empty state when a category page has no posts

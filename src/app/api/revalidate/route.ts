@@ -32,7 +32,26 @@ export async function POST(request: NextRequest) {
 	let body: RevalidatePayload = {}
 
 	try {
-		body = (await request.json()) as RevalidatePayload
+		const raw = (await request.json()) as RevalidatePayload & {
+			_type?: string | null
+			_id?: string | null
+			slug?: string | null
+			categorySlug?: string | null
+		}
+		// Sanity webhook templates commonly send document fields at the root,
+		// while our manual endpoint contract nests them under `document`.
+		// Normalize both forms before deriving granular cache tags.
+		body = raw.document || !raw._type
+			? raw
+			: {
+				...raw,
+				document: {
+					_type: raw._type,
+					_id: raw._id,
+					slug: raw.slug,
+					categorySlug: raw.categorySlug,
+				},
+			}
 	} catch (err) {
 		console.warn('[revalidate] no JSON body (expected for Sanity webhooks):', err)
 	}

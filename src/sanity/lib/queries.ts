@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import { fetchSanityLive } from './fetch'
 import groq from 'groq'
 import errors from '@/lib/errors'
@@ -140,7 +141,7 @@ export const TRANSLATIONS_QUERY = groq`
 	}
 `
 
-export async function getSite() {
+export const getSite = cache(async function getSite() {
 	const site = await fetchSanityLive<Sanity.Site>({
 		query: groq`
 			*[_id == 'site'][0]{
@@ -166,9 +167,9 @@ export async function getSite() {
 	if (!site) throw new Error(errors.missingSiteSettings)
 
 	return site
-}
+})
 
-export async function getTranslations() {
+export const getTranslations = cache(async function getTranslations() {
 	return await fetchSanityLive<Sanity.Translation[]>({
 		query: groq`*[_type in ['page', 'blog.post'] && defined(language)]{
 			'slug': '/' + select(
@@ -188,4 +189,4 @@ export async function getTranslations() {
 		cacheHint: undefined,
 		tags: ['translations', 'site-config'],
 	})
-}
+})

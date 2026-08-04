@@ -1,4 +1,4 @@
-import { fetchSanity } from '@/sanity/lib/fetch'
+import { fetchSanityPublic } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { BASE_URL } from '@/lib/env'
 
@@ -12,7 +12,7 @@ export async function GET() {
 	// publishDate can be date-only ('2026-06-24') or a full datetime, and GROQ's
 	// now() is a string: both sides must go through dateTime() or the filter
 	// silently matches nothing (this is what shipped an empty news sitemap).
-	const posts = await fetchSanity<
+	const posts = await fetchSanityPublic<
 		Array<{
 			url: string
 			publishDate: string
@@ -40,6 +40,7 @@ export async function GET() {
 			'categories': categories[@->title != null]->{ title, 'slug': slug.current },
 		}`,
 		params: { base },
+		next: { revalidate: 900, tags: ['sanity:news-sitemap'] },
 	})
 
 	if (!posts?.length) {
@@ -49,7 +50,10 @@ export async function GET() {
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 </urlset>`,
 			{
-				headers: { 'Content-Type': 'application/xml' },
+				headers: {
+					'Content-Type': 'application/xml',
+					'Cache-Control': 'public, s-maxage=900, stale-while-revalidate=1800',
+				},
 			},
 		)
 	}
@@ -78,7 +82,10 @@ ${urls}
 </urlset>`
 
 	return new Response(xml, {
-		headers: { 'Content-Type': 'application/xml' },
+		headers: {
+			'Content-Type': 'application/xml',
+			'Cache-Control': 'public, s-maxage=900, stale-while-revalidate=1800',
+		},
 	})
 }
 

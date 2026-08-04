@@ -1,5 +1,4 @@
-import { cookies } from 'next/headers'
-import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
+import { DEFAULT_LANG } from '@/lib/i18n'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { cn } from '@/lib/utils'
@@ -27,7 +26,7 @@ export default async function ArticleCarousel({
 	nested: boolean
 }> &
 	Sanity.Module) {
-	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
+	const lang = DEFAULT_LANG
 
 	// Resolve dynamic filters (new system)
 	const resolvedFilters = resolveCollectionFilters(filters, { searchParams })
@@ -88,6 +87,7 @@ export default async function ArticleCarousel({
 			...filterParams,
 			...(urlCategoria ? { urlCategoria } : {}),
 		},
+		tags: ['sanity:posts', 'sanity:feed:homepage'],
 	})
 
 	if (!posts?.length) return null

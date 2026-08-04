@@ -1,5 +1,4 @@
-import { cookies } from 'next/headers'
-import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
+import { DEFAULT_LANG } from '@/lib/i18n'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
@@ -52,9 +51,8 @@ export async function getPostsFeed(
 	}
 }
 
-async function getLang() {
-	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
-	return lang
+function getLang() {
+	return DEFAULT_LANG
 }
 
 function langCondition(lang: string) {
@@ -66,7 +64,7 @@ async function getLatestPosts(
 	filters?: CollectionFilter[],
 	searchParams?: Record<string, string | string[] | undefined>,
 ): Promise<Sanity.BlogPost[]> {
-	const lang = await getLang()
+	const lang = getLang()
 	const resolvedFilters = resolveCollectionFilters(filters, { searchParams })
 	const filterConditions = buildGroqFilterConditions(resolvedFilters)
 	const filterParams = buildGroqFilterParams(resolvedFilters)
@@ -81,6 +79,7 @@ async function getLatestPosts(
 			]|order(publishDate desc)[0...${limit}]${POST_PROJECTION}
 		`,
 		params: filterParams,
+		tags: ['sanity:posts', 'sanity:feed:latest', 'sanity:feed:homepage'],
 	})
 }
 
@@ -96,7 +95,7 @@ async function getTrendingPosts(
 		return getLatestPosts(limit, filters, searchParams)
 	}
 
-	const lang = await getLang()
+	const lang = getLang()
 	const resolvedFilters = resolveCollectionFilters(filters, { searchParams })
 	const filterConditions = buildGroqFilterConditions(resolvedFilters)
 	const filterParams = buildGroqFilterParams(resolvedFilters)
@@ -112,6 +111,7 @@ async function getTrendingPosts(
 			]${POST_PROJECTION}
 		`,
 		params: { ...filterParams, topSlugs },
+		tags: ['sanity:posts', 'sanity:feed:homepage'],
 	})
 
 	// Preserve view-count order from Redis
@@ -132,6 +132,7 @@ async function getManualPosts(
 			*[_type == 'blog.post' && _id in $ids && metadata.noIndex != true]${POST_PROJECTION}
 		`,
 		params: { ids },
+		tags: ['sanity:posts', 'sanity:feed:latest'],
 	})
 
 	// Preserve manual order

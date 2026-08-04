@@ -27,12 +27,18 @@ async function getRedis(): Promise<RedisLike> {
 	return redis as unknown as RedisLike
 }
 
+async function resolveRedis(redisOverride?: RedisLike | null): Promise<RedisLike> {
+	if (redisOverride === undefined) return getRedis()
+	if (redisOverride === null) throw new Error('Newsletter storage is unavailable')
+	return redisOverride
+}
+
 export async function subscribe(
 	email: string,
 	ip: string,
 	redisOverride?: RedisLike | null,
 ) {
-	const r = redisOverride ?? (await getRedis())
+	const r = await resolveRedis(redisOverride)
 
 	const ipHash = sha256(ip)
 	const normalized = email.trim().toLowerCase()
@@ -76,7 +82,7 @@ export async function confirm(
 	token: string,
 	redisOverride?: RedisLike | null,
 ): Promise<{ ok: boolean; email?: string }> {
-	const r = redisOverride ?? (await getRedis())
+	const r = await resolveRedis(redisOverride)
 
 	const all = await r.hgetall<Record<string, string>>(HASH_KEY)
 	if (!all) return { ok: false }
@@ -109,7 +115,7 @@ export async function unsubscribe(
 	opts: { token?: string; email?: string },
 	redisOverride?: RedisLike | null,
 ): Promise<{ ok: boolean }> {
-	const r = redisOverride ?? (await getRedis())
+	const r = await resolveRedis(redisOverride)
 
 	if (opts.email) {
 		const normalized = opts.email.trim().toLowerCase()
@@ -143,7 +149,7 @@ export async function sweep(
 	now: Date = new Date(),
 	redisOverride?: RedisLike | null,
 ): Promise<{ removedPending: number; removedStale: number }> {
-	const r = redisOverride ?? (await getRedis())
+	const r = await resolveRedis(redisOverride)
 
 	const all = await r.hgetall<Record<string, string>>(HASH_KEY)
 	if (!all) return { removedPending: 0, removedStale: 0 }
@@ -176,7 +182,7 @@ export async function sweep(
 export async function getStats(
 	redisOverride?: RedisLike | null,
 ): Promise<{ confirmed: number; pending: number; total: number }> {
-	const r = redisOverride ?? (await getRedis())
+	const r = await resolveRedis(redisOverride)
 
 	const all = await r.hgetall<Record<string, string>>(HASH_KEY)
 	if (!all) return { confirmed: 0, pending: 0, total: 0 }

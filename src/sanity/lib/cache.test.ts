@@ -1,89 +1,67 @@
 import { test, describe } from 'node:test'
 import assert from 'node:assert/strict'
-import { buildTags, tagsForDocument } from './cache'
+import { buildTags, tagsForDocument, SANITY_GLOBAL_TAG } from './cache'
 
 describe('buildTags', () => {
-	test('always includes sanity base tag', () => {
-		assert.deepEqual([...buildTags(undefined, undefined)], ['sanity'])
+	test('uses a scoped fallback tag when no hint is available', () => {
+		assert.deepEqual(buildTags(undefined, undefined), ['sanity:content'])
 	})
 
 	test('adds type/id/slug when hint provided', () => {
-		const tags = buildTags(
-			{ type: 'blog.post', id: 'abc', slug: 'mio-post' },
-			undefined,
-		)
-		assert.ok(tags.includes('sanity'))
+		const tags = buildTags({ type: 'blog.post', id: 'abc', slug: 'mio-post' }, undefined)
 		assert.ok(tags.includes('sanity:type:blog.post'))
 		assert.ok(tags.includes('sanity:doc:abc'))
 		assert.ok(tags.includes('sanity:slug:mio-post'))
+		assert.ok(!tags.includes(SANITY_GLOBAL_TAG))
 	})
 
 	test('partial hint — only what is provided appears', () => {
-		const tags = buildTags({ type: 'page' }, undefined)
-		assert.ok(tags.includes('sanity:type:page'))
-		assert.ok(!tags.some((t) => t.startsWith('sanity:doc:')))
-		assert.ok(!tags.some((t) => t.startsWith('sanity:slug:')))
+		assert.deepEqual(buildTags({ type: 'page' }, undefined), ['sanity:type:page'])
 	})
 
 	test('extra tags merged in', () => {
-		const tags = buildTags(undefined, ['category:calcio', 'site-config'])
-		assert.ok(tags.includes('category:calcio'))
-		assert.ok(tags.includes('site-config'))
+		assert.deepEqual(buildTags(undefined, ['category:calcio', 'site-config']), ['category:calcio', 'site-config'])
 	})
 
 	test('deduplicates extra tags', () => {
-		const tags = buildTags({ type: 'blog.post' }, [
-			'sanity:type:blog.post',
-			'extra',
-			'sanity:type:blog.post',
-		])
-		const occurrences = tags.filter((t) => t === 'sanity:type:blog.post').length
-		assert.equal(occurrences, 1)
+		assert.deepEqual(
+			buildTags({ type: 'blog.post' }, ['sanity:type:blog.post', 'extra', 'sanity:type:blog.post']),
+			['sanity:type:blog.post', 'extra'],
+		)
 	})
 
-	test('null hint fields are skipped', () => {
-		const tags = buildTags(
-			{ type: null, id: null, slug: null },
-			undefined,
-		)
-		assert.deepEqual([...tags].sort(), ['sanity'])
-	})
-
-	test('empty-string hint fields treated as falsy (skipped)', () => {
-		const tags = buildTags(
-			{ type: '', id: '', slug: '' },
-			undefined,
-		)
-		assert.deepEqual([...tags].sort(), ['sanity'])
+	test('null and empty hint fields fall back to scoped content tag', () => {
+		assert.deepEqual(buildTags({ type: null, id: null, slug: null }, undefined), ['sanity:content'])
+		assert.deepEqual(buildTags({ type: '', id: '', slug: '' }, undefined), ['sanity:content'])
 	})
 
 	test('empty-string entries in extras are skipped', () => {
-		const tags = buildTags(undefined, ['valid', '', '   '])
-		assert.deepEqual([...tags].sort(), ['sanity', 'valid'])
+		assert.deepEqual(buildTags(undefined, ['valid', '', '   ']), ['valid'])
 	})
 })
 
 describe('tagsForDocument', () => {
-	test('returns granular tags but NOT the global sanity tag', () => {
+	test('returns granular tags and collection dependencies', () => {
 		const tags = tagsForDocument({
 			_type: 'blog.post',
 			_id: 'abc',
 			slug: 'mio-post',
+			categorySlug: 'calcio',
 		})
-		assert.ok(!tags.includes('sanity'))
+		assert.ok(!tags.includes(SANITY_GLOBAL_TAG))
 		assert.ok(tags.includes('sanity:type:blog.post'))
 		assert.ok(tags.includes('sanity:doc:abc'))
 		assert.ok(tags.includes('sanity:slug:mio-post'))
+		assert.ok(tags.includes('sanity:posts'))
+		assert.ok(tags.includes('sanity:category:calcio'))
+		assert.ok(tags.includes('sanity:rss'))
 	})
 
-	test('empty document → empty tags', () => {
-		assert.deepEqual(tagsForDocument({}), [])
+	test('empty document → scoped fallback tag', () => {
+		assert.deepEqual(tagsForDocument({}), ['sanity:content'])
 	})
 
-	test('null fields are skipped', () => {
-		assert.deepEqual(
-			tagsForDocument({ _type: null, _id: null, slug: null }),
-			[],
-		)
+	test('null fields → scoped fallback tag', () => {
+		assert.deepEqual(tagsForDocument({ _type: null, _id: null, slug: null }), ['sanity:content'])
 	})
 })

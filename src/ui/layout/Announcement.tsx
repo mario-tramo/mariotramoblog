@@ -13,6 +13,8 @@ export default async function Announcement() {
 			...,
 			cta{ ${LINK_QUERY} },
 		}`,
+		cacheHint: { type: 'announcement' },
+		tags: ['site-config', 'layout'],
 	})
 
 	if (!announcements) return null

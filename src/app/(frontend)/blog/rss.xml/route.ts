@@ -1,4 +1,4 @@
-import { fetchSanityLive } from '@/sanity/lib/fetch'
+import { fetchSanityPublic } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import resolveUrl from '@/lib/resolveUrl'
 import { Feed } from 'feed'
@@ -6,8 +6,10 @@ import { escapeHTML, toHTML } from '@portabletext/to-html'
 import { urlFor } from '@/sanity/lib/image'
 // use 'it' hardcoded below
 
+export const revalidate = 900
+
 export async function GET() {
-	const { blog, posts, copyright } = await fetchSanityLive<{
+	const { blog, posts, copyright } = await fetchSanityPublic<{
 		blog: Sanity.Page
 		posts: Array<Sanity.BlogPost & { image?: string }>
 		copyright: string
@@ -32,6 +34,7 @@ export async function GET() {
 				language,
 			},
 		}`,
+		next: { revalidate: 900, tags: ['sanity:rss'] },
 	})
 
 	if (!blog || !posts) {
@@ -95,6 +98,7 @@ export async function GET() {
 	return new Response(feed.atom1(), {
 		headers: {
 			'Content-Type': 'application/atom+xml',
+			'Cache-Control': 'public, s-maxage=900, stale-while-revalidate=3600',
 		},
 	})
 }

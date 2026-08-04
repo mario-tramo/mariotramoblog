@@ -11,6 +11,8 @@ export default async function TeamGrid(props: Sanity.Module) {
 			...,
 			'articleCount': count(*[_type == 'blog.post' && ^._id in authors[]._ref])
 		}`,
+		cacheHint: { type: 'person' },
+		tags: ['sanity:authors', 'sanity:posts'],
 	})
 
 	if (!authors?.length) return null

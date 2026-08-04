@@ -1,4 +1,4 @@
-import { fetchSanity } from '@/sanity/lib/fetch'
+import { fetchSanityPublic } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import type { MetadataRoute } from 'next'
 
@@ -16,7 +16,7 @@ interface SitemapEntry {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	const data = await fetchSanity<Record<string, SitemapEntry[]>>({
+	const data = await fetchSanityPublic<Record<string, SitemapEntry[]>>({
 		query: groq`{
 			'pages': *[
 				_type == 'page' &&
@@ -64,6 +64,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 			}
 		}`,
 		params: { base: BASE },
+		next: { revalidate: 3600, tags: ['sanity:sitemap'] },
 	})
 
 	const enrich = (
@@ -86,8 +87,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 		}
 	}
 
+	const homepage = data.pages?.find((entry) => entry.url === BASE)
 	add(
-		[{ url: BASE, lastModified: new Date().toISOString() }],
+		[{ url: BASE, lastModified: homepage?.lastModified ?? new Date().toISOString() }],
 		{ changeFrequency: 'daily', priority: 1 },
 	)
 

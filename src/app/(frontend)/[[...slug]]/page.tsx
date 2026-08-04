@@ -2,8 +2,8 @@ import { notFound, permanentRedirect } from 'next/navigation'
 import JsonLd from '@/ui/primitives/JsonLd'
 import Modules from '@/ui/modules'
 import ViewTracker from '@/ui/ViewTracker'
-import { HomepageH1 } from '@/ui/modules/HomepageSeo'
 import BettingDisclaimer from '@/ui/modules/blog/BettingDisclaimer'
+import { HomepageSeoFooter } from '@/ui/modules/HomepageSeo'
 import processMetadata from '@/lib/processMetadata'
 import {
 	webPageJsonLd,
@@ -20,6 +20,7 @@ import resolveUrl from '@/lib/resolveUrl'
 import { client } from '@/sanity/lib/client'
 import groq from 'groq'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
+import { getSite } from '@/sanity/lib/queries'
 import {
 	IMAGE_QUERY,
 	MODULES_QUERY,
@@ -29,6 +30,7 @@ import { urlFor } from '@/sanity/lib/image'
 import { BASE_URL } from '@/lib/env'
 import { processSlug } from '@/lib/processSlug'
 import errors from '@/lib/errors'
+import { getRequestSearchParams } from '@/lib/request-context'
 
 // Content freshness is driven by the Sanity webhook (`/api/revalidate`,
 // tag-based). This interval is only a safety net — a short one forces a
@@ -36,11 +38,17 @@ import errors from '@/lib/errors'
 // ISR writes on every crawler pass.
 export const revalidate = 3600
 
-export default async function Page({ params, searchParams }: Props) {
+export default async function Page({ params }: Props) {
 	const resolvedParams = await params
-	const resolvedSearchParams = await searchParams
+	// Query-string variants are routed through `/filters-internal` by proxy.
+	// The canonical no-query route reads only this request-scoped context, so
+	// it remains eligible for static generation/ISR.
+	const resolvedSearchParams = getRequestSearchParams()
 
-	const logoUrl = await getSiteLogoUrl()
+	const site = await getSite()
+	const logoUrl = site.logo?.asset
+		? urlFor(site.logo).width(512).height(512).url()
+		: undefined
 
 	// Try page first, then category, then blog post (category/slug)
 	const page = await getPage(resolvedParams)
@@ -51,8 +59,10 @@ export default async function Page({ params, searchParams }: Props) {
 		const isHomepage = pageSlug === 'index'
 		const isAboutPage = pageSlug === 'chi-siamo'
 		const socialLinks = isHomepage || isAboutPage
-			? await getSocialLinks()
-			: undefined
+			? site.socialLinks
+					?.map((link) => link.external)
+					.filter((url): url is string => !!url)
+				: undefined
 		const faqItems = collectFaqItems(page.modules)
 
 		return (
@@ -80,6 +90,7 @@ export default async function Page({ params, searchParams }: Props) {
 					<h1 className="sr-only">{page.title || page.metadata.title}</h1>
 				)}
 				<Modules modules={page.modules} page={page} searchParams={resolvedSearchParams} />
+				{isHomepage && <HomepageSeoFooter />}
 			</>
 		)
 	}
@@ -193,9 +204,9 @@ export default async function Page({ params, searchParams }: Props) {
 	notFound()
 }
 
-export async function generateMetadata({ params, searchParams }: Props) {
+export async function generateMetadata({ params }: Props) {
 	const resolvedParams = await params
-	const resolvedSearchParams = await searchParams
+	const resolvedSearchParams = getRequestSearchParams()
 	const categoria = resolvedSearchParams?.categoria
 
 	const page = await getPage(resolvedParams)
@@ -291,7 +302,7 @@ async function getPage(params: Params) {
 		}`,
 		params: { slug },
 		cacheHint: { type: 'page', slug },
-		tags: lang ? [`page:lang:${lang}`] : undefined,
+		tags: ['sanity:sitemap', ...(lang ? [`page:lang:${lang}`] : [])],
 	})
 
 	if (slug === 'index' && !page) throw new Error(errors.missingHomepage)
@@ -319,6 +330,7 @@ async function getCategory(params: Params) {
 		}`,
 		params: { slug },
 		cacheHint: { type: 'blog.category', slug },
+		tags: ['sanity:categories', 'sanity:feed:latest', 'sanity:feed:homepage', 'sanity:sitemap'],
 	})
 
 	if (!raw) return null
@@ -388,7 +400,15 @@ async function getPost(params: Params) {
 		}`,
 		params: { postSlug, categorySlug },
 		cacheHint: { type: 'blog.post', slug: postSlug },
-		tags: [`category:${categorySlug}`],
+		tags: [
+			'sanity:posts',
+			'sanity:feed:latest',
+			'sanity:feed:homepage',
+			'sanity:rss',
+			'sanity:sitemap',
+			'sanity:news-sitemap',
+			`sanity:category:${categorySlug}`,
+		],
 	})
 
 	if (!post) return null
@@ -433,6 +453,7 @@ async function getCaseInsensitiveRedirect(params: Params): Promise<string | null
 				'category': categories[0]->slug.current
 			}`,
 			params: { postSlug },
+			tags: ['sanity:redirects'],
 		})
 		if (!match) return null
 		const target = `/${match.category}/${match.slug}`
@@ -449,30 +470,13 @@ type Props = {
 	searchParams: Promise<Record<string, string | string[] | undefined>>
 }
 
-async function getSiteLogoUrl(): Promise<string | undefined> {
-	const site = await fetchSanityLive<{ logo?: Sanity.Image }>({
-		query: groq`*[_id == 'site'][0]{ logo }`,
-	})
-	if (!site?.logo?.asset) return undefined
-	return urlFor(site.logo).width(512).height(512).url()
-}
-
-async function getSocialLinks(): Promise<string[]> {
-	const site = await fetchSanityLive<{ socialLinks?: { external?: string }[] }>({
-		query: groq`*[_id == 'site'][0]{ socialLinks[]{ external } }`,
-	})
-	return (
-		site?.socialLinks
-			?.map((l) => l.external)
-			.filter((url): url is string => !!url) ?? []
-	)
-}
 
 async function getArticleTemplate(): Promise<Sanity.Module[]> {
 	const template = await fetchSanityLive<{ modules?: Sanity.Module[] }>({
 		query: groq`*[_type == 'article-template'][0]{
 			modules[]{ ${MODULES_QUERY} }
 		}`,
+		tags: ['sanity:template:article', 'sanity:posts'],
 	})
 
 	return template?.modules ?? []
@@ -483,6 +487,7 @@ async function getCategoryTemplate(): Promise<Sanity.Module[]> {
 		query: groq`*[_type == 'category-template'][0]{
 			modules[]{ ${MODULES_QUERY} }
 		}`,
+		tags: ['sanity:template:category', 'sanity:categories'],
 	})
 
 	return template?.modules ?? []

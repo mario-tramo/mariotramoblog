@@ -23,7 +23,6 @@ import '@/styles/app.css'
 
 const Announcement = dynamic(() => import('@/ui/layout/Announcement'))
 const NavigationLoadingBar = dynamic(() => import('@/ui/layout/NavigationLoadingBar'))
-const VisualEditingControls = dynamic(() => import('@/ui/dev/VisualEditingControls'))
 
 export const viewport = {
 	themeColor: '#07111F',
@@ -99,7 +98,6 @@ export default async function RootLayout({
 					</ToastProvider>
 					</CookieConsentProvider>
 
-					<VisualEditingControls />
 					{process.env.NODE_ENV === 'development' && (
 						<>
 							<DevColorSwitcher />

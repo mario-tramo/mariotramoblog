@@ -41,6 +41,14 @@ export default withSentryConfig(
 					source: '/(.*)',
 					headers: securityHeaders,
 				},
+				{
+					source: '/preview-internal/:path*',
+					headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' }],
+				},
+				{
+					source: '/filters-internal/:path*',
+					headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' }],
+				},
 			]
 		},
 

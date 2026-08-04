@@ -5,6 +5,7 @@ import * as Sentry from '@sentry/nextjs'
 import { projectId, dataset, apiVersion } from '@/sanity/lib/env'
 import { isAuthorized } from '@/lib/http-auth'
 import { publishScheduledDrafts } from '@/lib/cron-publish'
+import { processRevalidation } from '@/lib/revalidate-handler'
 
 // Always run fresh — never cache this endpoint.
 export const dynamic = 'force-dynamic'
@@ -45,8 +46,10 @@ export async function GET(request: NextRequest) {
 	// appear on the site until the next manual /api/revalidate or a new
 	// deployment — defeating the whole scheduled-publishing purpose.
 	if (result.published > 0) {
-		revalidateTag('sanity', { expire: 0 })
-		revalidatePath('/', 'layout')
+		processRevalidation(
+			{ tags: ['sanity:posts', 'sanity:feed:latest', 'sanity:feed:homepage', 'sanity:rss', 'sanity:sitemap', 'sanity:news-sitemap'] },
+			{ revalidateTag, revalidatePath },
+		)
 	}
 
 	Sentry.withScope((scope) => {

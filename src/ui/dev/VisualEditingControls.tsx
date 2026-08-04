@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic'
+import { draftMode } from 'next/headers'
 
 const SanityLive = dynamic(() =>
 	import('@/sanity/lib/fetch').then((mod) => ({ default: mod.SanityLive })),
@@ -6,7 +7,6 @@ const SanityLive = dynamic(() =>
 const DraftModeControls = dynamic(() => import('./DraftModeControls'))
 
 export default async function VisualEditingControls() {
-	const { draftMode } = await import('next/headers')
 	const isDraft = (await draftMode()).isEnabled
 
 	return (

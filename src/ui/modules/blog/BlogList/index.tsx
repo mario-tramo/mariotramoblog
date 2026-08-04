@@ -1,5 +1,4 @@
-import { cookies } from 'next/headers'
-import { DEFAULT_LANG, langCookieName } from '@/lib/i18n'
+import { DEFAULT_LANG } from '@/lib/i18n'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
@@ -53,7 +52,7 @@ export default async function BlogList({
 	nested: boolean
 }> &
 	Sanity.Module) {
-	const lang = (await cookies()).get(langCookieName)?.value ?? DEFAULT_LANG
+	const lang = DEFAULT_LANG
 
 	// Resolve dynamic filters (new system)
 	const resolvedFilters = resolveCollectionFilters(filters, { searchParams })
@@ -102,6 +101,7 @@ export default async function BlogList({
 			...(urlCategoria ? { urlCategoria } : {}),
 			limit: limit ?? 0,
 		},
+		tags: ['sanity:posts', 'sanity:feed:latest', ...(category ? [`sanity:category:${category}`] : [])],
 	})
 
 	// Show rich empty state when a category page has no posts
