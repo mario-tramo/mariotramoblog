@@ -61,10 +61,9 @@ export default defineType({
 					if (value.startsWith('mailto:') || value.startsWith('tel:')) {
 						return true
 					}
-					return Rule.uri({
-						scheme: ['http', 'https'],
-						allowRelative: true,
-					}).validate(value)
+					return /^(https?:\/\/[^\s]+|\/[^\s]*|\/\/[^\s]+)$/.test(value)
+						? true
+						: 'Inserisci un URL valido (http/https, o un percorso relativo)'
 				}),
 			],
 			hidden: ({ parent }) => parent?.type !== 'external',
