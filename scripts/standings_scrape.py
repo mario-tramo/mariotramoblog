@@ -1,18 +1,27 @@
 #!/usr/bin/env python3
 """
-Daily Standings scrape.
+Daily Standings scrape (unified, robust).
 
-Reads public FBref league tables via the `soccerdata` library, normalizes
-each table to a flat list of dicts, then POSTs to the Next.js ingest
-endpoint for Redis storage.
+Primary source: FBref via soccerdata.  FBref sits behind a Cloudflare managed
+challenge that frequently blocks automated runners; when FBref is unreachable
+or returns invalid data for a league, this script transparently falls back to
+the Wikipedia REST source so standings are still ingested.
+
+Both sources share the same ingest API payload shape and the same resilient
+conventions as ``scripts/standings_scrape_wikipedia.py`` (whose helpers are
+reused here): strict table validation, ``STANDINGS_ALLOW_PARTIAL`` /
+``STANDINGS_ALLOW_NO_DATA`` handling, heartbeat via ``/api/cron/standings``,
+and optional fixture output.
 
 Team crests are extracted from the FBref standings page HTML using
 BeautifulSoup, so no external API key is needed.
 
 Anti-corruption choices:
-  - All numeric fields are coerced via `.get(col, 0)` so a missing
-    FBref column (rename, regression) becomes 0, not a KeyError.
-  - We retry on 429 / 5xx with exponential backoff + jitter.
+  - A cheap circuit breaker probes FBref once per run; if it is challenge-gated
+    we skip FBref for every league instead of burning minutes on its internal
+    5x CAPTCHA retries.
+  - All numeric fields are coerced via ``.get(col, 0)`` so a missing FBref
+    column (rename, regression) becomes 0, not a KeyError.
 """
 
 from __future__ import annotations
@@ -20,14 +29,13 @@ from __future__ import annotations
 import json
 import logging
 import os
-import random
 import sys
-import time
-from datetime import datetime, timezone
 from typing import Any
 
 import requests
 from bs4 import BeautifulSoup
+
+import standings_scrape_wikipedia as wiki
 
 logging.basicConfig(
     level=logging.INFO,
@@ -35,36 +43,12 @@ logging.basicConfig(
 )
 log = logging.getLogger("standings")
 
-WEBHOOK_URL = (
-    os.environ["STANDINGS_WEBHOOK_URL"].rstrip("/") + "/api/standings/ingest"
-)
-SECRET = os.environ["STANDINGS_INGEST_SECRET"]
-HEARTBEAT_URL = os.environ.get("STANDINGS_HEARTBEAT_URL", "").rstrip("/") + "/api/cron/standings"
-HEARTBEAT_SECRET = os.environ.get("CRON_SECRET", "")
-LEAGUES = [
-    s.strip()
-    for s in os.environ.get(
-        "STANDINGS_LEAGUES",
-        "Serie A,Premier League,La Liga,Bundesliga,Ligue 1",
-    ).split(",")
-    if s.strip()
-]
-MAX_RETRIES = 3
-
-SOCCERDATA_LEAGUE_NAMES = {
-    "Serie A": "ITA-Serie A",
-    "Premier League": "ENG-Premier League",
-    "La Liga": "ESP-La Liga",
-    "Bundesliga": "GER-Bundesliga",
-    "Ligue 1": "FRA-Ligue 1",
-}
-
-LEAGUE_TO_CODE = {
-    "Serie A": "SA",
-    "Premier League": "PL",
-    "La Liga": "PD",
-    "Bundesliga": "BL1",
-    "Ligue 1": "FL1",
+REQUEST_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+        "AppleWebKit/537.36 (KHTML, like Gecko) "
+        "Chrome/131.0.0.0 Safari/537.36"
+    ),
 }
 
 # FBref competition IDs (stable across seasons)
@@ -76,29 +60,15 @@ FBREF_COMP_IDS = {
     "Ligue 1": 13,
 }
 
-REQUEST_HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/131.0.0.0 Safari/537.36"
-    ),
+SOCCERDATA_LEAGUE_NAMES = {
+    "Serie A": "ITA-Serie A",
+    "Premier League": "ENG-Premier League",
+    "La Liga": "ESP-La Liga",
+    "Bundesliga": "GER-Bundesliga",
+    "Ligue 1": "FRA-Ligue 1",
 }
 
-
-def current_season_start() -> int:
-    now = datetime.now(timezone.utc)
-    return now.year if now.month >= 7 else now.year - 1
-
-
-def league_code(name: str) -> str:
-    return LEAGUE_TO_CODE.get(name.strip(), name.strip()[:2].upper())
-
-
-def to_int(value: Any) -> int:
-    try:
-        return int(float(value or 0))
-    except (TypeError, ValueError):
-        return 0
+_FBREF_AVAILABLE: bool | None = None
 
 
 def fbref_standings_url(league: str, season: str) -> str | None:
@@ -110,9 +80,36 @@ def fbref_standings_url(league: str, season: str) -> str | None:
     return f"https://fbref.com/en/comps/{comp_id}/{season}/{slug}"
 
 
-def extract_crests(
-    url: str,
-) -> list[str]:
+def check_fbref_available() -> bool:
+    """Circuit breaker: skip FBref entirely when it is challenge-gated.
+
+    Probes the FBref homepage once per run.  Plain ``requests`` cannot solve
+    the Cloudflare managed challenge, so a 403 / "Just a moment..." response
+    means every league would fail its internal 5x retry loop; short-circuiting
+    here makes the whole run fast and lets the Wikipedia fallback kick in.
+    """
+    global _FBREF_AVAILABLE
+    if _FBREF_AVAILABLE is not None:
+        return _FBREF_AVAILABLE
+    try:
+        resp = requests.get("https://fbref.com/", headers=REQUEST_HEADERS, timeout=20)
+        html = resp.text[:500]
+        _FBREF_AVAILABLE = resp.status_code == 200 and "Just a moment" not in html
+    except requests.RequestException:
+        _FBREF_AVAILABLE = False
+    if not _FBREF_AVAILABLE:
+        log.warning("FBref is challenge-gated; using Wikipedia fallback for all leagues")
+    return _FBREF_AVAILABLE
+
+
+def to_int(value: Any) -> int:
+    try:
+        return int(float(value or 0))
+    except (TypeError, ValueError):
+        return 0
+
+
+def extract_crests(url: str) -> list[str]:
     """Parse FBref standings HTML and return crest URLs ordered by position.
 
     Returns a list of absolute crest URLs, one per table row, in the same
@@ -182,121 +179,118 @@ def normalize_table(df, crest_urls: list[str]) -> list[dict[str, Any]]:
     return rows
 
 
+def scrape_fbref_league(
+    league: str, code: str, season_str: str
+) -> list[dict[str, Any]] | None:
+    """Try FBref for one league; return validated rows or None on any failure."""
+    if not check_fbref_available():
+        return None
+
+    fb_url = fbref_standings_url(league, season_str)
+    crest_urls: list[str] = []
+    if fb_url:
+        crest_urls = extract_crests(fb_url)
+
+    try:
+        import soccerdata as sd
+
+        fbref = sd.FBref(
+            leagues=[SOCCERDATA_LEAGUE_NAMES.get(league, league)],
+            seasons=season_str,
+        )
+        df = fbref.read_team_season_stats(stat_type="standard")
+    except Exception as e:
+        log.warning("FBref scrape failed for %s: %s", league, e)
+        return None
+
+    if df is None or df.empty:
+        log.warning("no FBref data for %s", league)
+        return None
+
+    rows = normalize_table(df, crest_urls)
+    if not rows:
+        log.warning("empty FBref table for %s", league)
+        return None
+
+    try:
+        wiki.validate_table(rows, code)
+    except ValueError as e:
+        log.warning("FBref table for %s failed validation: %s", code, e)
+        return None
+
+    return rows
+
+
 def main() -> int:
-    import soccerdata as sd
+    start = int(os.environ.get("STANDINGS_SEASON_START", wiki.current_season_start()))
+    season_str = f"{start}-{start + 1}"
+    requested = {
+        name.strip()
+        for name in os.environ.get("STANDINGS_LEAGUES", "").split(",")
+        if name.strip()
+    }
 
-    season_start = current_season_start()
-    season_str = f"{season_start}-{season_start + 1}"
-    all_standings: dict[str, dict[str, Any]] = {}
+    standings: dict[str, dict[str, Any]] = {}
+    missing: list[str] = []
 
-    for league in LEAGUES:
-        comp = league_code(league)
-        log.info("scraping %s (%s) season %s", league, comp, season_str)
-
-        # --- 1. Fetch crests from FBref HTML ---
-        fb_url = fbref_standings_url(league, season_str)
-        crest_urls: list[str] = []
-        if fb_url:
-            crest_urls = extract_crests(fb_url)
-        else:
-            log.warning("no FBref URL mapping for %s", league)
-
-        # --- 2. Read structured data via soccerdata ---
-        try:
-            fbref = sd.FBref(
-                leagues=[SOCCERDATA_LEAGUE_NAMES.get(league, league)],
-                seasons=season_str,
-            )
-            df = fbref.read_team_season_stats(stat_type='standard')
-        except Exception as e:
-            log.error("failed to scrape %s: %s", league, e)
+    for code, config in wiki.LEAGUES.items():
+        if requested and config["name"] not in requested:
             continue
+        log.info("fetching %s (%s) season %s", config["name"], code, start)
 
-        if df is None or df.empty:
-            log.warning("no data for %s", league)
+        source = "FBref"
+        rows = scrape_fbref_league(config["name"], code, season_str)
+        if rows is None:
+            source = "Wikipedia"
+            rows = wiki.fetch_league(code, start)
+
+        if rows is None:
+            missing.append(code)
             continue
-
-        table = normalize_table(df, crest_urls)
-        if not table:
-            log.warning("empty table for %s", league)
-            continue
-
-        all_standings[comp] = {
-            "competition": {"code": comp, "name": league},
-            "season": str(season_start),
-            "table": table,
+        standings[code] = {
+            "competition": {"code": code, "name": config["name"]},
+            "season": str(start),
+            "table": rows,
         }
-        log.info("  -> %d teams for %s", len(table), comp)
+        log.info("  -> %d teams for %s (via %s)", len(rows), code, source)
 
-    if not all_standings:
-        log.error("no standings scraped for any league")
+    allow_partial = os.environ.get("STANDINGS_ALLOW_PARTIAL", "").lower() in {"1", "true", "yes"}
+    allow_no_data = os.environ.get("STANDINGS_ALLOW_NO_DATA", "1").lower() in {"1", "true", "yes"}
+
+    if missing and not allow_partial:
+        if not standings and allow_no_data:
+            log.info("no current-season tables are available yet; leaving existing data untouched")
+            wiki.send_heartbeat(status="skipped", reason="current season tables unavailable")
+            return 0
+        log.error("refusing to ingest incomplete standings; missing: %s", ", ".join(missing))
+        wiki.send_heartbeat(status="failed", reason=f"missing competitions: {','.join(missing)}")
         return 1
 
-    payload = {
-        "season": str(season_start),
-        "standings": all_standings,
-    }
+    if not standings:
+        log.error("no valid standings found")
+        wiki.send_heartbeat(status="failed", reason="no valid standings")
+        return 1
 
-    headers = {
-        "Authorization": f"Bearer {SECRET}",
-        "Content-Type": "application/json",
-    }
+    webhook_url = os.environ.get("STANDINGS_WEBHOOK_URL", "")
+    secret = os.environ.get("STANDINGS_INGEST_SECRET", "")
+    if not webhook_url or not secret:
+        log.error("STANDINGS_WEBHOOK_URL and STANDINGS_INGEST_SECRET are required")
+        return 1
 
-    for attempt in range(1, MAX_RETRIES + 1):
-        try:
-            resp = requests.post(
-                WEBHOOK_URL, headers=headers, json=payload, timeout=120
-            )
-            if resp.status_code in (200, 204):
-                log.info(
-                    "ingested %d competitions (status %d)",
-                    len(all_standings),
-                    resp.status_code,
-                )
-                send_heartbeat()
-                return 0
-            if resp.status_code in (429, 500, 502, 503, 504):
-                wait = (2**attempt) + random.uniform(0, 3)
-                log.warning("status %d, retrying in %.1fs", resp.status_code, wait)
-                time.sleep(wait)
-                continue
-            log.error(
-                "non-retriable status %d: %s", resp.status_code, resp.text[:300]
-            )
-            send_heartbeat(status="failed", reason=f"non-retriable status {resp.status_code}")
-            return 1
-        except requests.RequestException as e:
-            log.error("transport error: %s", e)
-            time.sleep((2**attempt) + random.uniform(0, 3))
+    payload = wiki.build_payload(start, standings)
+    if not wiki.post_payload(payload, webhook_url, secret):
+        wiki.send_heartbeat(status="failed", reason="standings ingest failed")
+        return 1
 
-    send_heartbeat(status="failed", reason="max retries exceeded")
-    return 1
+    fixture_path = os.environ.get("STANDINGS_FIXTURE_PATH", "")
+    if fixture_path:
+        with open(fixture_path, "w", encoding="utf-8") as output:
+            json.dump(payload, output, ensure_ascii=False, indent=2)
+            output.write("\n")
+        log.info("wrote fixture -> %s", fixture_path)
 
-
-def send_heartbeat(status: str = "ok", reason: str = "") -> None:
-    """Notify the Next.js cron endpoint that this scrape completed.
-
-    The cron endpoint reports the heartbeat outcome to Sentry so the
-    daily-scrape health is visible in the Sentry dashboard.
-    """
-    if not HEARTBEAT_URL or not HEARTBEAT_SECRET:
-        return
-    try:
-        resp = requests.get(
-            HEARTBEAT_URL,
-            headers={
-                "x-cron-secret": HEARTBEAT_SECRET,
-                "User-Agent": "standings-scraper/1.0",
-            },
-            params={"status": status, "reason": reason} if reason else {"status": status},
-            timeout=15,
-        )
-        if resp.status_code == 200:
-            log.info("heartbeat sent (status=%s)", status)
-        else:
-            log.warning("heartbeat returned status %d", resp.status_code)
-    except requests.RequestException as e:
-        log.warning("heartbeat failed: %s", e)
+    wiki.send_heartbeat()
+    return 0
 
 
 if __name__ == "__main__":

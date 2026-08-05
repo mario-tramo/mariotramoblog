@@ -1,7 +1,8 @@
 name: Sports data scrape
 
 # Daily at 06:00 UTC. Fantasy data remains FBref-backed; standings use the
-# resilient Wikipedia REST source because FBref blocks GitHub Actions runners.
+# unified scraper that prefers FBref and falls back to the resilient
+# Wikipedia REST source when FBref blocks GitHub Actions runners.
 on:
   schedule:
     - cron: "0 6 * * *"
@@ -45,16 +46,16 @@ jobs:
           python-version: "3.12"
 
       - name: Install standings scraper dependencies
-        run: pip install --quiet requests beautifulsoup4 lxml
+        run: pip install --quiet requests beautifulsoup4 lxml soccerdata
 
-      - name: Run daily standings scrape (Wikipedia)
+      - name: Run daily standings scrape (FBref + Wikipedia fallback)
         env:
           STANDINGS_WEBHOOK_URL: ${{ secrets.STANDINGS_WEBHOOK_URL }}
           STANDINGS_INGEST_SECRET: ${{ secrets.STANDINGS_INGEST_SECRET }}
           STANDINGS_HEARTBEAT_URL: ${{ secrets.STANDINGS_WEBHOOK_URL }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
-        run: python scripts/standings_scrape_wikipedia.py
+        run: python scripts/standings_scrape.py
 
       - name: Run standings scraper unit tests
         working-directory: scripts
-        run: python -m unittest -v test_standings_scrape_wikipedia.py
+        run: python -m unittest -v test_standings_scrape.py test_standings_scrape_wikipedia.py
