@@ -179,7 +179,12 @@ export default async function BlogList({
 						</ul>
 					}
 				>
-<List posts={posts} className={listClassName} cardSize={cleanCardSize} />
+<List
+					posts={posts}
+					className={listClassName}
+					cardSize={cleanCardSize}
+					ignoreClientFilters={!!category}
+				/>
                 {(category || urlCategoria) && (
                     <div className="mt-8 text-center">
                         <Link

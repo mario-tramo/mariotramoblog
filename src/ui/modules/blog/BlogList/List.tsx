@@ -6,12 +6,20 @@ import { useBlogFilters } from '../store'
 export default function List({
 	posts,
 	cardSize = 'standard',
+	ignoreClientFilters = false,
 	...props
 }: {
 	posts: Sanity.BlogPost[]
 	cardSize?: 'standard' | 'large'
+	/** Fixed category sections must not inherit a different global URL filter. */
+	ignoreClientFilters?: boolean
 } & React.ComponentProps<'ul'>) {
-	const filtered = filterPosts(posts)
+	const { category, author } = useBlogFilters()
+	const filtered = filterPosts(
+		posts,
+		ignoreClientFilters ? 'All' : category,
+		ignoreClientFilters ? null : author,
+	)
 
 	if (!filtered.length) {
 		return (
@@ -37,9 +45,11 @@ export default function List({
 	)
 }
 
-export function filterPosts(posts: Sanity.BlogPost[]) {
-	const { category, author } = useBlogFilters()
-
+export function filterPosts(
+	posts: Sanity.BlogPost[],
+	category: string | null = 'All',
+	author: string | null = null,
+) {
 	return posts.filter((post) => {
 		if (category !== 'All' && author)
 			return (

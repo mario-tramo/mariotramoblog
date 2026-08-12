@@ -1,9 +1,9 @@
 import {
 	getHome4Posts,
+	getHome4CategoryPosts,
 	getPostsFeed,
 	pickHero,
 	byRecency,
-	postsInCategory,
 } from './data'
 import { getSectionTheme } from '@/lib/sectionBackgrounds'
 import { getCategoryColor } from '@/lib/categoryColors'
@@ -39,20 +39,22 @@ const NAV: NavItem[] = [
 }))
 
 export default async function Home4() {
-	const [all, trending] = await Promise.all([
-		getHome4Posts(),
-		getPostsFeed({ source: 'trending', limit: 5 }),
-	])
+	const [all, trending, calcio, mercato, formula1, tennis, basket, opinioni] =
+		await Promise.all([
+			getHome4Posts(),
+			getPostsFeed({ source: 'trending', limit: 5 }),
+			getHome4CategoryPosts('calcio', 8),
+			getHome4CategoryPosts('calciomercato', 8),
+			getHome4CategoryPosts('formula-1', 3),
+			getHome4CategoryPosts('tennis', 3),
+			getHome4CategoryPosts('basket', 3),
+			getHome4CategoryPosts('opinioni', 3),
+		])
 
 	const latest = byRecency(all)
 	const hero = pickHero(all)
 	const featured = latest.filter((p) => p.featured)
 	const picks = latest.filter((p) => !p.featured).slice(0, 4)
-
-	const bandPosts = (slug: string, n: number) => postsInCategory(all, slug, n)
-
-	const calcio = bandPosts('calcio', 8)
-	const mercato = bandPosts('calciomercato', 8)
 
 	const matrixItems: MatrixItem[] = [
 		{
@@ -60,28 +62,28 @@ export default async function Home4() {
 			kicker: 'Pista & box',
 			title: 'Formula 1',
 			href: '/formula-1',
-			posts: bandPosts('formula-1', 3),
+			posts: formula1,
 		},
 		{
 			theme: getSectionTheme('tennis')!,
 			kicker: 'Rete & rimbalzo',
 			title: 'Tennis',
 			href: '/tennis',
-			posts: bandPosts('tennis', 3),
+			posts: tennis,
 		},
 		{
 			theme: getSectionTheme('basket')!,
 			kicker: 'Parquet',
 			title: 'Basket',
 			href: '/basket',
-			posts: bandPosts('basket', 3),
+			posts: basket,
 		},
 		{
 			theme: getSectionTheme('opinioni')!,
 			kicker: 'Punto di vista',
 			title: 'Opinioni',
 			href: '/opinioni',
-			posts: bandPosts('opinioni', 3),
+			posts: opinioni,
 		},
 	].filter((m) => m.posts.length > 0)
 

@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
 import {
 	getHome4Posts,
+	getHome4CategoryPosts,
 	getPostsFeed,
 	pickHero,
 	byRecency,
-	postsInCategory,
 } from '@/app/(frontend)/home4/data'
 import Hero from '@/app/(frontend)/home4/Hero'
 import SectionBand from '@/app/(frontend)/home4/SectionBand'
@@ -64,20 +64,30 @@ const SECTIONS = [
 	},
 ] as const
 
-function postsForSection(posts: Home4Post[], id: string) {
+function postsForSection(
+	posts: Home4Post[],
+	id: string,
+	categoryPosts: Record<string, Home4Post[]>,
+) {
 	if (id === 'in-evidenza') {
 		const featured = posts.filter((post) => post.featured)
 		return (featured.length > 0 ? featured : byRecency(posts)).slice(0, 8)
 	}
 
-	return postsInCategory(posts, id, 8)
+	return categoryPosts[id] ?? []
 }
 
-function Home7Sections({ posts }: { posts: Home4Post[] }) {
+function Home7Sections({
+	posts,
+	categoryPosts,
+}: {
+	posts: Home4Post[]
+	categoryPosts: Record<string, Home4Post[]>
+}) {
 	return (
 		<>
 			{SECTIONS.map((section) => {
-				const sectionPosts = postsForSection(posts, section.id)
+				const sectionPosts = postsForSection(posts, section.id, categoryPosts)
 				const theme = getSectionTheme(section.title)
 
 				if (!theme || sectionPosts.length === 0) return null
@@ -99,35 +109,39 @@ function Home7Sections({ posts }: { posts: Home4Post[] }) {
 	)
 }
 
-function Home7Sports({ posts }: { posts: Home4Post[] }) {
+function Home7Sports({
+	categoryPosts,
+}: {
+	categoryPosts: Record<string, Home4Post[]>
+}) {
 	const sports: MatrixItem[] = [
 		{
 			theme: getSectionTheme('formula 1')!,
 			kicker: 'Pista & box',
 			title: 'Formula 1',
 			href: '/formula-1',
-			posts: postsInCategory(posts, 'formula-1', 3),
+			posts: categoryPosts['formula-1'] ?? [],
 		},
 		{
 			theme: getSectionTheme('tennis')!,
 			kicker: 'Rete & rimbalzo',
 			title: 'Tennis',
 			href: '/tennis',
-			posts: postsInCategory(posts, 'tennis', 3),
+			posts: categoryPosts.tennis ?? [],
 		},
 		{
 			theme: getSectionTheme('basket')!,
 			kicker: 'Parquet',
 			title: 'Basket',
 			href: '/basket',
-			posts: postsInCategory(posts, 'basket', 3),
+			posts: categoryPosts.basket ?? [],
 		},
 		{
 			theme: getSectionTheme('opinioni')!,
 			kicker: 'Punto di vista',
 			title: 'Opinioni',
 			href: '/opinioni',
-			posts: postsInCategory(posts, 'opinioni', 3),
+			posts: categoryPosts.opinioni ?? [],
 		},
 	].filter((item) => item.posts.length > 0)
 
@@ -135,10 +149,22 @@ function Home7Sports({ posts }: { posts: Home4Post[] }) {
 }
 
 export default async function Home7Page() {
-	const [allPosts, trending] = await Promise.all([
+	const categorySlugs = [
+		'calcio',
+		'calciomercato',
+		'formula-1',
+		'tennis',
+		'basket',
+		'opinioni',
+	] as const
+	const [allPosts, trending, ...categoryResults] = await Promise.all([
 		getHome4Posts(),
 		getPostsFeed({ source: 'trending', limit: 5 }),
+		...categorySlugs.map((slug) => getHome4CategoryPosts(slug, 8)),
 	])
+	const categoryPosts = Object.fromEntries(
+		categorySlugs.map((slug, index) => [slug, categoryResults[index]]),
+	) as Record<string, Home4Post[]>
 
 	const posts = byRecency(allPosts)
 	const hero = pickHero(allPosts)
@@ -155,13 +181,13 @@ export default async function Home7Page() {
 			<SportNav items={NAV} />
 			{hero && <Hero hero={hero} latest={posts} />}
 
-			<Home7Sections posts={posts} />
+			<Home7Sections posts={posts} categoryPosts={categoryPosts} />
 
 			{(trending.length > 0 || picks.length > 0) && (
 				<MostRead trending={trending} picks={picks} />
 			)}
 
-			<Home7Sports posts={posts} />
+			<Home7Sports categoryPosts={categoryPosts} />
 			<NewsletterBand />
 			<HomepageSeoFooter />
 		</div>

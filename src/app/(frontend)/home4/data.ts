@@ -22,11 +22,7 @@ const POST_PROJECTION = groq`{
 
 export type Home4Post = Sanity.BlogPost
 
-/**
- * One round-trip pull of the freshest posts (featured first). Grouping by
- * category, hero picks, etc. happen in JS so every section stays in sync
- * with the same snapshot.
- */
+/** One round-trip pull of the freshest posts for hero and general homepage content. */
 export async function getHome4Posts(): Promise<Home4Post[]> {
 	const lang = DEFAULT_LANG
 
@@ -40,6 +36,38 @@ export async function getHome4Posts(): Promise<Home4Post[]> {
 			| order(featured desc, publishDate desc)[0...60]${POST_PROJECTION}
 		`,
 		tags: ['sanity:posts', 'sanity:feed:homepage', 'sanity:feed:latest'],
+		revalidate: FEED_REVALIDATE_SECONDS,
+	})
+}
+
+/**
+ * Fetch a category independently from the global homepage feed. Homepage
+ * sections must not depend on a fixed global window: a busy football cycle
+ * can otherwise push every Tennis (or other sport) post outside `[0...60]`.
+ */
+export async function getHome4CategoryPosts(
+	slug: string,
+	limit: number,
+): Promise<Home4Post[]> {
+	const lang = DEFAULT_LANG
+
+	return fetchSanityLive<Home4Post[]>({
+		query: groq`
+			*[
+				_type == 'blog.post'
+				&& metadata.noIndex != true
+				&& (!defined(language) || language == '${lang}')
+				&& $category in categories[]->slug.current
+			]
+			| order(publishDate desc)[0...${limit}]${POST_PROJECTION}
+		`,
+		params: { category: slug },
+		tags: [
+			'sanity:posts',
+			'sanity:feed:homepage',
+			'sanity:feed:latest',
+			`sanity:category:${slug}`,
+		],
 		revalidate: FEED_REVALIDATE_SECONDS,
 	})
 }
@@ -58,17 +86,6 @@ export function pickHero(posts: Home4Post[]): Home4Post | undefined {
 		posts.find((p) => p.metadata?.image?.asset) ||
 		posts[0]
 	)
-}
-
-export function postsInCategory(
-	posts: Home4Post[],
-	slug: string,
-	limit: number,
-): Home4Post[] {
-	const match = posts.filter(
-		(p) => p.categories?.some((c) => c.slug?.current === slug),
-	)
-	return match.slice(0, limit)
 }
 
 export { getPostsFeed }
