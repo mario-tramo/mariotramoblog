@@ -128,7 +128,9 @@ export default async function BlogList({
 			)
 			: cn(
 				'carousel max-xl:full-bleed pb-4 max-xl:px-4',
-				isLarge ? '[--size:min(600px,45vw)]' : '[--size:320px]',
+				isLarge
+					? 'max-sm:[--size:88vw] sm:[--size:min(600px,45vw)]'
+					: 'max-sm:[--size:82vw] sm:[--size:320px]',
 			),
 	)
 

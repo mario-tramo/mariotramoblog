@@ -85,6 +85,10 @@ export default function Modules({
 				return { post }
 			case 'breadcrumbs':
 				return { currentPage: post || page }
+			case 'layout-block':
+				return { page }
+			case 'standings':
+				return { expanded: page?.metadata?.slug?.current === 'index' }
 			default:
 				return {}
 		}

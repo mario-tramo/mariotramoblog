@@ -47,7 +47,8 @@ export default function FeaturedPostCard({
 					<Img
 						className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
 						image={post.metadata.image}
-						width={600}
+						sizes="(max-width: 1023px) 100vw, 58vw"
+						quality={90}
 						alt={post.title}
 					/>
 				</div>

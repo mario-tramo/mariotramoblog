@@ -188,7 +188,7 @@ export default function EditorialBanner({
           {linkHref && (
             <Link
               href={linkHref}
-              className="inline-flex items-center gap-1 rounded px-[14px] py-[6px] text-[0.6rem] font-extrabold uppercase tracking-[0.1em] no-underline transition-opacity hover:opacity-90"
+              className="inline-flex items-center gap-1 rounded px-[14px] py-[8px] text-xs font-extrabold uppercase tracking-[0.1em] no-underline transition-opacity hover:opacity-90"
               style={{ background: accent, color: "#fff" }}
             >
               {ctaText ?? "LEGGI"} ›

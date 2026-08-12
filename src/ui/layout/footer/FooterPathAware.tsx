@@ -11,6 +11,7 @@ export default function FooterPathAware({
 	footer: ReactNode
 }) {
 	const pathname = usePathname()
+
 	const hideStayInTheGame = pathname === '/contatti'
 
 	return (

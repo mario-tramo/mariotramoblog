@@ -31,8 +31,8 @@ function Slide({
 			<Img
 				className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
 				image={post.metadata?.image}
-				width={800}
-				sizes="(min-width: 1024px) 50vw, 100vw"
+				sizes="(max-width: 639px) 100vw, (max-width: 1023px) 65vw, 50vw"
+				quality={90}
 				alt={post.title}
 				// The first slide is the hero / LCP candidate: load it eagerly at high
 				// priority instead of Next's default lazy loading. `preload` is wrong here

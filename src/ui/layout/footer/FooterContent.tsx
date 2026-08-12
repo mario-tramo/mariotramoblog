@@ -43,8 +43,8 @@ export default function FooterContent({
 			{/* Footer links */}
 			{footerLinks && footerLinks.length > 0 && (
 				<div className="bg-surface">
-					{/* Mobile: accordion + logo/social below */}
-					<div className="sm:hidden">
+					{/* Mobile/tablet: accordion + logo/social below */}
+					<div className="lg:hidden">
 						{footerLinks.map((group, i) => (
 							<div key={i} className="border-b border-line">
 								<button
@@ -106,7 +106,7 @@ export default function FooterContent({
 					</div>
 
 					{/* Desktop: row layout */}
-					<div className="mx-auto hidden max-w-screen-2xl flex-row gap-10 px-6 py-16 sm:flex">
+					<div className="mx-auto hidden max-w-screen-2xl flex-row gap-10 px-6 py-16 lg:flex">
 						<div className="flex shrink-0 items-start">
 							<Link href="/">
 								{logoUrl ? (
@@ -124,7 +124,7 @@ export default function FooterContent({
 								)}
 							</Link>
 						</div>
-						<div className="grid flex-1 grid-cols-3 gap-10">
+						<div className="grid min-w-0 flex-1 grid-cols-3 gap-10">
 							{footerLinks.map((group, i) => (
 								<div key={i}>
 									{group.link && (

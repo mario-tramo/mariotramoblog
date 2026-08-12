@@ -12,19 +12,23 @@ export default function InlineNewsletter({
 	const { email, setEmail, privacyConsent, setPrivacyConsent, isSubmitting, isSuccess, error, handleSubmit } =
 		useNewsletterForm()
 
-	const displayTitle = title || 'Calcio Quotidiano Nella Tua Inbox'
+	const displayTitle = title ?? 'Calcio Quotidiano Nella Tua Inbox'
 	const displayDescription =
-		description || 'Ricevi le migliori notizie, analisi ed esclusive ogni mattina.'
+		description ?? 'Ricevi le migliori notizie, analisi ed esclusive ogni mattina.'
 
 	return (
 		<div className="py-8">
 			<div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-				<div>
-					<h3 className="mb-2 text-lg font-bold uppercase">
-						{displayTitle}
-					</h3>
-					<p className="text-sm text-muted">{displayDescription}</p>
-				</div>
+				{(displayTitle || displayDescription) && (
+					<div>
+						{displayTitle && (
+							<h3 className="mb-2 text-lg font-bold uppercase">
+								{displayTitle}
+							</h3>
+						)}
+						{displayDescription && <p className="text-sm text-muted">{displayDescription}</p>}
+					</div>
+				)}
 
 				<div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
 					<form

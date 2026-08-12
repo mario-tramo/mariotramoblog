@@ -199,7 +199,7 @@ export default function HeaderContent({ navItems, ctas, logoUrl, siteTitle }: He
 							aria-label="Cerca notizie"
 						>
 							<Search size={16} />
-							<span className="hidden sm:inline">Cerca</span>
+							<span>Cerca</span>
 						</button>
 
 						{ctas?.map((cta, i) => (

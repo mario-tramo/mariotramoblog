@@ -46,8 +46,9 @@ export default function LayoutBlock({
 	column1,
 	column2,
 	column3,
+	page,
 	...props
-}: Sanity.LayoutBlock) {
+}: Sanity.LayoutBlock & { page?: Sanity.Page }) {
 	const cleanLayout = stegaClean(layout) || '1'
 	const cleanAlign = stegaClean(verticalAlign) || 'start'
 	const cleanGap = stegaClean(gap) || 'medium'
@@ -92,7 +93,7 @@ export default function LayoutBlock({
 				>
 					{columns.map((columnModules, i) => (
 						<div key={i} className="min-w-0 space-y-8">
-							<Modules modules={columnModules} nested />
+							<Modules modules={columnModules} page={page} nested />
 						</div>
 					))}
 				</div>
@@ -121,7 +122,7 @@ export default function LayoutBlock({
 			>
 				{columns.map((columnModules, i) => (
 					<div key={i} className="min-w-0 space-y-8">
-						<Modules modules={columnModules} nested />
+						<Modules modules={columnModules} page={page} nested />
 					</div>
 				))}
 			</div>

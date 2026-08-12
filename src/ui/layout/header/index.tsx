@@ -4,6 +4,7 @@ import { urlFor } from '@/sanity/lib/image'
 import resolveUrl from '@/lib/resolveUrl'
 import { stegaClean } from '@sanity/client/stega'
 import type { NavItem } from './HeaderContent'
+import HeaderPathAware from './HeaderPathAware'
 
 const HeaderContent = dynamic(() => import('./HeaderContent'))
 
@@ -61,5 +62,9 @@ export default async function Header() {
 		return resolved ? [resolved] : []
 	})
 
-	return <HeaderContent navItems={navItems} ctas={ctaItems} logoUrl={logoUrl} siteTitle={title} />
+	return (
+		<HeaderPathAware>
+			<HeaderContent navItems={navItems} ctas={ctaItems} logoUrl={logoUrl} siteTitle={title} />
+		</HeaderPathAware>
+	)
 }

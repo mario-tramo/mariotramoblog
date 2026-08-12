@@ -9,10 +9,12 @@ export default function PostPreview({
 	post,
 	skeleton,
 	cardSize = 'standard',
+	sizes,
 }: {
 	post?: Sanity.BlogPost
 	skeleton?: boolean
 	cardSize?: 'standard' | 'large'
+	sizes?: string
 }) {
 	if (!post && !skeleton) return null
 
@@ -21,10 +23,11 @@ export default function PostPreview({
 			<div className="group relative isolate flex h-full flex-col overflow-hidden rounded-xl">
 				<figure className="relative aspect-[16/9] overflow-hidden">
 					<Img
-						className="size-full object-cover transition-transform duration-600 group-hover:scale-105"
-					image={post?.metadata?.image}
-					width={800}
-					alt={post?.metadata?.image?.alt || post?.title || ''}
+						className="size-full object-cover transition-transform duration-600 group-hover:scale-105"						image={post?.metadata?.image}
+						sizes={sizes || '(max-width: 639px) 82vw, (max-width: 1023px) 65vw, 800px'}
+						quality={88}
+						alt={post?.metadata?.image?.alt || post?.title || ''}
+
 				/>
 
 				{/* Cinematic gradient overlay */}
@@ -65,13 +68,14 @@ export default function PostPreview({
 	return (
 		<article
 			data-sanity-id="PostPreview"
-			className="group relative isolate flex h-full flex-col overflow-hidden rounded-xl border border-line-soft bg-surface transition-all duration-400"
+			className="group relative isolate flex h-full min-w-0 flex-col overflow-hidden rounded-xl border border-line-soft bg-surface transition-all duration-400"
 		>
 			<figure className="relative aspect-[16/9] overflow-hidden bg-ink/3">
 				<Img
 					className="size-full object-cover transition-transform duration-600 group-hover:scale-105"
 					image={post?.metadata?.image}
-					width={700}
+					sizes={sizes || '(max-width: 639px) 92vw, (max-width: 1023px) 45vw, 400px'}
+					quality={86}
 					alt={post?.metadata?.image?.alt || post?.title || ''}
 				/>
 

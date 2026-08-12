@@ -16,6 +16,7 @@
 	--color-contrast-grad-to: #0A1525;
 
 	--color-muted: #94A3B8;
+	--color-meta: #647583; /* metadata text (design v6) */
 	--color-border: rgba(0, 209, 255, 0.12);
 	--color-line: rgba(0, 209, 255, 0.12);
 	--color-line-soft: rgba(0, 209, 255, 0.06);
@@ -28,6 +29,23 @@
 
 	--header-height: 4.5rem;
 	--max-height-fold: calc(100svh - var(--header-height));
+}
+
+/* Design v6 (route /home6): re-scoped color tokens. Everything inside the
+   .v6 wrapper resolves the token-based utilities (bg-surface, text-muted,
+   text-brand, …) to the v6 palette without touching the official pages. */
+.v6 {
+	--color-canvas: #050F1A;
+	--color-ink: #F2F6F8;
+	--color-accent: #00AEEF;
+	--color-surface: #091927; /* card */
+	--color-surface-soft: #0C1F30; /* card hover */
+	--color-muted: #9AAAB7; /* secondary text */
+	--color-border: rgba(120, 180, 220, 0.12);
+	--color-line: rgba(120, 180, 220, 0.12); /* card border */
+	--color-line-soft: rgba(255, 255, 255, 0.045); /* section divider */
+	--color-brand: #00AEEF;
+	--color-brand-deep: #0089C4;
 }
 
 @custom-variant hover (&:hover);
@@ -263,6 +281,112 @@
 		linear-gradient(180deg, #081A2C, #0F3253);
 }
 
+/* --- Homepage section band backgrounds (hardcoded — see src/lib/sectionBackgrounds.ts) --- */
+
+/* Each band: full-bleed hi-res artwork (opaque crops from
+   docs/references/sfondi_sezioni — no baked-in alpha), so the readability
+   layers now sit ON TOP of the photo: a vertical canvas fade that blends
+   adjacent sections through the page background, plus a soft side vignette.
+   The accent glow + vertical wash stay underneath as loading fallback.
+   The artwork uses `cover` with a percentage x-position tuned to each
+   crop's subject (ball, racket, hoop…): percentage positioning keeps the
+   subject in frame as the viewport narrows, so the same rule works on
+   mobile without extra media queries. */
+
+@utility bg-section-calcio {
+	background-image:
+		linear-gradient(180deg, var(--color-canvas), rgba(5, 15, 26, 0) 10%, rgba(5, 15, 26, 0) 90%, var(--color-canvas)),
+		linear-gradient(90deg, rgba(5, 15, 26, 0.45), rgba(5, 15, 26, 0) 16%, rgba(5, 15, 26, 0) 84%, rgba(5, 15, 26, 0.45)),
+		url('/sections/calcio.webp'),
+		radial-gradient(ellipse 90% 70% at 15% 100%, rgba(0, 174, 239, 0.16), transparent 70%),
+		linear-gradient(180deg, var(--color-canvas), #0B1C2C 6%, #10283E 88%, var(--color-canvas));
+	background-size: auto, auto, cover, auto, auto;
+	background-position: center, center, 15% center, center, center;
+	background-repeat: no-repeat;
+}
+@utility bg-section-in-evidenza {
+	background-image:
+		linear-gradient(180deg, var(--color-canvas), rgba(5, 15, 26, 0) 10%, rgba(5, 15, 26, 0) 90%, var(--color-canvas)),
+		linear-gradient(90deg, rgba(5, 15, 26, 0.45), rgba(5, 15, 26, 0) 16%, rgba(5, 15, 26, 0) 84%, rgba(5, 15, 26, 0.45)),
+		url('/sections/in-evidenza.webp'),
+		radial-gradient(ellipse 90% 70% at 50% 100%, rgba(0, 120, 200, 0.18), transparent 70%),
+		linear-gradient(180deg, var(--color-canvas), #081A2C 6%, #0F3253 88%, var(--color-canvas));
+	background-size: auto, auto, cover, auto, auto;
+	background-position: center, center, 12% center, center, center;
+	background-repeat: no-repeat;
+}
+@utility bg-section-calciomercato {
+	background-image:
+		linear-gradient(180deg, var(--color-canvas), rgba(5, 15, 26, 0) 10%, rgba(5, 15, 26, 0) 90%, var(--color-canvas)),
+		linear-gradient(90deg, rgba(5, 15, 26, 0.45), rgba(5, 15, 26, 0) 16%, rgba(5, 15, 26, 0) 84%, rgba(5, 15, 26, 0.45)),
+		url('/sections/calciomercato.webp'),
+		radial-gradient(ellipse 90% 70% at 85% 100%, rgba(0, 174, 239, 0.16), transparent 70%),
+		linear-gradient(180deg, var(--color-canvas), #081A2C 6%, #0E2A46 88%, var(--color-canvas));
+	background-size: auto, auto, cover, auto, auto;
+	background-position: center, center, 25% center, center, center;
+	background-repeat: no-repeat;
+}
+@utility bg-section-formula-1 {
+	background-image:
+		linear-gradient(180deg, var(--color-canvas), rgba(5, 15, 26, 0) 10%, rgba(5, 15, 26, 0) 90%, var(--color-canvas)),
+		linear-gradient(90deg, rgba(5, 15, 26, 0.4), rgba(5, 15, 26, 0) 16%, rgba(5, 15, 26, 0) 84%, rgba(5, 15, 26, 0.4)),
+		url('/sections/formula-1.webp'),
+		radial-gradient(ellipse 90% 70% at 85% 100%, rgba(229, 57, 53, 0.20), transparent 70%),
+		linear-gradient(180deg, var(--color-canvas), #1A0B10 6%, #2E1218 88%, var(--color-canvas));
+	background-size: auto, auto, cover, auto, auto;
+	background-position: center, center, 55% center, center, center;
+	background-repeat: no-repeat;
+}
+@utility bg-section-tennis {
+	background-image:
+		linear-gradient(180deg, var(--color-canvas), rgba(5, 15, 26, 0) 10%, rgba(5, 15, 26, 0) 90%, var(--color-canvas)),
+		linear-gradient(90deg, rgba(5, 15, 26, 0.45), rgba(5, 15, 26, 0) 16%, rgba(5, 15, 26, 0) 84%, rgba(5, 15, 26, 0.45)),
+		url('/sections/tennis.webp'),
+		radial-gradient(ellipse 90% 70% at 80% 100%, rgba(53, 184, 107, 0.18), transparent 70%),
+		linear-gradient(180deg, var(--color-canvas), #0D2018 6%, #173527 88%, var(--color-canvas));
+	background-size: auto, auto, cover, auto, auto;
+	background-position: center, center, 15% center, center, center;
+	background-repeat: no-repeat;
+}
+@utility bg-section-basket {
+	background-image:
+		linear-gradient(180deg, var(--color-canvas), rgba(5, 15, 26, 0) 10%, rgba(5, 15, 26, 0) 90%, var(--color-canvas)),
+		linear-gradient(90deg, rgba(5, 15, 26, 0.45), rgba(5, 15, 26, 0) 16%, rgba(5, 15, 26, 0) 84%, rgba(5, 15, 26, 0.45)),
+		url('/sections/basket.webp'),
+		radial-gradient(ellipse 90% 70% at 15% 100%, rgba(242, 140, 40, 0.18), transparent 70%),
+		linear-gradient(180deg, var(--color-canvas), #1B1208 6%, #2E1D0E 88%, var(--color-canvas));
+	background-size: auto, auto, cover, auto, auto;
+	background-position: center, center, 25% center, center, center;
+	background-repeat: no-repeat;
+}
+@utility bg-section-opinioni {
+	background-image:
+		linear-gradient(180deg, var(--color-canvas), rgba(5, 15, 26, 0) 10%, rgba(5, 15, 26, 0) 90%, var(--color-canvas)),
+		linear-gradient(90deg, rgba(5, 15, 26, 0.45), rgba(5, 15, 26, 0) 16%, rgba(5, 15, 26, 0) 84%, rgba(5, 15, 26, 0.45)),
+		url('/sections/opinioni.webp'),
+		radial-gradient(ellipse 90% 70% at 85% 100%, rgba(168, 85, 247, 0.18), transparent 70%),
+		linear-gradient(180deg, var(--color-canvas), #150D26 6%, #241543 88%, var(--color-canvas));
+	background-size: auto, auto, cover, auto, auto;
+	background-position: center, center, 25% center, center, center;
+	background-repeat: no-repeat;
+}
+
+/* Home6 split panels: Formula 1 is a horizontal artwork band. Do not use
+   `cover` here: the split column is much taller/narrower than the source and
+   cover crops the car/track artwork horizontally, making it look misaligned
+   against the cards. Keep the source ratio and let the wash gradients fill
+   the remaining panel height. */
+.v6 .bg-section-formula-1 {
+	background-size: auto, auto, 100% auto, auto, auto;
+	background-position: center, center, center top, center, center;
+}
+
+@media (min-width: 1024px) {
+	.v6 .bg-section-formula-1 {
+		background-size: auto, auto, max(100%, 760px) auto, auto, auto;
+	}
+}
+
 /* --- Hero Ken Burns cinematic zoom --- */
 @keyframes ken-burns {
 	0% {
@@ -275,6 +399,17 @@
 
 .animate-ken-burns {
 	animation: ken-burns 8s ease-out forwards;
+}
+
+/* --- Live ticker marquee --- */
+
+@keyframes ticker-x {
+	from { translate: 0 0; }
+	to { translate: -50% 0; }
+}
+
+@utility animate-ticker {
+	animation: ticker-x 70s linear infinite;
 }
 
 /* --- SectionCard subtle hover glow --- */
@@ -436,34 +571,17 @@
 /* --- Card hover effects (PostPreview, SectionCard) --- */
 
 @layer base {
-	/* Cards get cinematic lift + glow on hover */
-	.group:has(> figure) {
-		transition: box-shadow 400ms, transform 400ms, border-color 400ms;
-		transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-
-		&:hover {
-			box-shadow:
-				0 12px 40px rgba(0, 0, 0, 0.35),
-				0 0 30px rgba(0, 209, 255, 0.06),
-				0 0 0 1px rgba(0, 209, 255, 0.2);
-			transform: translateY(-4px);
-			border-color: rgba(0, 209, 255, 0.15);
-		}
+	/* Card motion is scoped to the editorial card component so global figures
+	   and unrelated grouped modules keep their own interaction styles. */
+	.post-preview:hover {
+		box-shadow:
+			0 12px 40px rgba(0, 0, 0, 0.35),
+			0 0 30px rgba(0, 174, 239, 0.06),
+			0 0 0 1px rgba(0, 174, 239, 0.2);
 	}
 
-	/* Image zoom on card hover */
-	figure {
+	.post-preview figure {
 		overflow: hidden;
-
-		& img {
-			transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1),
-				filter 600ms cubic-bezier(0.22, 1, 0.36, 1);
-		}
-	}
-
-	.group:hover figure img {
-		transform: scale(1.05);
-		filter: brightness(1.08);
 	}
 }
 
@@ -846,6 +964,12 @@
 
 @utility section {
 	@apply mx-auto max-w-screen-2xl p-8 max-md:px-4 md:py-24;
+}
+
+/* Full-width section container: same padding as .section but no
+   max-width cap — used by full-bleed homepage themed bands. */
+@utility section-full {
+	@apply mx-auto w-full p-8 max-md:px-4 md:py-24;
 }
 
 /* richtext */

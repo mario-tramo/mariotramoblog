@@ -6,9 +6,11 @@ import { Play } from 'lucide-react'
 export default function PostPreviewBytes({
 	post,
 	skeleton,
+	sizes,
 }: {
 	post?: Sanity.BlogPost
 	skeleton?: boolean
+	sizes?: string
 }) {
 	if (!post && !skeleton) return null
 
@@ -33,7 +35,8 @@ export default function PostPreviewBytes({
 				<Img
 					className="size-full object-cover transition-transform duration-300 group-hover/byte:scale-108"
 					image={post?.metadata?.image}
-					width={400}
+					sizes={sizes || '(max-width: 639px) 116px, 196px'}
+					quality={88}
 					alt={post?.metadata?.image?.alt || post?.title || ''}
 				/>
 			</figure>

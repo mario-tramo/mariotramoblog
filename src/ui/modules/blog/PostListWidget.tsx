@@ -47,7 +47,8 @@ function SidebarThumbs({
 							<Img
 								className="size-full object-cover"
 								image={post.metadata.image}
-								width={128}
+								sizes="64px"
+								quality={85}
 								alt={post.title}
 							/>
 						</figure>
@@ -120,7 +121,8 @@ function Grid({
 						<Img
 							className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
 							image={post.metadata.image}
-							width={400}
+							sizes="(max-width: 767px) 50vw, 25vw"
+							quality={88}
 							alt={post.title}
 						/>
 					</div>
