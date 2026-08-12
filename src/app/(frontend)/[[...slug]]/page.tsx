@@ -33,10 +33,11 @@ import errors from '@/lib/errors'
 import { getRequestSearchParams } from '@/lib/request-context'
 
 // Content freshness is driven by the Sanity webhook (`/api/revalidate`,
-// tag-based). This interval is only a safety net — a short one forces a
-// full re-render per page per interval, burning function invocations and
-// ISR writes on every crawler pass.
-export const revalidate = 3600
+// tag-based) plus explicit revalidation of the homepage/category/article
+// routes on publish. This interval is only a safety net for missed/delayed
+// webhooks: short enough that a stale or empty section recovers within
+// minutes, long enough to avoid a full re-render per page per request.
+export const revalidate = 300
 
 export default async function Page({ params }: Props) {
 	const resolvedParams = await params

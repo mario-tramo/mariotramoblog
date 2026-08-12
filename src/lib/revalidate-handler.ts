@@ -71,6 +71,46 @@ function affectsLayout(payload: RevalidatePayload): boolean {
 	return !type || type === 'site' || type === 'announcement' || type === 'redirect'
 }
 
+/**
+ * Add the routes that *depend on* a changed document but are not necessarily
+ * in the webhook's own `path` (which usually only names the document itself).
+ *
+ * Without these, a newly published post would only revalidate its own article
+ * route; the homepage feed and the category section could keep serving the
+ * previous render — which is exactly the "section shows empty/stale" bug. The
+ * push is strictly conditional so partial webhook payloads still do the right
+ * thing and unknown types are ignored.
+ */
+function addAggregatePaths(
+	doc: RevalidatePayload['document'],
+	paths: string[],
+): void {
+	if (!doc?._type) return
+
+	const add = (path: string) => {
+		if (path.startsWith('/') && !paths.includes(path)) paths.push(path)
+	}
+
+	switch (doc._type) {
+		case 'blog.post':
+			// Homepage feed, the category section, and the canonical article.
+			add('/')
+			if (doc.categorySlug) add(`/${doc.categorySlug}`)
+			if (doc.categorySlug && doc.slug) add(`/${doc.categorySlug}/${doc.slug}`)
+			break
+		case 'blog.category':
+			add('/')
+			if (doc.slug) add(`/${doc.slug}`)
+			break
+		case 'person':
+			if (doc.slug) add(`/autori/${doc.slug}`)
+			break
+		case 'page':
+			add(doc.slug === 'index' ? '/' : `/${doc.slug}`)
+			break
+	}
+}
+
 export function processRevalidation(
 	payload: RevalidatePayload,
 	deps: RevalidateDeps,
@@ -80,11 +120,14 @@ export function processRevalidation(
 	for (const tag of flushedTags) deps.revalidateTag(tag, { expire: 0 })
 
 	const paths = normalisePaths(payload)
-	if (affectsLayout(payload)) deps.revalidatePath('/', 'layout')
+	const layoutInvalidated = affectsLayout(payload)
+	if (layoutInvalidated) deps.revalidatePath('/', 'layout')
+
+	addAggregatePaths(payload.document, paths)
 	for (const path of paths) deps.revalidatePath(path)
 
 	return {
 		flushedTags,
-		paths: [...(affectsLayout(payload) ? ['/'] : []), ...paths],
+		paths: layoutInvalidated && !paths.includes('/') ? ['/', ...paths] : paths,
 	}
 }

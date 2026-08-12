@@ -1,4 +1,5 @@
 import { DEFAULT_LANG } from '@/lib/i18n'
+import { FEED_REVALIDATE_SECONDS } from '@/sanity/lib/cache'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
@@ -102,6 +103,7 @@ export default async function BlogList({
 			limit: limit ?? 0,
 		},
 		tags: ['sanity:posts', 'sanity:feed:latest', ...(category ? [`sanity:category:${category}`] : [])],
+		revalidate: FEED_REVALIDATE_SECONDS,
 	})
 
 	// Show rich empty state when a category page has no posts

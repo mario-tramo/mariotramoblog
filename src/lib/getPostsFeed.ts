@@ -1,4 +1,5 @@
 import { DEFAULT_LANG } from '@/lib/i18n'
+import { FEED_REVALIDATE_SECONDS } from '@/sanity/lib/cache'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
@@ -80,6 +81,7 @@ async function getLatestPosts(
 		`,
 		params: filterParams,
 		tags: ['sanity:posts', 'sanity:feed:latest', 'sanity:feed:homepage'],
+		revalidate: FEED_REVALIDATE_SECONDS,
 	})
 }
 
@@ -112,6 +114,7 @@ async function getTrendingPosts(
 		`,
 		params: { ...filterParams, topSlugs },
 		tags: ['sanity:posts', 'sanity:feed:homepage'],
+		revalidate: FEED_REVALIDATE_SECONDS,
 	})
 
 	// Preserve view-count order from Redis

@@ -39,7 +39,34 @@ describe('processRevalidation', () => {
 		assert.ok(out.flushedTags.includes('sanity:type:blog.post'))
 		assert.ok(out.flushedTags.includes('sanity:posts'))
 		assert.ok(!out.flushedTags.includes('sanity'))
-		assert.deepEqual(calls.paths, [])
+		// No layout invalidate, but the aggregate routes it feeds are revalidated.
+		assert.ok(calls.paths.every((entry) => entry.type === undefined))
+		assert.deepEqual(calls.paths.map((entry) => entry.path), [
+			'/',
+			'/calcio',
+			'/calcio/mio-post',
+		])
+	})
+
+	test('blog.post without category only revalidates the homepage feed', () => {
+		const { deps, calls } = makeDeps()
+		const out = processRevalidation(
+			{ document: { _type: 'blog.post', _id: 'abc', slug: 'mio-post' } },
+			deps,
+		)
+		assert.deepEqual(out.paths, ['/'])
+		assert.deepEqual(calls.paths.map((entry) => entry.path), ['/'])
+	})
+
+	test('blog.category with slug revalidates the section page and homepage', () => {
+		const { deps, calls } = makeDeps()
+		const out = processRevalidation(
+			{ document: { _type: 'blog.category', _id: 'abc', slug: 'tennis' } },
+			deps,
+		)
+		assert.deepEqual(calls.paths.map((entry) => entry.path), ['/', '/tennis'])
+		assert.ok(calls.paths.every((entry) => entry.type === undefined))
+		assert.deepEqual(out.paths, ['/', '/tennis'])
 	})
 
 	test('site payload invalidates the layout but not the global tag', () => {
@@ -75,7 +102,8 @@ describe('processRevalidation', () => {
 		)
 		assert.deepEqual(
 			calls.paths.filter((entry) => entry.type === undefined).map((entry) => entry.path),
-			['/ok'],
+			// '/ok' from the payload plus the homepage feed aggregate.
+			['/ok', '/'],
 		)
 	})
 

@@ -1,4 +1,5 @@
 import { DEFAULT_LANG } from '@/lib/i18n'
+import { FEED_REVALIDATE_SECONDS } from '@/sanity/lib/cache'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { IMAGE_QUERY } from '@/sanity/lib/queries'
@@ -39,6 +40,7 @@ export async function getHome4Posts(): Promise<Home4Post[]> {
 			| order(featured desc, publishDate desc)[0...60]${POST_PROJECTION}
 		`,
 		tags: ['sanity:posts', 'sanity:feed:homepage', 'sanity:feed:latest'],
+		revalidate: FEED_REVALIDATE_SECONDS,
 	})
 }
 

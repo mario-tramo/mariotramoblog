@@ -103,3 +103,21 @@ export function tagsForDocument(doc: RevalidationDocument): string[] {
 
 /** Emergency-only target for an intentional full Sanity cache flush. */
 export const SANITY_GLOBAL_TAG = GLOBAL_TAG
+
+/**
+ * Safety-net freshness for the Next.js Data Cache (seconds).
+ *
+ * These are NOT the primary invalidation mechanism: tag-based revalidation via
+ * the Sanity webhook (`/api/revalidate`) is what makes published posts appear
+ * immediately. They only bound how stale a render can get when a webhook is
+ * missed or delayed, so a section that used to go empty/stale for up to an
+ * hour is now limited to minutes.
+ *
+ * The Feed tier is shorter because home/section/post feeds are the hot path
+ * for readers (issue: sections showing empty after publishing); the generic
+ * default covers everything else (pages, site config, templates).
+ *
+ * Lives here (a plain module) so it can be imported by "use server" files too.
+ */
+export const DEFAULT_REVALIDATE_SECONDS = 300
+export const FEED_REVALIDATE_SECONDS = 60

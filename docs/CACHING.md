@@ -6,7 +6,19 @@ Tutte le query Sanity pubblicate passano per **Next.js Data Cache** (`unstable_c
 Ogni query viene marcata con tag granulari (`sanity:type:*`, `sanity:slug:*`,
 `sanity:doc:*`, più il globale `sanity`). Quando Sanity pubblica un documento,
 il webhook chiama `/api/revalidate` che esegue `revalidateTag(tag, { expire: 0 })`
-solo sui tag coinvolti — invalidazione chirurgica, niente full rebuild.
+sui tag coinvolti e **revalida esplicitamente le route aggregate** (homepage,
+sezione categoria, articolo) — invalidazione chirurgica, niente full rebuild.
+
+Tempi di freschezza (data cache):
+
+| Tier | TTL | Dove |
+|---|---|---|
+| Feed (`FEED_REVALIDATE_SECONDS`) | 60s | home/section/listing: `blog-frontpage`, `blog-list`, `article-carousel`, `getPostsFeed`, `getHome4Posts` |
+| Default (`DEFAULT_REVALIDATE_SECONDS`) | 300s | pagine, sito, template, ogni altra query |
+| ISR pagina (`revalidate` in `page.tsx`) | 300s | safety net per l'HTML servito |
+
+Questi TTL sono solo il safety net quando un webhook viene perso o ritarda;
+l'invalidazione webhook rende i contenuti visibili immediatamente.
 
 ---
 
@@ -24,14 +36,23 @@ Browser → Next.js (Vercel)
 
 - **Cache layer**: `src/sanity/lib/cache.ts` espone `buildTags()` (puro) e
   `tagsForDocument()` (per auto-derive lato server). Le alte chiamate
-  usano **esclusivamente** `fetchSanityLive()` da `src/sanity/lib/fetch.ts`
-  (next-sanity), che è già integrato con Next.js Data Cache. Il parametro
-  `cacheHint: { type, id, slug }` arricchisce i tag in modo granulare.
-  Non esiste più `cachedFetch()` — è stato rimosso come dead code.
+  usano **esclusivamente** `fetchSanityLive()` da `src/sanity/lib/fetch.ts`,
+  che pubblica attraverso `unstable_cache` (integrato con Next.js Data Cache)
+  e può ricevere `revalidate: FEED_REVALIDATE_SECONDS` per le query calde.
+  Il parametro `cacheHint: { type, id, slug }` arricchisce i tag in modo
+  granulare. Il client Sanity è resiliente (timeout 10s, retry con backoff
+  esponenziale su errori transienti/429/5xx). Non esiste più `cachedFetch()`
+  — è stato rimosso come dead code.
 - **Invalidation**: `src/app/api/revalidate/route.ts` accetta due modalità:
   `tags: string[]` espliciti, oppure `document: { _type, _id, slug }` da
   cui i tag sono derivati server-side via `tagsForDocument()`. In entrambi
   i casi viene flushato anche il tag globale `'sanity'` come failsafe.
+  In più, `processRevalidation()` revalida le **route che dipendono** dal
+  documento: un `blog.post` invalida `/` (homepage), `/<categoria>` (sezione)
+  e `/<categoria>/<slug>` (articolo); un `blog.category` invalida `/` e
+  `/<slug>`; un `person` invalida `/autori/<slug>`; un `page` invalida la
+  sua pagina. Questo evita che una sezione resti vuota/stale dopo una
+  pubblicazione anche quando il webhook manda solo il path dell'articolo.
 - **Auth**: il segreto del webhook è passato come `x-revalidate-secret`
   header, `Authorization: Bearer`, o `?secret=` query. Tutte le rotte
   protette passano per `isAuthorized()` in `src/lib/http-auth.ts`
@@ -137,10 +158,12 @@ Cosa succede quando un autore pubblica un singolo post:
 3. `isAuthorized()` confronta `safeEqual(secret, REVALIDATE_SECRET)` → OK.
 4. `processRevalidation()` (in `src/lib/revalidate-handler.ts`) deriva i
    tag finali e chiama `revalidateTag(t, { expire: 0 })` per ognuno.
-5. Chiama `revalidatePath('/', 'layout')` e `revalidatePath(path)`.
+5. Revalida le route aggregate: `revalidatePath('/', 'layout')` per
+   site/announcement, e `revalidatePath()` sulle pagine dipendenti
+   (homepage, sezione, articolo) per i contenuti.
 6. Restituisce `{ ok: true, flushedTags: [...], paths: [...] }`.
-7. Il prossimo render di `/calcio/mio-post` ricostruisce solo quella pagina.
-   Tutte le altre restano cached.
+7. Il prossimo render di `/calcio/mio-post`, di `/calcio` e della homepage
+   ricostruisce solo quelle pagine. Tutte le altre restano cached.
 
 ---
 
@@ -225,11 +248,21 @@ curl -sI https://trmsport.com/calcio/ultimo-post | head
 3. **Concurrency / dogpile**: `unstable_cache` deduplica le richieste
    concorrenti per la stessa key — una sola esegue la query Sanity, le altre
    ricevono lo stesso risultato. Niente stampede.
-4. **Cache locale su viewer**: il CDN di Vercel a livello edge (HTTP cache)
+4. **Transient Sanity/CDN**: `@sanity/client` ritenta automaticamente su
+   errori di rete/timeout e su 429/5xx (max 5 tentativi, backoff esponenziale
+   con jitter, cap ~4s; timeout richiesta 10s). La CDN Sanity può servire
+   risultati stale fino a ~60s dopo una pubblicazione: se la web deep-link
+   arriva in quella finestra, rileggi dopo ~1 minuto.
+5. **Sezioni senza articoli**: una categoria con 0 post pubblicati mostra
+   per design la schermata "Qui non c'è ancora azione"
+   (`NoArticlesFound`). Non è un errore. Se una sezione con contenuti
+   appare vuota, guardare i log di `/api/revalidate` (webhook mancante o
+   con document parziale).
+6. **Cache locale su viewer**: il CDN di Vercel a livello edge (HTTP cache)
    è separato dalla Next.js Data Cache. La data cache controlla solo le
    Server Components / fetch. La cache HTTP edge è controllata da
    `Cache-Control` headers (vedi `app/api/og/route.tsx`).
-5. **`fetchSanity` direct**: NON passa per `unstable_cache`. È usato in
+7. **`fetchSanity` direct**: NON passa per `unstable_cache`. È usato in
    contesti build-time (es. redirect in `next.config.ts`) dove la cache
    non serve.
 

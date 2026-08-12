@@ -1,4 +1,5 @@
 import { DEFAULT_LANG } from '@/lib/i18n'
+import { FEED_REVALIDATE_SECONDS } from '@/sanity/lib/cache'
 import { fetchSanityLive } from '@/sanity/lib/fetch'
 import groq from 'groq'
 import { cn } from '@/lib/utils'
@@ -88,6 +89,7 @@ export default async function ArticleCarousel({
 			...(urlCategoria ? { urlCategoria } : {}),
 		},
 		tags: ['sanity:posts', 'sanity:feed:homepage'],
+		revalidate: FEED_REVALIDATE_SECONDS,
 	})
 
 	if (!posts?.length) return null
