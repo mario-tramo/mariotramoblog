@@ -6,7 +6,12 @@ name: Sports data scrape
 on:
   schedule:
     - cron: "0 6 * * *"
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      run_standings_tests:
+        description: "Esegui anche i test dello scraper classifiche"
+        type: boolean
+        default: true
 
 permissions:
   contents: read
