@@ -117,7 +117,11 @@ export const SANITY_GLOBAL_TAG = GLOBAL_TAG
  * for readers (issue: sections showing empty after publishing); the generic
  * default covers everything else (pages, site config, templates).
  *
+ * Both tiers are deliberately long: on Vercel every Data Cache expiry+refresh
+ * is billed as an ISR write, multiplied by the number of cached queries per
+ * page render, so short TTLs here saturate the plan's ISR quota.
+ *
  * Lives here (a plain module) so it can be imported by "use server" files too.
  */
-export const DEFAULT_REVALIDATE_SECONDS = 300
-export const FEED_REVALIDATE_SECONDS = 60
+export const DEFAULT_REVALIDATE_SECONDS = 3600
+export const FEED_REVALIDATE_SECONDS = 900

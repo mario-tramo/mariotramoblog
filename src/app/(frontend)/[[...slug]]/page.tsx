@@ -35,9 +35,10 @@ import { getRequestSearchParams } from '@/lib/request-context'
 // Content freshness is driven by the Sanity webhook (`/api/revalidate`,
 // tag-based) plus explicit revalidation of the homepage/category/article
 // routes on publish. This interval is only a safety net for missed/delayed
-// webhooks: short enough that a stale or empty section recovers within
-// minutes, long enough to avoid a full re-render per page per request.
-export const revalidate = 300
+// webhooks. It is deliberately long: every regeneration counts against
+// Vercel's ISR write quota, and with ~150 crawled URLs a short interval
+// saturates the plan limit on background regenerations alone.
+export const revalidate = 3600
 
 export default async function Page({ params }: Props) {
 	const resolvedParams = await params
