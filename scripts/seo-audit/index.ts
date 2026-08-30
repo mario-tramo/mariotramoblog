@@ -25,7 +25,8 @@ import { generateHtmlReport } from './report'
 import { getAutoFixable, buildFixes, applyFixes } from './fix'
 import type { AuditData, AuditSummary } from './types'
 
-config({ path: resolve(__dirname, '../../.env.local') })
+// Load local defaults without overriding CI/deployment environment variables.
+config({ path: resolve(__dirname, '../../.env.local'), override: false })
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'geqdctr3'
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
@@ -80,7 +81,7 @@ async function main(): Promise<void> {
 
   // Sanity client
   if (!readToken) {
-    console.error('❌ SANITY_API_READ_TOKEN non trovato in .env.local')
+    console.error('❌ SANITY_API_READ_TOKEN non trovato: configura il secret in GitHub Actions o .env.local in locale')
     process.exit(1)
   }
 

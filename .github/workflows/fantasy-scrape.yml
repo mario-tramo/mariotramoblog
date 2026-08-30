@@ -63,6 +63,7 @@ jobs:
           STANDINGS_INGEST_SECRET: ${{ secrets.STANDINGS_INGEST_SECRET }}
           STANDINGS_HEARTBEAT_URL: ${{ secrets.STANDINGS_WEBHOOK_URL }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          STANDINGS_ALLOW_PARTIAL: "true"
         run: python scripts/standings_scrape.py
 
       - name: Run standings scraper unit tests

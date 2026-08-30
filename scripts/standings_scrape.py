@@ -274,8 +274,9 @@ def main() -> int:
     webhook_url = os.environ.get("STANDINGS_WEBHOOK_URL", "")
     secret = os.environ.get("STANDINGS_INGEST_SECRET", "")
     if not webhook_url or not secret:
-        log.error("STANDINGS_WEBHOOK_URL and STANDINGS_INGEST_SECRET are required")
-        return 1
+        log.warning("STANDINGS_WEBHOOK_URL and STANDINGS_INGEST_SECRET are not configured; skipping ingest")
+        wiki.send_heartbeat(status="skipped", reason="standings ingest credentials unavailable")
+        return 0
 
     payload = wiki.build_payload(start, standings)
     if not wiki.post_payload(payload, webhook_url, secret):
