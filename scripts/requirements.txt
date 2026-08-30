@@ -1,0 +1,4 @@
+soccerdata
+requests
+beautifulsoup4
+lxml
