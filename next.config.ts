@@ -53,7 +53,7 @@ export default withSentryConfig(
 		},
 
 		images: {
-			qualities: [75, 88],
+			qualities: [75, 86, 88],
 			dangerouslyAllowSVG: true,
 			contentDispositionType: 'attachment',
 			contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",

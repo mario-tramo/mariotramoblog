@@ -22,6 +22,7 @@ export default function Root(props: ComponentProps<'html'>) {
 			lang="it"
 			className={`${inter.variable} ${bebasNeue.variable}`}
 			data-scroll-behavior="smooth"
+			suppressHydrationWarning
 			{...props}
 		/>
 	)
