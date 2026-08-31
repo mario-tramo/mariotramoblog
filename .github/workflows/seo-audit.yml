@@ -80,10 +80,14 @@ jobs:
         if: always()
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_IDS: ${{ secrets.TELEGRAM_CHAT_IDS }}
         run: |
           RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          curl --fail --silent --show-error -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
-            -F chat_id="${TELEGRAM_CHAT_ID}" \
-            -F document=@docs/seo-audit-report.html \
-            -F caption="🔍 SEO Audit completato — report in allegato. Dettagli: ${RUN_URL}"
+          for chat_id in ${TELEGRAM_CHAT_IDS//,/ }; do
+            if [ -z "$chat_id" ]; then continue; fi
+            echo "Invio report a chat_id=${chat_id}"
+            curl --fail --silent --show-error -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
+              -F chat_id="${chat_id}" \
+              -F document=@docs/seo-audit-report.html \
+              -F caption="🔍 SEO Audit completato — report in allegato. Dettagli: ${RUN_URL}"
+          done
