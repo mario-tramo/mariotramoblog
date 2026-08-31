@@ -53,7 +53,7 @@ jobs:
           if [ "${{ github.event.inputs.apply_fixes }}" == "true" ]; then
             pnpm seo:audit:fix:apply --output docs/seo-audit-report.html
           else
-            pnpm seo:audit --ci --output docs/seo-audit-report.html
+            pnpm seo:audit --output docs/seo-audit-report.html
           fi
 
       - name: Commit report
