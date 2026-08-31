@@ -101,7 +101,11 @@ def clean_team(value: str) -> str:
 
 
 def normalized_header(value: str) -> str:
-    return re.sub(r"[^a-z]", "", value.lower())
+    label = re.sub(r"[^a-z]", "", value.lower())
+    # Wikipedia standings tables append "v t e" (view / talk / edit) navigation
+    # links to the Team header cell, e.g. "Team v t e" -> "teamvte". Strip the
+    # suffix so the header still normalizes to "team".
+    return label.replace("vte", "")
 
 
 def find_table_and_columns(soup: BeautifulSoup) -> tuple[Any, dict[str, int]] | None:
@@ -142,14 +146,17 @@ def parse_table_html(html: str, title: str = "") -> list[dict[str, Any]]:
     table, columns = found
     rows: list[dict[str, Any]] = []
     table_rows = table.find_all("tr")
-    for row in table_rows[columns["header"] + 1 :]:
+    for row_idx, row in enumerate(table_rows[columns["header"] + 1 :], start=1):
         cells = row.find_all(["th", "td"])
         if not cells or max(columns.values()) >= len(cells):
             continue
-        position = to_int(cells[columns["position"]].get_text(" ", strip=True))
         team = clean_team(cells[columns["team"]].get_text(" ", strip=True))
-        if position <= 0 or not team:
+        if not team:
             continue
+        # Position is assigned by row order rather than the cell value: some
+        # league tables (e.g. Bundesliga) render tied teams as the same number
+        # and skip the next, so the cell can't be trusted to yield a clean 1..N.
+        position = row_idx
         goals_for = to_int(cells[columns["goalsFor"]].get_text(" ", strip=True))
         goals_against = to_int(cells[columns["goalsAgainst"]].get_text(" ", strip=True))
         rows.append(

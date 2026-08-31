@@ -41,3 +41,6 @@ next-env.d.ts
 public/google*.html
 
 public/admin/static
+
+# Generated credentials
+github-secrets-temporaneo.txt
