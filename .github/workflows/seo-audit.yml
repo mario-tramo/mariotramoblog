@@ -58,6 +58,7 @@ jobs:
 
       - name: Commit report
         if: ${{ github.event.inputs.commit_report != 'false' }}
+        continue-on-error: true
         run: |
           git config user.name "SEO Audit Bot"
           git config user.email "bot@trmsport.com"
@@ -66,3 +67,23 @@ jobs:
             git commit -m "chore: aggiorna report SEO audit [skip ci]"
             git push
           )
+
+      - name: Upload report as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-audit-report
+          path: docs/seo-audit-report.html
+          if-no-files-found: error
+
+      - name: Send report to Telegram
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          curl --fail --silent --show-error -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
+            -F chat_id="${TELEGRAM_CHAT_ID}" \
+            -F document=@docs/seo-audit-report.html \
+            -F caption="🔍 SEO Audit completato — report in allegato. Dettagli: ${RUN_URL}"
